@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
+import 'package:athar/app/core/injection/injection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -10,7 +13,7 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    log('onChange(${bloc.runtimeType}, $change)');
+    // log('onChange(${bloc.runtimeType}, $change)');
   }
 
   @override
@@ -28,6 +31,13 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   Bloc.observer = const AppBlocObserver();
 
   // Add cross-flavor configuration here
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorage.webStorageDirectory
+        : await getApplicationDocumentsDirectory(),
+  );
+
+  await configureDependencies();
 
   runApp(await builder());
 }
