@@ -15,11 +15,14 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.19.0
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
 
 dev_dependencies:
   bloc_test: ^9.1.7
   flutter_test:
     sdk: flutter
+  isar_generator: ^3.1.0+1
   mocktail: ^1.0.4
   very_good_analysis: ^6.0.0
 
