@@ -6,6 +6,7 @@ import 'package:athar/app/core/theming/app_theme.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:athar/app/features/settings/domain/settings_repository.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
+import 'package:athar/flavors/flavors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
