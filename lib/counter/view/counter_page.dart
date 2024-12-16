@@ -1,5 +1,4 @@
 import 'package:athar/counter/counter.dart';
-import 'package:athar/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,9 +19,8 @@ class CounterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
+      // appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
       body: const Center(child: CounterText()),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
