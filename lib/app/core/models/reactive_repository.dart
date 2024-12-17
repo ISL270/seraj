@@ -8,7 +8,6 @@ import 'package:athar/app/core/firestore/remote_model.dart';
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/core/isar/isar_source.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
-import 'package:athar/app/features/authentication/domain/models/user_x.dart';
 import 'package:athar/app/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/subjects.dart';
@@ -48,7 +47,7 @@ abstract base class ReactiveRepository<D, R extends RemoteModel<D>,
 
   void _init() {
     authRepository.getUpdates().listen((user) async {
-      if (user?.isTrainee ?? true) {
+      if (user?.id != null) {
         unawaited(remoteSource.cancelRemoteSub());
         unawaited(localSource.clear());
         _closeSubject();

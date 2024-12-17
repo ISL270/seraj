@@ -40,12 +40,8 @@ final class AuthRepository {
   /// Creates a new user with the provided [email] and [password].
   ///
   /// Throws a [SignUpWithEmailAndPasswordException] if an exception occurs.
-  Future<void> signUp(
-    UserType userType, {
-    required String coachEmail,
+  Future<void> signUp({
     required String email,
-    required String name,
-    required String phoneNumber,
     required String password,
   }) async {
     try {
@@ -57,23 +53,6 @@ final class AuthRepository {
       if (userCredential.user == null) {
         throw SignUpWithEmailAndPasswordException.fromCode('user_not_found');
       }
-
-      final res = await _userRepository.saveUserInfoRemote(
-        uid: userCredential.user!.uid,
-        userType: userType,
-        coachEmail: coachEmail,
-        email: email,
-        name: name,
-        phoneNumber: phoneNumber,
-      );
-
-      await res.fold(
-        (e) => throw SignUpWithEmailAndPasswordException.fromCode(e.code),
-        (user) async {
-          _stream.add(user);
-          await _userRepository.saveUserLocally(user);
-        },
-      );
     } catch (e) {
       throw switch (e) {
         (final fire_auth.FirebaseAuthException e) =>
@@ -100,19 +79,6 @@ final class AuthRepository {
       if (userCredential.user == null) {
         throw LogInWithEmailAndPasswordException.fromCode('user_not_found');
       }
-
-      final res = await _userRepository.getUserRemote(
-        userType: userType,
-        uid: userCredential.user!.uid,
-      );
-
-      await res.fold(
-        (e) => throw LogInWithEmailAndPasswordException.fromCode(e.code),
-        (user) async {
-          _stream.add(user);
-          await _userRepository.saveUserLocally(user);
-        },
-      );
     } catch (e) {
       throw switch (e) {
         (final fire_auth.FirebaseAuthException e) =>
@@ -149,19 +115,6 @@ final class AuthRepository {
       if (userCredential.user == null) {
         throw LogInWithGoogleException.fromCode('user_not_found');
       }
-
-      final res = await _userRepository.getUserRemote(
-        userType: userType,
-        uid: userCredential.user!.uid,
-      );
-
-      await res.fold(
-        (e) => throw LogInWithGoogleException.fromCode(e.code),
-        (user) async {
-          _stream.add(user);
-          await _userRepository.saveUserLocally(user);
-        },
-      );
     } catch (e) {
       throw switch (e) {
         (final fire_auth.FirebaseAuthException e) =>

@@ -1,18 +1,16 @@
+import 'package:athar/app/core/assets_gen/assets.gen.dart';
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/context_x.dart';
 import 'package:athar/app/core/extension_methods/english_x.dart';
-import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/authentication/domain/models/user_type.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_inputs/form_inputs.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -45,22 +43,28 @@ class SignUpScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const SingleChildScrollView(
-        padding: EdgeInsets.only(top: 40),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(top: 40),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _EmailField(),
-            Gap(25),
-            _NameField(),
-            Gap(25),
-            _PhoneNumberField(),
-            Gap(25),
-            _PasswordField(),
-            Gap(25),
-            _ConfirmPasswordField(),
-            Gap(25),
-            _SignUpButton(),
+            Image.asset(
+              Assets.icons.appLogo.path,
+              height: 200.h,
+            ),
+            const Gap(10),
+            Text(
+              'اِنْضَمَّ الآنَ لِتَتْرُكَ أَثَرًا.ِ',
+              style: context.textThemeX.large,
+            ),
+            const Gap(10),
+            const _EmailField(),
+            const Gap(25),
+            const _PasswordField(),
+            const Gap(25),
+            const _ConfirmPasswordField(),
+            const Gap(25),
+            const _SignUpButton(),
           ],
         ),
       ),
@@ -88,54 +92,6 @@ class _EmailField extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _NameField extends StatelessWidget {
-  const _NameField();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<SignUpCubit, SignUpState, Name>(
-      selector: (state) => state.name,
-      builder: (context, name) => TextField(
-        key: const Key('signUpForm_nameInput_textField'),
-        onChanged: (email) => context.read<SignUpCubit>().nameChanged(email),
-        keyboardType: TextInputType.name,
-        decoration: InputDecoration(
-          labelText: context.l10n.name.capitalized,
-          errorText: name.displayError == null
-              ? null
-              : context.tr(name.displayError!.name),
-        ),
-      ),
-    );
-  }
-}
-
-class _PhoneNumberField extends StatelessWidget {
-  const _PhoneNumberField();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<SignUpCubit, SignUpState, PhoneNumber>(
-      selector: (state) => state.phoneNumber,
-      builder: (context, phoneNumber) => TextField(
-        key: const Key('signUpForm_phoneInput_textField'),
-        onChanged: (email) => context.read<SignUpCubit>().phoneChanged(email),
-        keyboardType: TextInputType.phone,
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly,
-          LengthLimitingTextInputFormatter(15),
-        ],
-        decoration: InputDecoration(
-          labelText: context.l10n.phoneNumber.capitalized,
-          errorText: phoneNumber.displayError == null
-              ? null
-              : context.tr(phoneNumber.displayError!.name),
-        ),
-      ),
     );
   }
 }

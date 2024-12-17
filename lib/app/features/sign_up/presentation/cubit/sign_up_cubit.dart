@@ -14,22 +14,8 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   SignUpCubit(this._authRepository) : super(const SignUpState());
 
-  void changeUserType(UserType userType) =>
-      emit(state.copyWith(userType: userType));
-
   void emailChanged(String value) =>
       emit(state.copyWith(email: Email.dirty(value)));
-
-  void nameChanged(String value) =>
-      emit(state.copyWith(name: Name.dirty(value)));
-
-  void phoneChanged(String value) {
-    final pppp = PhoneNumber.dirty(value);
-    emit(state.copyWith(phoneNumber: pppp));
-  }
-
-  void coachEmailChanged(String value) =>
-      emit(state.copyWith(coachEmail: Email.dirty(value)));
 
   void passwordChanged(String value) {
     final password = Password.dirty(value);
@@ -53,13 +39,10 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(status: const Loading()));
     try {
       await _authRepository.signUp(
-        state.userType,
-        coachEmail: state.coachEmail.value,
         email: state.email.value,
-        name: state.name.value,
-        phoneNumber: state.phoneNumber.value,
         password: state.password.value,
       );
+      emit(state.copyWith(status: const Success('')));
     } catch (e) {
       emit(state.copyWith(status: Failure(e as GenericException)));
     }
