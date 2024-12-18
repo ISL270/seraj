@@ -9,12 +9,14 @@ final class UserIsar extends CacheModel<User> {
   UserIsar({
     required this.id,
     required this.email,
+    required this.name,
   });
 
   factory UserIsar.fromDomain(User user) => switch (user) {
         User() => UserIsar(
             id: user.id,
             email: user.email,
+            name: user.name,
           ),
       };
 
@@ -22,12 +24,15 @@ final class UserIsar extends CacheModel<User> {
 
   @override
   String id;
+  @override
+  String name;
 
   @override
   User toDomain() {
     return User(
       id: id,
       email: email,
+      name: name,
     );
   }
 }

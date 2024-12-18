@@ -1,6 +1,5 @@
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
-import 'package:athar/app/features/authentication/domain/models/user_type.dart';
 import 'package:athar/app/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -10,12 +9,10 @@ import 'package:formz/formz.dart';
 part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
+  SignUpCubit(this._authRepository) : super(const SignUpState());
   final AuthRepository _authRepository;
 
-  SignUpCubit(this._authRepository) : super(const SignUpState());
-
-  void emailChanged(String value) =>
-      emit(state.copyWith(email: Email.dirty(value)));
+  void emailChanged(String value) => emit(state.copyWith(email: Email.dirty(value)));
 
   void passwordChanged(String value) {
     final password = Password.dirty(value);
@@ -23,8 +20,12 @@ class SignUpCubit extends Cubit<SignUpState> {
       password: password.value,
       value: state.confirmPassword.value,
     );
-    emit(state.copyWith(
-        password: password, confirmedPassword: confirmedPassword));
+    emit(
+      state.copyWith(
+        password: password,
+        confirmedPassword: confirmedPassword,
+      ),
+    );
   }
 
   void confirmedPasswordChanged(String value) {

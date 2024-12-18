@@ -24,8 +24,7 @@ class App extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) =>
-                  SettingsBloc(getIt.get<SettingsRepository>()),
+              create: (context) => SettingsBloc(getIt.get<SettingsRepository>()),
             ),
             BlocProvider(create: (_) => getIt.authBloc),
           ],
@@ -41,10 +40,8 @@ class App extends StatelessWidget {
                     // locale: settingsState.language.locale,
                     locale: Language.arabic.locale,
                     supportedLocales: AppLocalizations.supportedLocales,
-                    localizationsDelegates:
-                        AppLocalizations.localizationsDelegates,
-                    debugShowCheckedModeBanner:
-                        appFlavor != Flavors.production.name,
+                    localizationsDelegates: AppLocalizations.localizationsDelegates,
+                    debugShowCheckedModeBanner: appFlavor != Flavors.production.name,
                     routerConfig: appRouter,
                   );
                 },

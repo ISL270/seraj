@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/features/authentication/data/models/remote/auth_exceptions.dart';
 import 'package:athar/app/features/authentication/domain/models/user.dart';
-import 'package:athar/app/features/authentication/domain/models/user_type.dart';
 import 'package:athar/app/features/authentication/domain/repositories/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:flutter/foundation.dart';
@@ -13,15 +12,14 @@ import 'package:rxdart/subjects.dart';
 
 @singleton
 final class AuthRepository {
-  final GoogleSignIn _googleSignIn;
-  final fire_auth.FirebaseAuth _fireAuth;
-  final UserRepository _userRepository;
-
   AuthRepository(
     this._fireAuth,
     this._googleSignIn,
     this._userRepository,
   );
+  final GoogleSignIn _googleSignIn;
+  final fire_auth.FirebaseAuth _fireAuth;
+  final UserRepository _userRepository;
 
   // Using BehaviorSubject, any new listeners when begin listening to the stream,
   // they immediately get the lastly emitted Stream of data.
@@ -65,8 +63,7 @@ final class AuthRepository {
   /// Signs in with the provided [email] and [password].
   ///
   /// Throws a [LogInWithEmailAndPasswordException] if an exception occurs.
-  Future<void> logInWithEmail(
-    UserType userType, {
+  Future<void> logInWithEmail({
     required String email,
     required String password,
   }) async {
@@ -91,7 +88,7 @@ final class AuthRepository {
   /// Starts the Sign In with Google Flow.
   ///
   /// Throws a [LogInWithGoogleException] if an exception occurs.
-  Future<void> logInWithGoogle(UserType userType) async {
+  Future<void> logInWithGoogle() async {
     try {
       late final fire_auth.AuthCredential credential;
 
@@ -117,8 +114,7 @@ final class AuthRepository {
       }
     } catch (e) {
       throw switch (e) {
-        (final fire_auth.FirebaseAuthException e) =>
-          LogInWithGoogleException.fromCode(e.code),
+        (final fire_auth.FirebaseAuthException e) => LogInWithGoogleException.fromCode(e.code),
         _ => const LogInWithGoogleException(),
       };
     }

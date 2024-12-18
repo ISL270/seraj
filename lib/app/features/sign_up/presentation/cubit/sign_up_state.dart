@@ -22,7 +22,6 @@ final class SignUpState extends Equatable with FormzMixin {
       ];
 
   SignUpState copyWith({
-    UserType? userType,
     Email? email,
     Password? password,
     ConfirmPassword? confirmedPassword,

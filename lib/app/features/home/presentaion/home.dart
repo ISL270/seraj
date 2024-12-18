@@ -27,26 +27,26 @@ class HomeScreen extends StatelessWidget {
           child: NavigationBar(
             onDestinationSelected: _goBranch,
             selectedIndex: navigationShell.currentIndex,
-            destinations: [
+            destinations: const [
               NavigationDestination(
-                selectedIcon: const Icon(Icons.wallet),
-                icon: const Icon(Icons.wallet),
-                label: context.l10n.exercise(0).capitalizedDefinite,
+                selectedIcon: Icon(Icons.wallet),
+                icon: Icon(Icons.wallet),
+                label: 'test',
               ),
               NavigationDestination(
-                selectedIcon: const Icon(Icons.wallet),
-                icon: const Icon(Icons.wallet),
-                label: context.l10n.workout(0).capitalizedDefinite,
+                selectedIcon: Icon(Icons.wallet),
+                icon: Icon(Icons.wallet),
+                label: 'test',
               ),
               NavigationDestination(
-                selectedIcon: const Icon(Icons.person),
-                icon: const Icon(Icons.person_outlined),
-                label: context.l10n.client(0).capitalizedDefinite,
+                selectedIcon: Icon(Icons.person),
+                icon: Icon(Icons.person_outlined),
+                label: 'test',
               ),
               NavigationDestination(
-                selectedIcon: const Icon(Icons.settings),
-                icon: const Icon(Icons.settings_outlined),
-                label: context.l10n.settings.capitalizedDefinite,
+                selectedIcon: Icon(Icons.settings),
+                icon: Icon(Icons.settings_outlined),
+                label: 'test',
               ),
             ],
           ),

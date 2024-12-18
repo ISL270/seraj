@@ -1,4 +1,3 @@
-
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
@@ -7,10 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 class NumberPickerBS extends StatefulWidget {
+  const NumberPickerBS._({required this.isDecimal, required this.initial});
   final bool isDecimal;
   final double initial;
-
-  const NumberPickerBS._({required this.isDecimal, required this.initial});
 
   static Future<double?> show(BuildContext context, {bool isDecimal = false, double initial = 0}) =>
       showModalBottomSheet<double>(
@@ -63,7 +61,7 @@ class _NumberPickerBSState extends State<NumberPickerBS> {
             TextButton(
               onPressed: () => context.pop(_currentValue),
               child: Text(
-                context.l10n.done,
+                '',
                 style: context.textThemeX.medium,
               ),
             ),

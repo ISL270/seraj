@@ -10,8 +10,7 @@ final class L10nService {
   AppLocalizations l10n(BuildContext context) => AppLocalizations.of(context);
 
   String trFromStr(String trStrKey, BuildContext context) {
-    final trKey =
-        _Transaltions.values.firstOrNullWhere((tr) => tr.name == trStrKey);
+    final trKey = _Transaltions.values.firstOrNullWhere((tr) => tr.name == trStrKey);
     if (trKey == null) return trStrKey;
     return trKey.getTr(context.settingsBloc.state.language);
   }

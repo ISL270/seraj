@@ -3,24 +3,16 @@
 import 'dart:async';
 
 import 'package:athar/app/core/enums/status.dart';
-import 'package:athar/app/core/firestore/reactive_firestore_source.dart';
 import 'package:athar/app/core/firestore/remote_model.dart';
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/core/isar/isar_source.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
+import 'package:athar/app/core/models/reactive_firestore_source.dart';
 import 'package:athar/app/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/subjects.dart';
 
-abstract base class ReactiveRepository<D, R extends RemoteModel<D>,
-    C extends CacheModel<D>> {
-  @protected
-  final AuthRepository authRepository;
-  @protected
-  final ReactiveFirestoreSource<R> remoteSource;
-  @protected
-  final IsarSource<D, C> localSource;
-
+abstract base class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheModel<D>> {
   ReactiveRepository(
     this.authRepository, {
     required this.remoteSource,
@@ -29,11 +21,16 @@ abstract base class ReactiveRepository<D, R extends RemoteModel<D>,
     _createSubject();
     _init();
   }
+  @protected
+  final AuthRepository authRepository;
+  @protected
+  final ReactiveFirestoreSource<R> remoteSource;
+  @protected
+  final IsarSource<D, C> localSource;
 
   late BehaviorSubject<Status<List<D>>> _subject;
 
-  void _createSubject() =>
-      _subject = BehaviorSubject<Status<List<D>>>.seeded(Initial<List<D>>());
+  void _createSubject() => _subject = BehaviorSubject<Status<List<D>>>.seeded(Initial<List<D>>());
 
   void _closeSubject() {
     if (_subject.isClosed) return;

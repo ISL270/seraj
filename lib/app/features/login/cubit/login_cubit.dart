@@ -1,5 +1,4 @@
 import 'package:athar/app/features/authentication/data/models/remote/auth_exceptions.dart';
-import 'package:athar/app/features/authentication/domain/models/user_type.dart';
 import 'package:athar/app/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -9,25 +8,18 @@ import 'package:formz/formz.dart';
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
+  LoginCubit(this._authRepository) : super(const LoginState());
   final AuthRepository _authRepository;
 
-  LoginCubit(this._authRepository) : super(const LoginState());
+  void emailChanged(String value) => emit(state.copyWith(email: Email.dirty(value)));
 
-  void changeUserType(UserType userType) =>
-      emit(state.copyWith(userType: userType));
-
-  void emailChanged(String value) =>
-      emit(state.copyWith(email: Email.dirty(value)));
-
-  void passwordChanged(String value) =>
-      emit(state.copyWith(password: Password.dirty(value)));
+  void passwordChanged(String value) => emit(state.copyWith(password: Password.dirty(value)));
 
   Future<void> logInWithCredentials() async {
     if (state.isNotValid) return;
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       await _authRepository.logInWithEmail(
-        state.userType,
         email: state.email.value,
         password: state.password.value,
       );
@@ -44,7 +36,7 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> logInWithGoogle() async {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      await _authRepository.logInWithGoogle(state.userType);
+      await _authRepository.logInWithGoogle();
     } catch (e) {
       emit(
         state.copyWith(

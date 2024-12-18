@@ -5,14 +5,12 @@ final class LoginState extends Equatable with FormzMixin {
     this.email = const Email.pure(),
     this.password = const Password.pure(),
     this.status = FormzSubmissionStatus.initial,
-    this.userType = UserType.coach,
     this.errorMessage,
   });
 
   final Email email;
   final Password password;
   final FormzSubmissionStatus status;
-  final UserType userType;
   final String? errorMessage;
 
   @override
@@ -22,7 +20,6 @@ final class LoginState extends Equatable with FormzMixin {
         status,
         isValid,
         errorMessage,
-        userType,
       ];
 
   LoginState copyWith({
@@ -30,13 +27,11 @@ final class LoginState extends Equatable with FormzMixin {
     Password? password,
     FormzSubmissionStatus? status,
     String? errorMessage,
-    UserType? userType,
   }) {
     return LoginState(
       email: email ?? this.email,
       password: password ?? this.password,
       status: status ?? this.status,
-      userType: userType ?? this.userType,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
