@@ -13,14 +13,13 @@ part 'settings_state.dart';
 
 @injectable
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  final SettingsRepository _repository;
-
   SettingsBloc(this._repository) : super(const SettingsState.initial()) {
     on<SettingsLanguageChanged>(_onLanguageChanged);
     on<SettingsThemeChanged>(_onThemeChanged);
 
     _initialize();
   }
+  final SettingsRepository _repository;
 
   /// Initializes the state from the repository.
   Future<void> _initialize() async {
@@ -32,7 +31,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   /// Handles language change events.
   Future<void> _onLanguageChanged(
-      SettingsLanguageChanged event, Emitter<SettingsState> emit) async {
+    SettingsLanguageChanged event,
+    Emitter<SettingsState> emit,
+  ) async {
     final newState = state.copyWith(language: event.language);
     emit(newState);
     await _repository.updateLanguage(event.language);
@@ -40,7 +41,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   /// Handles theme change events.
   Future<void> _onThemeChanged(
-      SettingsThemeChanged event, Emitter<SettingsState> emit) async {
+    SettingsThemeChanged event,
+    Emitter<SettingsState> emit,
+  ) async {
     final newState = state.copyWith(themeMode: event.themeMode);
     emit(newState);
     await _repository.updateTheme(event.themeMode);

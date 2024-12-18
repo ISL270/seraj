@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
-  final StatefulNavigationShell navigationShell;
-
   const HomeScreen({required this.navigationShell, Key? key})
       : super(key: key ?? const ValueKey('HomeScreen'));
+  final StatefulNavigationShell navigationShell;
 
   void _goBranch(int index) => navigationShell.goBranch(
         index,
@@ -30,13 +29,13 @@ class HomeScreen extends StatelessWidget {
             selectedIndex: navigationShell.currentIndex,
             destinations: [
               NavigationDestination(
-                selectedIcon: Icon(Icons.wallet),
-                icon: Icon(Icons.wallet),
+                selectedIcon: const Icon(Icons.wallet),
+                icon: const Icon(Icons.wallet),
                 label: context.l10n.exercise(0).capitalizedDefinite,
               ),
               NavigationDestination(
-                selectedIcon: Icon(Icons.wallet),
-                icon: Icon(Icons.wallet),
+                selectedIcon: const Icon(Icons.wallet),
+                icon: const Icon(Icons.wallet),
                 label: context.l10n.workout(0).capitalizedDefinite,
               ),
               NavigationDestination(

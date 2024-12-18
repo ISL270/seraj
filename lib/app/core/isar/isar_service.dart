@@ -1,3 +1,5 @@
+// ignore_for_file: strict_raw_type
+
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/core/isar/isar_helper.dart';
 import 'package:athar/app/features/authentication/data/models/local/user_isar.dart';
@@ -8,15 +10,17 @@ import 'package:path_provider/path_provider.dart';
 
 @singleton
 final class IsarService with IsarHelper {
-  final Isar _isar;
-
   const IsarService._(this._isar);
+  final Isar _isar;
 
   @FactoryMethod(preResolve: true)
   static Future<IsarService> create() async {
     final dir = await getApplicationDocumentsDirectory();
     final isar = await Isar.open(
-      [UserIsarSchema, SettingsIsarSchema],
+      [
+        UserIsarSchema,
+        SettingsIsarSchema,
+      ],
       directory: dir.path,
     );
     return IsarService._(isar);
@@ -66,13 +70,13 @@ final class IsarService with IsarHelper {
   }
 
   bool deleteSync<T extends CacheModel>(T object) {
-    return _isar
-        .writeTxnSync(() => _isar.collection<T>().deleteSync(object.cacheID));
+    return _isar.writeTxnSync(() => _isar.collection<T>().deleteSync(object.cacheID));
   }
 
   Future<int> deleteAll<T extends CacheModel>(List<String> ids) async {
     return _isar.writeTxn(
-        () => _isar.collection<T>().deleteAll(ids.map(toIntID).toList()));
+      () => _isar.collection<T>().deleteAll(ids.map(toIntID).toList()),
+    );
   }
 
   Future<int> deleteAllSync<T extends CacheModel>(List<int> ids) async {
@@ -89,8 +93,7 @@ final class IsarService with IsarHelper {
 
   Future<List<T>> getAllByIDs<T extends CacheModel>(List<String> ids) async {
     return _isar.txn(() async {
-      final docs =
-          await _isar.collection<T>().getAll(ids.map(toIntID).toList());
+      final docs = await _isar.collection<T>().getAll(ids.map(toIntID).toList());
       // Remove nulls.
       return docs.whereType<T>().toList();
     });

@@ -6,12 +6,13 @@ import 'package:injectable/injectable.dart';
 
 @singleton
 final class UserFirestoreSource with FirestoreHelper {
+  UserFirestoreSource(this._firestoreSvc);
   final FirestoreService _firestoreSvc;
 
-  UserFirestoreSource(this._firestoreSvc);
-
   DocumentReference<Map<String, dynamic>> _userDoc(
-      String id, UserType userType) {
+    String id,
+    UserType userType,
+  ) {
     if (userType.isCoach) {
       return _firestoreSvc.coaches.collection.doc(id);
     }

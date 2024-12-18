@@ -5,10 +5,9 @@ import 'package:injectable/injectable.dart';
 
 @singleton
 final class UserRepository {
+  UserRepository(this._localSource, this._remoteSource);
   final UserIsarSource _localSource;
   final UserFirestoreSource _remoteSource;
-
-  UserRepository(this._localSource, this._remoteSource);
 
   Future<User?> geUserLocal() async {
     final userCM = await _localSource.getSavedUser();

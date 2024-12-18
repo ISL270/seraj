@@ -4,6 +4,7 @@ import 'package:athar/app/core/routing/go_router_refresh_stream.dart';
 import 'package:athar/app/core/routing/go_router_state_extension.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc_extension.dart';
+import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/login/cubit/login_cubit.dart';
 import 'package:athar/app/features/login/login_screen.dart';
 import 'package:athar/app/features/settings/settings_screen.dart';
@@ -11,7 +12,6 @@ import 'package:athar/app/features/sign_up/presentation/cubit/sign_up_cubit.dart
 import 'package:athar/app/features/sign_up/presentation/sign_up_screen.dart';
 import 'package:athar/app/features/splash/bloc/splash_bloc.dart';
 import 'package:athar/app/features/splash/splash_screen.dart';
-import 'package:athar/app/screens/home/presentaion/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -28,22 +28,23 @@ final appRouter = GoRouter(
       ),
     ),
     GoRoute(
-        name: LoginScreen.name,
-        path: '/${LoginScreen.name}',
-        builder: (context, state) => BlocProvider(
-              create: (_) => LoginCubit(getIt.authRepo),
-              child: const LoginScreen(),
-            ),
-        routes: [
-          GoRoute(
-            name: SignUpScreen.name,
-            path: SignUpScreen.name,
-            builder: (context, state) => BlocProvider(
-              create: (_) => SignUpCubit(getIt.authRepo),
-              child: const SignUpScreen(),
-            ),
+      name: LoginScreen.name,
+      path: '/${LoginScreen.name}',
+      builder: (context, state) => BlocProvider(
+        create: (_) => LoginCubit(getIt.authRepo),
+        child: const LoginScreen(),
+      ),
+      routes: [
+        GoRoute(
+          name: SignUpScreen.name,
+          path: SignUpScreen.name,
+          builder: (context, state) => BlocProvider(
+            create: (_) => SignUpCubit(getIt.authRepo),
+            child: const SignUpScreen(),
           ),
-        ]),
+        ),
+      ],
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         // Your main home screen with navigation shell
@@ -56,8 +57,7 @@ final appRouter = GoRouter(
             GoRoute(
               name: SettingsScreen.name,
               path: '/${SettingsScreen.name}',
-              pageBuilder: (context, state) =>
-                  const NoTransitionPage(child: SettingsScreen()),
+              pageBuilder: (context, state) => const NoTransitionPage(child: SettingsScreen()),
             ),
           ],
         ),
@@ -70,9 +70,7 @@ final appRouter = GoRouter(
   redirect: (context, state) {
     // If the user is not logged in, they need to login.
     // Bundle the location the user is coming from into a query parameter
-    final fromloc = (state.isGoingToHome || state.isLoggingOut)
-        ? ''
-        : state.matchedLocation;
+    final fromloc = (state.isGoingToHome || state.isLoggingOut) ? '' : state.matchedLocation;
     if (!getIt.authBloc.state.isAuthenticated) {
       return state.isGoingToSplash || state.isLoggingIn || state.isSigningUp
           ? null
@@ -98,5 +96,4 @@ final appRouter = GoRouter(
 
 // private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _settingsNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: SettingsScreen.name);
+final _settingsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: SettingsScreen.name);

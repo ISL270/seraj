@@ -12,9 +12,6 @@ final class User extends Equatable {
   /// The current user's email address.
   final String email;
 
-  /// Url for the current user's photo.
-  // final String? photo;
-
   @override
   List<Object?> get props => [
         email,
