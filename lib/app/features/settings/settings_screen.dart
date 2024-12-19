@@ -7,13 +7,12 @@ import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/l10n/language.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-
-import 'settings/settings_bloc.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -40,9 +39,7 @@ class SettingsScreen extends StatelessWidget {
                       showSelectedIcon: false,
                       selected: {settings.themeMode},
                       onSelectionChanged: (selection) {
-                        context
-                            .read<SettingsBloc>()
-                            .add(SettingsThemeChanged(selection.first));
+                        context.read<SettingsBloc>().add(SettingsThemeChanged(selection.first));
                       },
                       segments: [
                         ButtonSegment(
@@ -58,7 +55,7 @@ class SettingsScreen extends StatelessWidget {
                           label: Text(context.l10n.system.capitalized),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
                 const Gap(20),
@@ -73,8 +70,7 @@ class SettingsScreen extends StatelessWidget {
                       showSelectedIcon: false,
                       selected: {settings.language},
                       onSelectionChanged: (selection) {
-                        context.settingsBloc
-                            .add(SettingsLanguageChanged(selection.first));
+                        context.settingsBloc.add(SettingsLanguageChanged(selection.first));
                       },
                       segments: [
                         ButtonSegment(
@@ -86,7 +82,7 @@ class SettingsScreen extends StatelessWidget {
                           label: Text(Language.english.name),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
                 const Spacer(),
@@ -95,7 +91,7 @@ class SettingsScreen extends StatelessWidget {
                   density: ButtonDensity.comfortable,
                   onPressed: () => getIt.authBloc.add(AuthLogoutRequested()),
                   label: context.l10n.logout.capitalized,
-                )
+                ),
               ],
             ),
           );

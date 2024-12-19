@@ -46,10 +46,7 @@ final appRouter = GoRouter(
       ],
     ),
     StatefulShellRoute.indexedStack(
-      builder: (context, state, navigationShell) {
-        // Your main home screen with navigation shell
-        return HomeScreen(navigationShell: navigationShell);
-      },
+      builder: (_, __, navigationShell) => HomeScreen(navigationShell: navigationShell),
       branches: [
         StatefulShellBranch(
           navigatorKey: _settingsNavigatorKey,
