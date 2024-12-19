@@ -101,7 +101,7 @@ ThemeData _themeData(ColorsX colorScheme) {
       labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       labelTextStyle: WidgetStatePropertyAll(textTheme.small.copyWith(
         fontSize: 14,
-        color: colorScheme.primary,
+        color: AppColors.golden,
         fontWeight: FontWeight.bold,
       )),
       iconTheme: WidgetStateProperty.resolveWith((state) {

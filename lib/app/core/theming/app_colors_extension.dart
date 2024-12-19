@@ -13,6 +13,8 @@ class ColorsX extends ThemeExtension<ColorsX> with _$ColorsXTailorMixin {
   @override
   final Color primary = AppColors.primary;
   @override
+  final Color golden = AppColors.golden;
+  @override
   final Color onPrimary = AppColors.secondaryLight;
   @override
   final Color secondary = AppColors.secondary;
