@@ -6,6 +6,11 @@ part 'user_isar.g.dart';
 
 @collection
 final class UserIsar extends CacheModel<User> {
+  @override
+  String id;
+  String name;
+  String email;
+
   UserIsar({
     required this.id,
     required this.email,
@@ -19,13 +24,6 @@ final class UserIsar extends CacheModel<User> {
             name: user.name,
           ),
       };
-
-  String email;
-
-  @override
-  String id;
-  @override
-  String name;
 
   @override
   User toDomain() {

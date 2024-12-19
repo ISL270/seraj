@@ -12,5 +12,4 @@ final class _Users {
   late final idField = 'id';
   late final emailField = 'email';
   late final nameField = 'name';
-  late final phoneNumberField = 'phoneNumber';
 }

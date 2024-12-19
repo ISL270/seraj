@@ -1,5 +1,3 @@
-import 'package:athar/app/core/extension_methods/string_x.dart';
-import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
