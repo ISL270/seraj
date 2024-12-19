@@ -224,6 +224,7 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				2995B8F86CB76FF8CFCCFC7C /* FlutterFire: "flutterfire bundle-service-file" */,
 				0F5F865B2D52FF089B921EA5 /* [CP] Embed Pods Frameworks */,
+				47620FD8185B74ECF79BD03B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -345,6 +346,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
+		};
+		47620FD8185B74ECF79BD03B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		61CA00F05FA5203C78882770 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
