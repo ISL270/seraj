@@ -39,6 +39,7 @@ final class AuthRepository {
   ///
   /// Throws a [SignUpWithEmailAndPasswordException] if an exception occurs.
   Future<void> signUp({
+    required String name,
     required String email,
     required String password,
   }) async {
@@ -51,6 +52,20 @@ final class AuthRepository {
       if (userCredential.user == null) {
         throw SignUpWithEmailAndPasswordException.fromCode('user_not_found');
       }
+
+      final res = await _userRepository.saveUserInfoRemote(
+        uid: userCredential.user!.uid,
+        name: name,
+        email: email,
+      );
+
+      await res.fold(
+        (e) => throw SignUpWithEmailAndPasswordException.fromCode(e.code),
+        (user) async {
+          _stream.add(user);
+          await _userRepository.saveUserLocally(user);
+        },
+      );
     } catch (e) {
       throw switch (e) {
         (final fire_auth.FirebaseAuthException e) =>
