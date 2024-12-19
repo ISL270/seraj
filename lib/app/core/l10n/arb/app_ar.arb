@@ -37,7 +37,8 @@
     "hadith":"احاديث",
     "duas":"ادعية",
     "azkar":"اذكار",
-    "settings":"اعدادات"
+    "settings":"اعدادات",
     "done": "تم",
-    "name": "اسم"
+    "name": "اسم",
+    "invalidname": "اسم غير صالح"
 }

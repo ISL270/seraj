@@ -3,7 +3,6 @@ import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/routing/go_router_refresh_stream.dart';
 import 'package:athar/app/core/routing/go_router_state_extension.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc_extension.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/duas/presentation/duas_screen.dart';
 import 'package:athar/app/features/hadith/presentation/hadith_screen.dart';
@@ -113,8 +112,7 @@ final appRouter = GoRouter(
     // if the user is logged in, send them where they were going before (or
     // home if they weren't going anywhere)
     if (state.isLoggingIn) {
-      return state.uri.queryParameters['from'] ??
-          state.namedLocation(getIt.authBloc.homeNamedRoute);
+      return state.uri.queryParameters['from'] ?? state.namedLocation(HadithScreen.name);
     }
 
     // no need to redirect at all

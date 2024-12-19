@@ -37,7 +37,8 @@
   "hadith":"hadith",
   "duas":"duas",
   "azkar":"azkar",
-  "settings":"settings"
+  "settings":"settings",
   "done": "Done",
-  "name": "Name"
+  "name": "Name",
+  "invalidname": "invalid name"
 }
