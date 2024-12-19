@@ -40,5 +40,7 @@
   "settings":"settings",
   "done": "Done",
   "name": "Name",
-  "invalidname": "invalid name"
+  "invalidname": "invalid name",
+  "athars" :"athar",
+  "search" : "search"
 }

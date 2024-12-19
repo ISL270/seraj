@@ -1,7 +1,14 @@
+import 'package:athar/app/app.dart';
 import 'package:athar/app/core/constants/app_icons.dart';
+import 'package:athar/app/core/extension_methods/bloc_x.dart';
+import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
-import 'package:athar/app/features/hadith/presentation/hadith_screen.dart';
+import 'package:athar/app/core/theming/app_colors_extension.dart';
+import 'package:athar/app/features/athars/presentation/athars_screen.dart';
+import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,44 +24,62 @@ class HomeScreen extends StatelessWidget {
         initialLocation: index == navigationShell.currentIndex,
       );
 
-  static String get homeBranch => HadithScreen.name;
+  static String get homeBranch => AtharsScreen.name;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: Directionality(
-        textDirection: TextDirection.ltr,
-        child: ClipRRect(
-          borderRadius: const BorderRadius.horizontal(
-            left: Radius.circular(35),
-            right: Radius.circular(35),
-          ),
-          child: NavigationBar(
-            onDestinationSelected: _goBranch,
-            selectedIndex: navigationShell.currentIndex,
-            destinations: [
-              NavigationDestination(
-                // selectedIcon: const Icon(Icons.wallet),
-                icon: Image.asset(AppIcons.hadith),
-                label: context.l10n.hadith,
-              ),
-              NavigationDestination(
-                // selectedIcon: const Icon(Icons.wallet),
-                icon: Image.asset(AppIcons.duas),
-                label: context.l10n.duas,
-              ),
-              NavigationDestination(
-                // selectedIcon: const Icon(Icons.person),
-                icon: Image.asset(AppIcons.azkar),
-                label: context.l10n.azkar,
-              ),
-              NavigationDestination(
-                // selectedIcon: const Icon(Icons.settings),
-                icon: const Icon(Icons.settings_outlined),
-                label: context.l10n.settings,
-              ),
-            ],
+        textDirection: context.settingsBloc.state.isArabic ? TextDirection.rtl : TextDirection.ltr,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.w),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.horizontal(
+              left: Radius.circular(16),
+              right: Radius.circular(16),
+            ),
+            child: NavigationBar(
+              onDestinationSelected: _goBranch,
+              selectedIndex: navigationShell.currentIndex,
+              destinations: [
+                NavigationDestination(
+                  selectedIcon:
+                      Image.asset(AppIcons.hadith, scale: 2, color: context.colorsX.primary),
+                  icon: Image.asset(
+                    AppIcons.hadith,
+                    scale: 2,
+                    color: context.colorsX.onBackground,
+                  ),
+                  label: context.l10n.athars.capitalizedDefinite,
+                ),
+                NavigationDestination(
+                  selectedIcon:
+                      Image.asset(AppIcons.duas, scale: 2, color: context.colorsX.primary),
+                  icon: Image.asset(
+                    AppIcons.duas,
+                    scale: 2,
+                    color: context.colorsX.onBackground,
+                  ),
+                  label: context.l10n.duas.capitalizedDefinite,
+                ),
+                NavigationDestination(
+                  selectedIcon:
+                      Image.asset(AppIcons.azkar, scale: 2, color: context.colorsX.primary),
+                  icon: Image.asset(
+                    AppIcons.azkar,
+                    scale: 2,
+                    color: context.colorsX.onBackground,
+                  ),
+                  label: context.l10n.azkar.capitalizedDefinite,
+                ),
+                NavigationDestination(
+                  selectedIcon: Icon(Icons.settings, color: context.colorsX.primary),
+                  icon: const Icon(Icons.settings_outlined),
+                  label: context.l10n.settings.capitalizedDefinite,
+                ),
+              ],
+            ),
           ),
         ),
       ),
