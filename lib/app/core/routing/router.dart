@@ -93,9 +93,7 @@ final appRouter = GoRouter(
       ],
     ),
   ],
-  refreshListenable: GoRouterRefreshStream(
-    getIt.authBloc.stream.where((state) => state.isSuccess),
-  ),
+  refreshListenable: GoRouterRefreshStream(getIt.authBloc.stream.where((state) => state.isSuccess)),
   redirect: (context, state) {
     // If the user is not logged in, they need to login.
     // Bundle the location the user is coming from into a query parameter
@@ -109,10 +107,9 @@ final appRouter = GoRouter(
             );
     }
 
-    // if the user is logged in, send them where they were going before (or
-    // home if they weren't going anywhere)
+    // if the user is logged in, send them where they were going before (or home if they weren't going anywhere)
     if (state.isLoggingIn) {
-      return state.uri.queryParameters['from'] ?? state.namedLocation(HadithScreen.name);
+      return state.uri.queryParameters['from'] ?? state.namedLocation(HomeScreen.homeBranch);
     }
 
     // no need to redirect at all
