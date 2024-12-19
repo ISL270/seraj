@@ -1,3 +1,4 @@
+import 'package:athar/app/core/constants/app_icons.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:flutter/material.dart';
@@ -27,26 +28,26 @@ class HomeScreen extends StatelessWidget {
           child: NavigationBar(
             onDestinationSelected: _goBranch,
             selectedIndex: navigationShell.currentIndex,
-            destinations: const [
+            destinations: [
               NavigationDestination(
-                selectedIcon: Icon(Icons.wallet),
-                icon: Icon(Icons.wallet),
-                label: 'test',
+                // selectedIcon: const Icon(Icons.wallet),
+                icon: Image.asset(AppIcons.hadith),
+                label: context.l10n.hadith,
               ),
               NavigationDestination(
-                selectedIcon: Icon(Icons.wallet),
-                icon: Icon(Icons.wallet),
-                label: 'test',
+                // selectedIcon: const Icon(Icons.wallet),
+                icon: Image.asset(AppIcons.duas),
+                label: context.l10n.duas,
               ),
               NavigationDestination(
-                selectedIcon: Icon(Icons.person),
-                icon: Icon(Icons.person_outlined),
-                label: 'test',
+                // selectedIcon: const Icon(Icons.person),
+                icon: Image.asset(AppIcons.azkar),
+                label: context.l10n.azkar,
               ),
               NavigationDestination(
-                selectedIcon: Icon(Icons.settings),
-                icon: Icon(Icons.settings_outlined),
-                label: 'test',
+                // selectedIcon: const Icon(Icons.settings),
+                icon: const Icon(Icons.settings_outlined),
+                label: context.l10n.settings,
               ),
             ],
           ),
