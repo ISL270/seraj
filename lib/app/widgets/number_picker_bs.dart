@@ -60,7 +60,7 @@ class _NumberPickerBSState extends State<NumberPickerBS> {
             TextButton(
               onPressed: () => context.pop(_currentValue),
               child: Text(
-                '',
+                context.l10n.done,
                 style: context.textThemeX.medium,
               ),
             ),

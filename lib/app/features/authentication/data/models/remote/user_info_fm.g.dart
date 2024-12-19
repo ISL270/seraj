@@ -1,21 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'fire_user_info.dart';
+part of 'user_info_fm.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-FireAppUserInfo _$FireAppUserInfoFromJson(Map<String, dynamic> json) =>
-    FireAppUserInfo(
+UserFM _$UserFMFromJson(Map<String, dynamic> json) => UserFM(
       uid: json['uid'] as String,
-      email: json['email'] as String,
       name: json['name'] as String,
+      email: json['email'] as String,
     );
 
-Map<String, dynamic> _$FireAppUserInfoToJson(FireAppUserInfo instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$UserFMToJson(UserFM instance) => <String, dynamic>{
       'uid': instance.uid,
-      'email': instance.email,
       'name': instance.name,
+      'email': instance.email,
     };

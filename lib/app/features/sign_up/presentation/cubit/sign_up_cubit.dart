@@ -14,6 +14,8 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   void emailChanged(String value) => emit(state.copyWith(email: Email.dirty(value)));
 
+  void nameChanged(String value) => emit(state.copyWith(name: Name.dirty(value)));
+
   void passwordChanged(String value) {
     final password = Password.dirty(value);
     final confirmedPassword = ConfirmPassword.dirty(
@@ -42,6 +44,7 @@ class SignUpCubit extends Cubit<SignUpState> {
       await _authRepository.signUp(
         email: state.email.value,
         password: state.password.value,
+        name: state.name.value,
       );
       emit(state.copyWith(status: const Success('')));
     } catch (e) {
