@@ -4,6 +4,9 @@ import 'package:athar/app/core/routing/go_router_refresh_stream.dart';
 import 'package:athar/app/core/routing/go_router_state_extension.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc_extension.dart';
+import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
+import 'package:athar/app/features/duas/presentation/duas_screen.dart';
+import 'package:athar/app/features/hadith/presentation/hadith_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/login/cubit/login_cubit.dart';
 import 'package:athar/app/features/login/login_screen.dart';
@@ -49,6 +52,36 @@ final appRouter = GoRouter(
       builder: (_, __, navigationShell) => HomeScreen(navigationShell: navigationShell),
       branches: [
         StatefulShellBranch(
+          navigatorKey: _hadithNavigatorKey,
+          routes: [
+            GoRoute(
+              name: HadithScreen.name,
+              path: '/${HadithScreen.name}',
+              pageBuilder: (context, state) => const NoTransitionPage(child: HadithScreen()),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _duasNavigatorKey,
+          routes: [
+            GoRoute(
+              name: DuasScreen.name,
+              path: '/${DuasScreen.name}',
+              pageBuilder: (context, state) => const NoTransitionPage(child: DuasScreen()),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _azkarNavigatorKey,
+          routes: [
+            GoRoute(
+              name: AzkarScreen.name,
+              path: '/${AzkarScreen.name}',
+              pageBuilder: (context, state) => const NoTransitionPage(child: AzkarScreen()),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
           navigatorKey: _settingsNavigatorKey,
           routes: [
             GoRoute(
@@ -93,4 +126,7 @@ final appRouter = GoRouter(
 
 // private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _hadithNavigatorKey = GlobalKey<NavigatorState>(debugLabel: HadithScreen.name);
+final _duasNavigatorKey = GlobalKey<NavigatorState>(debugLabel: DuasScreen.name);
+final _azkarNavigatorKey = GlobalKey<NavigatorState>(debugLabel: AzkarScreen.name);
 final _settingsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: SettingsScreen.name);
