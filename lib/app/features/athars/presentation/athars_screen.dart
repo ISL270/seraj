@@ -16,18 +16,19 @@ class AtharsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SuperScaffold(
       appBar: SuperAppBar(
-          largeTitle: SuperLargeTitle(
-            largeTitle: context.l10n.athars.capitalizedDefinite,
-            textStyle: context.textThemeX.large.bold.copyWith(fontSize: 32.w),
-          ),
-          title: Text(
-            context.l10n.athars.capitalizedDefinite,
-            style: context.textThemeX.large.bold.copyWith(color: context.colorsX.onBackground),
-          ),
-          backgroundColor: context.colorsX.background,
-          searchBar: SuperSearchBar(
-            placeholderText: context.l10n.search.capitalizedDefinite,
-          )),
+        largeTitle: SuperLargeTitle(
+          largeTitle: context.l10n.athars.capitalizedDefinite,
+          textStyle: context.textThemeX.large.bold.copyWith(fontSize: 32.w),
+        ),
+        title: Text(
+          context.l10n.athars.capitalizedDefinite,
+          style: context.textThemeX.large.bold.copyWith(color: context.colorsX.onBackground),
+        ),
+        backgroundColor: context.colorsX.background,
+        searchBar: SuperSearchBar(
+          placeholderText: context.l10n.search.capitalizedDefinite,
+        ),
+      ),
       body: const Column(),
     );
   }

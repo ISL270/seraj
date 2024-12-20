@@ -13,8 +13,6 @@ class ColorsX extends ThemeExtension<ColorsX> with _$ColorsXTailorMixin {
   @override
   final Color primary = AppColors.primary;
   @override
-  final Color golden = AppColors.golden;
-  @override
   final Color onPrimary = AppColors.secondaryLight;
   @override
   final Color secondary = AppColors.secondary;
@@ -32,6 +30,7 @@ class ColorsX extends ThemeExtension<ColorsX> with _$ColorsXTailorMixin {
   final Color error = const Color(0xFFFF3232);
   @override
   Color get onBackgroundTint35 => onBackgroundTint.withOpacity(.35);
+  final Color golden = AppColors.golden;
 
   ColorsX({
     required this.background,
