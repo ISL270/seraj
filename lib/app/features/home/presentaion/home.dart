@@ -31,40 +31,50 @@ class HomeScreen extends StatelessWidget {
       body: navigationShell,
       bottomNavigationBar: Directionality(
         textDirection: context.settingsBloc.state.isArabic ? TextDirection.rtl : TextDirection.ltr,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.w),
-          child: ClipRRect(
-            borderRadius: BorderRadius.horizontal(
-              left: Radius.circular(16.w),
-              right: Radius.circular(16.w),
-            ),
-            child: NavigationBar(
-              onDestinationSelected: _goBranch,
-              selectedIndex: navigationShell.currentIndex,
-              destinations: [
-                NavigationDestination(
-                  selectedIcon: Image.asset(AppIcons.hadith, scale: 2.w, color: AppColors.golden),
-                  icon:
-                      Image.asset(AppIcons.hadith, scale: 2.w, color: context.colorsX.onBackground),
-                  label: context.l10n.athars.capitalizedDefinite,
-                ),
-                NavigationDestination(
-                  selectedIcon: Image.asset(AppIcons.duas, scale: 2.w, color: AppColors.golden),
-                  icon: Image.asset(AppIcons.duas, scale: 2.w, color: context.colorsX.onBackground),
-                  label: context.l10n.duas.capitalizedDefinite,
-                ),
-                NavigationDestination(
-                  selectedIcon: Image.asset(AppIcons.azkar, scale: 2.w, color: AppColors.golden),
-                  icon:
-                      Image.asset(AppIcons.azkar, scale: 2.w, color: context.colorsX.onBackground),
-                  label: context.l10n.azkar.capitalizedDefinite,
-                ),
-                NavigationDestination(
-                  selectedIcon: const Icon(Icons.settings, color: AppColors.golden),
-                  icon: const Icon(Icons.settings_outlined),
-                  label: context.l10n.settings.capitalizedDefinite,
-                ),
-              ],
+        child: ClipRRect(
+          borderRadius: BorderRadius.horizontal(
+            left: Radius.circular(16.w),
+            right: Radius.circular(16.w),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            child: ClipRRect(
+              borderRadius: BorderRadius.horizontal(
+                left: Radius.circular(16.w),
+                right: Radius.circular(16.w),
+              ),
+              child: NavigationBar(
+                onDestinationSelected: _goBranch,
+                selectedIndex: navigationShell.currentIndex,
+                destinations: [
+                  NavigationDestination(
+                    selectedIcon: Image.asset(AppIcons.hadith, scale: 2.w, color: AppColors.golden),
+                    icon: Image.asset(
+                      AppIcons.hadith,
+                      scale: 2.w,
+                      color: context.colorsX.onBackground,
+                    ),
+                    label: context.l10n.athars.capitalizedDefinite,
+                  ),
+                  NavigationDestination(
+                    selectedIcon: Image.asset(AppIcons.duas, scale: 2.w, color: AppColors.golden),
+                    icon:
+                        Image.asset(AppIcons.duas, scale: 2.w, color: context.colorsX.onBackground),
+                    label: context.l10n.duas.capitalizedDefinite,
+                  ),
+                  NavigationDestination(
+                    selectedIcon: Image.asset(AppIcons.azkar, scale: 2.w, color: AppColors.golden),
+                    icon: Image.asset(AppIcons.azkar,
+                        scale: 2.w, color: context.colorsX.onBackground),
+                    label: context.l10n.azkar.capitalizedDefinite,
+                  ),
+                  NavigationDestination(
+                    selectedIcon: const Icon(Icons.settings, color: AppColors.golden),
+                    icon: const Icon(Icons.settings_outlined),
+                    label: context.l10n.settings.capitalizedDefinite,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -62,11 +62,9 @@ dev_dependencies:
 dependency_overrides:
   analyzer: ^6.3.0
 
-
 flutter_gen:
   output: lib/app/core/assets_gen/
   line_length: 100
-
 
 flutter:
   uses-material-design: true

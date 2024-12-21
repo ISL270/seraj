@@ -42,5 +42,9 @@
   "name": "Name",
   "invalidname": "invalid name",
   "athars" :"athar",
-  "search" : "search"
+  "search" : "search",
+  "addnew" : "new add",
+  "prophetichadith" : "prophetic hadith",
+  "quranicverse" : "quranic verse",
+  "others":"others"
 }

@@ -42,5 +42,9 @@
   "name": "إسم",
   "invalidname": "إسم غير صالح",
   "athars" :"أثار",
-  "search": "بحث"
+  "search": "بحث",
+  "addnew" : "إضافة جديدة",
+  "prophetichadith" : "حديث نبوي",
+  "quranicverse" : "آية قرآنية",
+  "others":"اخرى"
 }
