@@ -1,4 +1,4 @@
-import 'package:athar/app/core/constants/app_icons.dart';
+import 'package:athar/app/core/assets_gen/assets.gen.dart';
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
@@ -46,30 +46,43 @@ class HomeScreen extends StatelessWidget {
                 onDestinationSelected: _goBranch,
                 selectedIndex: navigationShell.currentIndex,
                 destinations: [
+                  // first nav. bar item
                   NavigationDestination(
-                    selectedIcon:
-                        Image.asset(AppIcons.hadith, scale: 2.w, color: context.colorsX.primary),
-                    icon: Image.asset(
-                      AppIcons.hadith,
+                    selectedIcon: Assets.icons.quran.image(
+                      scale: 2.w,
+                      color: context.colorsX.primary,
+                    ),
+                    icon: Assets.icons.quran.image(
                       scale: 2.w,
                       color: context.colorsX.onBackground,
                     ),
                     label: context.l10n.athars.capitalizedDefinite,
                   ),
+                  // second nav. bar item
                   NavigationDestination(
-                    selectedIcon:
-                        Image.asset(AppIcons.duas, scale: 2.w, color: context.colorsX.primary),
-                    icon:
-                        Image.asset(AppIcons.duas, scale: 2.w, color: context.colorsX.onBackground),
+                    selectedIcon: Assets.icons.duas.image(
+                      scale: 2.w,
+                      color: context.colorsX.primary,
+                    ),
+                    icon: Assets.icons.duas.image(
+                      scale: 2.w,
+                      color: context.colorsX.onBackground,
+                    ),
                     label: context.l10n.duas.capitalizedDefinite,
                   ),
+                  // third nav. bar item
                   NavigationDestination(
-                    selectedIcon:
-                        Image.asset(AppIcons.azkar, scale: 2.w, color: context.colorsX.primary),
-                    icon: Image.asset(AppIcons.azkar,
-                        scale: 2.w, color: context.colorsX.onBackground),
+                    selectedIcon: Assets.icons.praying.image(
+                      scale: 2.w,
+                      color: context.colorsX.primary,
+                    ),
+                    icon: Assets.icons.praying.image(
+                      scale: 2.w,
+                      color: context.colorsX.onBackground,
+                    ),
                     label: context.l10n.azkar.capitalizedDefinite,
                   ),
+                  // last nav. bar item
                   NavigationDestination(
                     selectedIcon: Icon(Icons.settings, color: context.colorsX.primary),
                     icon: const Icon(Icons.settings_outlined),

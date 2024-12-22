@@ -1,4 +1,4 @@
-import 'package:athar/app/core/constants/app_icons.dart';
+import 'package:athar/app/core/assets_gen/assets.gen.dart';
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
@@ -33,7 +33,7 @@ class AtharsScreen extends StatelessWidget {
           actions: [
             GestureDetector(
               onTap: () => _openBottomSheet(context),
-              child: SvgPicture.asset(AppIcons.addsharp, height: 28.w, width: 28.w),
+              child: SvgPicture.asset(Assets.icons.addSharp, height: 28.w, width: 28.w),
             ),
           ],
         ),
