@@ -3,6 +3,7 @@ import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/routing/go_router_refresh_stream.dart';
 import 'package:athar/app/core/routing/go_router_state_extension.dart';
 import 'package:athar/app/features/athars/presentation/athars_screen.dart';
+import 'package:athar/app/features/athars/presentation/cubit/athars_cubit.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/duas/presentation/duas_screen.dart';
@@ -56,13 +57,22 @@ final appRouter = GoRouter(
             GoRoute(
                 name: AtharsScreen.name,
                 path: '/${AtharsScreen.name}',
-                pageBuilder: (context, state) => const NoTransitionPage(child: AtharsScreen()),
+                pageBuilder: (context, state) => NoTransitionPage(
+                      child: BlocProvider(
+                        create: (context) => AtharsCubit(),
+                        child: const AtharsScreen(),
+                      ),
+                    ),
                 routes: [
                   GoRoute(
                     name: AddNewHadith.name,
                     path: AddNewHadith.name,
                     parentNavigatorKey: _rootNavigatorKey,
-                    pageBuilder: (context, state) => const CupertinoPage(child: AddNewHadith()),
+                    pageBuilder: (context, state) => CupertinoPage(
+                        child: BlocProvider(
+                      create: (context) => AtharsCubit(),
+                      child: const AddNewHadith(),
+                    )),
                   ),
                 ]),
           ],

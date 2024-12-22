@@ -46,16 +46,7 @@ class AddNewHadith extends StatelessWidget {
                             ),
                           ),
                           const Gap(15),
-                          TextField(
-                            maxLines: 3,
-                            minLines: 1,
-                            decoration: InputDecoration(
-                              hintMaxLines: 2,
-                              labelStyle: context.textThemeX.medium,
-                              alignLabelWithHint: true,
-                              label: Text('${context.l10n.title} ${context.l10n.prophetichadithc}'),
-                            ),
-                          ),
+                          const _HadithTitleTextField(),
                           const Gap(20),
                           Align(
                             alignment: Alignment.centerRight,
@@ -65,15 +56,7 @@ class AddNewHadith extends StatelessWidget {
                             ),
                           ),
                           const Gap(15),
-                          TextField(
-                            maxLines: 5,
-                            minLines: 3,
-                            decoration: InputDecoration(
-                              labelStyle: context.textThemeX.medium,
-                              alignLabelWithHint: true,
-                              label: Text(context.l10n.hadithdesc),
-                            ),
-                          ),
+                          const _HadithDescTextField(),
                           const Gap(15),
                           Align(
                             alignment: Alignment.centerRight,
@@ -92,17 +75,63 @@ class AddNewHadith extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(16.w),
-              child: Button.filled(
-                label: context.l10n.add,
-                maxWidth: true,
-                onPressed: () {},
-              ),
-            ),
+            const _HadithAddButton(),
             const Gap(5)
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _HadithTitleTextField extends StatelessWidget {
+  const _HadithTitleTextField();
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      maxLines: 3,
+      minLines: 1,
+      decoration: InputDecoration(
+        hintMaxLines: 2,
+        labelStyle: context.textThemeX.medium,
+        alignLabelWithHint: true,
+        label: Text('${context.l10n.title} ${context.l10n.prophetichadithc}'),
+      ),
+    );
+  }
+}
+
+class _HadithDescTextField extends StatelessWidget {
+  const _HadithDescTextField();
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      maxLines: 5,
+      minLines: 3,
+      decoration: InputDecoration(
+        labelStyle: context.textThemeX.medium,
+        alignLabelWithHint: true,
+        label: Text(context.l10n.hadithdesc),
+      ),
+    );
+  }
+}
+
+class _HadithAddButton extends StatelessWidget {
+  const _HadithAddButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(16.w),
+      child: Button.filled(
+        label: context.l10n.add,
+        maxWidth: true,
+        onPressed: () {
+          context.read<AtharsCubit>().ensureCubit();
+        },
       ),
     );
   }
