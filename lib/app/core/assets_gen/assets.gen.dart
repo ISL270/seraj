@@ -12,23 +12,14 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
-  /// File path: assets/icons/add-sharp.svg
-  String get addSharp => 'assets/icons/add-sharp.svg';
+  /// File path: assets/icons/addsharp.png
+  AssetGenImage get addsharp => const AssetGenImage('assets/icons/addsharp.png');
 
   /// File path: assets/icons/appLogo.png
   AssetGenImage get appLogo => const AssetGenImage('assets/icons/appLogo.png');
 
-  /// File path: assets/icons/ayah.svg
-  String get ayah => 'assets/icons/ayah.svg';
-
   /// File path: assets/icons/duas.png
   AssetGenImage get duas => const AssetGenImage('assets/icons/duas.png');
-
-  /// File path: assets/icons/hadith.svg
-  String get hadith => 'assets/icons/hadith.svg';
-
-  /// File path: assets/icons/others.svg
-  String get others => 'assets/icons/others.svg';
 
   /// File path: assets/icons/praying.png
   AssetGenImage get praying => const AssetGenImage('assets/icons/praying.png');
@@ -37,7 +28,7 @@ class $AssetsIconsGen {
   AssetGenImage get quran => const AssetGenImage('assets/icons/quran.png');
 
   /// List of all assets
-  List<dynamic> get values => [addSharp, appLogo, ayah, duas, hadith, others, praying, quran];
+  List<AssetGenImage> get values => [addsharp, appLogo, duas, praying, quran];
 }
 
 class Assets {

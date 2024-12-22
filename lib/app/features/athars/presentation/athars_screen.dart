@@ -33,7 +33,11 @@ class AtharsScreen extends StatelessWidget {
           actions: [
             GestureDetector(
               onTap: () => _openBottomSheet(context),
-              child: SvgPicture.asset(Assets.icons.addSharp, height: 28.w, width: 28.w),
+              child: Assets.icons.addsharp.image(
+                width: 28.w,
+                height: 28.h,
+                color: context.colorsX.primary,
+              ),
             ),
           ],
         ),
