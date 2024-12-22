@@ -86,7 +86,7 @@ class _HadithSelectionListViewBuilderState extends State<_HadithSelectionListVie
                   ),
                 ],
               ),
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(8.w),
               child: Text(
                 hadithTypeDef[select],
                 maxLines: 6,
