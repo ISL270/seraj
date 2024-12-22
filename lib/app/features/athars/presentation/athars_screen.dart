@@ -9,6 +9,7 @@ import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/athars/presentation/cubit/athars_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -17,6 +18,7 @@ import 'package:super_cupertino_navigation_bar/super_cupertino_navigation_bar.da
 
 part 'widgets/bottom_sheet.dart';
 part 'add_new_hadith.dart';
+part 'add_new_ayah.dart';
 part 'widgets/hadith_list_view_builder.dart';
 
 class AtharsScreen extends StatelessWidget {

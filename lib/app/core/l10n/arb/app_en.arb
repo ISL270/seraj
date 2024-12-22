@@ -48,10 +48,15 @@
   "prophetichadithc" : "prophetic hadith",
   "hadithdesc":"hadith description",
   "quranicverse" : "quranic verse",
+  "quranicversec" : "quranic verse",
   "others":"others",
   "add":"add",
   "selecthadithtype":"Select Hadith Type",
   "title":"Title",
   "concept": "concept",
-  "hadithtype":"hadith type"
+  "hadithtype":"hadith type",
+  "quranicayahexp":"Quranic Ayah Explanation",
+  "numofayah":"Ayah No.",
+  "quranicayahsurah":"Quranic Ayah Surah",
+  "surahandnoayah":"Surah & Number of Ayah"
 }

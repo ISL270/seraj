@@ -55,26 +55,37 @@ final appRouter = GoRouter(
           navigatorKey: _hadithNavigatorKey,
           routes: [
             GoRoute(
-                name: AtharsScreen.name,
-                path: '/${AtharsScreen.name}',
-                pageBuilder: (context, state) => NoTransitionPage(
+              name: AtharsScreen.name,
+              path: '/${AtharsScreen.name}',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: BlocProvider(
+                  create: (context) => AtharsCubit(),
+                  child: const AtharsScreen(),
+                ),
+              ),
+              routes: [
+                GoRoute(
+                  name: AddNewHadith.name,
+                  path: AddNewHadith.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  pageBuilder: (context, state) => CupertinoPage(
                       child: BlocProvider(
-                        create: (context) => AtharsCubit(),
-                        child: const AtharsScreen(),
-                      ),
-                    ),
-                routes: [
-                  GoRoute(
-                    name: AddNewHadith.name,
-                    path: AddNewHadith.name,
-                    parentNavigatorKey: _rootNavigatorKey,
-                    pageBuilder: (context, state) => CupertinoPage(
-                        child: BlocProvider(
-                      create: (context) => AtharsCubit(),
-                      child: const AddNewHadith(),
-                    )),
-                  ),
-                ]),
+                    create: (context) => AtharsCubit(),
+                    child: const AddNewHadith(),
+                  )),
+                ),
+                GoRoute(
+                  name: AddNewAyah.name,
+                  path: AddNewAyah.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  pageBuilder: (context, state) => CupertinoPage(
+                      child: BlocProvider(
+                    create: (context) => AtharsCubit(),
+                    child: const AddNewAyah(),
+                  )),
+                ),
+              ],
+            ),
           ],
         ),
         StatefulShellBranch(

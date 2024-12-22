@@ -1,9 +1,9 @@
 part of 'athars_screen.dart';
 
-class AddNewHadith extends StatelessWidget {
-  const AddNewHadith({super.key});
+class AddNewAyah extends StatelessWidget {
+  const AddNewAyah({super.key});
 
-  static const String name = 'addNewHadith';
+  static const String name = 'addNewAyah';
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class AddNewHadith extends StatelessWidget {
                               ),
                               const Spacer(),
                               Text(
-                                '${context.l10n.add} ${context.l10n.prophetichadith}',
+                                '${context.l10n.add} ${context.l10n.quranicverse}',
                                 style: context.textThemeX.heading.bold,
                                 textAlign: TextAlign.center,
                               ),
@@ -41,41 +41,40 @@ class AddNewHadith extends StatelessWidget {
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
-                              '${context.l10n.title} ${context.l10n.prophetichadithc}',
+                              context.l10n.surahandnoayah,
                               style: context.textThemeX.medium.bold,
                             ),
                           ),
                           const Gap(15),
-                          const _HadithTitleTextField(),
+                          const _SurahAndVerseNumTextField(),
                           const Gap(20),
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
-                              context.l10n.hadithdesc,
+                              context.l10n.quranicversec,
                               style: context.textThemeX.medium.bold,
                             ),
                           ),
                           const Gap(15),
-                          const _HadithDescTextField(),
-                          const Gap(15),
+                          const _QuranicVerseTextField(),
+                          const Gap(20),
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
-                              context.l10n.hadithtype,
+                              context.l10n.quranicayahexp,
                               style: context.textThemeX.medium.bold,
                             ),
                           ),
-                          const Gap(5),
+                          const Gap(15),
+                          const _QuranicVerseExplanationTextField(),
                         ],
                       ),
                     ),
-                    const _HadithSelectionListViewBuilder(),
-                    const Gap(10),
                   ],
                 ),
               ),
             ),
-            const _HadithAddButton(),
+            const _AyahAddButton(),
             const Gap(5)
           ],
         ),
@@ -84,26 +83,42 @@ class AddNewHadith extends StatelessWidget {
   }
 }
 
-class _HadithTitleTextField extends StatelessWidget {
-  const _HadithTitleTextField();
+class _SurahAndVerseNumTextField extends StatelessWidget {
+  const _SurahAndVerseNumTextField();
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      maxLines: 3,
-      minLines: 1,
-      decoration: InputDecoration(
-        hintMaxLines: 2,
-        labelStyle: context.textThemeX.medium,
-        alignLabelWithHint: true,
-        label: Text('${context.l10n.title} ${context.l10n.prophetichadithc}'),
-      ),
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: TextField(
+            minLines: 1,
+            decoration: InputDecoration(
+              labelStyle: context.textThemeX.medium,
+              alignLabelWithHint: true,
+              label: Text(context.l10n.quranicayahsurah, style: context.textThemeX.medium.bold),
+            ),
+          ),
+        ),
+        const Gap(15),
+        Expanded(
+          child: TextField(
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            decoration: InputDecoration(
+              labelStyle: context.textThemeX.medium,
+              alignLabelWithHint: true,
+              label: Text(context.l10n.numofayah, style: context.textThemeX.medium.bold),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
 
-class _HadithDescTextField extends StatelessWidget {
-  const _HadithDescTextField();
+class _QuranicVerseTextField extends StatelessWidget {
+  const _QuranicVerseTextField();
 
   @override
   Widget build(BuildContext context) {
@@ -113,14 +128,31 @@ class _HadithDescTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelStyle: context.textThemeX.medium,
         alignLabelWithHint: true,
-        label: Text(context.l10n.hadithdesc),
+        label: Text(context.l10n.quranicversec, style: context.textThemeX.medium.bold),
       ),
     );
   }
 }
 
-class _HadithAddButton extends StatelessWidget {
-  const _HadithAddButton();
+class _QuranicVerseExplanationTextField extends StatelessWidget {
+  const _QuranicVerseExplanationTextField();
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      maxLines: 5,
+      minLines: 4,
+      decoration: InputDecoration(
+        labelStyle: context.textThemeX.medium,
+        alignLabelWithHint: true,
+        label: Text(context.l10n.quranicayahexp, style: context.textThemeX.medium.bold),
+      ),
+    );
+  }
+}
+
+class _AyahAddButton extends StatelessWidget {
+  const _AyahAddButton();
 
   @override
   Widget build(BuildContext context) {

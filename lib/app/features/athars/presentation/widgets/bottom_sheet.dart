@@ -53,6 +53,8 @@ class _BottomSheetBody extends StatelessWidget {
                 switch (index) {
                   case 0:
                     context.pushNamed(AddNewHadith.name);
+                  case 1:
+                    context.pushNamed(AddNewAyah.name);
                 }
               },
               child: _BottomSheetWidget(items[index]),

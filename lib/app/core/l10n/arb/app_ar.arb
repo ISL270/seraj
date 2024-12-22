@@ -48,10 +48,15 @@
   "prophetichadithc" : "الحديث النبوي",
   "hadithdesc":"نص الحديث",
   "quranicverse" : "آية قرآنية",
+  "quranicversec" : "الآية القرآنية",
   "others":"اخرى",
   "add":"إضافة",
   "selecthadithtype":"اختر نوع الحديث",
   "title":"عنوان",
   "concept": "مفهوم",
-  "hadithtype":"نوع الحديث"
+  "hadithtype":"نوع الحديث",
+  "quranicayahexp":"تفسير الآية القرآنية",
+  "numofayah":"رقم الآية",
+  "quranicayahsurah":"سورة الآية القرآنية",
+  "surahandnoayah":"السورة ورقم الآية"
 }
