@@ -45,6 +45,11 @@
   "search": "بحث",
   "addnew" : "إضافة جديدة",
   "prophetichadith" : "حديث نبوي",
+  "prophetichadithc" : "الحديث النبوي",
+  "hadithdesc":"نص الحديث",
   "quranicverse" : "آية قرآنية",
-  "others":"اخرى"
+  "others":"اخرى",
+  "add":"إضافة",
+  "selecthadithtype":"اختر نوع الحديث",
+  "title":"عنوان"
 }

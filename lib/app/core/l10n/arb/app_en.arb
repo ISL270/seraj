@@ -45,6 +45,11 @@
   "search" : "search",
   "addnew" : "new add",
   "prophetichadith" : "prophetic hadith",
+  "prophetichadithc" : "prophetic hadith",
+  "hadithdesc":"hadith description",
   "quranicverse" : "quranic verse",
-  "others":"others"
+  "others":"others",
+  "add":"add",
+  "selecthadithtype":"Select Hadith Type",
+  "title":"Title"
 }

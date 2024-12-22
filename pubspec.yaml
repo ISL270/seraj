@@ -12,6 +12,7 @@ dependencies:
   cached_network_image: ^3.4.0
   cloud_firestore: ^5.3.0
   dartx: ^1.2.0
+  dropdown_button2: ^2.3.9
   duration_picker: ^1.2.0
   equatable: ^2.0.5
   firebase_auth: ^5.3.0
@@ -23,7 +24,7 @@ dependencies:
     sdk: flutter
   flutter_screenutil: ^5.9.3
   flutter_svg: ^2.0.10+1
-  font_awesome_flutter: ^10.7.0
+  font_awesome_flutter: ^10.8.0
   form_inputs:
     git: https://github.com/ISL270/form_inputs
   formz: ^0.8.0
