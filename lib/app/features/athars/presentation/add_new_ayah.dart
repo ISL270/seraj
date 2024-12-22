@@ -45,7 +45,7 @@ class AddNewAyah extends StatelessWidget {
                               style: context.textThemeX.medium.bold,
                             ),
                           ),
-                          const Gap(15),
+                          const Gap(20),
                           const _SurahAndVerseNumTextField(),
                           const Gap(20),
                           Align(
@@ -55,7 +55,7 @@ class AddNewAyah extends StatelessWidget {
                               style: context.textThemeX.medium.bold,
                             ),
                           ),
-                          const Gap(15),
+                          const Gap(20),
                           const _QuranicVerseTextField(),
                           const Gap(20),
                           Align(
@@ -65,7 +65,7 @@ class AddNewAyah extends StatelessWidget {
                               style: context.textThemeX.medium.bold,
                             ),
                           ),
-                          const Gap(15),
+                          const Gap(20),
                           const _QuranicVerseExplanationTextField(),
                         ],
                       ),
@@ -88,31 +88,49 @@ class _SurahAndVerseNumTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       children: [
         Expanded(
-          flex: 2,
-          child: TextField(
-            minLines: 1,
-            decoration: InputDecoration(
-              labelStyle: context.textThemeX.medium,
-              alignLabelWithHint: true,
-              label: Text(context.l10n.quranicayahsurah, style: context.textThemeX.medium.bold),
-            ),
-          ),
+          flex: 3,
+          child: _SurahTextField(),
         ),
-        const Gap(15),
+        Gap(20),
         Expanded(
-          child: TextField(
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: InputDecoration(
-              labelStyle: context.textThemeX.medium,
-              alignLabelWithHint: true,
-              label: Text(context.l10n.numofayah, style: context.textThemeX.medium.bold),
-            ),
-          ),
+          child: _NoAyahOfSurah(),
         ),
       ],
+    );
+  }
+}
+
+class _SurahTextField extends StatelessWidget {
+  const _SurahTextField();
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      minLines: 1,
+      decoration: InputDecoration(
+        labelStyle: context.textThemeX.medium,
+        alignLabelWithHint: true,
+        label: Text(context.l10n.quranicayahsurah, style: context.textThemeX.medium.bold),
+      ),
+    );
+  }
+}
+
+class _NoAyahOfSurah extends StatelessWidget {
+  const _NoAyahOfSurah();
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      decoration: InputDecoration(
+        labelStyle: context.textThemeX.medium,
+        alignLabelWithHint: true,
+        label: Text(context.l10n.numofayah, style: context.textThemeX.medium.bold),
+      ),
     );
   }
 }
