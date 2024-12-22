@@ -129,9 +129,7 @@ class _HadithAddButton extends StatelessWidget {
       child: Button.filled(
         label: context.l10n.add,
         maxWidth: true,
-        onPressed: () {
-          context.read<AtharsCubit>().ensureCubit();
-        },
+        onPressed: () => context.read<AtharsCubit>().ensureCubit(),
       ),
     );
   }

@@ -41,11 +41,9 @@ class _HadithSelectionListViewBuilderState extends State<_HadithSelectionListVie
               separatorBuilder: (context, index) => const Gap(10),
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      select = index;
-                    });
-                  },
+                  onTap: () => setState(() {
+                    select = index;
+                  }),
                   child: _AddNewHadithItemWidget(
                     label: hadithTypes[index],
                     selected: index == select,
