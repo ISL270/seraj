@@ -4,7 +4,6 @@ import 'package:athar/app/core/extension_methods/context_x.dart';
 import 'package:athar/app/core/extension_methods/english_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
-import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/features/sign_up/presentation/cubit/sign_up_cubit.dart';
@@ -90,7 +89,7 @@ class _NameFormField extends StatelessWidget {
           onChanged: (name) => context.read<SignUpCubit>().nameChanged(name),
           decoration: InputDecoration(
             label: Text(context.l10n.name.capitalizedDefinite),
-            errorText: name.displayError == null ? null : context.tr(name.displayError!.name),
+            errorText: name.displayError == null ? null : context.l10n.invalidname,
           ),
         );
       },

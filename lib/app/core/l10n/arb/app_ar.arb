@@ -18,7 +18,7 @@
   "system": "النظام",
   "language": "اللغة",
   "logout": "تسجيل الخروج",
-  "athar": "athar",
+  "athar": "أثر",
   "offline": "غير متصل",
   "online": "متصل",
   "today": "اليوم",
@@ -34,6 +34,13 @@
   "october": "أكتوبر",
   "november": "نوفمبر",
   "december": "ديسمبر",
+  "hadith":"أحاديث",
+  "duas":"أدعية",
+  "azkar":"أذكار",
+  "settings":"إعدادات",
   "done": "تم",
-  "name": "اسم"
+  "name": "إسم",
+  "invalidname": "إسم غير صالح",
+  "athars" :"أثار",
+  "search": "بحث"
 }

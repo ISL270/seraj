@@ -25,6 +25,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Future<void> _initialize() async {
     final savedSettings = await _repository.getSettings();
     if (savedSettings != null) {
+      // ignore: invalid_use_of_visible_for_testing_member
       emit(savedSettings);
     }
   }

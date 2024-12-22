@@ -95,12 +95,12 @@ ThemeData _themeData(ColorsX colorScheme) {
       )),
     ),
     navigationBarTheme: NavigationBarThemeData(
-      height: 65,
+      height: 75,
       indicatorColor: Colors.transparent,
       backgroundColor: colorScheme.secondaryBackground,
       labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       labelTextStyle: WidgetStatePropertyAll(textTheme.small.copyWith(
-        fontSize: 12,
+        fontSize: 14,
         color: colorScheme.primary,
         fontWeight: FontWeight.bold,
       )),

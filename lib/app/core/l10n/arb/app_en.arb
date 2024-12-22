@@ -34,6 +34,13 @@
   "october": "October",
   "november": "November",
   "december": "December",
+  "hadith":"hadith",
+  "duas":"duas",
+  "azkar":"azkar",
+  "settings":"settings",
   "done": "Done",
-  "name": "Name"
+  "name": "Name",
+  "invalidname": "invalid name",
+  "athars" :"athar",
+  "search" : "search"
 }

@@ -3,7 +3,9 @@ import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/routing/go_router_refresh_stream.dart';
 import 'package:athar/app/core/routing/go_router_state_extension.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc_extension.dart';
+import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
+import 'package:athar/app/features/duas/presentation/duas_screen.dart';
+import 'package:athar/app/features/athars/presentation/athars_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/login/cubit/login_cubit.dart';
 import 'package:athar/app/features/login/login_screen.dart';
@@ -46,11 +48,38 @@ final appRouter = GoRouter(
       ],
     ),
     StatefulShellRoute.indexedStack(
-      builder: (context, state, navigationShell) {
-        // Your main home screen with navigation shell
-        return HomeScreen(navigationShell: navigationShell);
-      },
+      builder: (_, __, navigationShell) => HomeScreen(navigationShell: navigationShell),
       branches: [
+        StatefulShellBranch(
+          navigatorKey: _hadithNavigatorKey,
+          routes: [
+            GoRoute(
+              name: AtharsScreen.name,
+              path: '/${AtharsScreen.name}',
+              pageBuilder: (context, state) => const NoTransitionPage(child: AtharsScreen()),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _duasNavigatorKey,
+          routes: [
+            GoRoute(
+              name: DuasScreen.name,
+              path: '/${DuasScreen.name}',
+              pageBuilder: (context, state) => const NoTransitionPage(child: DuasScreen()),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _azkarNavigatorKey,
+          routes: [
+            GoRoute(
+              name: AzkarScreen.name,
+              path: '/${AzkarScreen.name}',
+              pageBuilder: (context, state) => const NoTransitionPage(child: AzkarScreen()),
+            ),
+          ],
+        ),
         StatefulShellBranch(
           navigatorKey: _settingsNavigatorKey,
           routes: [
@@ -64,9 +93,7 @@ final appRouter = GoRouter(
       ],
     ),
   ],
-  refreshListenable: GoRouterRefreshStream(
-    getIt.authBloc.stream.where((state) => state.isSuccess),
-  ),
+  refreshListenable: GoRouterRefreshStream(getIt.authBloc.stream.where((state) => state.isSuccess)),
   redirect: (context, state) {
     // If the user is not logged in, they need to login.
     // Bundle the location the user is coming from into a query parameter
@@ -80,11 +107,9 @@ final appRouter = GoRouter(
             );
     }
 
-    // if the user is logged in, send them where they were going before (or
-    // home if they weren't going anywhere)
+    // if the user is logged in, send them where they were going before (or home if they weren't going anywhere)
     if (state.isLoggingIn) {
-      return state.uri.queryParameters['from'] ??
-          state.namedLocation(getIt.authBloc.homeNamedRoute);
+      return state.uri.queryParameters['from'] ?? state.namedLocation(HomeScreen.homeBranch);
     }
 
     // no need to redirect at all
@@ -96,4 +121,7 @@ final appRouter = GoRouter(
 
 // private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _hadithNavigatorKey = GlobalKey<NavigatorState>(debugLabel: AtharsScreen.name);
+final _duasNavigatorKey = GlobalKey<NavigatorState>(debugLabel: DuasScreen.name);
+final _azkarNavigatorKey = GlobalKey<NavigatorState>(debugLabel: AzkarScreen.name);
 final _settingsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: SettingsScreen.name);
