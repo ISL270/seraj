@@ -98,18 +98,27 @@ class _HadithSelectionListViewBuilderState extends State<_HadithSelectionListVie
           const Gap(20),
           Visibility(
             visible: select == 3,
-            child: Padding(
-              padding: EdgeInsets.only(right: 8.w, left: 16.w),
-              child: TextField(
-                decoration: InputDecoration(
-                  labelStyle: context.textThemeX.medium,
-                  alignLabelWithHint: true,
-                  label: Text(context.l10n.hadithtype, style: context.textThemeX.medium.bold),
-                ),
-              ),
-            ),
+            child: const _HadithTypeTextField(),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _HadithTypeTextField extends StatelessWidget {
+  const _HadithTypeTextField();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(right: 8.w, left: 16.w),
+      child: TextField(
+        decoration: InputDecoration(
+          labelStyle: context.textThemeX.medium,
+          alignLabelWithHint: true,
+          label: Text(context.l10n.hadithtype, style: context.textThemeX.medium.bold),
+        ),
       ),
     );
   }
