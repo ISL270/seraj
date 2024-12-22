@@ -51,5 +51,7 @@
   "others":"اخرى",
   "add":"إضافة",
   "selecthadithtype":"اختر نوع الحديث",
-  "title":"عنوان"
+  "title":"عنوان",
+  "concept": "مفهوم",
+  "hadithtype":"نوع الحديث"
 }

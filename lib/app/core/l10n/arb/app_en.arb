@@ -51,5 +51,7 @@
   "others":"others",
   "add":"add",
   "selecthadithtype":"Select Hadith Type",
-  "title":"Title"
+  "title":"Title",
+  "concept": "concept",
+  "hadithtype":"hadith type"
 }

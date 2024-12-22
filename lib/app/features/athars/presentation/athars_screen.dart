@@ -16,6 +16,7 @@ import 'package:super_cupertino_navigation_bar/super_cupertino_navigation_bar.da
 
 part 'widgets/bottom_sheet.dart';
 part 'add_new_hadith.dart';
+part 'widgets/hadith_list_view_builder.dart';
 
 class AtharsScreen extends StatelessWidget {
   const AtharsScreen({super.key});
