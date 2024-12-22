@@ -24,7 +24,7 @@ class App extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => SettingsBloc(getIt.get<SettingsRepository>()),
+              create: (context) => SettingsBloc(),
             ),
             BlocProvider(create: (_) => getIt.authBloc),
           ],
