@@ -91,6 +91,18 @@ final class AuthRepository {
       if (userCredential.user == null) {
         throw LogInWithEmailAndPasswordException.fromCode('user_not_found');
       }
+
+      final res = await _userRepository.getUserRemote(
+        uid: userCredential.user!.uid,
+      );
+
+      await res.fold(
+        (e) => throw LogInWithEmailAndPasswordException.fromCode(e.code),
+        (user) async {
+          _stream.add(user);
+          await _userRepository.saveUserLocally(user);
+        },
+      );
     } catch (e) {
       throw switch (e) {
         (final fire_auth.FirebaseAuthException e) =>
