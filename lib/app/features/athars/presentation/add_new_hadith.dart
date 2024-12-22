@@ -225,13 +225,13 @@ class _AddNewHadithItemWidget extends StatelessWidget {
                     blurRadius: 5.w,
                     spreadRadius: 0.2.w,
                     blurStyle: BlurStyle.outer,
-                    color: context.colorsX.golden,
+                    color: context.colorsX.primary,
                   ),
                   BoxShadow(
                     blurRadius: 5.w,
                     spreadRadius: 0.2.w,
                     blurStyle: BlurStyle.outer,
-                    color: context.colorsX.golden,
+                    color: context.colorsX.primary,
                   ),
                 ]
               : [],

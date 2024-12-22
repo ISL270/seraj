@@ -1,4 +1,3 @@
-import 'package:athar/app/core/constants/app_colors.dart';
 import 'package:athar/app/core/constants/app_icons.dart';
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
@@ -48,7 +47,8 @@ class HomeScreen extends StatelessWidget {
                 selectedIndex: navigationShell.currentIndex,
                 destinations: [
                   NavigationDestination(
-                    selectedIcon: Image.asset(AppIcons.hadith, scale: 2.w, color: AppColors.golden),
+                    selectedIcon:
+                        Image.asset(AppIcons.hadith, scale: 2.w, color: context.colorsX.primary),
                     icon: Image.asset(
                       AppIcons.hadith,
                       scale: 2.w,
@@ -57,19 +57,21 @@ class HomeScreen extends StatelessWidget {
                     label: context.l10n.athars.capitalizedDefinite,
                   ),
                   NavigationDestination(
-                    selectedIcon: Image.asset(AppIcons.duas, scale: 2.w, color: AppColors.golden),
+                    selectedIcon:
+                        Image.asset(AppIcons.duas, scale: 2.w, color: context.colorsX.primary),
                     icon:
                         Image.asset(AppIcons.duas, scale: 2.w, color: context.colorsX.onBackground),
                     label: context.l10n.duas.capitalizedDefinite,
                   ),
                   NavigationDestination(
-                    selectedIcon: Image.asset(AppIcons.azkar, scale: 2.w, color: AppColors.golden),
+                    selectedIcon:
+                        Image.asset(AppIcons.azkar, scale: 2.w, color: context.colorsX.primary),
                     icon: Image.asset(AppIcons.azkar,
                         scale: 2.w, color: context.colorsX.onBackground),
                     label: context.l10n.azkar.capitalizedDefinite,
                   ),
                   NavigationDestination(
-                    selectedIcon: const Icon(Icons.settings, color: AppColors.golden),
+                    selectedIcon: Icon(Icons.settings, color: context.colorsX.primary),
                     icon: const Icon(Icons.settings_outlined),
                     label: context.l10n.settings.capitalizedDefinite,
                   ),
