@@ -1,4 +1,4 @@
-part of '../athars_screen.dart';
+part of '../add_hadith_screen.dart';
 
 class _HadithSelectionListViewBuilder extends StatefulWidget {
   const _HadithSelectionListViewBuilder();
