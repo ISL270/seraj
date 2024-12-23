@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
@@ -10,10 +12,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({
-    required this.navigationShell,
-    Key? key,
-  }) : super(key: key ?? const ValueKey('HomeScreen'));
+  const HomeScreen({required this.navigationShell, Key? key})
+      : super(key: key ?? const ValueKey('HomeScreen'));
 
   final StatefulNavigationShell navigationShell;
 
@@ -48,38 +48,20 @@ class HomeScreen extends StatelessWidget {
                 destinations: [
                   // first nav. bar item
                   NavigationDestination(
-                    selectedIcon: Assets.icons.quran.image(
-                      scale: 2.w,
-                      color: context.colorsX.primary,
-                    ),
-                    icon: Assets.icons.quran.image(
-                      scale: 2.w,
-                      color: context.colorsX.onBackground,
-                    ),
+                    selectedIcon: Assets.icons.quran.svg(color: context.colorsX.primary),
+                    icon: Assets.icons.quran.svg(color: context.colorsX.onBackground),
                     label: context.l10n.athars.capitalizedDefinite,
                   ),
                   // second nav. bar item
                   NavigationDestination(
-                    selectedIcon: Assets.icons.duas.image(
-                      scale: 2.w,
-                      color: context.colorsX.primary,
-                    ),
-                    icon: Assets.icons.duas.image(
-                      scale: 2.w,
-                      color: context.colorsX.onBackground,
-                    ),
+                    selectedIcon: Assets.icons.duas.svg(color: context.colorsX.primary),
+                    icon: Assets.icons.duas.svg(color: context.colorsX.onBackground),
                     label: context.l10n.duas.capitalizedDefinite,
                   ),
                   // third nav. bar item
                   NavigationDestination(
-                    selectedIcon: Assets.icons.praying.image(
-                      scale: 2.w,
-                      color: context.colorsX.primary,
-                    ),
-                    icon: Assets.icons.praying.image(
-                      scale: 2.w,
-                      color: context.colorsX.onBackground,
-                    ),
+                    selectedIcon: Assets.icons.praying.svg(color: context.colorsX.primary),
+                    icon: Assets.icons.praying.svg(color: context.colorsX.onBackground),
                     label: context.l10n.azkar.capitalizedDefinite,
                   ),
                   // last nav. bar item

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
@@ -34,9 +36,9 @@ class AtharsScreen extends StatelessWidget {
           actions: [
             GestureDetector(
               onTap: () => _openBottomSheet(context),
-              child: Assets.icons.addsharp.image(
-                width: 28.w,
-                height: 28.h,
+              child: Assets.icons.plusSquaredOutlined.svg(
+                width: 34.w,
+                height: 34.w,
                 color: context.colorsX.primary,
               ),
             ),
