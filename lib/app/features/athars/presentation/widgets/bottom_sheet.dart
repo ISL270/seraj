@@ -52,7 +52,7 @@ class _BottomSheetBody extends StatelessWidget {
               onTap: () {
                 switch (index) {
                   case 0:
-                    context.pushNamed(AddNewHadith.name);
+                    context.pushNamed(AddHadith.name);
                 }
               },
               child: _BottomSheetWidget(items[index]),

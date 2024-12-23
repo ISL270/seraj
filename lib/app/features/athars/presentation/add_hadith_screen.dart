@@ -1,9 +1,9 @@
 part of 'athars_screen.dart';
 
-class AddNewHadith extends StatelessWidget {
-  const AddNewHadith({super.key});
+class AddHadith extends StatelessWidget {
+  const AddHadith({super.key});
 
-  static const String name = 'addNewHadith';
+  static const String name = 'addHadith';
 
   @override
   Widget build(BuildContext context) {

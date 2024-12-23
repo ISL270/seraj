@@ -65,14 +65,14 @@ final appRouter = GoRouter(
               ),
               routes: [
                 GoRoute(
-                  name: AddNewHadith.name,
-                  path: AddNewHadith.name,
+                  name: AddHadith.name,
+                  path: AddHadith.name,
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
                       create: (context) => AtharsCubit(),
-                      child: const AddNewHadith(),
+                      child: const AddHadith(),
                     ),
                   ),
                 ),

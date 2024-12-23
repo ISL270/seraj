@@ -17,7 +17,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:super_cupertino_navigation_bar/super_cupertino_navigation_bar.dart';
 
-part 'add_new_hadith.dart';
+part 'add_hadith_screen.dart';
 part 'widgets/bottom_sheet.dart';
 part 'widgets/hadith_list_view_builder.dart';
 
