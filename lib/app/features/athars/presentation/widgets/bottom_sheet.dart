@@ -3,13 +3,13 @@ part of '../athars_screen.dart';
 Future<void> _openBottomSheet(BuildContext context) async {
   // ignore: inference_failure_on_function_invocation
   await showModalBottomSheet(
-    elevation: 0,
+    // elevation: 0,
     useSafeArea: true,
     context: context,
     builder: (context) {
       return Container(
         width: double.infinity,
-        height: 150.h,
+        height: 330.h,
         decoration: BoxDecoration(
           color: context.colorsX.background,
           borderRadius: BorderRadius.only(
@@ -18,9 +18,9 @@ Future<void> _openBottomSheet(BuildContext context) async {
           ),
         ),
         child: Padding(
-          padding: EdgeInsets.only(top: 15.w, bottom: 15.w, right: 10.w),
+          padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 20.w),
           child: _BottomSheetBody(
-            items: [context.l10n.prophetichadith, context.l10n.quranicverse, context.l10n.others],
+            items: [context.l10n.propheticHadith, context.l10n.quranicVerse, context.l10n.others],
           ),
         ),
       );
@@ -40,14 +40,13 @@ class _BottomSheetBody extends StatelessWidget {
       children: [
         const _DragIndicator(),
         const Gap(10),
-        Text(context.l10n.addnew, style: context.textThemeX.large.bold),
+        Text(context.l10n.addNew, style: context.textThemeX.large.bold),
         const Gap(20),
         Expanded(
           child: ListView.separated(
-            physics: const BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: items.length,
-            separatorBuilder: (context, index) => const Gap(15),
+            separatorBuilder: (context, index) => const Gap(20),
             itemBuilder: (context, index) => GestureDetector(
               onTap: () {
                 switch (index) {
@@ -76,9 +75,9 @@ class _BottomSheetWidget extends StatelessWidget {
       width: 120.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.w),
-        color: context.colorsX.onBackgroundTint35,
+        color: context.colorsX.primary,
       ),
-      child: Center(child: Text(label, style: context.textThemeX.medium.bold)),
+      child: Center(child: Text(label, style: context.textThemeX.large.bold)),
     );
   }
 }

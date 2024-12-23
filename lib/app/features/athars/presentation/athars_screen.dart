@@ -1,17 +1,14 @@
 // ignore_for_file: deprecated_member_use_from_same_package
 
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
-import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
-import 'package:athar/app/core/l10n/language.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/athars/presentation/cubit/athars_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
+import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';

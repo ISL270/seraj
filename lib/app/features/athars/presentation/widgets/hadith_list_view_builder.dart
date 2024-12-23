@@ -26,80 +26,71 @@ class _HadithSelectionListViewBuilderState extends State<_HadithSelectionListVie
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        right: context.settingsBloc.state.language.isArabic ? 16.w : 0,
-        left: context.settingsBloc.state.language.isEnglish ? 16.w : 0,
-      ),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 85.h,
-            child: ListView.separated(
-              itemCount: hadithTypes.length,
-              scrollDirection: Axis.horizontal,
-              separatorBuilder: (context, index) => const Gap(10),
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () => setState(() {
-                    select = index;
-                  }),
-                  child: _AddNewHadithItemWidget(
-                    label: hadithTypes[index],
-                    selected: index == select,
-                  ),
-                );
-              },
-            ),
-          ),
-          const Gap(5),
-          Visibility(
-            visible: select != 3,
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    '${context.l10n.concept} ${hadithTypes[select].capitalizedDefinite}',
-                    style: context.textThemeX.medium.bold,
-                  ),
+    return Column(
+      children: [
+        SizedBox(
+          height: 85.h,
+          child: ListView.separated(
+            itemCount: hadithTypes.length,
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (context, index) => const Gap(10),
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () => setState(() {
+                  select = index;
+                }),
+                child: _AddNewHadithItemWidget(
+                  label: hadithTypes[index],
+                  selected: index == select,
                 ),
-                const Gap(10),
-              ],
-            ),
+              );
+            },
           ),
-          const Gap(5),
-          Padding(
-            padding: EdgeInsets.only(right: 8.w, left: 16.w),
-            child: Container(
-              width: double.infinity,
-              height: 160.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.w),
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 5.w,
-                    blurStyle: BlurStyle.outer,
-                    color: context.colorsX.onBackgroundTint35,
-                  ),
-                ],
+        ),
+        const Gap(5),
+        Visibility(
+          visible: select != 3,
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  '${context.l10n.concept} ${hadithTypes[select].capitalizedDefinite}',
+                  style: context.textThemeX.medium.bold,
+                ),
               ),
-              padding: const EdgeInsets.all(8),
-              child: Text(
-                hadithTypeDef[select],
-                maxLines: 6,
-                overflow: TextOverflow.ellipsis,
-                style: context.textThemeX.medium.bold,
+              const Gap(10),
+            ],
+          ),
+        ),
+        const Gap(5),
+        Container(
+          width: double.infinity,
+          height: 160.h,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.w),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 5.w,
+                blurStyle: BlurStyle.outer,
+                color: context.colorsX.onBackgroundTint35,
               ),
-            ),
+            ],
           ),
-          const Gap(20),
-          Visibility(
-            visible: select == 3,
-            child: const _HadithTypeTextField(),
+          padding: const EdgeInsets.all(8),
+          child: Text(
+            hadithTypeDef[select],
+            maxLines: 6,
+            overflow: TextOverflow.ellipsis,
+            style: context.textThemeX.medium.bold,
           ),
-        ],
-      ),
+        ),
+        const Gap(20),
+        Visibility(
+          visible: select == 3,
+          child: const _HadithTypeTextField(),
+        ),
+      ],
     );
   }
 }
@@ -109,14 +100,11 @@ class _HadithTypeTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(right: 8.w, left: 16.w),
-      child: TextField(
-        decoration: InputDecoration(
-          labelStyle: context.textThemeX.medium,
-          alignLabelWithHint: true,
-          label: Text(context.l10n.hadithtype, style: context.textThemeX.medium.bold),
-        ),
+    return TextField(
+      decoration: InputDecoration(
+        labelStyle: context.textThemeX.medium,
+        alignLabelWithHint: true,
+        label: Text(context.l10n.hadithType, style: context.textThemeX.medium.bold),
       ),
     );
   }

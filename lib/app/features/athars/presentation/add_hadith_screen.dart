@@ -7,7 +7,7 @@ class AddHadith extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Screen(
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -18,56 +18,53 @@ class AddHadith extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.w, left: 16.w, right: 16.w),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () => context.pop(),
-                                child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
-                              ),
-                              const Spacer(),
-                              Text(
-                                '${context.l10n.add} ${context.l10n.prophetichadith}',
-                                style: context.textThemeX.heading.bold,
-                                textAlign: TextAlign.center,
-                              ),
-                              const Spacer(flex: 2),
-                            ],
-                          ),
-                          const Gap(50),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              '${context.l10n.title} ${context.l10n.prophetichadithc}',
-                              style: context.textThemeX.medium.bold,
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () => context.pop(),
+                              child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
                             ),
-                          ),
-                          const Gap(15),
-                          const _HadithTitleTextField(),
-                          const Gap(20),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              context.l10n.hadithdesc,
-                              style: context.textThemeX.medium.bold,
+                            const Spacer(),
+                            Text(
+                              '${context.l10n.add} ${context.l10n.propheticHadith}',
+                              style: context.textThemeX.heading.bold,
+                              textAlign: TextAlign.center,
                             ),
+                            const Spacer(flex: 2),
+                          ],
+                        ),
+                        const Gap(50),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            '${context.l10n.title} ${context.l10n.propheticHadithC}',
+                            style: context.textThemeX.medium.bold,
                           ),
-                          const Gap(15),
-                          const _HadithDescTextField(),
-                          const Gap(15),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              context.l10n.hadithtype,
-                              style: context.textThemeX.medium.bold,
-                            ),
+                        ),
+                        const Gap(15),
+                        const _HadithTitleTextField(),
+                        const Gap(20),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            context.l10n.hadithDesc,
+                            style: context.textThemeX.medium.bold,
                           ),
-                          const Gap(5),
-                        ],
-                      ),
+                        ),
+                        const Gap(15),
+                        const _HadithDescTextField(),
+                        const Gap(15),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            context.l10n.hadithType,
+                            style: context.textThemeX.medium.bold,
+                          ),
+                        ),
+                        const Gap(5),
+                      ],
                     ),
                     const _HadithSelectionListViewBuilder(),
                     const Gap(10),
@@ -96,7 +93,7 @@ class _HadithTitleTextField extends StatelessWidget {
         hintMaxLines: 2,
         labelStyle: context.textThemeX.medium,
         alignLabelWithHint: true,
-        label: Text('${context.l10n.title} ${context.l10n.prophetichadithc}'),
+        label: Text('${context.l10n.title} ${context.l10n.propheticHadithC}'),
       ),
     );
   }
@@ -113,7 +110,7 @@ class _HadithDescTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelStyle: context.textThemeX.medium,
         alignLabelWithHint: true,
-        label: Text(context.l10n.hadithdesc),
+        label: Text(context.l10n.hadithDesc),
       ),
     );
   }
@@ -125,11 +122,11 @@ class _HadithAddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.symmetric(vertical: 12.w),
       child: Button.filled(
         label: context.l10n.add,
         maxWidth: true,
-        onPressed: () => context.read<AtharsCubit>().ensureCubit(),
+        onPressed: () {},
       ),
     );
   }
