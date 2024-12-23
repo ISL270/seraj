@@ -1,3 +1,5 @@
+// ignore_for_file: inference_failure_on_instance_creation
+
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/features/add_hadith/features/add_hadith/domain/models/hadith_type.dart';
 import 'package:bloc/bloc.dart';
@@ -19,4 +21,9 @@ class AddHadithCubit extends Cubit<AddHadithState> {
   void hadithTypeChanged(HadithType hadithType) => emit(state.copyWith(hadithType: hadithType));
 
   void hadithExplainChanged(String value) => emit(state.copyWith(hadithExplain: value));
+
+  Future<void> saveHadithForm() async {
+    emit(state.copyWith(status: const Loading()));
+    // implementation used to store form data here --->
+  }
 }

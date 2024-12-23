@@ -59,5 +59,6 @@
   "sourceOfHadith":"مصدر الحديث",
   "hadithDaif":"ضعيف",
   "hadithSahih":"صحيح",
-  "hadithExplain":"شرح الحديث"
+  "hadithExplain":"شرح الحديث",
+  "enterTextOfHadith":"ادخل متن الحديث"
 }

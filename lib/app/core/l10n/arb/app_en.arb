@@ -59,5 +59,7 @@
   "sourceOfHadith":"Source Of Hadith",
   "hadithDaif":"Daif",
   "hadithSahih":"Sahih",
-  "hadithExplain":"Hadith Explaniation"
+  "hadithExplain":"Hadith Explanation",
+  "enterTextOfHadith":"Enter Text Of Hadith"
+
 }
