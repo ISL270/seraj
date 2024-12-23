@@ -55,26 +55,29 @@ final appRouter = GoRouter(
           navigatorKey: _hadithNavigatorKey,
           routes: [
             GoRoute(
-                name: AtharsScreen.name,
-                path: '/${AtharsScreen.name}',
-                pageBuilder: (context, state) => NoTransitionPage(
-                      child: BlocProvider(
-                        create: (context) => AtharsCubit(),
-                        child: const AtharsScreen(),
-                      ),
-                    ),
-                routes: [
-                  GoRoute(
-                    name: AddNewHadith.name,
-                    path: AddNewHadith.name,
-                    parentNavigatorKey: _rootNavigatorKey,
-                    pageBuilder: (context, state) => CupertinoPage(
-                        child: BlocProvider(
+              name: AtharsScreen.name,
+              path: '/${AtharsScreen.name}',
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: BlocProvider(
+                  create: (context) => AtharsCubit(),
+                  child: const AtharsScreen(),
+                ),
+              ),
+              routes: [
+                GoRoute(
+                  name: AddNewHadith.name,
+                  path: AddNewHadith.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  pageBuilder: (context, state) => CupertinoPage(
+                    fullscreenDialog: true,
+                    child: BlocProvider(
                       create: (context) => AtharsCubit(),
                       child: const AddNewHadith(),
-                    )),
+                    ),
                   ),
-                ]),
+                ),
+              ],
+            ),
           ],
         ),
         StatefulShellBranch(
