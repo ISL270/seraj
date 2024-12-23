@@ -34,15 +34,11 @@ class LoginScreen extends StatelessWidget {
           IconButton(
             onPressed: () {
               context.settingsBloc.add(SettingsThemeChanged(
-                context.settingsBloc.state.isThemeDark
-                    ? ThemeMode.light
-                    : ThemeMode.dark,
+                context.settingsBloc.state.isThemeDark ? ThemeMode.light : ThemeMode.dark,
               ));
             },
             icon: Icon(
-              context.settingsBloc.state.isThemeDark
-                  ? Icons.dark_mode
-                  : Icons.dark_mode_outlined,
+              context.settingsBloc.state.isThemeDark ? Icons.dark_mode : Icons.dark_mode_outlined,
             ),
           ),
           IconButton(
@@ -59,9 +55,8 @@ class LoginScreen extends StatelessWidget {
           if (state.status.isFailure) {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
-              ..showSnackBar(SnackBar(
-                  content:
-                      Text(state.errorMessage ?? context.l10n.loginFailed)));
+              ..showSnackBar(
+                  SnackBar(content: Text(state.errorMessage ?? context.l10n.loginFailed)));
           }
         },
         child: SingleChildScrollView(
@@ -116,9 +111,7 @@ class _EmailInput extends StatelessWidget {
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             labelText: context.l10n.email.capitalized,
-            errorText: state.email.displayError != null
-                ? context.l10n.invalidEmail
-                : null,
+            errorText: state.email.displayError != null ? context.l10n.invalidEmail : null,
           ),
         );
       },
@@ -133,14 +126,11 @@ class _PasswordInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
-          onChanged: (password) =>
-              context.read<LoginCubit>().passwordChanged(password),
+          onChanged: (password) => context.read<LoginCubit>().passwordChanged(password),
           obscureText: true,
           decoration: InputDecoration(
             labelText: context.l10n.password.capitalized,
-            errorText: state.password.displayError != null
-                ? context.l10n.invalidPassword
-                : null,
+            errorText: state.password.displayError != null ? context.l10n.invalidPassword : null,
           ),
         );
       },
@@ -158,9 +148,7 @@ class _LoginButton extends StatelessWidget {
           isLoading: state.status.isInProgress,
           density: ButtonDensity.comfortable,
           shape: ButtonShape.roundedCorners,
-          onPressed: state.isValid
-              ? () => context.read<LoginCubit>().logInWithCredentials()
-              : null,
+          onPressed: state.isValid ? () => context.read<LoginCubit>().logInWithCredentials() : null,
           label: context.l10n.login.capitalized,
         );
       },

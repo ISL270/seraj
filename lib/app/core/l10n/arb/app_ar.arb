@@ -53,5 +53,11 @@
   "selectHadithType":"اختر نوع الحديث",
   "title":"عنوان",
   "concept": "مفهوم",
-  "hadithType":"نوع الحديث"
+  "hadithType":"نوع الحديث",
+  "textOfHadith":"متن الحديث",
+  "isnadOfHadith":"سند الحديث",
+  "sourceOfHadith":"مصدر الحديث",
+  "hadithDaif":"ضعيف",
+  "hadithSahih":"صحيح",
+  "hadithExplain":"شرح الحديث"
 }

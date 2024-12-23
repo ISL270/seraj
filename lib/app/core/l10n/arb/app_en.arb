@@ -53,5 +53,11 @@
   "selectHadithType":"Select Hadith Type",
   "title":"Title",
   "concept": "concept",
-  "hadithType":"hadith type"
+  "hadithType":"hadith type",
+  "textOfHadith":"Text Of Hadith",
+  "isnadOfHadith":"Isnad Of Hadith",
+  "sourceOfHadith":"Source Of Hadith",
+  "hadithDaif":"Daif",
+  "hadithSahih":"Sahih",
+  "hadithExplain":"Hadith Explaniation"
 }
