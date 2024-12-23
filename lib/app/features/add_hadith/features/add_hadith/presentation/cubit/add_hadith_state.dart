@@ -2,7 +2,7 @@
 
 part of 'add_hadith_cubit.dart';
 
-final class AddHadithState extends Equatable {
+final class AddHadithState extends Equatable with FormzMixin {
   const AddHadithState({
     this.hadithType = HadithType.sahih,
     this.textOfHadith = const Name.pure(),
