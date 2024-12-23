@@ -63,20 +63,6 @@ final appRouter = GoRouter(
                   child: const AtharsScreen(),
                 ),
               ),
-              routes: [
-                GoRoute(
-                  name: AddHadith.name,
-                  path: AddHadith.name,
-                  parentNavigatorKey: _rootNavigatorKey,
-                  pageBuilder: (context, state) => CupertinoPage(
-                    fullscreenDialog: true,
-                    child: BlocProvider(
-                      create: (context) => AtharsCubit(),
-                      child: const AddHadith(),
-                    ),
-                  ),
-                ),
-              ],
             ),
           ],
         ),
