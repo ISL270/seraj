@@ -22,9 +22,7 @@ class App extends StatelessWidget {
       builder: (context, child) {
         return MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (context) => SettingsBloc(),
-            ),
+            BlocProvider(create: (_) => SettingsBloc()),
             BlocProvider(create: (_) => getIt.authBloc),
           ],
           child: BlocBuilder<AuthBloc, UserState>(
