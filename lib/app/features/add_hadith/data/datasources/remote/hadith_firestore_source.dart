@@ -21,7 +21,7 @@ final class HadithFirestoreSource extends ReactiveFirestoreSource<HadithFM> with
     required String? sourceOfHadith,
     required String? hadithExplain,
   }) async {
-    await firestoreOperationHandler(
+    return firestoreOperationHandler(
       () async {
         await firestoreSvc.hadith.collection.add({
           firestoreSvc.hadith.idHadith: id,
