@@ -10,7 +10,6 @@ import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:form_inputs/form_inputs.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,7 +35,6 @@ class AddHadith extends StatelessWidget {
       ),
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: SingleChildScrollView(
@@ -44,82 +42,26 @@ class AddHadith extends StatelessWidget {
                 child: Column(
                   children: [
                     const Gap(20),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        context.l10n.textOfHadith,
-                        style: context.textThemeX.medium.bold,
-                      ),
-                    ),
+                    _LabelTextFieldAlignWidget(label: context.l10n.textOfHadith),
                     const Gap(15),
                     const _TextOfHadithTextField(),
                     const Gap(15),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        context.l10n.isnadOfHadith,
-                        style: context.textThemeX.medium.bold,
-                      ),
-                    ),
+                    _LabelTextFieldAlignWidget(label: context.l10n.isnadOfHadith),
                     const Gap(15),
                     const _IsnadOfHadithTextField(),
                     const Gap(15),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        context.l10n.sourceOfHadith,
-                        style: context.textThemeX.medium.bold,
-                      ),
-                    ),
+                    _LabelTextFieldAlignWidget(label: context.l10n.sourceOfHadith),
                     const Gap(15),
                     const _SourceOfHadithTextField(),
                     const Gap(15),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        context.l10n.hadithRule,
-                        style: context.textThemeX.medium.bold,
-                      ),
-                    ),
+                    _LabelTextFieldAlignWidget(label: context.l10n.hadithRule),
                     const Gap(10),
-                    BlocSelector<AddHadithCubit, AddHadithState, HadithType>(
-                      selector: (state) => state.hadithType,
-                      builder: (context, hadithType) {
-                        return SizedBox(
-                          height: 50.h,
-                          child: SegmentedButton(
-                            style: SegmentedButton.styleFrom(
-                                textStyle: context.textThemeX.medium.bold),
-                            onSelectionChanged: (selection) =>
-                                context.read<AddHadithCubit>().hadithTypeChanged(selection.first),
-                            expandedInsets: EdgeInsets.all(1.h),
-                            showSelectedIcon: false,
-                            segments: [
-                              ButtonSegment(
-                                label: Text(context.l10n.hadithSahih),
-                                value: HadithType.sahih,
-                              ),
-                              ButtonSegment(
-                                label: Text(context.l10n.hadithDaif),
-                                value: HadithType.daif,
-                              ),
-                            ],
-                            selected: {hadithType},
-                          ),
-                        );
-                      },
-                    ),
+                    const _HadithTypeSegmentedButton(),
                     const Gap(10),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        context.l10n.hadithExplain,
-                        style: context.textThemeX.medium.bold,
-                      ),
-                    ),
-                    const Gap(10),
+                    _LabelTextFieldAlignWidget(label: context.l10n.hadithExplain),
+                    const Gap(15),
                     const _HadithExplanationTextField(),
-                    const Gap(20),
+                    const Gap(25),
                   ],
                 ),
               ),
@@ -133,13 +75,60 @@ class AddHadith extends StatelessWidget {
   }
 }
 
+class _LabelTextFieldAlignWidget extends StatelessWidget {
+  const _LabelTextFieldAlignWidget({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Text(label, style: context.textThemeX.medium.bold),
+    );
+  }
+}
+
+class _HadithTypeSegmentedButton extends StatelessWidget {
+  const _HadithTypeSegmentedButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<AddHadithCubit, AddHadithState, HadithType>(
+      selector: (state) => state.hadithType,
+      builder: (context, hadithType) {
+        return SizedBox(
+          height: 50.h,
+          child: SegmentedButton(
+            style: SegmentedButton.styleFrom(textStyle: context.textThemeX.medium.bold),
+            onSelectionChanged: (selection) =>
+                context.read<AddHadithCubit>().hadithTypeChanged(selection.first),
+            expandedInsets: EdgeInsets.all(1.h),
+            showSelectedIcon: false,
+            segments: [
+              ButtonSegment(
+                label: Text(context.l10n.hadithSahih),
+                value: HadithType.sahih,
+              ),
+              ButtonSegment(
+                label: Text(context.l10n.hadithDaif),
+                value: HadithType.daif,
+              ),
+            ],
+            selected: {hadithType},
+          ),
+        );
+      },
+    );
+  }
+}
+
 class _TextOfHadithTextField extends StatelessWidget {
   const _TextOfHadithTextField();
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AddHadithCubit, AddHadithState, Name>(
-      selector: (state) => state.textOfHadith,
+    return BlocBuilder<AddHadithCubit, AddHadithState>(
       builder: (context, state) {
         return TextField(
           key: const Key('textOfHadith_nameInput_textField'),
@@ -148,11 +137,10 @@ class _TextOfHadithTextField extends StatelessWidget {
           minLines: 1,
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
-            errorText: state.displayError == null ? null : context.l10n.enterTextOfHadith,
-            // alignLabelWithHint: true,
+            errorText:
+                state.textOfHadith.displayError == null ? null : context.l10n.enterTextOfHadith,
             hintMaxLines: 1,
-            hintText:
-                'أنا عِنْدَ ظَنِّ عَبْدِي بي، وأنا معهُ إذا ذَكَرَنِي، فإنْ ذَكَرَنِي في نَفْسِهِ ذَكَرْتُهُ في نَفْسِي، وإنْ ذَكَرَنِي في مَلَإٍ ذَكَرْتُهُ في مَلَإٍ خَيْرٍ منهمْ، وإنْ تَقَرَّبَ إلَيَّ بشِبْرٍ تَقَرَّبْتُ إلَيْهِ ذِراعًا، وإنْ تَقَرَّبَ إلَيَّ ذِراعًا تَقَرَّبْتُ إلَيْهِ باعًا، وإنْ أتانِي يَمْشِي أتَيْتُهُ هَرْوَلَةً',
+            hintText: state.hintTexts[0],
             hintStyle: context.textThemeX.medium.bold.copyWith(
               height: 1.5.h,
               overflow: TextOverflow.ellipsis,
@@ -180,7 +168,7 @@ class _IsnadOfHadithTextField extends StatelessWidget {
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,
-            hintText: 'عن أبي هريرة - رضي الله عنه - عن النبي ﷺ',
+            hintText: state.hintTexts[1],
             hintStyle: context.textThemeX.medium.bold.copyWith(
               height: 1.5.h,
               color: context.colorsX.onBackgroundTint35,
@@ -206,7 +194,7 @@ class _SourceOfHadithTextField extends StatelessWidget {
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,
-            hintText: 'رواه البخاري ومسلم',
+            hintText: state.hintTexts[2],
             hintStyle: context.textThemeX.medium.bold.copyWith(
               height: 1.5.h,
               color: context.colorsX.onBackgroundTint35,
@@ -234,8 +222,7 @@ class _HadithExplanationTextField extends StatelessWidget {
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,
             hintMaxLines: 2,
-            hintText:
-                'إن ظَنَّ باللهِ خَيرًا فَلَه، وإن ظَنَّ بِه سِوَى ذلك فَلَه، وحُسنُ الظَّنِّ باللهِ عزَّ وجلَّ يَكونُ بفِعلِ ما يُوجِبُ فَضلَ اللهِ وَرَجاءَه، فيَعمَلُ الصَّالِحاتِ، ويُحسِنُ الظَّنَّ بأنَّ اللهَ تَعالَى يَقبَلُه، فاللهُ سُبحانَه عِندَ مُنتهَى أمَلِ العَبدِ به،',
+            hintText: state.hintTexts[3],
             hintStyle: context.textThemeX.medium.bold.copyWith(
               height: 1.5.h,
               overflow: TextOverflow.ellipsis,
@@ -266,12 +253,12 @@ class _HadithAddButton extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 12.w),
           child: Button.filled(
-            key: const Key('saveHadithForm_button'),
+            key: const Key('hadithForm_saveHadithForm_button'),
             maxWidth: true,
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
             label: context.l10n.add,
-            onPressed: state.isValid ? () => context.read<AddHadithCubit>() : null,
+            onPressed: state.isValid ? () => context.read<AddHadithCubit>().saveHadithForm() : null,
           ),
         );
       },
