@@ -94,25 +94,25 @@ class _HadithTypeSegmentedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AddHadithCubit, AddHadithState, HadithType>(
-      selector: (state) => state.hadithType,
+    return BlocSelector<AddHadithCubit, AddHadithState, HadithAuthenticity>(
+      selector: (state) => state.hadithAuthenticity,
       builder: (context, hadithType) {
         return SizedBox(
           height: 50.h,
           child: SegmentedButton(
             style: SegmentedButton.styleFrom(textStyle: context.textThemeX.medium.bold),
             onSelectionChanged: (selection) =>
-                context.read<AddHadithCubit>().hadithTypeChanged(selection.first),
+                context.read<AddHadithCubit>().hadithAuthenticityChanged(selection.first),
             expandedInsets: EdgeInsets.all(1.h),
             showSelectedIcon: false,
             segments: [
               ButtonSegment(
                 label: Text(context.l10n.hadithSahih),
-                value: HadithType.sahih,
+                value: HadithAuthenticity.sahih,
               ),
               ButtonSegment(
                 label: Text(context.l10n.hadithDaif),
-                value: HadithType.daif,
+                value: HadithAuthenticity.daif,
               ),
             ],
             selected: {hadithType},
