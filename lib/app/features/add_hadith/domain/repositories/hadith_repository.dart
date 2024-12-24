@@ -15,18 +15,15 @@ import 'package:rxdart/rxdart.dart';
 final class HadithRepository extends ReactiveRepository<HadithModel, HadithFM, HadithIsar> {
   final HadithFirestoreSource _remoteSource;
   final HadithIsarSource _localSource;
-  final HadithRepository _hadithRepository;
 
   HadithRepository(
     super.authRepository,
     this._remoteSource,
     this._localSource,
-    this._hadithRepository,
   ) : super(localSource: _localSource, remoteSource: _remoteSource);
 
   @override
-  Future<void> toBeAwaited() =>
-      _hadithRepository.getUpdates().takeWhileInclusive((status) => !status.isSuccess).last;
+  Future<void> toBeAwaited() => getUpdates().takeWhileInclusive((status) => !status.isSuccess).last;
 
   Future<EitherException<void>> saveHadith({
     required String textOfHadith,
