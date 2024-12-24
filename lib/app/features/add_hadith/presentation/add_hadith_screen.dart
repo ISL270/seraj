@@ -246,7 +246,7 @@ class _HadithAddButton extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content: Text(
-              'Hadith added successfully',
+              'تم اضافة الحديث بنجاح',
               style: context.textThemeX.medium.bold,
             )),
           );
