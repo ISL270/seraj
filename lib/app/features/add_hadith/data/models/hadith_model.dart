@@ -1,4 +1,4 @@
-import 'package:athar/app/features/add_hadith/features/add_hadith/domain/models/hadith_type.dart';
+import 'package:athar/app/features/add_hadith/domain/models/hadith_type.dart';
 import 'package:equatable/equatable.dart';
 
 final class HadithModel extends Equatable {

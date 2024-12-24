@@ -1,6 +1,6 @@
 import 'package:athar/app/core/isar/cache_model.dart';
-import 'package:athar/app/features/add_hadith/features/add_hadith/data/models/hadith_model.dart';
-import 'package:athar/app/features/add_hadith/features/add_hadith/domain/models/hadith_type.dart';
+import 'package:athar/app/features/add_hadith/data/models/hadith_model.dart';
+import 'package:athar/app/features/add_hadith/domain/models/hadith_type.dart';
 import 'package:isar/isar.dart';
 
 part 'hadith_isar.g.dart';

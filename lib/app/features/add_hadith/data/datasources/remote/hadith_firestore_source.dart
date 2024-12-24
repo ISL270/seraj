@@ -1,8 +1,8 @@
 import 'package:athar/app/core/firestore/firestore_helper.dart';
 import 'package:athar/app/core/firestore/remote_model.dart';
 import 'package:athar/app/core/models/reactive_firestore_source.dart';
-import 'package:athar/app/features/add_hadith/features/add_hadith/data/models/hadith_model.dart';
-import 'package:athar/app/features/add_hadith/features/add_hadith/domain/models/hadith_type.dart';
+import 'package:athar/app/features/add_hadith/data/models/hadith_model.dart';
+import 'package:athar/app/features/add_hadith/domain/models/hadith_type.dart';
 import 'package:athar/app/features/authentication/domain/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';

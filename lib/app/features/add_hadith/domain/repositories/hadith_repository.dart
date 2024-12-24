@@ -2,11 +2,11 @@
 
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/core/models/reactive_repository.dart';
-import 'package:athar/app/features/add_hadith/features/add_hadith/data/datasources/local/hadith_isar.dart';
-import 'package:athar/app/features/add_hadith/features/add_hadith/data/datasources/local/hadith_isar_source.dart';
-import 'package:athar/app/features/add_hadith/features/add_hadith/data/datasources/remote/hadith_firestore_source.dart';
-import 'package:athar/app/features/add_hadith/features/add_hadith/data/models/hadith_model.dart';
-import 'package:athar/app/features/add_hadith/features/add_hadith/domain/models/hadith_type.dart';
+import 'package:athar/app/features/add_hadith/data/datasources/local/hadith_isar.dart';
+import 'package:athar/app/features/add_hadith/data/datasources/local/hadith_isar_source.dart';
+import 'package:athar/app/features/add_hadith/data/datasources/remote/hadith_firestore_source.dart';
+import 'package:athar/app/features/add_hadith/data/models/hadith_model.dart';
+import 'package:athar/app/features/add_hadith/domain/models/hadith_type.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
