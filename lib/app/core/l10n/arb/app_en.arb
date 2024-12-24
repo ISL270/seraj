@@ -61,5 +61,6 @@
   "hadithSahih":"Sahih",
   "hadithExplain":"Hadith Explanation",
   "enterTextOfHadith":"Enter Text Of Hadith",
-  "hadithRule":"Hadith Rule"
+  "hadithRule":"Hadith Rule",
+  "hadithAddedSuccessf": "Hadith Added Successfully"
 }

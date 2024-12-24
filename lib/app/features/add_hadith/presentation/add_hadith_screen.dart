@@ -245,12 +245,15 @@ class _HadithAddButton extends StatelessWidget {
         if (state.status.isSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content: Text(
-              'تم اضافة الحديث بنجاح',
-              style: context.textThemeX.medium.bold,
-            )),
+              duration: const Duration(seconds: 2),
+              content: Text(
+                context.l10n.hadithAddedSuccessf,
+                style: context.textThemeX.medium.bold,
+              ),
+            ),
           );
-
+          // temp way to navigate to athars screen.
+          innerContext.pop();
           context.pop();
         }
 
