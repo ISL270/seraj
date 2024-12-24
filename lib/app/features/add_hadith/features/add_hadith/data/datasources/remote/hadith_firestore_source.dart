@@ -16,7 +16,7 @@ final class HadithFirestoreSource extends ReactiveFirestoreSource<HadithFM> with
   Future<void> saveHadith({
     required String id,
     required String textOfHadith,
-    required HadithType hadithType,
+    required HadithAuthenticity hadithType,
     required String? isnadOfHadith,
     required String? sourceOfHadith,
     required String? hadithExplain,

@@ -3,7 +3,7 @@ part of 'hadith_firestore_source.dart';
 final class HadithFM implements RemoteModel<HadithModel> {
   final String id;
   final String textOfHadith;
-  final HadithType hadithType;
+  final HadithAuthenticity hadithType;
   final String? isnadOfHadith;
   final String? sourceOfHadith;
   final String? hadithExplain;
@@ -20,7 +20,7 @@ final class HadithFM implements RemoteModel<HadithModel> {
   factory HadithFM.fromJson(String docId, Map<String, dynamic> json) => HadithFM(
         id: docId,
         textOfHadith: json['textOfHadith'] as String,
-        hadithType: json['hadithType'] as HadithType,
+        hadithType: json['hadithType'] as HadithAuthenticity,
         isnadOfHadith: json['isnadOfHadith'] as String,
         sourceOfHadith: json['sourceOfHadith'] as String,
         hadithExplain: json['hadithExplain'] as String,

@@ -30,7 +30,7 @@ final class HadithRepository extends ReactiveRepository<HadithModel, HadithFM, H
 
   Future<EitherException<void>> saveHadith({
     required String textOfHadith,
-    required HadithType hadithType,
+    required HadithAuthenticity hadithType,
     required String? isnadOfHadith,
     required String? sourceOfHadith,
     required String? hadithExplain,

@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 final class HadithModel extends Equatable {
   final String id;
   final String textOfHadith;
-  final HadithType hadithType;
+  final HadithAuthenticity hadithType;
   final String? isnadOfHadith;
   final String? sourceOfHadith;
   final String? hadithExplain;

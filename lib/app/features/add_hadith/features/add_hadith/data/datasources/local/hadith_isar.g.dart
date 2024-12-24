@@ -130,7 +130,7 @@ HadithIsar _hadithIsarDeserialize(
     hadithExplain: reader.readStringOrNull(offsets[0]),
     hadithType:
         _HadithIsarhadithTypeValueEnumMap[reader.readByteOrNull(offsets[1])] ??
-            HadithType.daif,
+            HadithAuthenticity.daif,
     id: reader.readString(offsets[2]),
     isnadOfHadith: reader.readStringOrNull(offsets[3]),
     sourceOfHadith: reader.readStringOrNull(offsets[4]),
@@ -151,7 +151,7 @@ P _hadithIsarDeserializeProp<P>(
     case 1:
       return (_HadithIsarhadithTypeValueEnumMap[
               reader.readByteOrNull(offset)] ??
-          HadithType.daif) as P;
+          HadithAuthenticity.daif) as P;
     case 2:
       return (reader.readString(offset)) as P;
     case 3:
@@ -170,8 +170,8 @@ const _HadithIsarhadithTypeEnumValueMap = {
   'sahih': 1,
 };
 const _HadithIsarhadithTypeValueEnumMap = {
-  0: HadithType.daif,
-  1: HadithType.sahih,
+  0: HadithAuthenticity.daif,
+  1: HadithAuthenticity.sahih,
 };
 
 Id _hadithIsarGetId(HadithIsar object) {
@@ -623,7 +623,7 @@ extension HadithIsarQueryFilter
   }
 
   QueryBuilder<HadithIsar, HadithIsar, QAfterFilterCondition> hadithTypeEqualTo(
-      HadithType value) {
+      HadithAuthenticity value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'hadithType',
@@ -634,7 +634,7 @@ extension HadithIsarQueryFilter
 
   QueryBuilder<HadithIsar, HadithIsar, QAfterFilterCondition>
       hadithTypeGreaterThan(
-    HadithType value, {
+    HadithAuthenticity value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -648,7 +648,7 @@ extension HadithIsarQueryFilter
 
   QueryBuilder<HadithIsar, HadithIsar, QAfterFilterCondition>
       hadithTypeLessThan(
-    HadithType value, {
+    HadithAuthenticity value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -661,8 +661,8 @@ extension HadithIsarQueryFilter
   }
 
   QueryBuilder<HadithIsar, HadithIsar, QAfterFilterCondition> hadithTypeBetween(
-    HadithType lower,
-    HadithType upper, {
+    HadithAuthenticity lower,
+    HadithAuthenticity upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -1483,7 +1483,8 @@ extension HadithIsarQueryProperty
     });
   }
 
-  QueryBuilder<HadithIsar, HadithType, QQueryOperations> hadithTypeProperty() {
+  QueryBuilder<HadithIsar, HadithAuthenticity, QQueryOperations>
+      hadithTypeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'hadithType');
     });

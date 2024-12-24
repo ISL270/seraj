@@ -14,7 +14,7 @@ final class HadithIsar extends CacheModel<HadithModel> {
   String textOfHadith;
 
   @enumerated
-  HadithType hadithType;
+  HadithAuthenticity hadithType;
 
   String? isnadOfHadith;
 
