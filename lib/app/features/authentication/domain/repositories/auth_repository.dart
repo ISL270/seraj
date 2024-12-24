@@ -128,9 +128,7 @@ final class AuthRepository {
         throw LogInWithGoogleException.fromCode('user_not_found');
       }
 
-      final res = await _userRepository.getUserRemote(
-        uid: userCredential.user!.uid,
-      );
+      final res = await _userRepository.getUserRemote(userCredential.user!.uid);
 
       await res.fold(
         (e) => throw LogInWithGoogleException.fromCode(e.code),
