@@ -131,7 +131,7 @@ class _TextOfHadithTextField extends StatelessWidget {
     return BlocBuilder<AddHadithCubit, AddHadithState>(
       builder: (context, state) {
         return TextField(
-          key: const Key('textOfHadith_nameInput_textField'),
+          key: const Key('hadithForm_TextOfHadith_textField'),
           onChanged: (value) => context.read<AddHadithCubit>().textOfHadithChanged(value),
           maxLines: 4,
           minLines: 1,
