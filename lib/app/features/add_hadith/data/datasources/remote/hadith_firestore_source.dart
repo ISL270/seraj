@@ -6,6 +6,7 @@ import 'package:athar/app/features/add_hadith/domain/models/hadith_type.dart';
 import 'package:athar/app/features/authentication/domain/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
+import 'package:uuid/uuid.dart';
 
 part 'hadith_fm.dart';
 
@@ -22,8 +23,8 @@ final class HadithFirestoreSource extends ReactiveFirestoreSource<HadithFM> with
     required String? hadithExplain,
   }) async =>
       firestoreOperationHandler(() async {
-        await firestoreSvc.hadith.collection.add({
-          firestoreSvc.hadith.idHadith: id,
+        await firestoreSvc.users.collection.doc(id).collection('hadith').add({
+          firestoreSvc.hadith.idHadith: const Uuid().v4(),
           firestoreSvc.hadith.textOfHadith: textOfHadith,
           firestoreSvc.hadith.hadithType: hadithType.name,
           firestoreSvc.hadith.isnadOfHadith: isnadOfHadith,
@@ -37,5 +38,5 @@ final class HadithFirestoreSource extends ReactiveFirestoreSource<HadithFM> with
 
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> snapshotQuery(User user) =>
-      firestoreSvc.hadith.collection.doc(user.id).collection('userHadith').snapshots();
+      firestoreSvc.users.collection.doc(user.id).collection('hadith').snapshots();
 }
