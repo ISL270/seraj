@@ -20,20 +20,17 @@ final class HadithFirestoreSource extends ReactiveFirestoreSource<HadithFM> with
     required String? isnadOfHadith,
     required String? sourceOfHadith,
     required String? hadithExplain,
-  }) async {
-    return firestoreOperationHandler(
-      () async {
+  }) async =>
+      firestoreOperationHandler(() async {
         await firestoreSvc.hadith.collection.add({
           firestoreSvc.hadith.idHadith: id,
           firestoreSvc.hadith.textOfHadith: textOfHadith,
-          firestoreSvc.hadith.hadithType: hadithType as String,
+          firestoreSvc.hadith.hadithType: hadithType.name,
           firestoreSvc.hadith.isnadOfHadith: isnadOfHadith,
           firestoreSvc.hadith.sourceOfHadith: sourceOfHadith,
           firestoreSvc.hadith.hadithExplain: hadithExplain,
         });
-      },
-    );
-  }
+      });
 
   @override
   HadithFM fromJson(String docID, Map<String, dynamic> json) => HadithFM.fromJson(docID, json);

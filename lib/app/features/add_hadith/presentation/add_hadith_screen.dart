@@ -5,6 +5,7 @@ import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/add_hadith/domain/models/hadith_type.dart';
 import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
+import 'package:athar/app/features/athars/presentation/athars_screen.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
@@ -33,43 +34,41 @@ class AddHadith extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                child: Column(
-                  children: [
-                    const Gap(20),
-                    _LabelTextFieldAlignWidget(label: context.l10n.textOfHadith),
-                    const Gap(15),
-                    const _TextOfHadithTextField(),
-                    const Gap(15),
-                    _LabelTextFieldAlignWidget(label: context.l10n.isnadOfHadith),
-                    const Gap(15),
-                    const _IsnadOfHadithTextField(),
-                    const Gap(15),
-                    _LabelTextFieldAlignWidget(label: context.l10n.sourceOfHadith),
-                    const Gap(15),
-                    const _SourceOfHadithTextField(),
-                    const Gap(15),
-                    _LabelTextFieldAlignWidget(label: context.l10n.hadithRule),
-                    const Gap(10),
-                    const _HadithTypeSegmentedButton(),
-                    const Gap(10),
-                    _LabelTextFieldAlignWidget(label: context.l10n.hadithExplain),
-                    const Gap(15),
-                    const _HadithExplanationTextField(),
-                    const Gap(25),
-                  ],
-                ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              child: Column(
+                children: [
+                  Gap(20.h),
+                  _LabelTextFieldAlignWidget(label: context.l10n.textOfHadith),
+                  Gap(15.h),
+                  const _TextOfHadithTextField(),
+                  Gap(15.h),
+                  _LabelTextFieldAlignWidget(label: context.l10n.isnadOfHadith),
+                  Gap(15.h),
+                  const _IsnadOfHadithTextField(),
+                  Gap(15.h),
+                  _LabelTextFieldAlignWidget(label: context.l10n.sourceOfHadith),
+                  Gap(15.h),
+                  const _SourceOfHadithTextField(),
+                  Gap(15.h),
+                  _LabelTextFieldAlignWidget(label: context.l10n.hadithRule),
+                  Gap(10.h),
+                  const _HadithTypeSegmentedButton(),
+                  Gap(10.h),
+                  _LabelTextFieldAlignWidget(label: context.l10n.hadithExplain),
+                  Gap(15.h),
+                  const _HadithExplanationTextField(),
+                  Gap(25.h),
+                ],
               ),
             ),
-            const _HadithAddButton(),
-            const Gap(5)
-          ],
-        ),
+          ),
+          const _HadithAddButton(),
+          Gap(5.h)
+        ],
       ),
     );
   }
@@ -242,7 +241,19 @@ class _HadithAddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AddHadithCubit, AddHadithState>(
       listenWhen: (previous, current) => previous.status != current.status,
-      listener: (context, state) {
+      listener: (innerContext, state) {
+        if (state.status.isSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text(
+              'Hadith added successfully',
+              style: context.textThemeX.medium.bold,
+            )),
+          );
+
+          context.pop();
+        }
+
         if (state.status.isFailure) {
           context.scaffoldMessenger
             ..hideCurrentSnackBar()
