@@ -18,7 +18,8 @@ class AddHadithCubit extends Cubit<AddHadithState> {
 
   void sourceOfHadithChanged(String value) => emit(state.copyWith(sourceOfHadith: value));
 
-  void hadithTypeChanged(HadithType hadithType) => emit(state.copyWith(hadithType: hadithType));
+  void hadithAuthenticityChanged(HadithAuthenticity hadithAuthenticity) =>
+      emit(state.copyWith(hadithAuthenticity: hadithAuthenticity));
 
   void hadithExplainChanged(String value) => emit(state.copyWith(hadithExplain: value));
 
