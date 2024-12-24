@@ -60,6 +60,6 @@
   "hadithDaif":"Daif",
   "hadithSahih":"Sahih",
   "hadithExplain":"Hadith Explanation",
-  "enterTextOfHadith":"Enter Text Of Hadith"
-
+  "enterTextOfHadith":"Enter Text Of Hadith",
+  "hadithRule":"Hadith Rule"
 }

@@ -60,5 +60,6 @@
   "hadithDaif":"ضعيف",
   "hadithSahih":"صحيح",
   "hadithExplain":"شرح الحديث",
-  "enterTextOfHadith":"ادخل متن الحديث"
+  "enterTextOfHadith":"ادخل متن الحديث",
+  "hadithRule": "حكم الحديث"
 }

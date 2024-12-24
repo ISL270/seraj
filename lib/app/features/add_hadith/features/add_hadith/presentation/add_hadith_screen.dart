@@ -77,7 +77,7 @@ class AddHadith extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerRight,
                       child: Text(
-                        context.l10n.hadithType,
+                        context.l10n.hadithRule,
                         style: context.textThemeX.medium.bold,
                       ),
                     ),
@@ -143,13 +143,14 @@ class _TextOfHadithTextField extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('textOfHadith_nameInput_textField'),
-          maxLines: 4,
-          minLines: 4,
           onChanged: (value) => context.read<AddHadithCubit>().textOfHadithChanged(value),
+          maxLines: 4,
+          minLines: 1,
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             errorText: state.displayError == null ? null : context.l10n.enterTextOfHadith,
-            alignLabelWithHint: true,
+            // alignLabelWithHint: true,
+            hintMaxLines: 1,
             hintText:
                 'أنا عِنْدَ ظَنِّ عَبْدِي بي، وأنا معهُ إذا ذَكَرَنِي، فإنْ ذَكَرَنِي في نَفْسِهِ ذَكَرْتُهُ في نَفْسِي، وإنْ ذَكَرَنِي في مَلَإٍ ذَكَرْتُهُ في مَلَإٍ خَيْرٍ منهمْ، وإنْ تَقَرَّبَ إلَيَّ بشِبْرٍ تَقَرَّبْتُ إلَيْهِ ذِراعًا، وإنْ تَقَرَّبَ إلَيَّ ذِراعًا تَقَرَّبْتُ إلَيْهِ باعًا، وإنْ أتانِي يَمْشِي أتَيْتُهُ هَرْوَلَةً',
             hintStyle: context.textThemeX.medium.bold.copyWith(
@@ -179,7 +180,7 @@ class _IsnadOfHadithTextField extends StatelessWidget {
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,
-            hintText: 'رواه البخاري ومسلم',
+            hintText: 'عن أبي هريرة - رضي الله عنه - عن النبي ﷺ',
             hintStyle: context.textThemeX.medium.bold.copyWith(
               height: 1.5.h,
               color: context.colorsX.onBackgroundTint35,
@@ -205,7 +206,7 @@ class _SourceOfHadithTextField extends StatelessWidget {
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,
-            hintText: 'حديث صحيح عن النبي ﷺ',
+            hintText: 'رواه البخاري ومسلم',
             hintStyle: context.textThemeX.medium.bold.copyWith(
               height: 1.5.h,
               color: context.colorsX.onBackgroundTint35,
@@ -228,10 +229,11 @@ class _HadithExplanationTextField extends StatelessWidget {
           key: const Key('hadithForm_hadithExplanation_textField'),
           onChanged: (value) => context.read<AddHadithCubit>().hadithExplainChanged(value),
           maxLines: 4,
-          minLines: 4,
+          minLines: 1,
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,
+            hintMaxLines: 2,
             hintText:
                 'إن ظَنَّ باللهِ خَيرًا فَلَه، وإن ظَنَّ بِه سِوَى ذلك فَلَه، وحُسنُ الظَّنِّ باللهِ عزَّ وجلَّ يَكونُ بفِعلِ ما يُوجِبُ فَضلَ اللهِ وَرَجاءَه، فيَعمَلُ الصَّالِحاتِ، ويُحسِنُ الظَّنَّ بأنَّ اللهَ تَعالَى يَقبَلُه، فاللهُ سُبحانَه عِندَ مُنتهَى أمَلِ العَبدِ به،',
             hintStyle: context.textThemeX.medium.bold.copyWith(
