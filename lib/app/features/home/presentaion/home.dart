@@ -31,48 +31,41 @@ class HomeScreen extends StatelessWidget {
       bottomNavigationBar: Directionality(
         textDirection: context.settingsBloc.state.isArabic ? TextDirection.rtl : TextDirection.ltr,
         child: ClipRRect(
-          borderRadius: BorderRadius.horizontal(
-            left: Radius.circular(16.w),
-            right: Radius.circular(16.w),
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(32.w),
+            topRight: Radius.circular(32.w),
           ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.w),
-            child: ClipRRect(
-              borderRadius: BorderRadius.horizontal(
-                left: Radius.circular(16.w),
-                right: Radius.circular(16.w),
+          child: NavigationBar(
+            animationDuration: const Duration(milliseconds: 600),
+            onDestinationSelected: _goBranch,
+            selectedIndex: navigationShell.currentIndex,
+            destinations: [
+              // first nav. bar item
+              NavigationDestination(
+                selectedIcon: Assets.icons.quran.svg(color: context.colorsX.primary),
+                icon: Assets.icons.quran.svg(color: context.colorsX.onBackground),
+                label: context.l10n.athars.capitalizedDefinite,
               ),
-              child: NavigationBar(
-                onDestinationSelected: _goBranch,
-                selectedIndex: navigationShell.currentIndex,
-                destinations: [
-                  // first nav. bar item
-                  NavigationDestination(
-                    selectedIcon: Assets.icons.quran.svg(color: context.colorsX.primary),
-                    icon: Assets.icons.quran.svg(color: context.colorsX.onBackground),
-                    label: context.l10n.athars.capitalizedDefinite,
-                  ),
-                  // second nav. bar item
-                  NavigationDestination(
-                    selectedIcon: Assets.icons.duas.svg(color: context.colorsX.primary),
-                    icon: Assets.icons.duas.svg(color: context.colorsX.onBackground),
-                    label: context.l10n.duas.capitalizedDefinite,
-                  ),
-                  // third nav. bar item
-                  NavigationDestination(
-                    selectedIcon: Assets.icons.praying.svg(color: context.colorsX.primary),
-                    icon: Assets.icons.praying.svg(color: context.colorsX.onBackground),
-                    label: context.l10n.azkar.capitalizedDefinite,
-                  ),
-                  // last nav. bar item
-                  NavigationDestination(
-                    selectedIcon: Icon(Icons.settings, color: context.colorsX.primary),
-                    icon: const Icon(Icons.settings_outlined),
-                    label: context.l10n.settings.capitalizedDefinite,
-                  ),
-                ],
+              // second nav. bar item
+              NavigationDestination(
+                selectedIcon: Assets.icons.duas.svg(color: context.colorsX.primary),
+                icon: Assets.icons.duas.svg(color: context.colorsX.onBackground),
+                label: context.l10n.duas.capitalizedDefinite,
               ),
-            ),
+              // third nav. bar item
+              NavigationDestination(
+                selectedIcon: Assets.icons.praying.svg(color: context.colorsX.primary),
+                icon: Assets.icons.praying.svg(color: context.colorsX.onBackground),
+                label: context.l10n.azkar.capitalizedDefinite,
+              ),
+              // last nav. bar item
+              NavigationDestination(
+                selectedIcon: Icon(Icons.settings, color: context.colorsX.primary),
+                icon: const Icon(Icons.settings_outlined),
+                label: context.l10n.settings.capitalizedDefinite,
+              ),
+            ],
           ),
         ),
       ),

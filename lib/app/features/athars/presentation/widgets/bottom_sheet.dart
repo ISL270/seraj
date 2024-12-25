@@ -3,8 +3,7 @@ part of '../athars_screen.dart';
 Future<void> _openBottomSheet(BuildContext context) async {
   // ignore: inference_failure_on_function_invocation
   await showModalBottomSheet(
-    // elevation: 0,
-    useSafeArea: true,
+    elevation: 0,
     context: context,
     builder: (context) {
       return Container(
@@ -69,7 +68,7 @@ class _BottomSheetWidget extends StatelessWidget {
       height: 60.h,
       width: 120.w,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16.w),
+        borderRadius: BorderRadius.circular(28.w),
         color: context.colorsX.primary,
       ),
       child: Center(child: Text(label, style: context.textThemeX.large.bold)),
