@@ -42,5 +42,8 @@
   "name": "إسم",
   "invalidname": "إسم غير صالح",
   "athars" :"أثار",
-  "search": "بحث"
+  "search": "بحث",
+  "areYouSure": "هل انت متأكد؟",
+  "cancel":"إلغاء",
+  "ok":"نعم"
 }

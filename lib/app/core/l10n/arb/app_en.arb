@@ -42,5 +42,8 @@
   "name": "Name",
   "invalidname": "invalid name",
   "athars" :"athar",
-  "search" : "search"
+  "search" : "search",
+  "areYouSure": "Are You Sure?",
+  "cancel":"Cancel",
+  "ok":"Ok"
 }
