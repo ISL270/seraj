@@ -76,20 +76,20 @@ class _DuaWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.w),
           boxShadow: [
             BoxShadow(
-              blurRadius: 0.5,
-              spreadRadius: 0.2,
+              blurRadius: 0.5.sp,
+              spreadRadius: 0.2.sp,
               blurStyle: BlurStyle.outer,
               color: context.colorsX.onBackgroundTint35,
             ),
             BoxShadow(
-              blurRadius: 0.7,
-              spreadRadius: 0.5,
+              blurRadius: 0.7.sp,
+              spreadRadius: 0.5.sp,
               blurStyle: BlurStyle.outer,
               color: context.colorsX.onBackgroundTint35,
             ),
             BoxShadow(
-              blurRadius: 2,
-              spreadRadius: 0.9,
+              blurRadius: 2.sp,
+              spreadRadius: 0.9.sp,
               blurStyle: BlurStyle.outer,
               color: context.colorsX.onBackgroundTint35,
             ),
