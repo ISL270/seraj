@@ -12,8 +12,8 @@ import 'package:equatable/equatable.dart';
 /// The state transitions are as follows:
 /// - [Initial] -> [Loading]
 /// - [Loading] -> [Success] or [Failure]
-/// - [Success] -> [Loading] (preserves the current data)
-/// - [Failure] -> [Loading] (preserves the old data)
+/// - [Success] -> [Loading]
+/// - [Failure] -> [Loading]
 ///
 /// Note that the [Status] class is sealed, which means that it can not be
 /// instantiated directly. Instead, you should use the corresponding state
@@ -24,17 +24,17 @@ sealed class Status<T> extends Equatable {
   /// Converts the current state to a Loading state.
   ///
   /// Handles state transitions from Initial, Success, and Failure states.
-  /// - For Initial state, creates a new Loading state
+  /// - For Initial state, preserves the intial data if exists in the Loading state
   /// - For Success state, preserves the current data in the Loading state
-  /// - For Failure state, preserves the old data in the Loading state
+  /// - For Failure state, preserves the old data if ewists in the Loading state
   ///
   /// Throws an exception if already in a Loading state.
   ///
   /// Returns a [Loading] state with optional current data.
   Loading<T> toLoading() => switch (this) {
-        Initial<T>() => const Loading(),
-        Success<T>(newData: final newData) => Loading(newData),
-        Failure<T>(oldData: final oldData) => Loading(oldData),
+        Initial<T>(initialData: final currentData) => Loading(currentData),
+        Success<T>(newData: final currentData) => Loading(currentData),
+        Failure<T>(oldData: final currentData) => Loading(currentData),
         Loading<T>() => throw Exception('State is already loading'),
       };
 
@@ -59,40 +59,30 @@ sealed class Status<T> extends Equatable {
   /// Returns a [Success] state with the new data.
   Success<T> toSuccess(T newData) => switch (this) {
         Loading<T>() => Success(newData),
+        Success<T>() => Success(newData),
         _ => throw Exception('Can only go to success from loading state'),
       };
 
-  /// Checks if the current state is Initial.
   bool get isInitial => this is Initial;
-
-  /// Checks if the current state is Success.
   bool get isSuccess => this is Success;
-
-  /// Checks if the current state is Loading.
   bool get isLoading => this is Loading;
-
-  /// Checks if the current state is Failure.
   bool get isFailure => this is Failure;
 
   @override
   List<Object?> get props => [];
-
-  // TODO: fix sealed classes json serialization.
-  static VoidStatus fromJson(String? json) => const Initial();
 }
 
 /// Represents the initial state of a data model.
 ///
-/// This state indicates that no data has been loaded or processed yet.
-/// It serves as the starting point for data retrieval or initialization.
+/// This state is used when the data model has just been initialized and no data has been loaded or processed yet.
 ///
-/// Type parameter [T] represents the type of data that will be loaded.
+/// The initial data is optional and can be used for example to prefill the data model with some default values.
 final class Initial<T> extends Status<T> {
-  /// Creates an initial state with no data.
-  const Initial();
+  final T? initialData;
+  const Initial([this.initialData]);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [initialData];
 }
 
 /// Represents a successful state with loaded or processed data.
@@ -105,9 +95,6 @@ final class Success<T> extends Status<T> {
   /// The data associated with the successful state.
   final T newData;
 
-  /// Creates a success state with the provided data.
-  ///
-  /// [newData] The successfully retrieved or processed data.
   const Success(this.newData);
 
   @override
@@ -124,9 +111,6 @@ final class Loading<T> extends Status<T> {
   /// The current data during the loading state (optional).
   final T? currentData;
 
-  /// Creates a loading state with optional current data.
-  ///
-  /// [currentData] The data available before or during the loading process.
   const Loading([this.currentData]);
 
   @override
@@ -146,10 +130,6 @@ final class Failure<T> extends Status<T> {
   /// The data available before the failure occurred (optional).
   final T? oldData;
 
-  /// Creates a failure state with an exception and optional old data.
-  ///
-  /// [exception] The error that caused the failure.
-  /// [oldData] The data available before the failure occurred.
   const Failure(this.exception, {this.oldData});
 
   @override
