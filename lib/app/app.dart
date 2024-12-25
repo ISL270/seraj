@@ -4,6 +4,7 @@ import 'package:athar/app/core/l10n/language.dart';
 import 'package:athar/app/core/routing/router.dart';
 import 'package:athar/app/core/theming/app_theme.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:athar/app/features/settings/domain/settings_repository.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/flavors/flavors.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class App extends StatelessWidget {
       builder: (context, child) {
         return MultiBlocProvider(
           providers: [
-            BlocProvider(create: (_) => SettingsBloc()),
+            BlocProvider(create: (_) => SettingsBloc(getIt.get<SettingsRepository>())),
             BlocProvider(create: (_) => getIt.authBloc),
           ],
           child: BlocBuilder<AuthBloc, UserState>(
@@ -33,7 +34,7 @@ class App extends StatelessWidget {
                   return MaterialApp.router(
                     theme: AppTheme.light,
                     darkTheme: AppTheme.dark,
-                    themeMode: settingsState.themeMode,
+                    themeMode: settingsState.settings.themeMode,
                     // locale: settingsState.language.locale,
                     locale: Language.arabic.locale,
                     supportedLocales: AppLocalizations.supportedLocales,

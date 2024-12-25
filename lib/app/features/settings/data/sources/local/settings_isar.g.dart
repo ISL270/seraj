@@ -22,15 +22,17 @@ const SettingsIsarSchema = CollectionSchema(
       name: r'id',
       type: IsarType.string,
     ),
-    r'languageCode': PropertySchema(
+    r'language': PropertySchema(
       id: 1,
-      name: r'languageCode',
-      type: IsarType.string,
+      name: r'language',
+      type: IsarType.byte,
+      enumMap: _SettingsIsarlanguageEnumValueMap,
     ),
     r'themeMode': PropertySchema(
       id: 2,
       name: r'themeMode',
-      type: IsarType.string,
+      type: IsarType.byte,
+      enumMap: _SettingsIsarthemeModeEnumValueMap,
     )
   },
   estimateSize: _settingsIsarEstimateSize,
@@ -54,8 +56,6 @@ int _settingsIsarEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.id.length * 3;
-  bytesCount += 3 + object.languageCode.length * 3;
-  bytesCount += 3 + object.themeMode.length * 3;
   return bytesCount;
 }
 
@@ -66,8 +66,8 @@ void _settingsIsarSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.id);
-  writer.writeString(offsets[1], object.languageCode);
-  writer.writeString(offsets[2], object.themeMode);
+  writer.writeByte(offsets[1], object.language.index);
+  writer.writeByte(offsets[2], object.themeMode.index);
 }
 
 SettingsIsar _settingsIsarDeserialize(
@@ -77,10 +77,15 @@ SettingsIsar _settingsIsarDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = SettingsIsar(
-    id: reader.readString(offsets[0]),
-    languageCode: reader.readString(offsets[1]),
-    themeMode: reader.readString(offsets[2]),
+    language:
+        _SettingsIsarlanguageValueEnumMap[reader.readByteOrNull(offsets[1])] ??
+            Language.arabic,
+    themeMode:
+        _SettingsIsarthemeModeValueEnumMap[reader.readByteOrNull(offsets[2])] ??
+            ThemeMode.system,
   );
+  object.cacheID = id;
+  object.id = reader.readString(offsets[0]);
   return object;
 }
 
@@ -94,13 +99,36 @@ P _settingsIsarDeserializeProp<P>(
     case 0:
       return (reader.readString(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (_SettingsIsarlanguageValueEnumMap[
+              reader.readByteOrNull(offset)] ??
+          Language.arabic) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (_SettingsIsarthemeModeValueEnumMap[
+              reader.readByteOrNull(offset)] ??
+          ThemeMode.system) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
+
+const _SettingsIsarlanguageEnumValueMap = {
+  'arabic': 0,
+  'english': 1,
+};
+const _SettingsIsarlanguageValueEnumMap = {
+  0: Language.arabic,
+  1: Language.english,
+};
+const _SettingsIsarthemeModeEnumValueMap = {
+  'system': 0,
+  'light': 1,
+  'dark': 2,
+};
+const _SettingsIsarthemeModeValueEnumMap = {
+  0: ThemeMode.system,
+  1: ThemeMode.light,
+  2: ThemeMode.dark,
+};
 
 Id _settingsIsarGetId(SettingsIsar object) {
   return object.cacheID;
@@ -111,7 +139,9 @@ List<IsarLinkBase<dynamic>> _settingsIsarGetLinks(SettingsIsar object) {
 }
 
 void _settingsIsarAttach(
-    IsarCollection<dynamic> col, Id id, SettingsIsar object) {}
+    IsarCollection<dynamic> col, Id id, SettingsIsar object) {
+  object.cacheID = id;
+}
 
 extension SettingsIsarQueryWhereSort
     on QueryBuilder<SettingsIsar, SettingsIsar, QWhere> {
@@ -383,194 +413,105 @@ extension SettingsIsarQueryFilter
   }
 
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      languageCodeEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+      languageEqualTo(Language value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'languageCode',
+        property: r'language',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      languageCodeGreaterThan(
-    String value, {
+      languageGreaterThan(
+    Language value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'languageCode',
+        property: r'language',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      languageCodeLessThan(
-    String value, {
+      languageLessThan(
+    Language value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'languageCode',
+        property: r'language',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      languageCodeBetween(
-    String lower,
-    String upper, {
+      languageBetween(
+    Language lower,
+    Language upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'languageCode',
+        property: r'language',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      languageCodeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'languageCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      languageCodeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'languageCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      languageCodeContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'languageCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      languageCodeMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'languageCode',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      languageCodeIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'languageCode',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      languageCodeIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'languageCode',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      themeModeEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+      themeModeEqualTo(ThemeMode value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'themeMode',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
       themeModeGreaterThan(
-    String value, {
+    ThemeMode value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'themeMode',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
       themeModeLessThan(
-    String value, {
+    ThemeMode value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'themeMode',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
       themeModeBetween(
-    String lower,
-    String upper, {
+    ThemeMode lower,
+    ThemeMode upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -579,77 +520,6 @@ extension SettingsIsarQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      themeModeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'themeMode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      themeModeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'themeMode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      themeModeContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'themeMode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      themeModeMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'themeMode',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      themeModeIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'themeMode',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      themeModeIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'themeMode',
-        value: '',
       ));
     });
   }
@@ -675,16 +545,15 @@ extension SettingsIsarQuerySortBy
     });
   }
 
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterSortBy> sortByLanguageCode() {
+  QueryBuilder<SettingsIsar, SettingsIsar, QAfterSortBy> sortByLanguage() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'languageCode', Sort.asc);
+      return query.addSortBy(r'language', Sort.asc);
     });
   }
 
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterSortBy>
-      sortByLanguageCodeDesc() {
+  QueryBuilder<SettingsIsar, SettingsIsar, QAfterSortBy> sortByLanguageDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'languageCode', Sort.desc);
+      return query.addSortBy(r'language', Sort.desc);
     });
   }
 
@@ -727,16 +596,15 @@ extension SettingsIsarQuerySortThenBy
     });
   }
 
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterSortBy> thenByLanguageCode() {
+  QueryBuilder<SettingsIsar, SettingsIsar, QAfterSortBy> thenByLanguage() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'languageCode', Sort.asc);
+      return query.addSortBy(r'language', Sort.asc);
     });
   }
 
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterSortBy>
-      thenByLanguageCodeDesc() {
+  QueryBuilder<SettingsIsar, SettingsIsar, QAfterSortBy> thenByLanguageDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'languageCode', Sort.desc);
+      return query.addSortBy(r'language', Sort.desc);
     });
   }
 
@@ -762,17 +630,15 @@ extension SettingsIsarQueryWhereDistinct
     });
   }
 
-  QueryBuilder<SettingsIsar, SettingsIsar, QDistinct> distinctByLanguageCode(
-      {bool caseSensitive = true}) {
+  QueryBuilder<SettingsIsar, SettingsIsar, QDistinct> distinctByLanguage() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'languageCode', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'language');
     });
   }
 
-  QueryBuilder<SettingsIsar, SettingsIsar, QDistinct> distinctByThemeMode(
-      {bool caseSensitive = true}) {
+  QueryBuilder<SettingsIsar, SettingsIsar, QDistinct> distinctByThemeMode() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'themeMode', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'themeMode');
     });
   }
 }
@@ -791,13 +657,13 @@ extension SettingsIsarQueryProperty
     });
   }
 
-  QueryBuilder<SettingsIsar, String, QQueryOperations> languageCodeProperty() {
+  QueryBuilder<SettingsIsar, Language, QQueryOperations> languageProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'languageCode');
+      return query.addPropertyName(r'language');
     });
   }
 
-  QueryBuilder<SettingsIsar, String, QQueryOperations> themeModeProperty() {
+  QueryBuilder<SettingsIsar, ThemeMode, QQueryOperations> themeModeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'themeMode');
     });
