@@ -12,6 +12,14 @@ import 'package:athar/app/core/firestore/firestore_service.dart' as _i516;
 import 'package:athar/app/core/injection/auth_module.dart' as _i982;
 import 'package:athar/app/core/isar/isar_service.dart' as _i651;
 import 'package:athar/app/core/l10n/l10n_service.dart' as _i560;
+import 'package:athar/app/features/add_aya/data/datasources/local/aya_isar_source.dart'
+    as _i529;
+import 'package:athar/app/features/add_aya/data/datasources/remote/aya_firestore_source.dart'
+    as _i145;
+import 'package:athar/app/features/add_aya/domain/repositories/aya_repository.dart'
+    as _i499;
+import 'package:athar/app/features/add_aya/presentation/bloc/add_aya_cubit.dart'
+    as _i302;
 import 'package:athar/app/features/authentication/data/data_sources/local/user_isar_source.dart'
     as _i602;
 import 'package:athar/app/features/authentication/data/data_sources/remote/user_firestore_source.dart'
@@ -45,20 +53,24 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final authModule = _$AuthModule();
+    gh.singleton<_i516.FirestoreService>(() => _i516.FirestoreService());
+    gh.singleton<_i59.FirebaseAuth>(() => authModule.auth);
+    gh.singleton<_i116.GoogleSignIn>(() => authModule.googleSignIn);
     await gh.singletonAsync<_i651.IsarService>(
       () => _i651.IsarService.create(),
       preResolve: true,
     );
     gh.singleton<_i560.L10nService>(() => _i560.L10nService());
-    gh.singleton<_i516.FirestoreService>(() => _i516.FirestoreService());
-    gh.singleton<_i59.FirebaseAuth>(() => authModule.auth);
-    gh.singleton<_i116.GoogleSignIn>(() => authModule.googleSignIn);
     gh.singleton<_i683.UserFirestoreSource>(
         () => _i683.UserFirestoreSource(gh<_i516.FirestoreService>()));
-    gh.singleton<_i387.SettingsIsarSource>(
-        () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i529.AyaIsarSource>(
+        () => _i529.AyaIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i602.UserIsarSource>(
         () => _i602.UserIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i387.SettingsIsarSource>(
+        () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i145.AyaFirestoreSource>(
+        () => _i145.AyaFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i257.SettingsRepository>(
         () => _i257.SettingsRepository(gh<_i387.SettingsIsarSource>()));
     gh.singleton<_i92.UserRepository>(() => _i92.UserRepository(
@@ -81,6 +93,13 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i562.AuthBloc>(
         () => _i562.AuthBloc(gh<_i842.AuthRepository>()));
+    gh.singleton<_i499.AyaRepository>(() => _i499.AyaRepository(
+          gh<_i842.AuthRepository>(),
+          gh<_i145.AyaFirestoreSource>(),
+          gh<_i529.AyaIsarSource>(),
+        ));
+    gh.singleton<_i302.AddAyaCubit>(
+        () => _i302.AddAyaCubit(gh<_i499.AyaRepository>()));
     return this;
   }
 }

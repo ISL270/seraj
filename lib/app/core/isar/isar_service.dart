@@ -2,6 +2,7 @@
 
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/core/isar/isar_helper.dart';
+import 'package:athar/app/features/add_aya/data/datasources/local/aya_isar.dart';
 import 'package:athar/app/features/authentication/data/models/local/user_isar.dart';
 import 'package:athar/app/features/settings/data/sources/local/settings_isar.dart';
 import 'package:injectable/injectable.dart';
@@ -20,6 +21,7 @@ final class IsarService with IsarHelper {
       [
         UserIsarSchema,
         SettingsIsarSchema,
+        AyaIsarSchema,
       ],
       directory: dir.path,
     );
@@ -70,7 +72,8 @@ final class IsarService with IsarHelper {
   }
 
   bool deleteSync<T extends CacheModel>(T object) {
-    return _isar.writeTxnSync(() => _isar.collection<T>().deleteSync(object.cacheID));
+    return _isar
+        .writeTxnSync(() => _isar.collection<T>().deleteSync(object.cacheID));
   }
 
   Future<int> deleteAll<T extends CacheModel>(List<String> ids) async {
@@ -93,7 +96,8 @@ final class IsarService with IsarHelper {
 
   Future<List<T>> getAllByIDs<T extends CacheModel>(List<String> ids) async {
     return _isar.txn(() async {
-      final docs = await _isar.collection<T>().getAll(ids.map(toIntID).toList());
+      final docs =
+          await _isar.collection<T>().getAll(ids.map(toIntID).toList());
       // Remove nulls.
       return docs.whereType<T>().toList();
     });
