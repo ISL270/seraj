@@ -25,7 +25,7 @@ final class HadithRepository extends ReactiveRepository<HadithModel, HadithFM, H
   @override
   Future<void> toBeAwaited() => getUpdates().takeWhileInclusive((status) => !status.isSuccess).last;
 
-  Future<EitherException<void>> saveHadith({
+  Future<EitherException<void>> addHadith({
     required String textOfHadith,
     required HadithAuthenticity hadithType,
     required String? isnadOfHadith,
@@ -33,7 +33,7 @@ final class HadithRepository extends ReactiveRepository<HadithModel, HadithFM, H
     required String? hadithExplain,
   }) async {
     try {
-      await _remoteSource.saveHadith(
+      await _remoteSource.addHadith(
         id: authRepository.user!.id,
         textOfHadith: textOfHadith,
         hadithType: hadithType,

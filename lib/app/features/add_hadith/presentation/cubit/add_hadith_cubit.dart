@@ -34,7 +34,7 @@ class AddHadithCubit extends Cubit<AddHadithState> {
   Future<void> saveHadithForm() async {
     emit(state.copyWith(status: const Loading()));
     try {
-      await _hadithRepository.saveHadith(
+      await _hadithRepository.addHadith(
         textOfHadith: state.textOfHadith.value,
         hadithType: state.hadithAuthenticity,
         hadithExplain: state.hadithExplain,

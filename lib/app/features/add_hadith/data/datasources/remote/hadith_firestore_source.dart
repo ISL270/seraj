@@ -14,7 +14,7 @@ part 'hadith_fm.dart';
 final class HadithFirestoreSource extends ReactiveFirestoreSource<HadithFM> with FirestoreHelper {
   HadithFirestoreSource(super.firestoreSvc);
 
-  Future<void> saveHadith({
+  Future<void> addHadith({
     required String id,
     required String textOfHadith,
     required HadithAuthenticity hadithType,
@@ -27,9 +27,12 @@ final class HadithFirestoreSource extends ReactiveFirestoreSource<HadithFM> with
           firestoreSvc.hadith.idHadith: const Uuid().v4(),
           firestoreSvc.hadith.textOfHadith: textOfHadith,
           firestoreSvc.hadith.hadithType: hadithType.name,
-          firestoreSvc.hadith.isnadOfHadith: isnadOfHadith,
-          firestoreSvc.hadith.sourceOfHadith: sourceOfHadith,
-          firestoreSvc.hadith.hadithExplain: hadithExplain,
+          if (isnadOfHadith != null && isnadOfHadith.isNotEmpty)
+            firestoreSvc.hadith.isnadOfHadith: isnadOfHadith,
+          if (sourceOfHadith != null && sourceOfHadith.isNotEmpty)
+            firestoreSvc.hadith.sourceOfHadith: sourceOfHadith,
+          if (hadithExplain != null && hadithExplain.isNotEmpty)
+            firestoreSvc.hadith.hadithExplain: hadithExplain,
         });
       });
 
