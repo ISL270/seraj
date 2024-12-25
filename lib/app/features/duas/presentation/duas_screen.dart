@@ -37,13 +37,9 @@ class DuasScreen extends StatelessWidget {
             ),
           ],
         ),
-        title: Row(
-          children: [
-            Text(
-              context.l10n.athars.capitalizedDefinite,
-              style: context.textThemeX.large.bold.copyWith(color: context.colorsX.onBackground),
-            ),
-          ],
+        title: Text(
+          context.l10n.duas.capitalizedDefinite,
+          style: context.textThemeX.large.bold.copyWith(color: context.colorsX.onBackground),
         ),
         backgroundColor: context.colorsX.background,
         searchBar: SuperSearchBar(placeholderText: context.l10n.search.capitalizedDefinite),
