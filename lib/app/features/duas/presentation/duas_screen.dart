@@ -6,6 +6,7 @@ import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
+import 'package:athar/app/features/add_dua/presentation/add_dua_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -36,7 +37,7 @@ class DuasScreen extends StatelessWidget {
           textStyle: context.textThemeX.large.bold.copyWith(fontSize: 32.w),
           actions: [
             GestureDetector(
-              onTap: () {},
+              onTap: () => context.pushNamed(AddDuaScreen.name),
               child: Assets.icons.plusSquaredOutlined.svg(
                 width: 34.w,
                 height: 34.w,

@@ -2,10 +2,11 @@ import 'package:athar/app/core/extension_methods/getit_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/routing/go_router_refresh_stream.dart';
 import 'package:athar/app/core/routing/go_router_state_extension.dart';
+import 'package:athar/app/features/add_dua/presentation/add_dua_screen.dart';
+import 'package:athar/app/features/athars/presentation/athars_screen.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/duas/presentation/duas_screen.dart';
-import 'package:athar/app/features/athars/presentation/athars_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/login/cubit/login_cubit.dart';
 import 'package:athar/app/features/login/login_screen.dart';
@@ -67,6 +68,17 @@ final appRouter = GoRouter(
               name: DuasScreen.name,
               path: '/${DuasScreen.name}',
               pageBuilder: (context, state) => const NoTransitionPage(child: DuasScreen()),
+              routes: [
+                GoRoute(
+                  name: AddDuaScreen.name,
+                  path: AddDuaScreen.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  pageBuilder: (context, state) => const CupertinoPage(
+                    fullscreenDialog: true,
+                    child: AddDuaScreen(),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
