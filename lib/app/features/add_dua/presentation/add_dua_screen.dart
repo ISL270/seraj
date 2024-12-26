@@ -40,36 +40,28 @@ class AddDuaScreen extends StatelessWidget {
             child: SingleChildScrollView(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: Column(
+                spacing: 12.h,
                 children: [
                   _LabelTextFieldAlignWidget(label: context.l10n.duaText),
-                  Gap(10.h),
                   const _TextOfDuaTextField(),
-                  Gap(10.h),
                   _LabelTextFieldAlignWidget(label: context.l10n.duaType),
-                  Gap(10.h),
                   const _DuaTypeDropDownButton(),
-                  Gap(10.h),
                   _LabelTextFieldAlignWidget(label: context.l10n.numOfTimesANDtime),
-                  Gap(10.h),
                   Row(
                     children: [
-                      const Expanded(
-                        child: _DuaNumOfRepeatTextField(),
-                      ),
+                      const Expanded(child: _DuaNumOfRepeatTextField()),
                       Gap(15.w),
-                      const Expanded(flex: 2, child: _DuaTimeDropDownButton())
+                      const Expanded(flex: 2, child: _DuaTimeDropDownButton()),
                     ],
                   ),
-                  Gap(10.h),
                   _LabelTextFieldAlignWidget(label: context.l10n.additionalNotes),
-                  Gap(10.h),
                   const _AddNotesTextField(),
                 ],
               ),
             ),
           ),
           const _DuaAddButton(),
-          Gap(5.h)
+          Gap(5.h),
         ],
       ),
     );
