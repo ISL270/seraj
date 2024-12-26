@@ -15,24 +15,66 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/add-square.svg
+  SvgGenImage get addSquare => const SvgGenImage('assets/icons/add-square.svg');
+
   /// File path: assets/icons/appLogo.png
   AssetGenImage get appLogo => const AssetGenImage('assets/icons/appLogo.png');
 
-  /// File path: assets/icons/duas.png
-  AssetGenImage get duas => const AssetGenImage('assets/icons/duas.png');
+  /// File path: assets/icons/arrowback.svg
+  SvgGenImage get arrowback => const SvgGenImage('assets/icons/arrowback.svg');
+
+  /// File path: assets/icons/bookmark.svg
+  SvgGenImage get bookmark => const SvgGenImage('assets/icons/bookmark.svg');
+
+  /// File path: assets/icons/duas.svg
+  SvgGenImage get duas => const SvgGenImage('assets/icons/duas.svg');
+
+  /// File path: assets/icons/menu.svg
+  SvgGenImage get menu => const SvgGenImage('assets/icons/menu.svg');
+
+  /// File path: assets/icons/notifications.svg
+  SvgGenImage get notifications => const SvgGenImage('assets/icons/notifications.svg');
+
+  /// File path: assets/icons/play.svg
+  SvgGenImage get play => const SvgGenImage('assets/icons/play.svg');
 
   /// File path: assets/icons/plus_squared_outlined.svg
   SvgGenImage get plusSquaredOutlined =>
       const SvgGenImage('assets/icons/plus_squared_outlined.svg');
 
-  /// File path: assets/icons/praying.png
-  AssetGenImage get praying => const AssetGenImage('assets/icons/praying.png');
+  /// File path: assets/icons/plus_squared_solid.svg
+  SvgGenImage get plusSquaredSolid => const SvgGenImage('assets/icons/plus_squared_solid.svg');
 
-  /// File path: assets/icons/quran.png
-  AssetGenImage get quran => const AssetGenImage('assets/icons/quran.png');
+  /// File path: assets/icons/praying.svg
+  SvgGenImage get praying => const SvgGenImage('assets/icons/praying.svg');
+
+  /// File path: assets/icons/quran.svg
+  SvgGenImage get quran => const SvgGenImage('assets/icons/quran.svg');
+
+  /// File path: assets/icons/search.svg
+  SvgGenImage get search => const SvgGenImage('assets/icons/search.svg');
+
+  /// File path: assets/icons/share.svg
+  SvgGenImage get share => const SvgGenImage('assets/icons/share.svg');
 
   /// List of all assets
-  List<dynamic> get values => [appLogo, duas, plusSquaredOutlined, praying, quran];
+  List<dynamic> get values => [
+        addSquare,
+        appLogo,
+        arrowback,
+        bookmark,
+        duas,
+        menu,
+        notifications,
+        play,
+        plusSquaredOutlined,
+        plusSquaredSolid,
+        praying,
+        quran,
+        search,
+        share
+      ];
 }
 
 class Assets {
