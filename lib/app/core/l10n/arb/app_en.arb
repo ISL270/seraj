@@ -45,5 +45,6 @@
   "search" : "search",
   "areYouSure": "Are You Sure?",
   "cancel":"Cancel",
-  "ok":"Ok"
+  "ok":"Ok",
+  "noDua":"No Dua added yet."
 }
