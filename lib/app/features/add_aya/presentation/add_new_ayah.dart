@@ -53,7 +53,7 @@ class AddNewAyah extends StatelessWidget {
                               const Spacer(flex: 2),
                             ],
                           ),
-                          const Gap(50),
+                          Gap(50.h),
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
@@ -61,9 +61,9 @@ class AddNewAyah extends StatelessWidget {
                               style: context.textThemeX.medium.bold,
                             ),
                           ),
-                          const Gap(20),
+                          Gap(20.h),
                           const _SurahAndVerseNumTextField(),
-                          const Gap(20),
+                          Gap(20.h),
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
@@ -71,9 +71,9 @@ class AddNewAyah extends StatelessWidget {
                               style: context.textThemeX.medium.bold,
                             ),
                           ),
-                          const Gap(20),
+                          Gap(20.h),
                           const _QuranicVerseTextField(),
-                          const Gap(20),
+                          Gap(20.h),
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
@@ -81,7 +81,7 @@ class AddNewAyah extends StatelessWidget {
                               style: context.textThemeX.medium.bold,
                             ),
                           ),
-                          const Gap(20),
+                          Gap(20.h),
                           const _QuranicVerseExplanationTextField(),
                         ],
                       ),
