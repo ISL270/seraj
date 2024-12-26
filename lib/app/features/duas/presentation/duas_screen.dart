@@ -29,8 +29,6 @@ class DuasScreen extends StatelessWidget {
       'أستغفر الله العظيم وأتوب إليه من كل ذنب لنا، وللمؤمنين والمؤمنات والمسلمين والمسلمات الأحياء منهم والأموات.',
     ];
 
-    const emptyDuas = false;
-
     return SuperScaffold(
       appBar: SuperAppBar(
         largeTitle: SuperLargeTitle(
@@ -54,7 +52,7 @@ class DuasScreen extends StatelessWidget {
         backgroundColor: context.colorsX.background,
         searchBar: SuperSearchBar(placeholderText: context.l10n.search.capitalizedDefinite),
       ),
-      body: emptyDuas
+      body: duas.isEmpty
           ? Center(
               child: Text(context.l10n.noDua, style: context.textThemeX.medium.bold),
             )
