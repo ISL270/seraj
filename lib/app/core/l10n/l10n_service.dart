@@ -1,5 +1,6 @@
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/l10n/language.dart';
+import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -12,7 +13,7 @@ final class L10nService {
   String trFromStr(String trStrKey, BuildContext context) {
     final trKey = _Transaltions.values.firstOrNullWhere((tr) => tr.name == trStrKey);
     if (trKey == null) return trStrKey;
-    return trKey.getTr(context.settingsBloc.state.language);
+    return trKey.getTr(context.settingsBloc.state.settings.language);
   }
 }
 

@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:athar/app/core/l10n/locales.dart';
 
+// Never change the order.
+// Original order: 1- arabic, 2- english
 enum Language {
   arabic('ar', Locales.arabic, 'العربية'),
   english('en', Locales.english, 'English');
