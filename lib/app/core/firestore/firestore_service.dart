@@ -17,4 +17,9 @@ final class _Users {
 
 final class _Ayat {
   late final collection = FirebaseFirestore.instance.collection('ayat');
+  late final idField = 'id';
+  late final textOfAya = 'textOfAya';
+  late final surahOfAya = 'surahOfAya';
+  late final nomOfAya = 'nomOfAya';
+  late final ayaExplain = 'ayaExplain';
 }

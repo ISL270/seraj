@@ -28,19 +28,19 @@ final class AyaRepository extends ReactiveRepository<AyaModel, AyaFm, AyaIsar> {
     final ayaID = const Uuid().v4();
 
     try {
-      await _remoteSource.saveAya(
+      await _remoteSource.addAya(
           ayaFm: AyaFm(
         id: ayaID,
         textOfAya: ayaModel.textOfAya,
         surahOfAya: ayaModel.surahOfAya,
         nomOfAya: ayaModel.nomOfAya,
       ));
-      await _localSource.putAya(AyaIsar(
-        id: ayaID,
-        textOfAya: ayaModel.textOfAya,
-        surahOfAya: ayaModel.surahOfAya,
-        nomOfAya: ayaModel.nomOfAya,
-      ));
+      // await _localSource.putAya(AyaIsar(
+      //   id: ayaID,
+      //   textOfAya: ayaModel.textOfAya,
+      //   surahOfAya: ayaModel.surahOfAya,
+      //   nomOfAya: ayaModel.nomOfAya,
+      // ));
       return right(null);
     } catch (e) {
       return left(e as GenericException);
