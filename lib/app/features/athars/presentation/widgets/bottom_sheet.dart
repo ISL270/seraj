@@ -20,7 +20,11 @@ Future<void> _openBottomSheet(BuildContext context) async {
         child: Padding(
           padding: EdgeInsets.only(top: 15.w, bottom: 15.w, right: 10.w),
           child: _BottomSheetBody(
-            items: [context.l10n.prophetichadith, context.l10n.quranicverse, context.l10n.others],
+            items: [
+              context.l10n.prophetichadith,
+              context.l10n.quranicverse,
+              context.l10n.others
+            ],
           ),
         ),
       );
@@ -39,9 +43,9 @@ class _BottomSheetBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const _DragIndicator(),
-        const Gap(10),
+        Gap(10.h),
         Text(context.l10n.addnew, style: context.textThemeX.large.bold),
-        const Gap(20),
+        Gap(20.h),
         Expanded(
           child: ListView.separated(
             physics: const BouncingScrollPhysics(),

@@ -104,14 +104,14 @@ class _SurahAndVerseNumTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       children: [
-        Expanded(
+        const Expanded(
           flex: 3,
           child: _SurahTextField(),
         ),
-        Gap(20),
-        Expanded(
+        Gap(20.w),
+        const Expanded(
           child: _NoAyahOfSurah(),
         ),
       ],
