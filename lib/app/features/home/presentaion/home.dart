@@ -6,6 +6,7 @@ import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/features/athars/presentation/athars_screen.dart';
+import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +28,8 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: Directionality(
-        textDirection: context.settingsBloc.state.isArabic ? TextDirection.rtl : TextDirection.ltr,
+        textDirection:
+            context.settingsBloc.state.settings.isArabic ? TextDirection.rtl : TextDirection.ltr,
         child: ClipRRect(
           clipBehavior: Clip.antiAliasWithSaveLayer,
           borderRadius: BorderRadius.only(
