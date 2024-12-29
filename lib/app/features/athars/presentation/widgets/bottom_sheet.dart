@@ -38,14 +38,14 @@ class _BottomSheetBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const _DragIndicator(),
-        const Gap(10),
+        Gap(10.h),
         Text(context.l10n.addNew, style: context.textThemeX.large.bold),
-        const Gap(20),
+        Gap(20.h),
         Expanded(
           child: ListView.separated(
             physics: const NeverScrollableScrollPhysics(),
             itemCount: items.length,
-            separatorBuilder: (context, index) => const Gap(20),
+            separatorBuilder: (context, index) => Gap(20.h),
             itemBuilder: (context, index) => GestureDetector(
               onTap: () {
                 switch (index) {
