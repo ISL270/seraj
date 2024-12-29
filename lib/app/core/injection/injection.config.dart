@@ -18,6 +18,8 @@ import 'package:athar/app/features/add_hadith/data/datasources/remote/hadith_fir
     as _i966;
 import 'package:athar/app/features/add_hadith/domain/repositories/hadith_repository.dart'
     as _i1005;
+import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart'
+    as _i397;
 import 'package:athar/app/features/authentication/data/data_sources/local/user_isar_source.dart'
     as _i602;
 import 'package:athar/app/features/authentication/data/data_sources/remote/user_firestore_source.dart'
@@ -51,22 +53,22 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final authModule = _$AuthModule();
-    gh.singleton<_i516.FirestoreService>(() => _i516.FirestoreService());
-    gh.singleton<_i59.FirebaseAuth>(() => authModule.auth);
-    gh.singleton<_i116.GoogleSignIn>(() => authModule.googleSignIn);
     await gh.singletonAsync<_i651.IsarService>(
       () => _i651.IsarService.create(),
       preResolve: true,
     );
     gh.singleton<_i560.L10nService>(() => _i560.L10nService());
+    gh.singleton<_i516.FirestoreService>(() => _i516.FirestoreService());
+    gh.singleton<_i59.FirebaseAuth>(() => authModule.auth);
+    gh.singleton<_i116.GoogleSignIn>(() => authModule.googleSignIn);
     gh.singleton<_i683.UserFirestoreSource>(
         () => _i683.UserFirestoreSource(gh<_i516.FirestoreService>()));
-    gh.singleton<_i120.HadithIsarSource>(
-        () => _i120.HadithIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i602.UserIsarSource>(
-        () => _i602.UserIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i387.SettingsIsarSource>(
         () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i602.UserIsarSource>(
+        () => _i602.UserIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i120.HadithIsarSource>(
+        () => _i120.HadithIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i966.HadithFirestoreSource>(
         () => _i966.HadithFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i257.SettingsRepository>(
@@ -96,6 +98,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i966.HadithFirestoreSource>(),
           gh<_i120.HadithIsarSource>(),
         ));
+    gh.factory<_i397.AddHadithCubit>(
+        () => _i397.AddHadithCubit(gh<_i1005.HadithRepository>()));
     return this;
   }
 }
