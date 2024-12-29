@@ -5,6 +5,7 @@ import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/login/cubit/login_cubit.dart';
+import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/features/sign_up/presentation/sign_up_screen.dart';
 import 'package:athar/app/widgets/button.dart';
@@ -34,12 +35,12 @@ class LoginScreen extends StatelessWidget {
           IconButton(
             onPressed: () {
               context.settingsBloc.add(SettingsThemeChanged(
-                context.settingsBloc.state.isThemeDark ? ThemeMode.light : ThemeMode.dark,
+                context.settingsBloc.state.settings.isThemeDark ? ThemeMode.light : ThemeMode.dark,
               ));
             },
-            icon: Icon(
-              context.settingsBloc.state.isThemeDark ? Icons.dark_mode : Icons.dark_mode_outlined,
-            ),
+            icon: Icon(context.settingsBloc.state.settings.isThemeDark
+                ? Icons.dark_mode
+                : Icons.dark_mode_outlined),
           ),
           IconButton(
             onPressed: () {
