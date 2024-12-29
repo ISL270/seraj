@@ -47,7 +47,12 @@ class _BottomSheetBody extends StatelessWidget {
             itemCount: items.length,
             separatorBuilder: (context, index) => const Gap(20),
             itemBuilder: (context, index) => GestureDetector(
-              onTap: () {},
+              onTap: () {
+                switch (index) {
+                  case 0:
+                    context.pushNamed(AddHadith.name);
+                }
+              },
               child: _BottomSheetWidget(items[index]),
             ),
           ),
