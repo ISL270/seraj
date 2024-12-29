@@ -109,6 +109,10 @@ class _HadithTypeSegmentedButton extends StatelessWidget {
                 value: HadithAuthenticity.sahih,
               ),
               ButtonSegment(
+                label: Text(context.l10n.hadithHasan),
+                value: HadithAuthenticity.hasan,
+              ),
+              ButtonSegment(
                 label: Text(context.l10n.hadithDaif),
                 value: HadithAuthenticity.daif,
               ),
