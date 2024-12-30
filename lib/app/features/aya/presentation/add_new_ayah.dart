@@ -41,6 +41,7 @@ class AddNewAyah extends StatelessWidget {
                       padding:
                           EdgeInsets.only(top: 10.w, left: 16.w, right: 16.w),
                       child: Column(
+                        spacing: 20.h,
                         children: [
                           Row(
                             children: [
@@ -58,7 +59,7 @@ class AddNewAyah extends StatelessWidget {
                               const Spacer(flex: 2),
                             ],
                           ),
-                          Gap(50.h),
+                          Gap(30.h),
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
@@ -66,7 +67,6 @@ class AddNewAyah extends StatelessWidget {
                               style: context.textThemeX.medium.bold,
                             ),
                           ),
-                          Gap(20.h),
                           _SurahAndVerseNumTextField(
                             surahController: TextEditingController(
                                 text: ayah[0].surahNameAr),
@@ -75,7 +75,6 @@ class AddNewAyah extends StatelessWidget {
                                     .map((singleAyah) => singleAyah.ayahNumber)
                                     .join(',')),
                           ),
-                          Gap(20.h),
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
@@ -83,7 +82,6 @@ class AddNewAyah extends StatelessWidget {
                               style: context.textThemeX.medium.bold,
                             ),
                           ),
-                          Gap(20.h),
                           _QuranicVerseTextField(
                             controller: TextEditingController(
                               text: ayah
@@ -99,7 +97,6 @@ class AddNewAyah extends StatelessWidget {
                               style: context.textThemeX.medium.bold,
                             ),
                           ),
-                          Gap(20.h),
                           _QuranicVerseExplanationTextField(
                             controller: TextEditingController(text: ''),
                           ),
