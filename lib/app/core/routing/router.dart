@@ -4,7 +4,7 @@ import 'package:athar/app/core/routing/go_router_refresh_stream.dart';
 import 'package:athar/app/core/routing/go_router_state_extension.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
-import 'package:athar/app/features/duas/presentation/duas_screen.dart';
+import 'package:athar/app/features/dua/presentation/dua_screen.dart';
 import 'package:athar/app/features/athars/presentation/athars_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/login/cubit/login_cubit.dart';
