@@ -45,20 +45,20 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final authModule = _$AuthModule();
-    gh.singleton<_i516.FirestoreService>(() => _i516.FirestoreService());
-    gh.singleton<_i59.FirebaseAuth>(() => authModule.auth);
-    gh.singleton<_i116.GoogleSignIn>(() => authModule.googleSignIn);
     await gh.singletonAsync<_i651.IsarService>(
       () => _i651.IsarService.create(),
       preResolve: true,
     );
     gh.singleton<_i560.L10nService>(() => _i560.L10nService());
+    gh.singleton<_i516.FirestoreService>(() => _i516.FirestoreService());
+    gh.singleton<_i59.FirebaseAuth>(() => authModule.auth);
+    gh.singleton<_i116.GoogleSignIn>(() => authModule.googleSignIn);
     gh.singleton<_i683.UserFirestoreSource>(
         () => _i683.UserFirestoreSource(gh<_i516.FirestoreService>()));
-    gh.singleton<_i602.UserIsarSource>(
-        () => _i602.UserIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i387.SettingsIsarSource>(
         () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i602.UserIsarSource>(
+        () => _i602.UserIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i257.SettingsRepository>(
         () => _i257.SettingsRepository(gh<_i387.SettingsIsarSource>()));
     gh.singleton<_i92.UserRepository>(() => _i92.UserRepository(
