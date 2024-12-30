@@ -14,8 +14,6 @@ import 'package:athar/app/core/isar/isar_service.dart' as _i651;
 import 'package:athar/app/core/l10n/l10n_service.dart' as _i560;
 import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart'
     as _i397;
-import 'package:athar/app/features/athars/domain/repositories/daleel_repository.dart'
-    as _i320;
 import 'package:athar/app/features/authentication/data/data_sources/local/user_isar_source.dart'
     as _i602;
 import 'package:athar/app/features/authentication/data/data_sources/remote/user_firestore_source.dart'
@@ -56,22 +54,22 @@ extension GetItInjectableX on _i174.GetIt {
     );
     final authModule = _$AuthModule();
     gh.factory<_i397.AddHadithCubit>(() => _i397.AddHadithCubit());
-    gh.singleton<_i516.FirestoreService>(() => _i516.FirestoreService());
-    gh.singleton<_i59.FirebaseAuth>(() => authModule.auth);
-    gh.singleton<_i116.GoogleSignIn>(() => authModule.googleSignIn);
     await gh.singletonAsync<_i651.IsarService>(
       () => _i651.IsarService.create(),
       preResolve: true,
     );
     gh.singleton<_i560.L10nService>(() => _i560.L10nService());
+    gh.singleton<_i516.FirestoreService>(() => _i516.FirestoreService());
+    gh.singleton<_i59.FirebaseAuth>(() => authModule.auth);
+    gh.singleton<_i116.GoogleSignIn>(() => authModule.googleSignIn);
     gh.singleton<_i683.UserFirestoreSource>(
         () => _i683.UserFirestoreSource(gh<_i516.FirestoreService>()));
-    gh.singleton<_i602.UserIsarSource>(
-        () => _i602.UserIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i53.DaleelIsarSource>(
-        () => _i53.DaleelIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i387.SettingsIsarSource>(
         () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i53.DaleelIsarSource>(
+        () => _i53.DaleelIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i602.UserIsarSource>(
+        () => _i602.UserIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i257.SettingsRepository>(
         () => _i257.SettingsRepository(gh<_i387.SettingsIsarSource>()));
     gh.singleton<_i92.UserRepository>(() => _i92.UserRepository(
@@ -81,10 +79,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i460.DaleelFirestoreSource>(
         () => _i460.DaleelFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i143.DaleelRepository>(() => _i143.DaleelRepository(
-          gh<_i53.DaleelIsarSource>(),
-          gh<_i460.DaleelFirestoreSource>(),
-        ));
-    gh.singleton<_i320.DaleelRepository>(() => _i320.DaleelRepository(
           gh<_i53.DaleelIsarSource>(),
           gh<_i460.DaleelFirestoreSource>(),
         ));

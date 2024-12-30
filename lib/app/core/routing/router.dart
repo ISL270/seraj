@@ -4,10 +4,10 @@ import 'package:athar/app/core/routing/go_router_refresh_stream.dart';
 import 'package:athar/app/core/routing/go_router_state_extension.dart';
 import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dart';
 import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
-import 'package:athar/app/features/daleel/presentation/athars_screen.dart';
-import 'package:athar/app/features/daleel/presentation/cubit/athars_cubit.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
+import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
+import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
 import 'package:athar/app/features/duas/presentation/duas_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/login/cubit/login_cubit.dart';
@@ -57,12 +57,12 @@ final appRouter = GoRouter(
           navigatorKey: _hadithNavigatorKey,
           routes: [
             GoRoute(
-              name: AtharsScreen.name,
-              path: '/${AtharsScreen.name}',
+              name: DaleelScreen.name,
+              path: '/${DaleelScreen.name}',
               pageBuilder: (context, state) => NoTransitionPage(
                 child: BlocProvider(
-                  create: (context) => AtharsCubit(),
-                  child: const AtharsScreen(),
+                  create: (context) => DaleelBloc(),
+                  child: const DaleelScreen(),
                 ),
               ),
               routes: [
@@ -143,7 +143,7 @@ final appRouter = GoRouter(
 
 // private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _hadithNavigatorKey = GlobalKey<NavigatorState>(debugLabel: AtharsScreen.name);
+final _hadithNavigatorKey = GlobalKey<NavigatorState>(debugLabel: DaleelScreen.name);
 final _duasNavigatorKey = GlobalKey<NavigatorState>(debugLabel: DuasScreen.name);
 final _azkarNavigatorKey = GlobalKey<NavigatorState>(debugLabel: AzkarScreen.name);
 final _settingsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: SettingsScreen.name);
