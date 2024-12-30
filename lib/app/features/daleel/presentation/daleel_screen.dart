@@ -15,8 +15,8 @@ import 'package:super_cupertino_navigation_bar/super_cupertino_navigation_bar.da
 
 part 'widgets/bottom_sheet.dart';
 
-class AtharsScreen extends StatelessWidget {
-  const AtharsScreen({super.key});
+class DaleelScreen extends StatelessWidget {
+  const DaleelScreen({super.key});
 
   static const String name = 'athars';
 

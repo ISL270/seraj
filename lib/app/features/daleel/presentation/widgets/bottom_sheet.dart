@@ -1,4 +1,4 @@
-part of '../athars_screen.dart';
+part of '../daleel_screen.dart';
 
 Future<void> _openBottomSheet(BuildContext context) async {
   // ignore: inference_failure_on_function_invocation
