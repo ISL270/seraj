@@ -56,6 +56,7 @@ final class DaleelIsar extends CacheModel<Daleel> {
             id: id,
             text: text,
             priotiy: priority,
+            description: description,
             authenticity: hadithAuthenticity,
             extraction: extraction,
             tags: tags,

@@ -32,6 +32,7 @@ final class Hadith extends Daleel {
     required super.priotiy,
     required super.tags,
     required super.lastRevisedAt,
+    required super.description,
     this.rawi,
     this.extraction,
     this.authenticity,

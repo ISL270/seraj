@@ -3,9 +3,7 @@
 import 'dart:developer';
 
 import 'package:athar/app/core/enums/status.dart';
-import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
-import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_type.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
@@ -14,13 +12,13 @@ import 'package:equatable/equatable.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:uuid/uuid.dart';
 
 part 'add_hadith_state.dart';
 
 @injectable
 class AddHadithCubit extends Cubit<AddHadithState> {
-  AddHadithCubit() : super(const AddHadithState());
+  AddHadithCubit(this._daleelRepository) : super(const AddHadithState());
+  final DaleelRepository _daleelRepository;
 
   void textOfHadithChanged(String value) => emit(state.copyWith(textOfHadith: Name.dirty(value)));
 
@@ -37,24 +35,34 @@ class AddHadithCubit extends Cubit<AddHadithState> {
     emit(state.copyWith(sliderValue: value));
   }
 
-  Future<void> saveDaleelForm() async {
+  Future<void> saveHadithForm() async {
     emit(state.copyWith(status: const Loading()));
     try {
-      await getIt.get<DaleelRepository>().saveDaleelInfoRemote(
-        daleelType: DaleelType.hadith,
-        daleelId: const Uuid().v4(),
+      await _daleelRepository.saveHadith(
+        // userId: getIt.get<AuthBloc>().state.user!.id,
         text: state.textOfHadith.value,
         rawi: state.rawiOfHadith,
+        description: state.hadithExplain,
         extraction: state.extractionOfHadith,
         hadithAuthenticity: state.hadithAuthenticity,
         lastRevisedAt: DateTime.now(),
-        priority: Priority.normal,
+        priority: getPriority(state.sliderValue),
         tags: [],
       );
-      emit(state.copyWith(status: const Success('Saved Daleel Successfully')));
+      emit(state.copyWith(status: const Success('Saved Hadith Successfully')));
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(status: Failure(e as GenericException)));
+    }
+  }
+
+  Priority getPriority(double value) {
+    if (value == 0.0) {
+      return Priority.normal;
+    } else if (value == 1.0) {
+      return Priority.high;
+    } else {
+      return Priority.urgent;
     }
   }
 }

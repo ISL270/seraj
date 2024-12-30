@@ -39,7 +39,6 @@ class AddHadith extends StatelessWidget {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: Column(
                 spacing: 15.h,
                 children: [
@@ -271,7 +270,7 @@ class _HadithAddButton extends StatelessWidget {
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
             label: context.l10n.add,
-            onPressed: state.isValid ? () => context.read<AddHadithCubit>().saveDaleelForm() : null,
+            onPressed: state.isValid ? () => context.read<AddHadithCubit>().saveHadithForm() : null,
           ),
         );
       },
