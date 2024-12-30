@@ -28,8 +28,8 @@ class _HadithSelectionListViewBuilderState extends State<_HadithSelectionListVie
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        right: context.settingsBloc.state.language.isArabic ? 16.w : 0,
-        left: context.settingsBloc.state.language.isEnglish ? 16.w : 0,
+        right: context.settingsBloc.state.settings.isArabic ? 16.w : 0,
+        left: context.settingsBloc.state.settings.isEnglish ? 16.w : 0,
       ),
       child: Column(
         children: [

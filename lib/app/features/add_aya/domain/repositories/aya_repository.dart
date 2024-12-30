@@ -1,9 +1,9 @@
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/core/models/reactive_repository.dart';
-import 'package:athar/app/features/add_aya/data/datasources/local/aya_isar.dart';
-import 'package:athar/app/features/add_aya/data/datasources/local/aya_isar_source.dart';
-import 'package:athar/app/features/add_aya/data/datasources/remote/aya_firestore_source.dart';
 import 'package:athar/app/features/add_aya/data/models/aya_model.dart';
+import 'package:athar/app/features/add_aya/data/sources/local/aya_isar.dart';
+import 'package:athar/app/features/add_aya/data/sources/local/aya_isar_source.dart';
+import 'package:athar/app/features/add_aya/data/sources/remote/aya_firestore_source.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -21,8 +21,7 @@ final class AyaRepository extends ReactiveRepository<AyaModel, AyaFm, AyaIsar> {
   ) : super(localSource: _localSource, remoteSource: _remoteSource);
 
   @override
-  Future<void> toBeAwaited() =>
-      getUpdates().takeWhileInclusive((status) => !status.isSuccess).last;
+  Future<void> toBeAwaited() => getUpdates().takeWhileInclusive((status) => !status.isSuccess).last;
 
   Future<EitherException<void>> saveAya({required AyaModel ayaModel}) async {
     final ayaID = const Uuid().v4();
@@ -35,12 +34,7 @@ final class AyaRepository extends ReactiveRepository<AyaModel, AyaFm, AyaIsar> {
         surahOfAya: ayaModel.surahOfAya,
         nomOfAya: ayaModel.nomOfAya,
       ));
-      // await _localSource.putAya(AyaIsar(
-      //   id: ayaID,
-      //   textOfAya: ayaModel.textOfAya,
-      //   surahOfAya: ayaModel.surahOfAya,
-      //   nomOfAya: ayaModel.nomOfAya,
-      // ));
+
       return right(null);
     } catch (e) {
       return left(e as GenericException);

@@ -1,6 +1,6 @@
 import 'package:athar/app/core/isar/isar_source.dart';
-import 'package:athar/app/features/add_aya/data/datasources/local/aya_isar.dart';
 import 'package:athar/app/features/add_aya/data/models/aya_model.dart';
+import 'package:athar/app/features/add_aya/data/sources/local/aya_isar.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
