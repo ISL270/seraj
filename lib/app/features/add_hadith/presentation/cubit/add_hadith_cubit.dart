@@ -24,9 +24,9 @@ class AddHadithCubit extends Cubit<AddHadithState> {
 
   void textOfHadithChanged(String value) => emit(state.copyWith(textOfHadith: Name.dirty(value)));
 
-  void isnadOfHadithChanged(String value) => emit(state.copyWith(isnadOfHadith: value));
+  void rawiOfHadithChanged(String value) => emit(state.copyWith(rawiOfHadith: value));
 
-  void sourceOfHadithChanged(String value) => emit(state.copyWith(sourceOfHadith: value));
+  void extractionOfHadithChanged(String value) => emit(state.copyWith(extractionOfHadith: value));
 
   void hadithAuthenticityChanged(HadithAuthenticity hadithAuthenticity) =>
       emit(state.copyWith(hadithAuthenticity: hadithAuthenticity));
@@ -40,8 +40,8 @@ class AddHadithCubit extends Cubit<AddHadithState> {
         daleelType: DaleelType.hadith,
         daleelId: const Uuid().v4(),
         text: state.textOfHadith.value,
-        rawi: state.isnadOfHadith,
-        extraction: state.sourceOfHadith,
+        rawi: state.rawiOfHadith,
+        extraction: state.extractionOfHadith,
         hadithAuthenticity: state.hadithAuthenticity,
         lastRevisedAt: DateTime.now(),
         priority: Priority.normal,

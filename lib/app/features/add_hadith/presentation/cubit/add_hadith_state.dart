@@ -6,14 +6,14 @@ final class AddHadithState extends Equatable with FormzMixin {
   const AddHadithState({
     this.hadithAuthenticity = HadithAuthenticity.sahih,
     this.textOfHadith = const Name.pure(),
-    this.isnadOfHadith = '',
-    this.sourceOfHadith = '',
+    this.rawiOfHadith = '',
+    this.extractionOfHadith = '',
     this.hadithExplain = '',
     this.status = const Initial(),
     this.hintTexts = const [
       'أنا عِنْدَ ظَنِّ عَبْدِي بي، وأنا معهُ إذا ذَكَرَنِي، فإنْ ذَكَرَنِي في نَفْسِهِ ذَكَرْتُهُ في نَفْسِي، وإنْ ذَكَرَنِي في مَلَإٍ ذَكَرْتُهُ في مَلَإٍ خَيْرٍ منهمْ، وإنْ تَقَرَّبَ إلَيَّ بشِبْرٍ تَقَرَّبْتُ إلَيْهِ ذِراعًا، وإنْ تَقَرَّبَ إلَيَّ ذِراعًا تَقَرَّبْتُ إلَيْهِ باعًا، وإنْ أتانِي يَمْشِي أتَيْتُهُ هَرْوَلَةً',
       'عن أبي هريرة - رضي الله عنه - عن النبي ﷺ',
-      'رواه البخاري ومسلم',
+      'اخرجه البخاري ومسلم',
       'إن ظَنَّ باللهِ خَيرًا فَلَه، وإن ظَنَّ بِه سِوَى ذلك فَلَه، وحُسنُ الظَّنِّ باللهِ عزَّ وجلَّ يَكونُ بفِعلِ ما يُوجِبُ فَضلَ اللهِ وَرَجاءَه، فيَعمَلُ الصَّالِحاتِ، ويُحسِنُ الظَّنَّ بأنَّ اللهَ تَعالَى يَقبَلُه، فاللهُ سُبحانَه عِندَ مُنتهَى أمَلِ العَبدِ به،',
     ],
   });
@@ -22,8 +22,8 @@ final class AddHadithState extends Equatable with FormzMixin {
 
   final Name textOfHadith;
   final HadithAuthenticity hadithAuthenticity;
-  final String isnadOfHadith;
-  final String sourceOfHadith;
+  final String rawiOfHadith;
+  final String extractionOfHadith;
   final String hadithExplain;
   final VoidStatus status;
 
@@ -31,24 +31,24 @@ final class AddHadithState extends Equatable with FormzMixin {
   List<Object> get props => [
         textOfHadith,
         hadithAuthenticity,
-        isnadOfHadith,
-        sourceOfHadith,
+        rawiOfHadith,
+        extractionOfHadith,
         hadithExplain,
         status,
       ];
 
   AddHadithState copyWith({
     Name? textOfHadith,
-    String? isnadOfHadith,
-    String? sourceOfHadith,
+    String? rawiOfHadith,
+    String? extractionOfHadith,
     HadithAuthenticity? hadithAuthenticity,
     String? hadithExplain,
     VoidStatus? status,
   }) {
     return AddHadithState(
       textOfHadith: textOfHadith ?? this.textOfHadith,
-      isnadOfHadith: isnadOfHadith ?? this.isnadOfHadith,
-      sourceOfHadith: sourceOfHadith ?? this.sourceOfHadith,
+      rawiOfHadith: rawiOfHadith ?? this.rawiOfHadith,
+      extractionOfHadith: extractionOfHadith ?? this.extractionOfHadith,
       hadithAuthenticity: hadithAuthenticity ?? this.hadithAuthenticity,
       hadithExplain: hadithExplain ?? this.hadithExplain,
       status: status ?? this.status,

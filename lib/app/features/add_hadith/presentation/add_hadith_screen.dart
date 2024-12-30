@@ -45,13 +45,13 @@ class AddHadith extends StatelessWidget {
                   Gap(15.h),
                   const _TextOfHadithTextField(),
                   Gap(15.h),
-                  _LabelTextFieldAlignWidget(label: context.l10n.isnadOfHadith),
+                  _LabelTextFieldAlignWidget(label: context.l10n.rawiOfHadith),
                   Gap(15.h),
-                  const _IsnadOfHadithTextField(),
+                  const _RawiOfHadithTextField(),
                   Gap(15.h),
-                  _LabelTextFieldAlignWidget(label: context.l10n.sourceOfHadith),
+                  _LabelTextFieldAlignWidget(label: context.l10n.extractionOfHadith),
                   Gap(15.h),
-                  const _SourceOfHadithTextField(),
+                  const _ExtractionOfHadithTextField(),
                   Gap(15.h),
                   _LabelTextFieldAlignWidget(label: context.l10n.hadithRule),
                   Gap(10.h),
@@ -155,17 +155,17 @@ class _TextOfHadithTextField extends StatelessWidget {
   }
 }
 
-class _IsnadOfHadithTextField extends StatelessWidget {
-  const _IsnadOfHadithTextField();
+class _RawiOfHadithTextField extends StatelessWidget {
+  const _RawiOfHadithTextField();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddHadithCubit, AddHadithState>(
-      buildWhen: (previous, current) => previous.isnadOfHadith != current.isnadOfHadith,
+      buildWhen: (previous, current) => previous.rawiOfHadith != current.rawiOfHadith,
       builder: (context, state) {
         return TextField(
-          key: const Key('hadithForm_isnadOfHadith_textField'),
-          onChanged: (value) => context.read<AddHadithCubit>().isnadOfHadithChanged(value),
+          key: const Key('hadithForm_rawiOfHadith_textField'),
+          onChanged: (value) => context.read<AddHadithCubit>().rawiOfHadithChanged(value),
           minLines: 1,
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
@@ -182,16 +182,16 @@ class _IsnadOfHadithTextField extends StatelessWidget {
   }
 }
 
-class _SourceOfHadithTextField extends StatelessWidget {
-  const _SourceOfHadithTextField();
+class _ExtractionOfHadithTextField extends StatelessWidget {
+  const _ExtractionOfHadithTextField();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddHadithCubit, AddHadithState>(
       builder: (context, state) {
         return TextField(
-          key: const Key('hadithForm_sourceOfHadith_textField'),
-          onChanged: (value) => context.read<AddHadithCubit>().sourceOfHadithChanged(value),
+          key: const Key('hadithForm_extractionOfHadith_textField'),
+          onChanged: (value) => context.read<AddHadithCubit>().extractionOfHadithChanged(value),
           minLines: 1,
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
