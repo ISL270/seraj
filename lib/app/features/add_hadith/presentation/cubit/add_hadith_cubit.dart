@@ -3,22 +3,24 @@
 import 'dart:developer';
 
 import 'package:athar/app/core/enums/status.dart';
+import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
-import 'package:athar/app/features/add_hadith/domain/models/hadith_type.dart';
-import 'package:athar/app/features/add_hadith/domain/repositories/hadith_repository.dart';
+import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
+import 'package:athar/app/features/daleel/domain/models/hadith_type.dart';
+import 'package:athar/app/features/daleel/domain/models/priority.dart';
+import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:uuid/uuid.dart';
 
 part 'add_hadith_state.dart';
 
 @injectable
 class AddHadithCubit extends Cubit<AddHadithState> {
-  final HadithRepository _hadithRepository;
-
-  AddHadithCubit(this._hadithRepository) : super(const AddHadithState());
+  AddHadithCubit() : super(const AddHadithState());
 
   void textOfHadithChanged(String value) => emit(state.copyWith(textOfHadith: Name.dirty(value)));
 
@@ -31,17 +33,21 @@ class AddHadithCubit extends Cubit<AddHadithState> {
 
   void hadithExplainChanged(String value) => emit(state.copyWith(hadithExplain: value));
 
-  Future<void> saveHadithForm() async {
+  Future<void> saveDaleelForm() async {
     emit(state.copyWith(status: const Loading()));
     try {
-      await _hadithRepository.addHadith(
-        textOfHadith: state.textOfHadith.value,
-        hadithType: state.hadithAuthenticity,
-        hadithExplain: state.hadithExplain,
-        isnadOfHadith: state.isnadOfHadith,
-        sourceOfHadith: state.sourceOfHadith,
+      await getIt.get<DaleelRepository>().saveDaleelInfoRemote(
+        daleelType: DaleelType.hadith,
+        daleelId: const Uuid().v4(),
+        text: state.textOfHadith.value,
+        rawi: state.isnadOfHadith,
+        extraction: state.sourceOfHadith,
+        hadithAuthenticity: state.hadithAuthenticity,
+        lastRevisedAt: DateTime.now(),
+        priority: Priority.normal,
+        tags: [],
       );
-      emit(state.copyWith(status: const Success('Saved Hadith Successfully')));
+      emit(state.copyWith(status: const Success('Saved Daleel Successfully')));
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(status: Failure(e as GenericException)));

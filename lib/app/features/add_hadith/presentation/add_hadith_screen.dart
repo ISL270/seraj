@@ -3,7 +3,7 @@ import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/add_hadith/domain/models/hadith_type.dart';
+import 'package:athar/app/features/daleel/domain/models/hadith_type.dart';
 import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
@@ -275,7 +275,7 @@ class _HadithAddButton extends StatelessWidget {
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
             label: context.l10n.add,
-            onPressed: state.isValid ? () => context.read<AddHadithCubit>().saveHadithForm() : null,
+            onPressed: state.isValid ? () => context.read<AddHadithCubit>().saveDaleelForm() : null,
           ),
         );
       },

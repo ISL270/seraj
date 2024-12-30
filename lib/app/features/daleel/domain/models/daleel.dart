@@ -1,18 +1,19 @@
-enum Priotiy { urgent, high, normal }
+import 'package:athar/app/features/daleel/domain/models/hadith_type.dart';
+import 'package:athar/app/features/daleel/domain/models/priority.dart';
 
 sealed class Daleel {
   final String id;
   final String text;
   final String? description;
   final String? sayer;
-  final Priotiy priotiy;
+  final Priority priotiy;
   final List<String> tags;
   final DateTime? lastRevisedAt;
 
   const Daleel({
     required this.id,
     required this.text,
-    required this.priotiy,
+    this.priotiy = Priority.normal,
     this.lastRevisedAt,
     this.tags = const [],
     this.description,
@@ -36,8 +37,6 @@ final class Hadith extends Daleel {
     this.authenticity,
   });
 }
-
-enum HadithAuthenticity { sahih, hasan, daif }
 
 // Ayah class
 
