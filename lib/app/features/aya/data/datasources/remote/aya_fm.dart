@@ -15,7 +15,7 @@ final class AyaFm implements RemoteModel<AyaModel> {
 
   factory AyaFm.fromJson(String docId, Map<String, dynamic> json) => AyaFm(
         textOfAya: json['textOfAya'] as String,
-        ayaExplain: json['AyaExplain'] as String,
+        ayaExplain: json['ayaExplain'] as String,
         surahOfAya: json['surahOfAya'] as String,
         nomOfAya: json['nomOfAya'] as String,
       );

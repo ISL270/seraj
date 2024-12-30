@@ -33,11 +33,11 @@ final class AyaFirestoreSource extends ReactiveFirestoreSource<AyaFm>
       AyaFm.fromJson(docID, json);
 
   @override
-  Stream<QuerySnapshot<Map<String, dynamic>>> snapshotQuery(User user) {
-    final userId = user.id;
-    return firestoreSvc.users.collection
-        .doc(userId)
-        .collection('ayat')
-        .snapshots();
-  }
+  Stream<QuerySnapshot<Map<String, dynamic>>> snapshotQuery(User user) => super
+      .firestoreSvc
+      .users
+      .collection
+      .doc(user.id)
+      .collection('ayat')
+      .snapshots();
 }
