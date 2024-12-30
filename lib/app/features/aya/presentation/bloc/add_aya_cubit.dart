@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
-import 'package:athar/app/features/add_aya/data/models/aya_model.dart';
-import 'package:athar/app/features/add_aya/domain/repositories/aya_repository.dart';
+import 'package:athar/app/features/aya/domain/models/aya_model.dart';
+import 'package:athar/app/features/aya/domain/repositories/aya_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:form_inputs/form_inputs.dart';

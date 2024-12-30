@@ -2,8 +2,8 @@
 
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/core/isar/isar_helper.dart';
-import 'package:athar/app/features/add_aya/data/sources/local/aya_isar.dart';
 import 'package:athar/app/features/authentication/data/models/local/user_isar.dart';
+import 'package:athar/app/features/aya/data/sources/local/aya_isar.dart';
 import 'package:athar/app/features/settings/data/sources/local/settings_isar.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';

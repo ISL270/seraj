@@ -1,5 +1,5 @@
 import 'package:athar/app/core/isar/cache_model.dart';
-import 'package:athar/app/features/add_aya/data/models/aya_model.dart';
+import 'package:athar/app/features/aya/domain/models/aya_model.dart';
 import 'package:isar/isar.dart';
 
 part 'aya_isar.g.dart';
