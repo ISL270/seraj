@@ -22,14 +22,16 @@ import 'package:athar/app/features/authentication/domain/repositories/user_repos
     as _i92;
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart'
     as _i562;
+import 'package:athar/app/features/aya/data/datasources/local/aya_isar_source.dart'
+    as _i151;
+import 'package:athar/app/features/aya/data/datasources/remote/aya_firestore_source.dart'
+    as _i957;
 import 'package:athar/app/features/aya/data/sources/local/aya_isar_source.dart'
     as _i437;
 import 'package:athar/app/features/aya/data/sources/remote/aya_firestore_source.dart'
     as _i505;
 import 'package:athar/app/features/aya/domain/repositories/aya_repository.dart'
     as _i157;
-import 'package:athar/app/features/aya/presentation/bloc/add_aya_cubit.dart'
-    as _i380;
 import 'package:athar/app/features/settings/data/sources/local/settings_isar_source.dart'
     as _i387;
 import 'package:athar/app/features/settings/domain/settings_repository.dart'
@@ -65,10 +67,14 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i683.UserFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i602.UserIsarSource>(
         () => _i602.UserIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i387.SettingsIsarSource>(
-        () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i151.AyaIsarSource>(
+        () => _i151.AyaIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i437.AyaIsarSource>(
         () => _i437.AyaIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i387.SettingsIsarSource>(
+        () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i957.AyaFirestoreSource>(
+        () => _i957.AyaFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i505.AyaFirestoreSource>(
         () => _i505.AyaFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i257.SettingsRepository>(
@@ -91,15 +97,13 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
       dispose: (i) => i.dispose(),
     );
-    gh.singleton<_i562.AuthBloc>(
-        () => _i562.AuthBloc(gh<_i842.AuthRepository>()));
     gh.singleton<_i157.AyaRepository>(() => _i157.AyaRepository(
           gh<_i842.AuthRepository>(),
-          gh<_i505.AyaFirestoreSource>(),
-          gh<_i437.AyaIsarSource>(),
+          gh<_i957.AyaFirestoreSource>(),
+          gh<_i151.AyaIsarSource>(),
         ));
-    gh.singleton<_i380.AddAyaCubit>(
-        () => _i380.AddAyaCubit(gh<_i157.AyaRepository>()));
+    gh.singleton<_i562.AuthBloc>(
+        () => _i562.AuthBloc(gh<_i842.AuthRepository>()));
     return this;
   }
 }

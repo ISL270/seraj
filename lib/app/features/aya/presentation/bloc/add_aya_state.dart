@@ -6,7 +6,7 @@ final class AddAyaState extends Equatable with FormzMixin {
   const AddAyaState({
     this.textOfAya = const Name.pure(),
     this.surahOfAya = const Name.pure(),
-    this.ayaExplain = '',
+    this.ayaExplain = const Name.pure(),
     this.numOfAya = '',
     this.status = const Initial(),
     this.hintTexts = const [],
@@ -16,22 +16,19 @@ final class AddAyaState extends Equatable with FormzMixin {
 
   final Name textOfAya;
   final Name surahOfAya;
-  final String ayaExplain;
+  final Name ayaExplain;
   final String numOfAya;
   final VoidStatus status;
 
   @override
   List<Object> get props => [
-        textOfAya,
         ayaExplain,
-        surahOfAya,
-        numOfAya,
         status,
       ];
 
   AddAyaState copyWith({
     Name? textOfAya,
-    String? ayaExplain,
+    Name? ayaExplain,
     Name? surahOfAya,
     String? numOfAya,
     VoidStatus? status,
@@ -47,10 +44,7 @@ final class AddAyaState extends Equatable with FormzMixin {
 
   @override
   // ignore: override_on_non_overriding_member
-  List<FormzInput> get inputs => [
-        textOfAya,
-        surahOfAya,
-      ];
+  List<FormzInput> get inputs => [ayaExplain];
 
   String get errorMsg {
     if (!status.isFailure) return '';

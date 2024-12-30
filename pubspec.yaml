@@ -49,6 +49,7 @@ dependencies:
   super_cupertino_navigation_bar: ^2.1.2
   theme_tailor_annotation: ^3.0.1
   uuid: ^4.5.1
+  flutter_quran: ^0.0.2
 
 dev_dependencies:
   bloc_test: ^9.1.7

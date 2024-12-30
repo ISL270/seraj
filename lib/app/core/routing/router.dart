@@ -6,6 +6,7 @@ import 'package:athar/app/features/athars/presentation/athars_screen.dart';
 import 'package:athar/app/features/athars/presentation/cubit/athars_cubit.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:athar/app/features/aya/presentation/add_new_ayah.dart';
+import 'package:athar/app/features/aya/presentation/aya_search.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/duas/presentation/duas_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
@@ -18,6 +19,7 @@ import 'package:athar/app/features/splash/bloc/splash_bloc.dart';
 import 'package:athar/app/features/splash/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_quran/flutter_quran.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
@@ -80,11 +82,26 @@ final appRouter = GoRouter(
                   name: AddNewAyah.name,
                   path: AddNewAyah.name,
                   parentNavigatorKey: _rootNavigatorKey,
-                  pageBuilder: (context, state) => CupertinoPage(
+                  pageBuilder: (context, state) {
+                    // Pass the Aya model using the `extra` parameter
+                    final ayah = state.extra! as Ayah;
+                    return CupertinoPage(
                       child: BlocProvider(
-                    create: (context) => AtharsCubit(),
-                    child: const AddNewAyah(),
-                  )),
+                        create: (context) => AtharsCubit(),
+                        child: AddNewAyah(ayah: ayah),
+                      ),
+                    );
+                  },
+                ),
+                GoRoute(
+                  name: AyaSearch.name,
+                  path: AyaSearch.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  pageBuilder: (context, state) {
+                    return const CupertinoPage(
+                      child: AyaSearch(),
+                    );
+                  },
                 ),
               ],
             ),

@@ -2,33 +2,38 @@ import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
+import 'package:athar/app/features/aya/domain/repositories/aya_repository.dart';
 import 'package:athar/app/features/aya/presentation/bloc/add_aya_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_quran/flutter_quran.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class AddNewAyah extends StatelessWidget {
-  const AddNewAyah({super.key});
+  final Ayah ayah;
 
-  static const String name = 'addNewAyah';
+  const AddNewAyah({required this.ayah, super.key});
+
+  static const String name = 'add-new-aya';
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt.get<AddAyaCubit>(),
+      create: (context) => AddAyaCubit(
+        ayaRepository: getIt.get<AyaRepository>(),
+        ayah: ayah,
+      ),
       child: Screen(
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: SingleChildScrollView(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -62,7 +67,12 @@ class AddNewAyah extends StatelessWidget {
                             ),
                           ),
                           Gap(20.h),
-                          const _SurahAndVerseNumTextField(),
+                          _SurahAndVerseNumTextField(
+                            surahController:
+                                TextEditingController(text: ayah.surahNameAr),
+                            noAyahController: TextEditingController(
+                                text: ayah.surahNumber.toString()),
+                          ),
                           Gap(20.h),
                           Align(
                             alignment: Alignment.centerRight,
@@ -72,7 +82,9 @@ class AddNewAyah extends StatelessWidget {
                             ),
                           ),
                           Gap(20.h),
-                          const _QuranicVerseTextField(),
+                          _QuranicVerseTextField(
+                            controller: TextEditingController(text: ayah.ayah),
+                          ),
                           Gap(20.h),
                           Align(
                             alignment: Alignment.centerRight,
@@ -82,7 +94,9 @@ class AddNewAyah extends StatelessWidget {
                             ),
                           ),
                           Gap(20.h),
-                          const _QuranicVerseExplanationTextField(),
+                          _QuranicVerseExplanationTextField(
+                            controller: TextEditingController(text: ''),
+                          ),
                         ],
                       ),
                     ),
@@ -100,68 +114,62 @@ class AddNewAyah extends StatelessWidget {
 }
 
 class _SurahAndVerseNumTextField extends StatelessWidget {
-  const _SurahAndVerseNumTextField();
+  final TextEditingController surahController;
+  final TextEditingController noAyahController;
+
+  const _SurahAndVerseNumTextField({
+    required this.surahController,
+    required this.noAyahController,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Expanded(
+        Expanded(
           flex: 3,
-          child: _SurahTextField(),
+          child: TextField(
+            controller: surahController,
+            minLines: 1,
+            onChanged: (value) =>
+                context.read<AddAyaCubit>().surahOfAyaChanged(value),
+            decoration: InputDecoration(
+              labelStyle: context.textThemeX.medium,
+              alignLabelWithHint: true,
+              label: Text(context.l10n.quranicayahsurah,
+                  style: context.textThemeX.medium.bold),
+            ),
+          ),
         ),
         Gap(20.w),
-        const Expanded(
-          child: _NoAyahOfSurah(),
+        Expanded(
+          child: TextField(
+            controller: noAyahController,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            onChanged: (value) =>
+                context.read<AddAyaCubit>().nomOfAyaChanged(value),
+            decoration: InputDecoration(
+              labelStyle: context.textThemeX.medium,
+              alignLabelWithHint: true,
+              label: Text(context.l10n.numofayah,
+                  style: context.textThemeX.medium.bold),
+            ),
+          ),
         ),
       ],
     );
   }
 }
 
-class _SurahTextField extends StatelessWidget {
-  const _SurahTextField();
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      minLines: 1,
-      onChanged: (value) =>
-          context.read<AddAyaCubit>().surahOfAyaChanged(value),
-      decoration: InputDecoration(
-        labelStyle: context.textThemeX.medium,
-        alignLabelWithHint: true,
-        label: Text(context.l10n.quranicayahsurah,
-            style: context.textThemeX.medium.bold),
-      ),
-    );
-  }
-}
-
-class _NoAyahOfSurah extends StatelessWidget {
-  const _NoAyahOfSurah();
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-      onChanged: (value) => context.read<AddAyaCubit>().nomOfAyaChanged(value),
-      decoration: InputDecoration(
-        labelStyle: context.textThemeX.medium,
-        alignLabelWithHint: true,
-        label:
-            Text(context.l10n.numofayah, style: context.textThemeX.medium.bold),
-      ),
-    );
-  }
-}
-
 class _QuranicVerseTextField extends StatelessWidget {
-  const _QuranicVerseTextField();
+  final TextEditingController controller;
+
+  const _QuranicVerseTextField({required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       maxLines: 5,
       minLines: 3,
       onChanged: (value) => context.read<AddAyaCubit>().textOfAyaChanged(value),
@@ -176,11 +184,14 @@ class _QuranicVerseTextField extends StatelessWidget {
 }
 
 class _QuranicVerseExplanationTextField extends StatelessWidget {
-  const _QuranicVerseExplanationTextField();
+  final TextEditingController controller;
+
+  const _QuranicVerseExplanationTextField({required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       maxLines: 5,
       minLines: 4,
       onChanged: (value) =>
@@ -205,6 +216,7 @@ class _AyahAddButton extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.all(16.w),
           child: Button.filled(
+            isLoading: state.status.isLoading,
             label: context.l10n.add,
             maxWidth: true,
             onPressed: state.isValid
