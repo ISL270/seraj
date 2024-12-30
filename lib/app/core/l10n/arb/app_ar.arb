@@ -59,5 +59,9 @@
   "numofayah":"رقم الآية",
   "quranicayahsurah":"سورة الآية القرآنية",
   "surahandnoayah":"السورة ورقم الآية",
-  "searchForAya":"البحث عن أيه"
+  "searchForAya":"البحث عن آية",
+  "selectAyahs":"حدد الآية",
+  "cancel":"تجاهل",
+  "confirm":"تأكد",
+  "ayah":"آية"
 }

@@ -66,10 +66,8 @@ class _SearchScreenState extends State<AyaSearch> {
                               subtitle: Text(ayah.surahNameAr),
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 16.h),
-                              onTap: () => context.pushNamed(
-                                AddNewAyah.name,
-                                extra: ayah,
-                              ),
+                              onTap: () =>
+                                  _showSurahSelectionDialog(context, ayah),
                             ),
                             Divider(
                               color: context.colorsX.onBackgroundTint35,
@@ -85,6 +83,80 @@ class _SearchScreenState extends State<AyaSearch> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _showSurahSelectionDialog(
+      BuildContext context, Ayah initialAyah) async {
+    final surahAyahs =
+        FlutterQuran().getSurah(initialAyah.surahNumber).ayahs.getRange(
+              initialAyah.ayahNumber - 1,
+              initialAyah.ayahNumber + 2,
+            );
+    final selectedAyahs = <Ayah>[];
+
+    await showDialog<void>(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              surfaceTintColor: context.colorsX.background,
+              backgroundColor: context.colorsX.background,
+              title: Text(context.l10n.selectAyahs),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: surahAyahs.map((ayah) {
+                    final isSelected = selectedAyahs.contains(ayah);
+                    return CheckboxListTile(
+                      activeColor: context.colorsX.primary,
+                      value: isSelected,
+                      onChanged: (bool? value) {
+                        if (selectedAyahs.length < 3) {
+                          if (selectedAyahs.isEmpty ||
+                              ayah.ayahNumber ==
+                                  selectedAyahs.last.ayahNumber + 1) {
+                            setState(() {
+                              selectedAyahs.add(ayah);
+                            });
+                          }
+                        } else if (value == false) {
+                          setState(() {
+                            selectedAyahs.remove(ayah);
+                          });
+                        }
+                      },
+                      title: Text(ayah.ayah.replaceAll('\n', ' ')),
+                      subtitle: Text('${context.l10n.ayah} ${ayah.ayahNumber}'),
+                    );
+                  }).toList(),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => context.pop(),
+                  child: Text(context.l10n.cancel),
+                ),
+                TextButton(
+                  onPressed: () {
+                    context.pop();
+                    _navigateToAddNewAyah(context,
+                        selectedAyahs.isEmpty ? [initialAyah] : selectedAyahs);
+                  },
+                  child: Text(context.l10n.confirm),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _navigateToAddNewAyah(BuildContext context, List<Ayah> ayahs) {
+    context.pushNamed(
+      AddNewAyah.name,
+      extra: ayahs,
     );
   }
 }

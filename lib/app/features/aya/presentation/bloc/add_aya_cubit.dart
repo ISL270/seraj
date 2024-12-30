@@ -15,12 +15,13 @@ class AddAyaCubit extends Cubit<AddAyaState> {
 
   AddAyaCubit({
     required AyaRepository ayaRepository,
-    required Ayah ayah,
+    required List<Ayah> ayah,
   })  : _ayaRepository = ayaRepository,
         super(AddAyaState(
-          textOfAya: Name.dirty(ayah.ayah),
-          surahOfAya: Name.dirty(ayah.surahNameEn),
-          numOfAya: ayah.ayahNumber.toString(),
+          textOfAya:
+              Name.dirty(ayah.map((singleAyah) => singleAyah.ayah).join(' ')),
+          surahOfAya: Name.dirty(ayah.first.surahNameAr),
+          numOfAya: ayah.first.ayahNumber.toString(),
           ayaExplain: const Name.dirty(''),
         ));
 

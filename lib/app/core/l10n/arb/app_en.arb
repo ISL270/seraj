@@ -59,5 +59,8 @@
   "numofayah":"Ayah No.",
   "quranicayahsurah":"Quranic Ayah Surah",
   "surahandnoayah":"Surah & Number of Ayah",
-  "searchForAya":"ٍٍSearch For Aya"
+  "searchForAya":"ٍٍSearch For Aya",
+  "selectAyahs":"Select Ayahs",
+  "cancel":"Cancel",
+  "ayah":"Ayah"
 }

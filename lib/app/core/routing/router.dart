@@ -84,7 +84,7 @@ final appRouter = GoRouter(
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) {
                     // Pass the Aya model using the `extra` parameter
-                    final ayah = state.extra! as Ayah;
+                    final ayah = state.extra! as List<Ayah>;
                     return CupertinoPage(
                       child: BlocProvider(
                         create: (context) => AtharsCubit(),

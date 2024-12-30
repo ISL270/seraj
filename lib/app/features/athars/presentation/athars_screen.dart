@@ -6,7 +6,7 @@ import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/athars/presentation/cubit/athars_cubit.dart';
-import 'package:athar/app/features/aya/presentation/add_new_ayah.dart';
+import 'package:athar/app/features/aya/presentation/aya_search.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/button.dart';

@@ -15,7 +15,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class AddNewAyah extends StatelessWidget {
-  final Ayah ayah;
+  final List<Ayah> ayah;
 
   const AddNewAyah({required this.ayah, super.key});
 
@@ -68,10 +68,12 @@ class AddNewAyah extends StatelessWidget {
                           ),
                           Gap(20.h),
                           _SurahAndVerseNumTextField(
-                            surahController:
-                                TextEditingController(text: ayah.surahNameAr),
+                            surahController: TextEditingController(
+                                text: ayah[0].surahNameAr),
                             noAyahController: TextEditingController(
-                                text: ayah.surahNumber.toString()),
+                                text: ayah
+                                    .map((singleAyah) => singleAyah.ayahNumber)
+                                    .join(',')),
                           ),
                           Gap(20.h),
                           Align(
@@ -83,7 +85,11 @@ class AddNewAyah extends StatelessWidget {
                           ),
                           Gap(20.h),
                           _QuranicVerseTextField(
-                            controller: TextEditingController(text: ayah.ayah),
+                            controller: TextEditingController(
+                              text: ayah
+                                  .map((singleAyah) => singleAyah.ayah)
+                                  .join(' '), // Combine ayahs
+                            ),
                           ),
                           Gap(20.h),
                           Align(
@@ -168,16 +174,20 @@ class _QuranicVerseTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      maxLines: 5,
-      minLines: 3,
-      onChanged: (value) => context.read<AddAyaCubit>().textOfAyaChanged(value),
-      decoration: InputDecoration(
-        labelStyle: context.textThemeX.medium,
-        alignLabelWithHint: true,
-        label: Text(context.l10n.quranicversec,
-            style: context.textThemeX.medium.bold),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.h),
+      child: TextField(
+        controller: controller,
+        maxLines: 5,
+        minLines: 3,
+        onChanged: (value) =>
+            context.read<AddAyaCubit>().textOfAyaChanged(value),
+        decoration: InputDecoration(
+          labelStyle: context.textThemeX.medium,
+          alignLabelWithHint: true,
+          label: Text(context.l10n.quranicversec,
+              style: context.textThemeX.medium.bold),
+        ),
       ),
     );
   }
