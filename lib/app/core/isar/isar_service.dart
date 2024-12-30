@@ -3,7 +3,7 @@
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/core/isar/isar_helper.dart';
 import 'package:athar/app/features/authentication/data/models/local/user_isar.dart';
-import 'package:athar/app/features/aya/data/sources/local/aya_isar.dart';
+import 'package:athar/app/features/aya/data/datasources/local/aya_isar.dart';
 import 'package:athar/app/features/settings/data/sources/local/settings_isar.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
@@ -12,6 +12,7 @@ import 'package:path_provider/path_provider.dart';
 @singleton
 final class IsarService with IsarHelper {
   const IsarService._(this._isar);
+
   final Isar _isar;
 
   @FactoryMethod(preResolve: true)

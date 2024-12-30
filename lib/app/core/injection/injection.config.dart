@@ -26,10 +26,6 @@ import 'package:athar/app/features/aya/data/datasources/local/aya_isar_source.da
     as _i151;
 import 'package:athar/app/features/aya/data/datasources/remote/aya_firestore_source.dart'
     as _i957;
-import 'package:athar/app/features/aya/data/sources/local/aya_isar_source.dart'
-    as _i437;
-import 'package:athar/app/features/aya/data/sources/remote/aya_firestore_source.dart'
-    as _i505;
 import 'package:athar/app/features/aya/domain/repositories/aya_repository.dart'
     as _i157;
 import 'package:athar/app/features/settings/data/sources/local/settings_isar_source.dart'
@@ -69,14 +65,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i602.UserIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i151.AyaIsarSource>(
         () => _i151.AyaIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i437.AyaIsarSource>(
-        () => _i437.AyaIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i387.SettingsIsarSource>(
         () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i957.AyaFirestoreSource>(
         () => _i957.AyaFirestoreSource(gh<_i516.FirestoreService>()));
-    gh.singleton<_i505.AyaFirestoreSource>(
-        () => _i505.AyaFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i257.SettingsRepository>(
         () => _i257.SettingsRepository(gh<_i387.SettingsIsarSource>()));
     gh.singleton<_i92.UserRepository>(() => _i92.UserRepository(
