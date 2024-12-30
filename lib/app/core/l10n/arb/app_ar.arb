@@ -63,5 +63,8 @@
   "enterTextOfHadith":"ادخل متن الحديث",
   "hadithRule": "الحكم",
   "hadithAddedSuccessf": "تم إضافة الحديث بنجاح",
-  "hadithHasan":"حسن"
+  "hadithHasan":"حسن",
+  "priority":"مدى الاهمية",
+  "saveIt":"حفظه"
+
 }

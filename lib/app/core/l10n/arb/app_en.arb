@@ -63,5 +63,7 @@
   "enterTextOfHadith":"Enter Text Of Hadith",
   "hadithRule":"Hadith Rule",
   "hadithAddedSuccessf": "Hadith Added Successfully",
-  "hadithHasan":"Hasan"
+  "hadithHasan":"Hasan",
+  "priority":"priority",
+  "saveIt":"save it"
 }

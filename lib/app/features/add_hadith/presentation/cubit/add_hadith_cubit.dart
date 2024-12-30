@@ -33,6 +33,10 @@ class AddHadithCubit extends Cubit<AddHadithState> {
 
   void hadithExplainChanged(String value) => emit(state.copyWith(hadithExplain: value));
 
+  void sliderPriorityChanged(double value) {
+    emit(state.copyWith(sliderValue: value));
+  }
+
   Future<void> saveDaleelForm() async {
     emit(state.copyWith(status: const Loading()));
     try {

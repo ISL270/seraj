@@ -9,6 +9,7 @@ final class AddHadithState extends Equatable with FormzMixin {
     this.rawiOfHadith = '',
     this.extractionOfHadith = '',
     this.hadithExplain = '',
+    this.sliderValue = 0.0,
     this.status = const Initial(),
     this.hintTexts = const [
       'أنا عِنْدَ ظَنِّ عَبْدِي بي، وأنا معهُ إذا ذَكَرَنِي، فإنْ ذَكَرَنِي في نَفْسِهِ ذَكَرْتُهُ في نَفْسِي، وإنْ ذَكَرَنِي في مَلَإٍ ذَكَرْتُهُ في مَلَإٍ خَيْرٍ منهمْ، وإنْ تَقَرَّبَ إلَيَّ بشِبْرٍ تَقَرَّبْتُ إلَيْهِ ذِراعًا، وإنْ تَقَرَّبَ إلَيَّ ذِراعًا تَقَرَّبْتُ إلَيْهِ باعًا، وإنْ أتانِي يَمْشِي أتَيْتُهُ هَرْوَلَةً',
@@ -16,15 +17,22 @@ final class AddHadithState extends Equatable with FormzMixin {
       'اخرجه البخاري ومسلم',
       'إن ظَنَّ باللهِ خَيرًا فَلَه، وإن ظَنَّ بِه سِوَى ذلك فَلَه، وحُسنُ الظَّنِّ باللهِ عزَّ وجلَّ يَكونُ بفِعلِ ما يُوجِبُ فَضلَ اللهِ وَرَجاءَه، فيَعمَلُ الصَّالِحاتِ، ويُحسِنُ الظَّنَّ بأنَّ اللهَ تَعالَى يَقبَلُه، فاللهُ سُبحانَه عِندَ مُنتهَى أمَلِ العَبدِ به،',
     ],
+    this.priorityTexts = const [
+      'يرجى',
+      'يفضل',
+      'يجب',
+    ],
   });
 
   final List<String> hintTexts;
+  final List<String> priorityTexts;
 
   final Name textOfHadith;
   final HadithAuthenticity hadithAuthenticity;
   final String rawiOfHadith;
   final String extractionOfHadith;
   final String hadithExplain;
+  final double sliderValue;
   final VoidStatus status;
 
   @override
@@ -34,6 +42,7 @@ final class AddHadithState extends Equatable with FormzMixin {
         rawiOfHadith,
         extractionOfHadith,
         hadithExplain,
+        sliderValue,
         status,
       ];
 
@@ -43,6 +52,7 @@ final class AddHadithState extends Equatable with FormzMixin {
     String? extractionOfHadith,
     HadithAuthenticity? hadithAuthenticity,
     String? hadithExplain,
+    double? sliderValue,
     VoidStatus? status,
   }) {
     return AddHadithState(
@@ -51,6 +61,7 @@ final class AddHadithState extends Equatable with FormzMixin {
       extractionOfHadith: extractionOfHadith ?? this.extractionOfHadith,
       hadithAuthenticity: hadithAuthenticity ?? this.hadithAuthenticity,
       hadithExplain: hadithExplain ?? this.hadithExplain,
+      sliderValue: sliderValue ?? this.sliderValue,
       status: status ?? this.status,
     );
   }
