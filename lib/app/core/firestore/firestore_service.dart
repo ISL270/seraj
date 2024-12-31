@@ -19,9 +19,8 @@ final class _Users {
 }
 
 final class _Hadith {
-  late final collection = FirebaseFirestore.instance.collection('hadith');
-
   late final idHadith = 'id';
+  late final daleelType = 'daleelType';
   late final textOfHadith = 'text';
   late final authenticityOfHadith = 'hadithAuthenticity';
   late final sayerOfHadith = 'sayer';

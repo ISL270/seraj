@@ -1,7 +1,7 @@
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
-import 'package:athar/app/features/daleel/domain/models/hadith_type.dart';
+import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:isar/isar.dart';
 

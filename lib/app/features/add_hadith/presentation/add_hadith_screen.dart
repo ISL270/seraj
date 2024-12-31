@@ -4,7 +4,8 @@ import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
-import 'package:athar/app/features/daleel/domain/models/hadith_type.dart';
+import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
+import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +97,8 @@ class _TextOfHadithTextField extends StatelessWidget {
             errorText:
                 state.textOfHadith.displayError == null ? null : context.l10n.enterTextOfHadith,
             hintMaxLines: 1,
-            hintText: state.hintTexts[0],
+            hintText:
+                'أنا عِنْدَ ظَنِّ عَبْدِي بي، وأنا معهُ إذا ذَكَرَنِي، فإنْ ذَكَرَنِي في نَفْسِهِ ذَكَرْتُهُ في نَفْسِي، وإنْ ذَكَرَنِي في مَلَإٍ ذَكَرْتُهُ في مَلَإٍ خَيْرٍ منهمْ، وإنْ تَقَرَّبَ إلَيَّ بشِبْرٍ تَقَرَّبْتُ إلَيْهِ ذِراعًا، وإنْ تَقَرَّبَ إلَيَّ ذِراعًا تَقَرَّبْتُ إلَيْهِ باعًا، وإنْ أتانِي يَمْشِي أتَيْتُهُ هَرْوَلَةً',
             hintStyle: context.textThemeX.medium.bold.copyWith(
               height: 1.5.h,
               overflow: TextOverflow.ellipsis,
@@ -124,7 +126,7 @@ class _RawiOfHadithTextField extends StatelessWidget {
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,
-            hintText: state.hintTexts[1],
+            hintText: 'عن أبي هريرة - رضي الله عنه - عن النبي ﷺ',
             hintStyle: context.textThemeX.medium.bold.copyWith(
               height: 1.5.h,
               color: context.colorsX.onBackgroundTint35,
@@ -150,7 +152,7 @@ class _ExtractionOfHadithTextField extends StatelessWidget {
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,
-            hintText: state.hintTexts[2],
+            hintText: 'اخرجه البخاري ومسلم',
             hintStyle: context.textThemeX.medium.bold.copyWith(
               height: 1.5.h,
               color: context.colorsX.onBackgroundTint35,
@@ -216,7 +218,8 @@ class _HadithExplanationTextField extends StatelessWidget {
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,
             hintMaxLines: 3,
-            hintText: state.hintTexts[3],
+            hintText:
+                'إن ظَنَّ باللهِ خَيرًا فَلَه، وإن ظَنَّ بِه سِوَى ذلك فَلَه، وحُسنُ الظَّنِّ باللهِ عزَّ وجلَّ يَكونُ بفِعلِ ما يُوجِبُ فَضلَ اللهِ وَرَجاءَه، فيَعمَلُ الصَّالِحاتِ، ويُحسِنُ الظَّنَّ بأنَّ اللهَ تَعالَى يَقبَلُه، فاللهُ سُبحانَه عِندَ مُنتهَى أمَلِ العَبدِ به',
             hintStyle: context.textThemeX.medium.bold.copyWith(
               height: 1.5.h,
               overflow: TextOverflow.ellipsis,
@@ -234,37 +237,38 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddHadithCubit, AddHadithState>(builder: (context, state) {
-      return Column(
-        spacing: 15.h,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              _LabelTextFieldAlignWidget(label: context.l10n.priority),
-              Gap(8.w),
-              Text(
-                '${state.priorityTexts[state.sliderValue.toInt()]} ${context.l10n.saveIt}',
-                style: context.textThemeX.medium.bold.copyWith(
-                  color: context.colorsX.primary,
-                  textBaseline: TextBaseline.alphabetic,
+    return BlocBuilder<AddHadithCubit, AddHadithState>(
+      builder: (context, state) {
+        return Column(
+          spacing: 15.h,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                _LabelTextFieldAlignWidget(label: context.l10n.priority),
+                Gap(8.w),
+                Text(
+                  '${context.priorityTitle(context, state.sliderValue.toInt())} ${context.l10n.saveIt}',
+                  style: context.textThemeX.medium.bold.copyWith(
+                    color: context.colorsX.primary,
+                    textBaseline: TextBaseline.alphabetic,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Slider.adaptive(
-            onChanged: (value) => context.read<AddHadithCubit>().sliderPriorityChanged(value),
-            value: state.sliderValue,
-            activeColor: context.colorsX.primary,
-            inactiveColor: context.colorsX.onBackgroundTint35,
-            max: state.priorityTexts.length - 1,
-            divisions: state.priorityTexts.length - 1,
-            label: state.priorityTexts[state.sliderValue.toInt()],
-          ),
-        ],
-      );
-    });
+              ],
+            ),
+            Slider.adaptive(
+                onChanged: (value) => context.read<AddHadithCubit>().sliderPriorityChanged(value),
+                value: state.sliderValue,
+                activeColor: context.colorsX.primary,
+                inactiveColor: context.colorsX.onBackgroundTint35,
+                max: Priority.values.length - 1,
+                divisions: Priority.values.length - 1,
+                label: context.priorityTitle(context, state.sliderValue.toInt())),
+          ],
+        );
+      },
+    );
   }
 }
 

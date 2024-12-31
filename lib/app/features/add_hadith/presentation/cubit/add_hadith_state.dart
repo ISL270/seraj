@@ -11,21 +11,7 @@ final class AddHadithState extends Equatable with FormzMixin {
     this.descOfHadith = '',
     this.sliderValue = 0.0,
     this.status = const Initial(),
-    this.hintTexts = const [
-      'أنا عِنْدَ ظَنِّ عَبْدِي بي، وأنا معهُ إذا ذَكَرَنِي، فإنْ ذَكَرَنِي في نَفْسِهِ ذَكَرْتُهُ في نَفْسِي، وإنْ ذَكَرَنِي في مَلَإٍ ذَكَرْتُهُ في مَلَإٍ خَيْرٍ منهمْ، وإنْ تَقَرَّبَ إلَيَّ بشِبْرٍ تَقَرَّبْتُ إلَيْهِ ذِراعًا، وإنْ تَقَرَّبَ إلَيَّ ذِراعًا تَقَرَّبْتُ إلَيْهِ باعًا، وإنْ أتانِي يَمْشِي أتَيْتُهُ هَرْوَلَةً',
-      'عن أبي هريرة - رضي الله عنه - عن النبي ﷺ',
-      'اخرجه البخاري ومسلم',
-      'إن ظَنَّ باللهِ خَيرًا فَلَه، وإن ظَنَّ بِه سِوَى ذلك فَلَه، وحُسنُ الظَّنِّ باللهِ عزَّ وجلَّ يَكونُ بفِعلِ ما يُوجِبُ فَضلَ اللهِ وَرَجاءَه، فيَعمَلُ الصَّالِحاتِ، ويُحسِنُ الظَّنَّ بأنَّ اللهَ تَعالَى يَقبَلُه، فاللهُ سُبحانَه عِندَ مُنتهَى أمَلِ العَبدِ به،',
-    ],
-    this.priorityTexts = const [
-      'يرجى',
-      'يفضل',
-      'يجب',
-    ],
   });
-
-  final List<String> hintTexts;
-  final List<String> priorityTexts;
 
   final Name textOfHadith;
   final HadithAuthenticity? hadithAuthenticity;
@@ -67,7 +53,6 @@ final class AddHadithState extends Equatable with FormzMixin {
   }
 
   @override
-  // ignore: override_on_non_overriding_member
   List<FormzInput> get inputs => [
         textOfHadith,
       ];

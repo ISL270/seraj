@@ -2,7 +2,7 @@ import 'package:athar/app/core/models/reactive_firestore_source.dart';
 import 'package:athar/app/features/authentication/domain/models/user.dart';
 import 'package:athar/app/features/daleel/data/models/remote/daleel_fm.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
-import 'package:athar/app/features/daleel/domain/models/hadith_type.dart';
+import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
@@ -32,6 +32,7 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
       hadithFirestore.textOfHadith: text,
       hadithFirestore.lastRevisedAt: lastRevisedAt,
       hadithFirestore.priority: priority.name,
+      hadithFirestore.daleelType: DaleelType.hadith.name,
       // optional fields
       if (hadithAuthenticity != null) hadithFirestore.authenticityOfHadith: hadithAuthenticity.name,
       if (description.isNotEmpty) hadithFirestore.descOfHadith: description,

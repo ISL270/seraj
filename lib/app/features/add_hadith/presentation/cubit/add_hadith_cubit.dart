@@ -4,7 +4,7 @@ import 'dart:developer';
 
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
-import 'package:athar/app/features/daleel/domain/models/hadith_type.dart';
+import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -55,6 +55,7 @@ class AddHadithCubit extends Cubit<AddHadithState> {
     }
   }
 
+  // used cause slider only returns double values
   Priority getPriority(double value) {
     if (value == 0.0) {
       return Priority.normal;

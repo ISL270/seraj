@@ -9,7 +9,7 @@ import 'package:athar/app/features/daleel/data/models/remote/daleel_fm.dart';
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar_source.dart';
 import 'package:athar/app/features/daleel/data/sources/remote/daleel_firestore_source.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
-import 'package:athar/app/features/daleel/domain/models/hadith_type.dart';
+import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
