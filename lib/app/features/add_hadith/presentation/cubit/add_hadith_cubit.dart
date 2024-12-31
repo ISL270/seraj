@@ -39,7 +39,6 @@ class AddHadithCubit extends Cubit<AddHadithState> {
     emit(state.copyWith(status: const Loading()));
     try {
       await _daleelRepository.saveHadith(
-        // userId: getIt.get<AuthBloc>().state.user!.id,
         text: state.textOfHadith.value,
         sayer: state.sayerOfHadith,
         description: state.descOfHadith,

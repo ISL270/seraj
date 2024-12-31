@@ -22,10 +22,8 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
     required Priority priority,
     required List<String> tags,
   }) async {
-    final daleelDocRefId =
-        super.firestoreSvc.users.collection.doc(userId).collection('daleel').doc().id;
-    final daleelDocRef =
-        super.firestoreSvc.users.collection.doc(userId).collection('daleel').doc(daleelDocRefId);
+    final daleelDocRef = super.firestoreSvc.users.collection.doc(userId).collection('daleel').doc();
+    final daleelDocRefId = daleelDocRef.id;
 
     final hadithFirestore = super.firestoreSvc.hadith;
     await daleelDocRef.set({

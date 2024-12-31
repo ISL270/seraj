@@ -13,8 +13,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-part 'widgets/priority_slider.dart';
-
 class AddHadith extends StatelessWidget {
   const AddHadith({super.key});
 
@@ -53,8 +51,7 @@ class AddHadith extends StatelessWidget {
                   const _HadithTypeSegmentedButton(),
                   _LabelTextFieldAlignWidget(label: context.l10n.hadithExplain),
                   const _HadithExplanationTextField(),
-                  const _PrioritySliderLabelWidget(),
-                  const _PrioritySliderWidget(),
+                  const _PrioritySliderWithLabelWidget(),
                   Gap(30.h),
                 ],
               ),
@@ -229,6 +226,45 @@ class _HadithExplanationTextField extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class _PrioritySliderWithLabelWidget extends StatelessWidget {
+  const _PrioritySliderWithLabelWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AddHadithCubit, AddHadithState>(builder: (context, state) {
+      return Column(
+        spacing: 15.h,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              _LabelTextFieldAlignWidget(label: context.l10n.priority),
+              Gap(8.w),
+              Text(
+                '${state.priorityTexts[state.sliderValue.toInt()]} ${context.l10n.saveIt}',
+                style: context.textThemeX.medium.bold.copyWith(
+                  color: context.colorsX.primary,
+                  textBaseline: TextBaseline.alphabetic,
+                ),
+              ),
+            ],
+          ),
+          Slider.adaptive(
+            onChanged: (value) => context.read<AddHadithCubit>().sliderPriorityChanged(value),
+            value: state.sliderValue,
+            activeColor: context.colorsX.primary,
+            inactiveColor: context.colorsX.onBackgroundTint35,
+            max: state.priorityTexts.length - 1,
+            divisions: state.priorityTexts.length - 1,
+            label: state.priorityTexts[state.sliderValue.toInt()],
+          ),
+        ],
+      );
+    });
   }
 }
 
