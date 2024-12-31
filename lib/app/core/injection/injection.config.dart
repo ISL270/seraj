@@ -12,22 +12,30 @@ import 'package:athar/app/core/firestore/firestore_service.dart' as _i516;
 import 'package:athar/app/core/injection/auth_module.dart' as _i982;
 import 'package:athar/app/core/isar/isar_service.dart' as _i651;
 import 'package:athar/app/core/l10n/l10n_service.dart' as _i560;
-import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart' as _i397;
+import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart'
+    as _i397;
 import 'package:athar/app/features/authentication/data/data_sources/local/user_isar_source.dart'
     as _i602;
 import 'package:athar/app/features/authentication/data/data_sources/remote/user_firestore_source.dart'
     as _i683;
 import 'package:athar/app/features/authentication/domain/repositories/auth_repository.dart'
     as _i842;
-import 'package:athar/app/features/authentication/domain/repositories/user_repository.dart' as _i92;
-import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart' as _i562;
+import 'package:athar/app/features/authentication/domain/repositories/user_repository.dart'
+    as _i92;
+import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart'
+    as _i562;
+import 'package:athar/app/features/daleel/data/sources/local/daleel_isar_source.dart'
+    as _i53;
 import 'package:athar/app/features/daleel/data/sources/remote/daleel_firestore_source.dart'
-    as _i831;
-import 'package:athar/app/features/daleel/data/sources/local/daleel_isar_source.dart' as _i595;
-import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart' as _i143;
-import 'package:athar/app/features/settings/data/sources/local/settings_isar_source.dart' as _i387;
-import 'package:athar/app/features/settings/domain/settings_repository.dart' as _i257;
-import 'package:athar/app/features/settings/settings/settings_bloc.dart' as _i240;
+    as _i460;
+import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart'
+    as _i143;
+import 'package:athar/app/features/settings/data/sources/local/settings_isar_source.dart'
+    as _i387;
+import 'package:athar/app/features/settings/domain/settings_repository.dart'
+    as _i257;
+import 'package:athar/app/features/settings/settings/settings_bloc.dart'
+    as _i240;
 import 'package:firebase_auth/firebase_auth.dart' as _i59;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:google_sign_in/google_sign_in.dart' as _i116;
@@ -55,18 +63,22 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i560.L10nService>(() => _i560.L10nService());
     gh.singleton<_i683.UserFirestoreSource>(
         () => _i683.UserFirestoreSource(gh<_i516.FirestoreService>()));
-    gh.singleton<_i602.UserIsarSource>(() => _i602.UserIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i595.DaleelIsarSource>(() => _i595.DaleelIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i387.SettingsIsarSource>(() => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i831.DaleelFirestoreSource>(
-        () => _i831.DaleelFirestoreSource(gh<_i516.FirestoreService>()));
+    gh.singleton<_i602.UserIsarSource>(
+        () => _i602.UserIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i387.SettingsIsarSource>(
+        () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i53.DaleelIsarSource>(
+        () => _i53.DaleelIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i460.DaleelFirestoreSource>(
+        () => _i460.DaleelFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i257.SettingsRepository>(
         () => _i257.SettingsRepository(gh<_i387.SettingsIsarSource>()));
     gh.singleton<_i92.UserRepository>(() => _i92.UserRepository(
           gh<_i602.UserIsarSource>(),
           gh<_i683.UserFirestoreSource>(),
         ));
-    gh.factory<_i240.SettingsBloc>(() => _i240.SettingsBloc(gh<_i257.SettingsRepository>()));
+    gh.factory<_i240.SettingsBloc>(
+        () => _i240.SettingsBloc(gh<_i257.SettingsRepository>()));
     await gh.singletonAsync<_i842.AuthRepository>(
       () {
         final i = _i842.AuthRepository(
@@ -79,13 +91,15 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
       dispose: (i) => i.dispose(),
     );
-    gh.singleton<_i562.AuthBloc>(() => _i562.AuthBloc(gh<_i842.AuthRepository>()));
     gh.singleton<_i143.DaleelRepository>(() => _i143.DaleelRepository(
           gh<_i842.AuthRepository>(),
-          gh<_i831.DaleelFirestoreSource>(),
-          gh<_i595.DaleelIsarSource>(),
+          gh<_i460.DaleelFirestoreSource>(),
+          gh<_i53.DaleelIsarSource>(),
         ));
-    gh.factory<_i397.AddHadithCubit>(() => _i397.AddHadithCubit(gh<_i143.DaleelRepository>()));
+    gh.singleton<_i562.AuthBloc>(
+        () => _i562.AuthBloc(gh<_i842.AuthRepository>()));
+    gh.factory<_i397.AddHadithCubit>(
+        () => _i397.AddHadithCubit(gh<_i143.DaleelRepository>()));
     return this;
   }
 }

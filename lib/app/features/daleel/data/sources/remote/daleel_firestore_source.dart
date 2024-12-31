@@ -17,7 +17,7 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
     required String description,
     required String sayer,
     required String extraction,
-    required HadithAuthenticity hadithAuthenticity,
+    required HadithAuthenticity? hadithAuthenticity,
     required DateTime lastRevisedAt,
     required Priority priority,
     required List<String> tags,
@@ -30,10 +30,10 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
       // required fields
       hadithFirestore.idHadith: daleelDocRefId,
       hadithFirestore.textOfHadith: text,
-      hadithFirestore.authenticityOfHadith: hadithAuthenticity.name,
       hadithFirestore.lastRevisedAt: lastRevisedAt,
       hadithFirestore.priority: priority.name,
       // optional fields
+      if (hadithAuthenticity != null) hadithFirestore.authenticityOfHadith: hadithAuthenticity.name,
       if (description.isNotEmpty) hadithFirestore.descOfHadith: description,
       if (sayer.isNotEmpty) hadithFirestore.sayerOfHadith: sayer,
       if (extraction.isNotEmpty) hadithFirestore.extractionOfHadith: extraction,

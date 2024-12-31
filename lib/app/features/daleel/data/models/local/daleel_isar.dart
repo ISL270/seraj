@@ -25,7 +25,7 @@ final class DaleelIsar extends CacheModel<Daleel> {
   DaleelType daleelType;
 
   @Enumerated(EnumType.name)
-  HadithAuthenticity hadithAuthenticity;
+  HadithAuthenticity? hadithAuthenticity;
 
   List<String> tags;
 
@@ -68,7 +68,7 @@ final class DaleelIsar extends CacheModel<Daleel> {
             priority: daleel.priority,
             description: daleel.description,
             daleelType: DaleelType.hadith,
-            hadithAuthenticity: daleel.hadithAuthenticity!,
+            hadithAuthenticity: daleel.hadithAuthenticity,
             extraction: daleel.extraction,
             sayer: daleel.sayer,
             tags: daleel.tags,

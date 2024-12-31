@@ -167,17 +167,17 @@ class _HadithTypeSegmentedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AddHadithCubit, AddHadithState, HadithAuthenticity>(
-      selector: (state) => state.hadithAuthenticity,
-      builder: (context, hadithType) {
+    return BlocBuilder<AddHadithCubit, AddHadithState>(
+      builder: (context, state) {
         return SizedBox(
           height: 50.h,
           child: SegmentedButton(
             style: SegmentedButton.styleFrom(textStyle: context.textThemeX.medium.bold),
             onSelectionChanged: (selection) =>
-                context.read<AddHadithCubit>().hadithAuthenticityChanged(selection.first),
+                context.read<AddHadithCubit>().hadithAuthenticityChanged(selection.first!),
             expandedInsets: EdgeInsets.all(1.h),
             showSelectedIcon: false,
+            emptySelectionAllowed: true,
             segments: [
               ButtonSegment(
                 label: Text(context.l10n.hadithSahih),
@@ -192,7 +192,7 @@ class _HadithTypeSegmentedButton extends StatelessWidget {
                 value: HadithAuthenticity.daif,
               ),
             ],
-            selected: {hadithType},
+            selected: {state.hadithAuthenticity},
           ),
         );
       },
@@ -286,7 +286,6 @@ class _HadithAddButton extends StatelessWidget {
               ),
             ),
           );
-          // temp way to navigate to athars screen.
           innerContext.pop();
           context.pop();
         }

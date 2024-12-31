@@ -4,7 +4,7 @@ part of 'add_hadith_cubit.dart';
 
 final class AddHadithState extends Equatable with FormzMixin {
   const AddHadithState({
-    this.hadithAuthenticity = HadithAuthenticity.sahih,
+    this.hadithAuthenticity,
     this.textOfHadith = const Name.pure(),
     this.sayerOfHadith = '',
     this.extractionOfHadith = '',
@@ -28,7 +28,7 @@ final class AddHadithState extends Equatable with FormzMixin {
   final List<String> priorityTexts;
 
   final Name textOfHadith;
-  final HadithAuthenticity hadithAuthenticity;
+  final HadithAuthenticity? hadithAuthenticity;
   final String sayerOfHadith;
   final String extractionOfHadith;
   final String descOfHadith;
@@ -38,7 +38,7 @@ final class AddHadithState extends Equatable with FormzMixin {
   @override
   List<Object> get props => [
         textOfHadith,
-        hadithAuthenticity,
+        hadithAuthenticity ?? HadithAuthenticity,
         sayerOfHadith,
         extractionOfHadith,
         descOfHadith,

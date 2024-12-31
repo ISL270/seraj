@@ -44,7 +44,7 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
             text: daleel.text,
             description: daleel.description,
             sayer: daleel.sayer,
-            hadithAuthenticity: daleel.hadithAuthenticity!,
+            hadithAuthenticity: daleel.hadithAuthenticity,
             priority: daleel.priority,
             extraction: daleel.extraction,
             tags: daleel.tags,
@@ -58,7 +58,7 @@ final class HadithFM extends DaleelFM {
   final String text;
   final String? description;
   final String? sayer;
-  final HadithAuthenticity hadithAuthenticity;
+  final HadithAuthenticity? hadithAuthenticity;
   final Priority priority;
   final String? extraction;
   final List<String>? tags;
@@ -87,15 +87,14 @@ final class HadithFM extends DaleelFM {
       sayer: json['sayer'] as String?,
       tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ?? const [],
       hadithAuthenticity:
-          $enumDecodeNullable(hadithAuthenticityEnumMap, json['hadithAuthenticity']) ??
-              HadithAuthenticity.sahih);
+          $enumDecodeNullable(hadithAuthenticityEnumMap, json['hadithAuthenticity']));
 
   Map<String, dynamic> toJson(Hadith hadith) => HadithFM(
         id: hadith.id,
         text: hadith.text,
         description: hadith.description,
         sayer: hadith.sayer,
-        hadithAuthenticity: hadith.hadithAuthenticity!,
+        hadithAuthenticity: hadith.hadithAuthenticity,
         priority: hadith.priority,
         extraction: hadith.extraction,
         tags: hadith.tags,
