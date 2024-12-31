@@ -36,23 +36,17 @@ class _BottomSheetBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 20.h,
       children: [
         const _DragIndicator(),
-        Gap(10.h),
         Text(context.l10n.addNew, style: context.textThemeX.large.bold),
-        Gap(20.h),
         Expanded(
           child: ListView.separated(
             physics: const NeverScrollableScrollPhysics(),
             itemCount: items.length,
             separatorBuilder: (context, index) => Gap(20.h),
             itemBuilder: (context, index) => GestureDetector(
-              onTap: () {
-                switch (index) {
-                  case 0:
-                    context.pushNamed(AddHadith.name);
-                }
-              },
+              onTap: () => index == 0 ? context.pushNamed(AddHadith.name) : null,
               child: _BottomSheetWidget(items[index]),
             ),
           ),

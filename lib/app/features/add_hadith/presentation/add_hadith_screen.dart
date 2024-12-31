@@ -18,7 +18,7 @@ part 'widgets/priority_slider.dart';
 class AddHadith extends StatelessWidget {
   const AddHadith({super.key});
 
-  static const String name = 'addHadith';
+  static const String name = 'add-hadith';
 
   @override
   Widget build(BuildContext context) {
