@@ -5,26 +5,25 @@ sealed class Daleel {
   final String id;
   final String text;
   final String? description;
-  final String? sayer;
   final Priority priotiy;
+  final String? sayer;
   final List<String> tags;
   final DateTime? lastRevisedAt;
 
   const Daleel({
     required this.id,
     required this.text,
+    required this.sayer,
     this.priotiy = Priority.normal,
     this.lastRevisedAt,
     this.tags = const [],
     this.description,
-    this.sayer,
   });
 }
 
 final class Hadith extends Daleel {
-  final String? rawi;
   final String? extraction;
-  final HadithAuthenticity? authenticity;
+  final HadithAuthenticity? hadithAuthenticity;
 
   const Hadith({
     required super.text,
@@ -33,11 +32,34 @@ final class Hadith extends Daleel {
     required super.tags,
     required super.lastRevisedAt,
     required super.description,
-    this.rawi,
+    required super.sayer,
     this.extraction,
-    this.authenticity,
+    this.hadithAuthenticity,
   });
+
+  Map<String, dynamic> toJson(Hadith hadith) => <String, dynamic>{
+        'id': hadith.id,
+        'text': hadith.text,
+        'priotiy': priorityEnumMap[hadith.priotiy],
+        'description': hadith.description,
+        'hadithAuthenticity': hadithAuthenticityEnumMap[hadith.hadithAuthenticity],
+        'extraction': hadith.extraction,
+        'tags': hadith.tags,
+        'lastRevisedAt': hadith.lastRevisedAt?.toIso8601String(),
+        'sayer': hadith.sayer,
+      };
 }
+
+Map<Priority, String> priorityEnumMap = {
+  Priority.urgent: 'urgent',
+  Priority.high: 'high',
+  Priority.normal: 'normal',
+};
+Map<HadithAuthenticity, String> hadithAuthenticityEnumMap = {
+  HadithAuthenticity.daif: 'daif',
+  HadithAuthenticity.hasan: 'hasan',
+  HadithAuthenticity.sahih: 'sahih',
+};
 
 // Ayah class
 

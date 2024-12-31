@@ -55,23 +55,18 @@ const DaleelIsarSchema = CollectionSchema(
       type: IsarType.string,
       enumMap: _DaleelIsarpriorityEnumValueMap,
     ),
-    r'rawi': PropertySchema(
-      id: 7,
-      name: r'rawi',
-      type: IsarType.string,
-    ),
     r'sayer': PropertySchema(
-      id: 8,
+      id: 7,
       name: r'sayer',
       type: IsarType.string,
     ),
     r'tags': PropertySchema(
-      id: 9,
+      id: 8,
       name: r'tags',
       type: IsarType.stringList,
     ),
     r'text': PropertySchema(
-      id: 10,
+      id: 9,
       name: r'text',
       type: IsarType.string,
     )
@@ -113,12 +108,6 @@ int _daleelIsarEstimateSize(
   bytesCount += 3 + object.id.length * 3;
   bytesCount += 3 + object.priority.name.length * 3;
   {
-    final value = object.rawi;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
     final value = object.sayer;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -148,10 +137,9 @@ void _daleelIsarSerialize(
   writer.writeString(offsets[4], object.id);
   writer.writeDateTime(offsets[5], object.lastRevisedAt);
   writer.writeString(offsets[6], object.priority.name);
-  writer.writeString(offsets[7], object.rawi);
-  writer.writeString(offsets[8], object.sayer);
-  writer.writeStringList(offsets[9], object.tags);
-  writer.writeString(offsets[10], object.text);
+  writer.writeString(offsets[7], object.sayer);
+  writer.writeStringList(offsets[8], object.tags);
+  writer.writeString(offsets[9], object.text);
 }
 
 DaleelIsar _daleelIsarDeserialize(
@@ -174,10 +162,9 @@ DaleelIsar _daleelIsarDeserialize(
     priority:
         _DaleelIsarpriorityValueEnumMap[reader.readStringOrNull(offsets[6])] ??
             Priority.urgent,
-    rawi: reader.readStringOrNull(offsets[7]),
-    sayer: reader.readStringOrNull(offsets[8]),
-    tags: reader.readStringList(offsets[9]) ?? const [],
-    text: reader.readString(offsets[10]),
+    sayer: reader.readStringOrNull(offsets[7]),
+    tags: reader.readStringList(offsets[8]) ?? const [],
+    text: reader.readString(offsets[9]),
   );
   return object;
 }
@@ -212,10 +199,8 @@ P _daleelIsarDeserializeProp<P>(
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
-      return (reader.readStringOrNull(offset)) as P;
-    case 9:
       return (reader.readStringList(offset) ?? const []) as P;
-    case 10:
+    case 9:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1312,152 +1297,6 @@ extension DaleelIsarQueryFilter
     });
   }
 
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> rawiIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'rawi',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> rawiIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'rawi',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> rawiEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'rawi',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> rawiGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'rawi',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> rawiLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'rawi',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> rawiBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'rawi',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> rawiStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'rawi',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> rawiEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'rawi',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> rawiContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'rawi',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> rawiMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'rawi',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> rawiIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'rawi',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> rawiIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'rawi',
-        value: '',
-      ));
-    });
-  }
-
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> sayerIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2052,18 +1891,6 @@ extension DaleelIsarQuerySortBy
     });
   }
 
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByRawi() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'rawi', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByRawiDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'rawi', Sort.desc);
-    });
-  }
-
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortBySayer() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'sayer', Sort.asc);
@@ -2189,18 +2016,6 @@ extension DaleelIsarQuerySortThenBy
     });
   }
 
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByRawi() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'rawi', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByRawiDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'rawi', Sort.desc);
-    });
-  }
-
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenBySayer() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'sayer', Sort.asc);
@@ -2277,13 +2092,6 @@ extension DaleelIsarQueryWhereDistinct
     });
   }
 
-  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByRawi(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'rawi', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctBySayer(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2354,12 +2162,6 @@ extension DaleelIsarQueryProperty
   QueryBuilder<DaleelIsar, Priority, QQueryOperations> priorityProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'priority');
-    });
-  }
-
-  QueryBuilder<DaleelIsar, String?, QQueryOperations> rawiProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'rawi');
     });
   }
 

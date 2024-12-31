@@ -22,14 +22,14 @@ class AddHadithCubit extends Cubit<AddHadithState> {
 
   void textOfHadithChanged(String value) => emit(state.copyWith(textOfHadith: Name.dirty(value)));
 
-  void rawiOfHadithChanged(String value) => emit(state.copyWith(rawiOfHadith: value));
+  void rawiOfHadithChanged(String value) => emit(state.copyWith(sayerOfHadith: value));
 
   void extractionOfHadithChanged(String value) => emit(state.copyWith(extractionOfHadith: value));
 
   void hadithAuthenticityChanged(HadithAuthenticity hadithAuthenticity) =>
       emit(state.copyWith(hadithAuthenticity: hadithAuthenticity));
 
-  void hadithExplainChanged(String value) => emit(state.copyWith(hadithExplain: value));
+  void descOfHadithChanged(String value) => emit(state.copyWith(descOfHadith: value));
 
   void sliderPriorityChanged(double value) {
     emit(state.copyWith(sliderValue: value));
@@ -41,13 +41,13 @@ class AddHadithCubit extends Cubit<AddHadithState> {
       await _daleelRepository.saveHadith(
         // userId: getIt.get<AuthBloc>().state.user!.id,
         text: state.textOfHadith.value,
-        rawi: state.rawiOfHadith,
-        description: state.hadithExplain,
+        sayer: state.sayerOfHadith,
+        description: state.descOfHadith,
         extraction: state.extractionOfHadith,
         hadithAuthenticity: state.hadithAuthenticity,
         lastRevisedAt: DateTime.now(),
         priority: getPriority(state.sliderValue),
-        tags: [],
+        tags: [], // not used for now
       );
       emit(state.copyWith(status: const Success('Saved Hadith Successfully')));
     } catch (e) {

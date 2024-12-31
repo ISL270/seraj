@@ -20,10 +20,10 @@ final class _Hadith {
 
   late final idHadith = 'id';
   late final textOfHadith = 'text';
-  late final authenticityOfHadith = 'hadithAuthenticityType';
-  late final rawiOfHadith = 'rawi';
-  late final extractionOfHadith = 'soruceOfHadith';
-  late final hadithExplain = 'description';
+  late final authenticityOfHadith = 'hadithAuthenticity';
+  late final sayerOfHadith = 'sayer';
+  late final extractionOfHadith = 'extraction';
+  late final descOfHadith = 'description';
   late final tags = 'tags';
   late final lastRevisedAt = 'lastRevisedAt';
   late final priority = 'priority';

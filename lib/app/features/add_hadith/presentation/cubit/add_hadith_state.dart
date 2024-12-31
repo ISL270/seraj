@@ -6,9 +6,9 @@ final class AddHadithState extends Equatable with FormzMixin {
   const AddHadithState({
     this.hadithAuthenticity = HadithAuthenticity.sahih,
     this.textOfHadith = const Name.pure(),
-    this.rawiOfHadith = '',
+    this.sayerOfHadith = '',
     this.extractionOfHadith = '',
-    this.hadithExplain = '',
+    this.descOfHadith = '',
     this.sliderValue = 0.0,
     this.status = const Initial(),
     this.hintTexts = const [
@@ -29,9 +29,9 @@ final class AddHadithState extends Equatable with FormzMixin {
 
   final Name textOfHadith;
   final HadithAuthenticity hadithAuthenticity;
-  final String rawiOfHadith;
+  final String sayerOfHadith;
   final String extractionOfHadith;
-  final String hadithExplain;
+  final String descOfHadith;
   final double sliderValue;
   final VoidStatus status;
 
@@ -39,28 +39,28 @@ final class AddHadithState extends Equatable with FormzMixin {
   List<Object> get props => [
         textOfHadith,
         hadithAuthenticity,
-        rawiOfHadith,
+        sayerOfHadith,
         extractionOfHadith,
-        hadithExplain,
+        descOfHadith,
         sliderValue,
         status,
       ];
 
   AddHadithState copyWith({
     Name? textOfHadith,
-    String? rawiOfHadith,
+    String? sayerOfHadith,
     String? extractionOfHadith,
     HadithAuthenticity? hadithAuthenticity,
-    String? hadithExplain,
+    String? descOfHadith,
     double? sliderValue,
     VoidStatus? status,
   }) {
     return AddHadithState(
       textOfHadith: textOfHadith ?? this.textOfHadith,
-      rawiOfHadith: rawiOfHadith ?? this.rawiOfHadith,
+      sayerOfHadith: sayerOfHadith ?? this.sayerOfHadith,
       extractionOfHadith: extractionOfHadith ?? this.extractionOfHadith,
       hadithAuthenticity: hadithAuthenticity ?? this.hadithAuthenticity,
-      hadithExplain: hadithExplain ?? this.hadithExplain,
+      descOfHadith: descOfHadith ?? this.descOfHadith,
       sliderValue: sliderValue ?? this.sliderValue,
       status: status ?? this.status,
     );

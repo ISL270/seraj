@@ -33,8 +33,6 @@ final class DaleelIsar extends CacheModel<Daleel> {
 
   String? extraction;
 
-  String? rawi;
-
   DaleelIsar({
     required this.id,
     required this.text,
@@ -47,7 +45,6 @@ final class DaleelIsar extends CacheModel<Daleel> {
     this.lastRevisedAt,
     //used for hadith
     this.extraction,
-    this.rawi,
   });
 
   @override
@@ -56,12 +53,12 @@ final class DaleelIsar extends CacheModel<Daleel> {
             id: id,
             text: text,
             priotiy: priority,
+            sayer: sayer,
             description: description,
-            authenticity: hadithAuthenticity,
+            hadithAuthenticity: hadithAuthenticity,
             extraction: extraction,
             tags: tags,
             lastRevisedAt: lastRevisedAt,
-            rawi: rawi,
           ),
       };
 
@@ -70,10 +67,11 @@ final class DaleelIsar extends CacheModel<Daleel> {
             id: daleel.id,
             text: daleel.text,
             priority: daleel.priotiy,
+            description: daleel.description,
             daleelType: DaleelType.hadith,
-            hadithAuthenticity: daleel.authenticity!,
+            hadithAuthenticity: daleel.hadithAuthenticity!,
             extraction: daleel.extraction,
-            rawi: daleel.rawi,
+            sayer: daleel.sayer,
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,
           )

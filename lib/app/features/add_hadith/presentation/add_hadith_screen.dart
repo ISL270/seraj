@@ -118,7 +118,7 @@ class _RawiOfHadithTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddHadithCubit, AddHadithState>(
-      buildWhen: (previous, current) => previous.rawiOfHadith != current.rawiOfHadith,
+      buildWhen: (previous, current) => previous.sayerOfHadith != current.sayerOfHadith,
       builder: (context, state) {
         return TextField(
           key: const Key('hadithForm_rawiOfHadith_textField'),
@@ -212,7 +212,7 @@ class _HadithExplanationTextField extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('hadithForm_hadithExplanation_textField'),
-          onChanged: (value) => context.read<AddHadithCubit>().hadithExplainChanged(value),
+          onChanged: (value) => context.read<AddHadithCubit>().descOfHadithChanged(value),
           maxLines: 4,
           minLines: 1,
           decoration: InputDecoration(

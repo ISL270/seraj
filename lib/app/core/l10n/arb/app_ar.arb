@@ -65,6 +65,8 @@
   "hadithAddedSuccessf": "تم إضافة الحديث بنجاح",
   "hadithHasan":"حسن",
   "priority":"مدى الاهمية",
-  "saveIt":"حفظه"
-
+  "saveIt":"حفظه",
+  "normal":"يرجى",
+  "high":"يفضل",
+  "urgent":"يجب"
 }

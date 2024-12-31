@@ -24,7 +24,7 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
 
   Future<EitherException<void>> saveHadith({
     required String text,
-    required String rawi,
+    required String sayer,
     required String description,
     required HadithAuthenticity hadithAuthenticity,
     required Priority priority,
@@ -36,7 +36,7 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
       await _remoteSource.saveHadithInfo(
         userId: authRepository.user!.id,
         text: text,
-        rawi: rawi,
+        sayer: sayer,
         description: description,
         extraction: extraction,
         hadithAuthenticity: hadithAuthenticity,

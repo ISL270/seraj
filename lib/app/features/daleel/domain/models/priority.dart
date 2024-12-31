@@ -1,4 +1,8 @@
-enum Priority { urgent, high, normal }
+enum Priority {
+  urgent,
+  high,
+  normal;
+}
 
 extension PriorityX on Priority {
   bool get isUrgent => this == Priority.urgent;
