@@ -46,7 +46,7 @@ class AddDuaScreen extends StatelessWidget {
                 child: Column(
                   spacing: 12.h,
                   children: [
-                    _LabelTextFieldAlignWidget(label: context.l10n.duaText),
+                    _LabelTextFieldAlignWidget(label: context.l10n.dua),
                     const _TextOfDuaTextField(),
                     _LabelTextFieldAlignWidget(label: context.l10n.reward),
                     const _DuaRewardTextField(),
@@ -85,7 +85,7 @@ class _TextOfDuaTextField extends StatelessWidget {
       onChanged: (duaText) =>
           context.read<AddDuaCubit>().textOfDuaChanged(duaText),
       maxLines: 4,
-      minLines: 4,
+      minLines: 2,
       decoration: InputDecoration(
         labelStyle: context.textThemeX.medium,
         hintMaxLines: 4,
@@ -110,7 +110,7 @@ class _ExplanationOfDuaTextField extends StatelessWidget {
       onChanged: (explain) =>
           context.read<AddDuaCubit>().duaExplanationChanged(explain),
       maxLines: 4,
-      minLines: 2,
+      minLines: 4,
       decoration: InputDecoration(
         labelStyle: context.textThemeX.medium,
         hintMaxLines: 4,
