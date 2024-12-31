@@ -114,7 +114,8 @@ class _ExplanationOfDuaTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelStyle: context.textThemeX.medium,
         hintMaxLines: 4,
-        hintText: 'شرح الدعاء',
+        hintText:
+            'دعاء جامع لطلب مغفرة الذنوب وسلامة الدين والدنيا من كل سوء، وتحقيق الأمن والنعيم في الدنيا والآخرة.',
         hintStyle: context.textThemeX.medium.bold.copyWith(
           height: 1.5.h,
           overflow: TextOverflow.ellipsis,
