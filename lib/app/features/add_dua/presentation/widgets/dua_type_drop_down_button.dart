@@ -28,8 +28,8 @@ class _DuaTypeDropDownButtonState extends State<_DuaTypeDropDownButton> {
               Expanded(
                 child: Text(
                   context.l10n.selectDuaType,
-                  style:
-                      context.textThemeX.medium.copyWith(color: context.colorsX.onBackgroundTint35),
+                  style: context.textThemeX.medium
+                      .copyWith(color: context.colorsX.onBackgroundTint35),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -54,6 +54,7 @@ class _DuaTypeDropDownButtonState extends State<_DuaTypeDropDownButton> {
             setState(() {
               selectedValue = value;
             });
+            context.read<AddDuaCubit>().typeOfDuaChanged(selectedValue ?? '');
           },
           buttonStyleData: _buttonStyleData(context),
           iconStyleData: _iconStyleData(context),

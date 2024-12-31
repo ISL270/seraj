@@ -12,7 +12,11 @@ class _DuaTimeDropDownButtonState extends State<_DuaTimeDropDownButton> {
 
   @override
   Widget build(BuildContext context) {
-    final items = <String>[context.l10n.morning, context.l10n.evening, context.l10n.withoutTime];
+    final items = <String>[
+      context.l10n.morning,
+      context.l10n.evening,
+      context.l10n.withoutTime
+    ];
     return Center(
       child: DropdownButtonHideUnderline(
         child: DropdownButton2<String>(
@@ -23,8 +27,8 @@ class _DuaTimeDropDownButtonState extends State<_DuaTimeDropDownButton> {
               Expanded(
                 child: Text(
                   context.l10n.selectDuaTime,
-                  style:
-                      context.textThemeX.medium.copyWith(color: context.colorsX.onBackgroundTint35),
+                  style: context.textThemeX.medium
+                      .copyWith(color: context.colorsX.onBackgroundTint35),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -46,6 +50,7 @@ class _DuaTimeDropDownButtonState extends State<_DuaTimeDropDownButton> {
               .toList(),
           value: selectedValue,
           onChanged: (String? value) {
+            context.read<AddDuaCubit>().duaTimeChanged(value ?? '');
             setState(() {
               selectedValue = value;
             });
