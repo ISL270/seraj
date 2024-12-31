@@ -109,7 +109,12 @@ int _daleelIsarEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.hadithAuthenticity.name.length * 3;
+  {
+    final value = object.hadithAuthenticity;
+    if (value != null) {
+      bytesCount += 3 + value.name.length * 3;
+    }
+  }
   bytesCount += 3 + object.id.length * 3;
   bytesCount += 3 + object.priority.name.length * 3;
   {
@@ -144,7 +149,7 @@ void _daleelIsarSerialize(
   writer.writeString(offsets[0], object.daleelType.name);
   writer.writeString(offsets[1], object.description);
   writer.writeString(offsets[2], object.extraction);
-  writer.writeString(offsets[3], object.hadithAuthenticity.name);
+  writer.writeString(offsets[3], object.hadithAuthenticity?.name);
   writer.writeString(offsets[4], object.id);
   writer.writeDateTime(offsets[5], object.lastRevisedAt);
   writer.writeString(offsets[6], object.priority.name);
@@ -167,8 +172,7 @@ DaleelIsar _daleelIsarDeserialize(
     description: reader.readStringOrNull(offsets[1]),
     extraction: reader.readStringOrNull(offsets[2]),
     hadithAuthenticity: _DaleelIsarhadithAuthenticityValueEnumMap[
-            reader.readStringOrNull(offsets[3])] ??
-        HadithAuthenticity.daif,
+        reader.readStringOrNull(offsets[3])],
     id: reader.readString(offsets[4]),
     lastRevisedAt: reader.readDateTimeOrNull(offsets[5]),
     priority:
@@ -199,8 +203,7 @@ P _daleelIsarDeserializeProp<P>(
       return (reader.readStringOrNull(offset)) as P;
     case 3:
       return (_DaleelIsarhadithAuthenticityValueEnumMap[
-              reader.readStringOrNull(offset)] ??
-          HadithAuthenticity.daif) as P;
+          reader.readStringOrNull(offset)]) as P;
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
@@ -839,8 +842,26 @@ extension DaleelIsarQueryFilter
   }
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      hadithAuthenticityIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'hadithAuthenticity',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      hadithAuthenticityIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'hadithAuthenticity',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
       hadithAuthenticityEqualTo(
-    HadithAuthenticity value, {
+    HadithAuthenticity? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -854,7 +875,7 @@ extension DaleelIsarQueryFilter
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
       hadithAuthenticityGreaterThan(
-    HadithAuthenticity value, {
+    HadithAuthenticity? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -870,7 +891,7 @@ extension DaleelIsarQueryFilter
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
       hadithAuthenticityLessThan(
-    HadithAuthenticity value, {
+    HadithAuthenticity? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -886,8 +907,8 @@ extension DaleelIsarQueryFilter
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
       hadithAuthenticityBetween(
-    HadithAuthenticity lower,
-    HadithAuthenticity upper, {
+    HadithAuthenticity? lower,
+    HadithAuthenticity? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -2331,7 +2352,7 @@ extension DaleelIsarQueryProperty
     });
   }
 
-  QueryBuilder<DaleelIsar, HadithAuthenticity, QQueryOperations>
+  QueryBuilder<DaleelIsar, HadithAuthenticity?, QQueryOperations>
       hadithAuthenticityProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'hadithAuthenticity');

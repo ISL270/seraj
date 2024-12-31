@@ -10,21 +10,26 @@ final class FirestoreService {
 final class _Users {
   late final collection = FirebaseFirestore.instance.collection('users');
 
+  CollectionReference<Map<String, dynamic>> hadithCollection(String userId) =>
+      collection.doc(userId).collection(hadithCollName);
+
   late final idField = 'id';
   late final emailField = 'email';
   late final nameField = 'name';
+  late final hadithCollName = 'hadith';
 }
 
-final class _Hadith {
-  late final collection = FirebaseFirestore.instance.collection('hadith');
-
-  late final idHadith = 'id';
-  late final textOfHadith = 'text';
-  late final authenticityOfHadith = 'hadithAuthenticityType';
-  late final rawiOfHadith = 'rawi';
-  late final extractionOfHadith = 'soruceOfHadith';
-  late final hadithExplain = 'description';
+sealed class _Daleel {
+  late final id = 'id';
+  late final text = 'text';
+  late final description = 'description';
   late final tags = 'tags';
   late final lastRevisedAt = 'lastRevisedAt';
   late final priority = 'priority';
+}
+
+final class _Hadith extends _Daleel {
+  late final rawi = 'rawi';
+  late final extraction = 'hadithExtraction';
+  late final authenticity = 'hadithAuthenticity';
 }

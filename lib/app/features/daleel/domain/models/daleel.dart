@@ -27,12 +27,12 @@ final class Hadith extends Daleel {
   final HadithAuthenticity? authenticity;
 
   const Hadith({
-    required super.text,
     required super.id,
-    required super.priotiy,
-    required super.tags,
-    required super.lastRevisedAt,
-    required super.description,
+    required super.text,
+    super.priotiy,
+    super.lastRevisedAt,
+    super.tags,
+    super.description,
     this.rawi,
     this.extraction,
     this.authenticity,

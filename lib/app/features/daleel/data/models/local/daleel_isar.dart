@@ -24,28 +24,28 @@ final class DaleelIsar extends CacheModel<Daleel> {
   @Enumerated(EnumType.name)
   DaleelType daleelType;
 
-  @Enumerated(EnumType.name)
-  HadithAuthenticity hadithAuthenticity;
-
   List<String> tags;
 
   DateTime? lastRevisedAt;
 
+  // Hadith related
+  String? rawi;
+
   String? extraction;
 
-  String? rawi;
+  @Enumerated(EnumType.name)
+  HadithAuthenticity? hadithAuthenticity;
 
   DaleelIsar({
     required this.id,
     required this.text,
     required this.priority,
     required this.daleelType,
-    required this.hadithAuthenticity,
+    this.hadithAuthenticity,
     this.description,
     this.sayer,
     this.tags = const [],
     this.lastRevisedAt,
-    //used for hadith
     this.extraction,
     this.rawi,
   });
@@ -71,11 +71,12 @@ final class DaleelIsar extends CacheModel<Daleel> {
             text: daleel.text,
             priority: daleel.priotiy,
             daleelType: DaleelType.hadith,
-            hadithAuthenticity: daleel.authenticity!,
+            hadithAuthenticity: daleel.authenticity,
             extraction: daleel.extraction,
             rawi: daleel.rawi,
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,
+            description: daleel.description,
           )
       };
 }

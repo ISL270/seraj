@@ -1,4 +1,3 @@
-import 'package:athar/app/core/firestore/firestore_helper.dart';
 import 'package:athar/app/core/models/reactive_firestore_source.dart';
 import 'package:athar/app/features/authentication/domain/models/user.dart';
 import 'package:athar/app/features/daleel/data/models/remote/daleel_fm.dart';
@@ -8,38 +7,32 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
-final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> with FirestoreHelper {
+final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
   DaleelFirestoreSource(super.firestoreSvc);
 
-  Future<void> saveHadithInfo({
+  Future<void> saveHadith({
     required String userId,
     required String text,
     required String description,
     required String rawi,
     required String extraction,
-    required HadithAuthenticity hadithAuthenticity,
+    required HadithAuthenticity authenticity,
     required DateTime lastRevisedAt,
     required Priority priority,
     required List<String> tags,
   }) async {
-    final hadithDocRefId =
-        super.firestoreSvc.users.collection.doc(userId).collection('hadith').doc().id;
-    final hadithDocRef =
-        super.firestoreSvc.users.collection.doc(userId).collection('hadith').doc(hadithDocRefId);
-
-    final hadithFirestore = super.firestoreSvc.hadith;
-    await hadithDocRef.set({
-      // required fields
-      hadithFirestore.idHadith: hadithDocRefId,
-      hadithFirestore.textOfHadith: text,
-      hadithFirestore.authenticityOfHadith: hadithAuthenticity.name,
-      hadithFirestore.lastRevisedAt: lastRevisedAt,
-      hadithFirestore.priority: priority.name,
-      // optional fields
-      if (description.isNotEmpty) hadithFirestore.hadithExplain: description,
-      if (rawi.isNotEmpty) hadithFirestore.rawiOfHadith: rawi,
-      if (extraction.isNotEmpty) hadithFirestore.extractionOfHadith: extraction,
-      if (tags.isNotEmpty) hadithFirestore.tags: tags,
+    await firestoreOperationHandler(() async {
+      await firestoreSvc.users.hadithCollection(userId).add({
+        firestoreSvc.hadith.text: text,
+        firestoreSvc.hadith.priority: priority.name,
+        firestoreSvc.hadith.lastRevisedAt: lastRevisedAt,
+        firestoreSvc.hadith.authenticity: authenticity.name,
+        // optional fields
+        if (rawi.isNotEmpty) firestoreSvc.hadith.rawi: rawi,
+        if (tags.isNotEmpty) firestoreSvc.hadith.tags: tags,
+        if (extraction.isNotEmpty) firestoreSvc.hadith.extraction: extraction,
+        if (description.isNotEmpty) firestoreSvc.hadith.description: description,
+      });
     });
   }
 
@@ -48,5 +41,5 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> with
 
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> snapshotQuery(User user) =>
-      super.firestoreSvc.users.collection.doc(user.id).collection('hadith').snapshots();
+      super.firestoreSvc.users.hadithCollection(user.id).snapshots();
 }
