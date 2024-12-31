@@ -18,7 +18,7 @@ part 'widgets/bottom_sheet.dart';
 class DaleelScreen extends StatelessWidget {
   const DaleelScreen({super.key});
 
-  static const String name = 'athars';
+  static const String name = 'daleel';
 
   @override
   Widget build(BuildContext context) {

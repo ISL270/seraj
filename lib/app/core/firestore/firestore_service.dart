@@ -10,6 +10,9 @@ final class FirestoreService {
 final class _Users {
   late final collection = FirebaseFirestore.instance.collection('users');
 
+  CollectionReference<Map<String, dynamic>> hadithCollection(String userId) =>
+      collection.doc(userId).collection(hadithCollName);
+
   late final idField = 'id';
   late final emailField = 'email';
   late final nameField = 'name';
@@ -27,4 +30,10 @@ final class _Hadith {
   late final tags = 'tags';
   late final lastRevisedAt = 'lastRevisedAt';
   late final priority = 'priority';
+}
+
+final class _Hadith extends _Daleel {
+  late final rawi = 'rawi';
+  late final extraction = 'hadithExtraction';
+  late final authenticity = 'hadithAuthenticity';
 }

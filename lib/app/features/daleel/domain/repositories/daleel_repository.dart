@@ -26,20 +26,20 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
     required String text,
     required String sayer,
     required String description,
-    required HadithAuthenticity hadithAuthenticity,
+    required HadithAuthenticity authenticity,
     required Priority priority,
     required String extraction,
     required DateTime lastRevisedAt,
     required List<String> tags,
   }) async {
     try {
-      await _remoteSource.saveHadithInfo(
+      await _remoteSource.saveHadith(
         userId: authRepository.user!.id,
         text: text,
         sayer: sayer,
         description: description,
         extraction: extraction,
-        hadithAuthenticity: hadithAuthenticity,
+        authenticity: authenticity,
         lastRevisedAt: lastRevisedAt,
         priority: priority,
         tags: tags,

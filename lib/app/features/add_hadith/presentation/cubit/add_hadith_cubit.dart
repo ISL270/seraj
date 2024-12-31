@@ -44,7 +44,7 @@ class AddHadithCubit extends Cubit<AddHadithState> {
         sayer: state.sayerOfHadith,
         description: state.descOfHadith,
         extraction: state.extractionOfHadith,
-        hadithAuthenticity: state.hadithAuthenticity,
+        authenticity: state.hadithAuthenticity,
         lastRevisedAt: DateTime.now(),
         priority: getPriority(state.sliderValue),
         tags: [], // not used for now

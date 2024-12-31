@@ -1,4 +1,3 @@
-import 'package:athar/app/core/firestore/firestore_helper.dart';
 import 'package:athar/app/core/models/reactive_firestore_source.dart';
 import 'package:athar/app/features/authentication/domain/models/user.dart';
 import 'package:athar/app/features/daleel/data/models/remote/daleel_fm.dart';
@@ -9,10 +8,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
-final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> with FirestoreHelper {
+final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
   DaleelFirestoreSource(super.firestoreSvc);
 
-  Future<void> saveHadithInfo({
+  Future<void> saveHadith({
     required String userId,
     required String text,
     required String description,
