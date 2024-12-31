@@ -23,10 +23,10 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFm, DuaIsar> {
       await _remoteSource.addDua(
           duaFm: DuaFm(
         textOfDua: dua.textOfDua,
-        typeOfDua: dua.typeOfDua,
+        explanation: dua.explanation,
         numOfRepeat: dua.numOfRepeat,
-        duaNotes: dua.duaNotes,
-        timeOfDua: dua.timeOfDua,
+        priority: dua.priority,
+        reward: dua.reward,
       ));
 
       return right(null);

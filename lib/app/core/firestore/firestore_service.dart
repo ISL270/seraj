@@ -21,8 +21,8 @@ final class _Dua {
   late final collection = FirebaseFirestore.instance.collection('duas');
   late final idField = 'id';
   late final textOfDua = 'textOfDua';
-  late final typeOfDua = 'typeOfDua';
+  late final reward = 'reward';
   late final numOfRepeat = 'numOfRepeat';
-  late final duaNotes = 'duaNotes';
-  late final timeOfDua = 'timeOfDua';
+  late final explanation = 'explanation';
+  late final priority = 'priority';
 }

@@ -2,33 +2,33 @@ part of 'dua_firestore_source.dart';
 
 final class DuaFm implements RemoteModel<Dua> {
   final String textOfDua;
-  final String typeOfDua;
-  final String numOfRepeat;
-  final String timeOfDua;
-  final String? duaNotes;
+  final String? reward;
+  final String? numOfRepeat;
+  final String? priority;
+  final String? explanation;
 
   DuaFm({
     required this.textOfDua,
-    required this.typeOfDua,
+    required this.reward,
     required this.numOfRepeat,
-    required this.timeOfDua,
-    this.duaNotes,
+    required this.priority,
+    this.explanation,
   });
 
   factory DuaFm.fromJson(String docId, Map<String, dynamic> json) => DuaFm(
         textOfDua: json['textOfDua'] as String,
-        typeOfDua: json['typeOfDua'] as String,
+        reward: json['reward'] as String,
         numOfRepeat: json['numOfRepeat'] as String,
-        timeOfDua: json['timeOfDua'] as String,
-        duaNotes: json['duaNotes'] as String,
+        priority: json['priority'] as String,
+        explanation: json['explanation'] as String,
       );
 
   @override
   Dua toDomain() => Dua(
         textOfDua: textOfDua,
-        typeOfDua: typeOfDua,
+        reward: reward,
         numOfRepeat: numOfRepeat,
-        timeOfDua: timeOfDua,
-        duaNotes: duaNotes,
+        priority: priority,
+        explanation: explanation,
       );
 }

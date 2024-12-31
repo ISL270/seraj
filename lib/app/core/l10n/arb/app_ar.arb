@@ -57,12 +57,19 @@
   "addNotes":"أضف ملاحظاتك",
   "additionalNotes":"ملاحظات إضافية",
   "numOfTimes":"عدد المرات",
-  "numOfTimesANDtime":"التكرار و التوقيت",
+  "numOfTimesANDpriority":"التكرار و الأولوية",
   "morning":"صباحاً",
   "evening":"مساءً",
   "withoutTime":"بدون توقيت",
   "forgiveness":"المغفرة",
   "livelihood":"الرزق",
   "healing":"الشفاء",
-  "other":"اخرى"
+  "other":"اخرى",
+  "reward":"الأجر",
+  "explanation":"الشرح",
+  "priority":"الأولوية",
+  "normal":"عادي",
+  "important":"مهم",
+  "vImportant":"مهم جدا"
+
 }

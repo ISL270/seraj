@@ -4,17 +4,17 @@ final class Dua extends Equatable {
   final String? id;
 
   final String textOfDua;
-  final String typeOfDua;
-  final String numOfRepeat;
-  final String timeOfDua;
-  final String? duaNotes;
+  final String? numOfRepeat;
+  final String? reward;
+  final String? priority;
+  final String? explanation;
 
   const Dua({
     required this.textOfDua,
-    required this.typeOfDua,
+    required this.reward,
     required this.numOfRepeat,
-    required this.timeOfDua,
-    required this.duaNotes,
+    required this.priority,
+    required this.explanation,
     this.id,
   });
 
@@ -22,9 +22,9 @@ final class Dua extends Equatable {
   List<Object?> get props => [
         id,
         textOfDua,
-        typeOfDua,
+        reward,
         numOfRepeat,
-        timeOfDua,
-        duaNotes,
+        priority,
+        explanation,
       ];
 }

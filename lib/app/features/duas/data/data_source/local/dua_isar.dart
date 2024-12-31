@@ -13,40 +13,40 @@ final class DuaIsar extends CacheModel<Dua> {
   String textOfDua;
 
   @enumerated
-  String typeOfDua;
+  String? reward;
 
-  String numOfRepeat;
+  String? numOfRepeat;
 
-  String timeOfDua;
+  String? explanation;
 
-  String? duaNotes;
+  String? priority;
 
   DuaIsar({
     required this.id,
     required this.textOfDua,
-    required this.typeOfDua,
-    required this.timeOfDua,
-    required this.numOfRepeat,
-    this.duaNotes,
+    this.reward,
+    this.numOfRepeat,
+    this.explanation,
+    this.priority,
   });
 
   factory DuaIsar.fromDomain(Dua domain) => DuaIsar(
         id: domain.id ?? '',
         numOfRepeat: domain.numOfRepeat,
         textOfDua: domain.textOfDua,
-        typeOfDua: domain.typeOfDua,
-        timeOfDua: domain.timeOfDua,
-        duaNotes: domain.duaNotes,
+        reward: domain.reward,
+        explanation: domain.explanation,
+        priority: domain.priority,
       );
 
   @override
   Dua toDomain() {
     return Dua(
       textOfDua: textOfDua,
-      typeOfDua: typeOfDua,
       numOfRepeat: numOfRepeat,
-      timeOfDua: typeOfDua,
-      duaNotes: duaNotes,
+      reward: reward,
+      explanation: explanation,
+      priority: priority,
     );
   }
 }

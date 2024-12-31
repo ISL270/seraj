@@ -2,48 +2,48 @@ part of 'add_dua_cubit.dart';
 
 final class AddDuaState extends Equatable with FormzMixin {
   const AddDuaState({
-    this.duaNotes,
     this.textOfDua = const Name.pure(),
-    this.typeOfDua = const Name.pure(),
+    this.reward = const Name.pure(),
     this.numOfRepeat = const Name.pure(),
-    this.duaTime = const Name.pure(),
+    this.priority = '',
+    this.explanation = '',
     this.status = const Initial(),
     this.errorMessage,
   });
 
   final Name textOfDua;
-  final Name typeOfDua;
+  final Name reward;
   final Name numOfRepeat;
-  final Name duaTime;
-  final String? duaNotes;
-  final VoidStatus status;
+  final String? priority;
+  final String? explanation;
   final String? errorMessage;
+  final VoidStatus status;
 
   @override
   List<Object?> get props => [
         textOfDua,
-        typeOfDua,
+        reward,
         numOfRepeat,
-        duaNotes,
-        duaTime,
+        explanation,
+        priority,
         status,
         errorMessage,
       ];
 
   AddDuaState copyWith({
     Name? textOfDua,
-    Name? typeOfDua,
+    Name? reward,
     Name? numOfRepeat,
-    Name? duaTime,
-    String? duaNotes,
+    String? priority,
+    String? explanation,
     VoidStatus? status,
     String? errorMessage,
   }) {
     return AddDuaState(
-      duaTime: duaTime ?? this.duaTime,
-      duaNotes: duaNotes ?? this.duaNotes,
+      priority: priority ?? this.priority,
+      explanation: explanation ?? this.explanation,
       textOfDua: textOfDua ?? this.textOfDua,
-      typeOfDua: typeOfDua ?? this.typeOfDua,
+      reward: reward ?? this.reward,
       numOfRepeat: numOfRepeat ?? this.numOfRepeat,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
@@ -52,7 +52,7 @@ final class AddDuaState extends Equatable with FormzMixin {
 
   @override
   // ignore: strict_raw_type
-  List<FormzInput> get inputs => [textOfDua, typeOfDua, numOfRepeat];
+  List<FormzInput> get inputs => [textOfDua];
 
   String get errorMsg {
     if (!status.isFailure) return '';

@@ -15,8 +15,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-part 'widgets/dua_time_drop_down_button.dart';
-part 'widgets/dua_type_drop_down_button.dart';
+part 'widgets/priority_drop_down_button.dart';
 
 class AddDuaScreen extends StatelessWidget {
   const AddDuaScreen({super.key});
@@ -49,21 +48,20 @@ class AddDuaScreen extends StatelessWidget {
                   children: [
                     _LabelTextFieldAlignWidget(label: context.l10n.duaText),
                     const _TextOfDuaTextField(),
-                    _LabelTextFieldAlignWidget(label: context.l10n.duaType),
-                    const _DuaTypeDropDownButton(),
+                    _LabelTextFieldAlignWidget(label: context.l10n.reward),
+                    const _DuaRewardTextField(),
+                    _LabelTextFieldAlignWidget(label: context.l10n.explanation),
+                    const _ExplanationOfDuaTextField(),
                     _LabelTextFieldAlignWidget(
-                        label: context.l10n.numOfTimesANDtime),
+                        label: context.l10n.numOfTimesANDpriority),
                     Row(
                       children: [
                         const Expanded(child: _DuaNumOfRepeatTextField()),
                         Gap(15.w),
                         const Expanded(
-                            flex: 2, child: _DuaTimeDropDownButton()),
+                            flex: 2, child: _PriorityDropDownButton()),
                       ],
                     ),
-                    _LabelTextFieldAlignWidget(
-                        label: context.l10n.additionalNotes),
-                    const _AddNotesTextField(),
                   ],
                 ),
               ),
@@ -87,11 +85,60 @@ class _TextOfDuaTextField extends StatelessWidget {
       onChanged: (duaText) =>
           context.read<AddDuaCubit>().textOfDuaChanged(duaText),
       maxLines: 4,
+      minLines: 4,
+      decoration: InputDecoration(
+        labelStyle: context.textThemeX.medium,
+        hintMaxLines: 4,
+        hintText:
+            'اللَّهُمَّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُسْلِمِينَ وَالْمُسْلِمَاتِ، الأَحْيَاءِ مِنْهُمْ وَالأَمْوَاتِ',
+        hintStyle: context.textThemeX.medium.bold.copyWith(
+          height: 1.5.h,
+          overflow: TextOverflow.ellipsis,
+          color: context.colorsX.onBackgroundTint35,
+        ),
+      ),
+    );
+  }
+}
+
+class _ExplanationOfDuaTextField extends StatelessWidget {
+  const _ExplanationOfDuaTextField();
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      onChanged: (explain) =>
+          context.read<AddDuaCubit>().duaExplanationChanged(explain),
+      maxLines: 4,
+      minLines: 2,
+      decoration: InputDecoration(
+        labelStyle: context.textThemeX.medium,
+        hintMaxLines: 4,
+        hintText: 'شرح الدعاء',
+        hintStyle: context.textThemeX.medium.bold.copyWith(
+          height: 1.5.h,
+          overflow: TextOverflow.ellipsis,
+          color: context.colorsX.onBackgroundTint35,
+        ),
+      ),
+    );
+  }
+}
+
+class _DuaRewardTextField extends StatelessWidget {
+  const _DuaRewardTextField();
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      onChanged: (reward) =>
+          context.read<AddDuaCubit>().rewardOfDuaChanged(reward),
+      maxLines: 4,
       minLines: 1,
       decoration: InputDecoration(
         labelStyle: context.textThemeX.medium,
         hintMaxLines: 1,
-        hintText: 'ربنا ما خلقت هذا باطلاً سُبحانك فقنا عذاب النار.',
+        hintText: 'يُكتب له أجر عمل صالح، ويشمله دعاء الملائكة، ',
         hintStyle: context.textThemeX.medium.bold.copyWith(
           height: 1.5.h,
           overflow: TextOverflow.ellipsis,
@@ -119,31 +166,6 @@ class _DuaNumOfRepeatTextField extends StatelessWidget {
         labelStyle: context.textThemeX.medium,
         alignLabelWithHint: true,
         hintText: context.l10n.numOfTimes,
-        hintStyle: context.textThemeX.medium.bold.copyWith(
-          height: 1.5.h,
-          overflow: TextOverflow.ellipsis,
-          color: context.colorsX.onBackgroundTint35,
-        ),
-      ),
-    );
-  }
-}
-
-class _AddNotesTextField extends StatelessWidget {
-  const _AddNotesTextField();
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      key: const Key('DuaaForm_NotesOfDua_textField'),
-      onChanged: (duaNote) =>
-          context.read<AddDuaCubit>().duaNotesChanged(duaNote),
-      maxLines: 2,
-      minLines: 1,
-      decoration: InputDecoration(
-        labelStyle: context.textThemeX.medium,
-        hintMaxLines: 1,
-        hintText: context.l10n.addNotes,
         hintStyle: context.textThemeX.medium.bold.copyWith(
           height: 1.5.h,
           overflow: TextOverflow.ellipsis,

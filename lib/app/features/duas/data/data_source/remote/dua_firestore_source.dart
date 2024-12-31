@@ -22,10 +22,10 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFm>
         final userId = getIt.get<AuthRepository>().user?.id ?? '';
         await firestoreSvc.users.collection.doc(userId).collection('duas').add({
           firestoreSvc.dua.textOfDua: duaFm.textOfDua,
-          firestoreSvc.dua.typeOfDua: duaFm.typeOfDua,
+          firestoreSvc.dua.reward: duaFm.reward,
           firestoreSvc.dua.numOfRepeat: duaFm.numOfRepeat,
-          firestoreSvc.dua.timeOfDua: duaFm.timeOfDua,
-          firestoreSvc.dua.duaNotes: duaFm.duaNotes,
+          firestoreSvc.dua.explanation: duaFm.explanation,
+          firestoreSvc.dua.priority: duaFm.priority,
         });
       });
 

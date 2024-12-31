@@ -1,21 +1,21 @@
 part of '../add_dua_screen.dart';
 
-class _DuaTimeDropDownButton extends StatefulWidget {
-  const _DuaTimeDropDownButton();
+class _PriorityDropDownButton extends StatefulWidget {
+  const _PriorityDropDownButton();
 
   @override
-  State<_DuaTimeDropDownButton> createState() => _DuaTimeDropDownButtonState();
+  State<_PriorityDropDownButton> createState() => _DuaTimeDropDownButtonState();
 }
 
-class _DuaTimeDropDownButtonState extends State<_DuaTimeDropDownButton> {
+class _DuaTimeDropDownButtonState extends State<_PriorityDropDownButton> {
   String? selectedValue;
 
   @override
   Widget build(BuildContext context) {
     final items = <String>[
-      context.l10n.morning,
-      context.l10n.evening,
-      context.l10n.withoutTime
+      context.l10n.normal,
+      context.l10n.important,
+      context.l10n.vImportant
     ];
     return Center(
       child: DropdownButtonHideUnderline(
@@ -26,7 +26,7 @@ class _DuaTimeDropDownButtonState extends State<_DuaTimeDropDownButton> {
             children: [
               Expanded(
                 child: Text(
-                  context.l10n.selectDuaTime,
+                  context.l10n.priority,
                   style: context.textThemeX.medium
                       .copyWith(color: context.colorsX.onBackgroundTint35),
                   overflow: TextOverflow.ellipsis,
@@ -50,7 +50,7 @@ class _DuaTimeDropDownButtonState extends State<_DuaTimeDropDownButton> {
               .toList(),
           value: selectedValue,
           onChanged: (String? value) {
-            context.read<AddDuaCubit>().duaTimeChanged(value ?? '');
+            context.read<AddDuaCubit>().priorityChanged(value ?? '');
             setState(() {
               selectedValue = value;
             });

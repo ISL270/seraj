@@ -57,12 +57,15 @@
   "addNotes":"Add your Notes",
   "additionalNotes":"Additional Notes",
   "numOfTimes":"Number of times",
-  "numOfTimesANDtime":"Number of times and time",
+  "numOfTimesANDpriority":"Number of times and priority",
   "morning":"Morning",
   "evening":"Evening",
   "withoutTime":"Without Time",
   "forgiveness":"Forgiveness",
   "livelihood":"Livelihood",
   "healing":"Healing",
-  "other":"Other"
+  "other":"Other",
+   "reward":"Reward",
+   "explanation":"Explanation",
+   "priority":"Priority"
 }
