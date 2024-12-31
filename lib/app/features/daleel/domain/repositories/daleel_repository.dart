@@ -39,7 +39,7 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
         sayer: sayer,
         description: description,
         extraction: extraction,
-        authenticity: authenticity,
+        hadithAuthenticity: authenticity,
         lastRevisedAt: lastRevisedAt,
         priority: priority,
         tags: tags,

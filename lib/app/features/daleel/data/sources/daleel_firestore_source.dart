@@ -49,5 +49,5 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
 
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> snapshotQuery(User user) =>
-      super.firestoreSvc.users.collection.doc(user.id).collection('daleel').snapshots();
+      super.firestoreSvc.users.daleelCollection(user.id).snapshots();
 }

@@ -5,7 +5,7 @@ sealed class Daleel {
   final String id;
   final String text;
   final String? description;
-  final Priority priotiy;
+  final Priority priority;
   final String? sayer;
   final List<String> tags;
   final DateTime? lastRevisedAt;
@@ -14,7 +14,7 @@ sealed class Daleel {
     required this.id,
     required this.text,
     required this.sayer,
-    this.priotiy = Priority.normal,
+    this.priority = Priority.normal,
     this.lastRevisedAt,
     this.tags = const [],
     this.description,
@@ -28,8 +28,7 @@ final class Hadith extends Daleel {
   const Hadith({
     required super.id,
     required super.text,
-    required super.id,
-    required super.priotiy,
+    required super.priority,
     required super.tags,
     required super.lastRevisedAt,
     required super.description,
@@ -41,7 +40,7 @@ final class Hadith extends Daleel {
   Map<String, dynamic> toJson(Hadith hadith) => <String, dynamic>{
         'id': hadith.id,
         'text': hadith.text,
-        'priotiy': priorityEnumMap[hadith.priotiy],
+        'priotiy': priorityEnumMap[hadith.priority],
         'description': hadith.description,
         'hadithAuthenticity': hadithAuthenticityEnumMap[hadith.hadithAuthenticity],
         'extraction': hadith.extraction,
