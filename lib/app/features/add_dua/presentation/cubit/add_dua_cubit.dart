@@ -36,7 +36,7 @@ class AddDuaCubit extends Cubit<AddDuaState> {
         reward: state.reward.value,
         priority: state.priority,
       );
-      emit(state.copyWith(status: const Success('Saved Aya Successfully')));
+      emit(state.copyWith(status: const Success('Saved Dua Successfully')));
     } catch (e) {
       print(e);
       emit(state.copyWith(status: Failure(e as GenericException)));

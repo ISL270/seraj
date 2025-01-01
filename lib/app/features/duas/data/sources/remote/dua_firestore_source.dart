@@ -1,7 +1,10 @@
+import 'package:athar/app/core/extension_methods/getit_x.dart';
 import 'package:athar/app/core/firestore/firestore_helper.dart';
 import 'package:athar/app/core/firestore/remote_model.dart';
+import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/models/reactive_firestore_source.dart';
 import 'package:athar/app/features/authentication/domain/models/user.dart';
+import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/duas/domain/model/dua.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,7 +20,6 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM>
   DuaFirestoreSource(super.firestoreSvc);
 
   Future<void> addDua({
-    required String userId,
     required String dua,
     required String? reward,
     required Priority priority,
@@ -25,6 +27,7 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM>
     required String? description,
   }) async =>
       firestoreOperationHandler(() async {
+        final userId = getIt.authBloc.state.user!.id;
         await firestoreSvc.users.duaCollection(userId).add({
           firestoreSvc.dua.dua: dua,
           firestoreSvc.dua.reward: reward,
