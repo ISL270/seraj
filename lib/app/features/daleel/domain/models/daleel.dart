@@ -50,6 +50,34 @@ final class Hadith extends Daleel {
       };
 }
 
+final class Aya extends Daleel {
+  final String? surahOfAya;
+  final String? nomOfAya;
+
+  const Aya({
+    required super.id,
+    required super.text,
+    this.surahOfAya,
+    this.nomOfAya,
+    super.priority,
+    super.tags,
+    super.lastRevisedAt,
+    super.description,
+    super.sayer,
+  });
+  Map<String, dynamic> toJson(Aya aya) => <String, dynamic>{
+        'id': aya.id,
+        'text': aya.text,
+        'priotiy': priorityEnumMap[aya.priority],
+        'description': aya.description,
+        'tags': aya.tags,
+        'lastRevisedAt': aya.lastRevisedAt?.toIso8601String(),
+        'sayer': aya.sayer,
+        'surahOfAya': aya.surahOfAya,
+        'nomOfAya': aya.nomOfAya,
+      };
+}
+
 Map<Priority, String> priorityEnumMap = {
   Priority.urgent: 'urgent',
   Priority.high: 'high',

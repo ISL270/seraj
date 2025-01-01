@@ -1,4 +1,4 @@
-enum DaleelType { hadith }
+enum DaleelType { hadith, aya }
 
 // 1. hadith
 // 2. ayat

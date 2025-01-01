@@ -23,6 +23,8 @@ final class DaleelIsar extends CacheModel<Daleel> {
 
   // Hadith related
   String? hadithExtraction;
+  String? suraOfAya;
+  String? nomOfAya;
   @Enumerated(EnumType.name)
   HadithAuthenticity? hadithAuthenticity;
 
@@ -37,6 +39,8 @@ final class DaleelIsar extends CacheModel<Daleel> {
     this.lastRevisedAt,
     this.hadithExtraction,
     this.hadithAuthenticity,
+    this.nomOfAya,
+    this.suraOfAya,
   });
 
   @override
@@ -52,6 +56,17 @@ final class DaleelIsar extends CacheModel<Daleel> {
             lastRevisedAt: lastRevisedAt,
             sayer: sayer,
           ),
+        DaleelType.aya => Aya(
+            id: id,
+            text: text,
+            priority: priority,
+            description: description,
+            surahOfAya: suraOfAya,
+            nomOfAya: nomOfAya,
+            tags: tags,
+            lastRevisedAt: lastRevisedAt,
+            sayer: sayer,
+          ),
       };
 
   factory DaleelIsar.fromDomain(Daleel daleel) => switch (daleel) {
@@ -63,6 +78,18 @@ final class DaleelIsar extends CacheModel<Daleel> {
             daleelType: DaleelType.hadith,
             hadithAuthenticity: daleel.authenticity,
             hadithExtraction: daleel.extraction,
+            sayer: daleel.sayer,
+            tags: daleel.tags,
+            lastRevisedAt: daleel.lastRevisedAt,
+          ),
+        Aya() => DaleelIsar(
+            id: daleel.id,
+            text: daleel.text,
+            priority: daleel.priority,
+            description: daleel.description,
+            daleelType: DaleelType.hadith,
+            suraOfAya: daleel.surahOfAya,
+            nomOfAya: daleel.nomOfAya,
             sayer: daleel.sayer,
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,

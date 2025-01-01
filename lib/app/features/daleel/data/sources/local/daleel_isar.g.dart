@@ -212,9 +212,11 @@ P _daleelIsarDeserializeProp<P>(
 
 const _DaleelIsardaleelTypeEnumValueMap = {
   r'hadith': r'hadith',
+  r'aya': r'aya',
 };
 const _DaleelIsardaleelTypeValueEnumMap = {
   r'hadith': DaleelType.hadith,
+  r'aya': DaleelType.aya,
 };
 const _DaleelIsarhadithAuthenticityEnumValueMap = {
   r'daif': r'daif',
