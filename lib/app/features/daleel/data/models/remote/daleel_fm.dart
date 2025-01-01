@@ -3,26 +3,47 @@ import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-sealed class DaleelFM implements RemoteModel<Daleel> {
-  const DaleelFM();
+part 'daleel_fm.g.dart';
 
-  factory DaleelFM.fromJson(DaleelType daleelType, Map<String, dynamic> json) =>
-      switch (daleelType) { DaleelType.hadith => HadithFM.fromJson(json) };
+sealed class DaleelFM implements RemoteModel<Daleel> {
+  final String id;
+  final String text;
+  final String? description;
+  final Priority priority;
+  final String? sayer;
+  final List<String> tags;
+  final DateTime? lastRevisedAt;
+  final DaleelType daleelType;
+
+  const DaleelFM({
+    required this.id,
+    required this.text,
+    required this.description,
+    required this.sayer,
+    required this.priority,
+    required this.tags,
+    required this.lastRevisedAt,
+    required this.daleelType,
+  });
+
+  factory DaleelFM.fromJson(String docID, Map<String, dynamic> json) =>
+      switch ($enumDecode(_$DaleelTypeEnumMap, json['daleelType'])) {
+        DaleelType.hadith => HadithFM.fromJson(docID, json),
+      };
 
   factory DaleelFM.fromDaleelType(
     DaleelType daleelType, {
     required String id,
     required String text,
-    required String description,
-    required String sayer,
-    required String extraction,
     required List<String> tags,
-    required DateTime lastRevisedAt,
     required Priority priority,
-    required HadithAuthenticity authenticity,
+    required String? description,
+    required String? sayer,
+    required String? extraction,
+    required DateTime? lastRevisedAt,
+    required HadithAuthenticity? authenticity,
   }) =>
       switch (daleelType) {
         DaleelType.hadith => HadithFM(
@@ -30,11 +51,12 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
             text: text,
             description: description,
             sayer: sayer,
-            hadithAuthenticity: authenticity,
+            authenticity: authenticity,
             priority: priority,
             extraction: extraction,
             tags: tags,
             lastRevisedAt: lastRevisedAt,
+            daleelType: DaleelType.hadith,
           ),
       };
 
@@ -44,62 +66,33 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
             text: daleel.text,
             description: daleel.description,
             sayer: daleel.sayer,
-            hadithAuthenticity: daleel.authenticity,
+            authenticity: daleel.authenticity,
             priority: daleel.priority,
             extraction: daleel.extraction,
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,
+            daleelType: DaleelType.hadith,
           ),
       };
 }
 
+@JsonSerializable()
 final class HadithFM extends DaleelFM {
-  final String id;
-  final String text;
-  final String? description;
-  final String? sayer;
-  final HadithAuthenticity? hadithAuthenticity;
-  final Priority priority;
   final String? extraction;
-  final List<String>? tags;
-  final DateTime? lastRevisedAt;
+  final HadithAuthenticity? authenticity;
 
   HadithFM({
-    required this.id,
-    required this.text,
-    required this.description,
-    required this.sayer,
+    required super.id,
+    required super.text,
+    required super.description,
+    required super.sayer,
+    required super.priority,
+    required super.tags,
+    required super.lastRevisedAt,
     required this.extraction,
-    required this.tags,
-    required this.lastRevisedAt,
-    required this.priority,
-    required this.hadithAuthenticity,
+    required this.authenticity,
+    required super.daleelType,
   });
-
-  factory HadithFM.fromJson(Map<String, dynamic> json) => HadithFM(
-      id: json['id'] as String,
-      text: json['text'] as String,
-      priority: $enumDecode(priorityEnumMap, json['priority']),
-      description: json['description'] as String?,
-      extraction: json['extraction'] as String?,
-      lastRevisedAt:
-          json['lastRevisedAt'] == null ? null : (json['lastRevisedAt'] as Timestamp).toDate(),
-      sayer: json['sayer'] as String?,
-      tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ?? const [],
-      hadithAuthenticity:
-          $enumDecodeNullable(hadithAuthenticityEnumMap, json['hadithAuthenticity']));
-
-  Map<String, dynamic> toJson(Hadith hadith) => HadithFM(
-        id: hadith.id,
-        text: hadith.text,
-        description: hadith.description,
-        sayer: hadith.sayer,
-        hadithAuthenticity: hadith.authenticity,
-        priority: hadith.priority,
-        extraction: hadith.extraction,
-        tags: hadith.tags,
-        lastRevisedAt: hadith.lastRevisedAt,
-      ).toJson(hadith);
 
   @override
   Hadith toDomain() => Hadith(
@@ -107,10 +100,15 @@ final class HadithFM extends DaleelFM {
         text: text,
         priority: priority,
         description: description,
-        authenticity: hadithAuthenticity,
+        authenticity: authenticity,
         extraction: extraction,
-        tags: tags ?? [],
+        tags: tags,
         lastRevisedAt: lastRevisedAt,
         sayer: sayer,
       );
+
+  factory HadithFM.fromJson(String docID, Map<String, dynamic> json) =>
+      _$HadithFMFromJson(docID, json);
+
+  Map<String, dynamic> toJson() => _$HadithFMToJson(this);
 }

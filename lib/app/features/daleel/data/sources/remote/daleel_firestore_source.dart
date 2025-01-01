@@ -1,7 +1,6 @@
 import 'package:athar/app/core/models/reactive_firestore_source.dart';
 import 'package:athar/app/features/authentication/domain/models/user.dart';
 import 'package:athar/app/features/daleel/data/models/remote/daleel_fm.dart';
-import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -38,8 +37,7 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
   }
 
   @override
-  DaleelFM fromJson(String docID, Map<String, dynamic> json) =>
-      DaleelFM.fromJson(DaleelType.hadith, json);
+  DaleelFM fromJson(String docID, Map<String, dynamic> json) => DaleelFM.fromJson(docID, json);
 
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> snapshotQuery(User user) =>
