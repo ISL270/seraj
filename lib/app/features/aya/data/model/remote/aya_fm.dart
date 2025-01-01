@@ -1,4 +1,5 @@
-part of 'aya_firestore_source.dart';
+import 'package:athar/app/core/firestore/remote_model.dart';
+import 'package:athar/app/features/aya/domain/models/aya_model.dart';
 
 final class AyaFm implements RemoteModel<AyaModel> {
   final String textOfAya;

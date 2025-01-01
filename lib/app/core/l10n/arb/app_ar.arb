@@ -63,5 +63,7 @@
   "selectAyahs":"حدد الآية",
   "cancel":"تجاهل",
   "confirm":"تأكد",
-  "ayah":"آية"
+  "ayah":"آية",
+  "ayahAdded":"تم إضافة الايه بنجاح"
+
 }

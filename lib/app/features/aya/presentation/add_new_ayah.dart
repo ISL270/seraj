@@ -1,3 +1,4 @@
+import 'package:athar/app/core/extension_methods/context_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
@@ -218,14 +219,38 @@ class _AyahAddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddAyaCubit, AddAyaState>(
+    return BlocConsumer<AddAyaCubit, AddAyaState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (innerContext, state) {
+        if (state.status.isSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              duration: const Duration(seconds: 2),
+              content: Text(
+                context.l10n.ayahAdded,
+                style: context.textThemeX.medium.bold,
+              ),
+            ),
+          );
+          innerContext.pop();
+          context.pop();
+        }
+
+        if (state.status.isFailure) {
+          context.scaffoldMessenger
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(content: Text(state.errorMsg)));
+        }
+      },
       builder: (context, state) {
         return Padding(
-          padding: EdgeInsets.all(16.w),
+          padding: EdgeInsets.symmetric(vertical: 12.w),
           child: Button.filled(
-            isLoading: state.status.isLoading,
-            label: context.l10n.add,
+            key: const Key('ayaForm_saveAyaForm_button'),
             maxWidth: true,
+            isLoading: state.status.isLoading,
+            density: ButtonDensity.comfortable,
+            label: context.l10n.add,
             onPressed: state.isValid
                 ? () => context.read<AddAyaCubit>().saveAyaForm()
                 : null,
