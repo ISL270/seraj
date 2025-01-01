@@ -94,8 +94,7 @@ class _TextOfHadithTextField extends StatelessWidget {
           minLines: 1,
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
-            errorText:
-                state.textOfHadith.displayError == null ? null : context.l10n.enterTextOfHadith,
+            errorText: state.hadith.displayError == null ? null : context.l10n.enterTextOfHadith,
             hintMaxLines: 1,
             hintText:
                 'أنا عِنْدَ ظَنِّ عَبْدِي بي، وأنا معهُ إذا ذَكَرَنِي، فإنْ ذَكَرَنِي في نَفْسِهِ ذَكَرْتُهُ في نَفْسِي، وإنْ ذَكَرَنِي في مَلَإٍ ذَكَرْتُهُ في مَلَإٍ خَيْرٍ منهمْ، وإنْ تَقَرَّبَ إلَيَّ بشِبْرٍ تَقَرَّبْتُ إلَيْهِ ذِراعًا، وإنْ تَقَرَّبَ إلَيَّ ذِراعًا تَقَرَّبْتُ إلَيْهِ باعًا، وإنْ أتانِي يَمْشِي أتَيْتُهُ هَرْوَلَةً',
@@ -117,7 +116,7 @@ class _RawiOfHadithTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddHadithCubit, AddHadithState>(
-      buildWhen: (previous, current) => previous.sayerOfHadith != current.sayerOfHadith,
+      buildWhen: (previous, current) => previous.sayer != current.sayer,
       builder: (context, state) {
         return TextField(
           key: const Key('hadithForm_rawiOfHadith_textField'),
@@ -194,7 +193,7 @@ class _HadithTypeSegmentedButton extends StatelessWidget {
                 value: HadithAuthenticity.daif,
               ),
             ],
-            selected: {state.hadithAuthenticity},
+            selected: {state.authenticity},
           ),
         );
       },

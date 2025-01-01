@@ -17,28 +17,23 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
     required String description,
     required String sayer,
     required String extraction,
-    required HadithAuthenticity? hadithAuthenticity,
+    required HadithAuthenticity? authenticity,
     required DateTime lastRevisedAt,
     required Priority priority,
     required List<String> tags,
   }) async {
-    final daleelDocRef = super.firestoreSvc.users.collection.doc(userId).collection('daleel').doc();
-    final daleelDocRefId = daleelDocRef.id;
-
-    final hadithFirestore = super.firestoreSvc.hadith;
-    await daleelDocRef.set({
-      // required fields
-      hadithFirestore.idHadith: daleelDocRefId,
-      hadithFirestore.textOfHadith: text,
-      hadithFirestore.lastRevisedAt: lastRevisedAt,
-      hadithFirestore.priority: priority.name,
-      hadithFirestore.daleelType: DaleelType.hadith.name,
-      // optional fields
-      if (hadithAuthenticity != null) hadithFirestore.authenticityOfHadith: hadithAuthenticity.name,
-      if (description.isNotEmpty) hadithFirestore.descOfHadith: description,
-      if (sayer.isNotEmpty) hadithFirestore.sayerOfHadith: sayer,
-      if (extraction.isNotEmpty) hadithFirestore.extractionOfHadith: extraction,
-      if (tags.isNotEmpty) hadithFirestore.tags: tags,
+    await firestoreOperationHandler(() async {
+      await firestoreSvc.users.daleelCollection(userId).add({
+        firestoreSvc.hadith.text: text,
+        firestoreSvc.hadith.priority: priority.name,
+        firestoreSvc.hadith.authenticity: authenticity,
+        firestoreSvc.hadith.lastRevisedAt: lastRevisedAt,
+        // optional fields
+        if (tags.isNotEmpty) firestoreSvc.hadith.tags: tags,
+        if (sayer.isNotEmpty) firestoreSvc.hadith.sayer: sayer,
+        if (extraction.isNotEmpty) firestoreSvc.hadith.extraction: extraction,
+        if (description.isNotEmpty) firestoreSvc.hadith.description: description,
+      });
     });
   }
 

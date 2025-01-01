@@ -11,39 +11,32 @@ part 'daleel_isar.g.dart';
 final class DaleelIsar extends CacheModel<Daleel> {
   @override
   String id;
-
   String text;
-
   String? description;
-
   String? sayer;
-
   @Enumerated(EnumType.name)
   Priority priority;
-
   @Enumerated(EnumType.name)
   DaleelType daleelType;
-
-  @Enumerated(EnumType.name)
-  HadithAuthenticity? hadithAuthenticity;
-
   List<String> tags;
-
   DateTime? lastRevisedAt;
 
-  String? extraction;
+  // Hadith related
+  String? hadithExtraction;
+  @Enumerated(EnumType.name)
+  HadithAuthenticity? hadithAuthenticity;
 
   DaleelIsar({
     required this.id,
     required this.text,
     required this.priority,
     required this.daleelType,
-    required this.hadithAuthenticity,
-    this.description,
+    required this.tags,
     this.sayer,
-    this.tags = const [],
+    this.description,
     this.lastRevisedAt,
-    this.extraction,
+    this.hadithExtraction,
+    this.hadithAuthenticity,
   });
 
   @override
@@ -53,8 +46,8 @@ final class DaleelIsar extends CacheModel<Daleel> {
             text: text,
             priority: priority,
             description: description,
-            hadithAuthenticity: hadithAuthenticity,
-            extraction: extraction,
+            authenticity: hadithAuthenticity,
+            extraction: hadithExtraction,
             tags: tags,
             lastRevisedAt: lastRevisedAt,
             sayer: sayer,
@@ -68,8 +61,8 @@ final class DaleelIsar extends CacheModel<Daleel> {
             priority: daleel.priority,
             description: daleel.description,
             daleelType: DaleelType.hadith,
-            hadithAuthenticity: daleel.hadithAuthenticity,
-            extraction: daleel.extraction,
+            hadithAuthenticity: daleel.authenticity,
+            hadithExtraction: daleel.extraction,
             sayer: daleel.sayer,
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,

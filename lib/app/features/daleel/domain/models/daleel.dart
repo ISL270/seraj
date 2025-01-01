@@ -23,18 +23,18 @@ sealed class Daleel {
 
 final class Hadith extends Daleel {
   final String? extraction;
-  final HadithAuthenticity? hadithAuthenticity;
+  final HadithAuthenticity? authenticity;
 
   const Hadith({
     required super.id,
     required super.text,
-    required super.priority,
-    required super.tags,
-    required super.lastRevisedAt,
-    required super.description,
-    required super.sayer,
+    super.priority,
+    super.tags,
+    super.lastRevisedAt,
+    super.description,
+    super.sayer,
     this.extraction,
-    this.hadithAuthenticity,
+    this.authenticity,
   });
 
   Map<String, dynamic> toJson(Hadith hadith) => <String, dynamic>{
@@ -42,7 +42,7 @@ final class Hadith extends Daleel {
         'text': hadith.text,
         'priotiy': priorityEnumMap[hadith.priority],
         'description': hadith.description,
-        'hadithAuthenticity': hadithAuthenticityEnumMap[hadith.hadithAuthenticity],
+        'authenticity': authenticityEnumMap[hadith.authenticity],
         'extraction': hadith.extraction,
         'tags': hadith.tags,
         'lastRevisedAt': hadith.lastRevisedAt?.toIso8601String(),
@@ -55,7 +55,7 @@ Map<Priority, String> priorityEnumMap = {
   Priority.high: 'high',
   Priority.normal: 'normal',
 };
-Map<HadithAuthenticity, String> hadithAuthenticityEnumMap = {
+Map<HadithAuthenticity, String> authenticityEnumMap = {
   HadithAuthenticity.daif: 'daif',
   HadithAuthenticity.hasan: 'hasan',
   HadithAuthenticity.sahih: 'sahih',

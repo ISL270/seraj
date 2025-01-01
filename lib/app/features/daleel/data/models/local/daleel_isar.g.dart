@@ -28,16 +28,16 @@ const DaleelIsarSchema = CollectionSchema(
       name: r'description',
       type: IsarType.string,
     ),
-    r'extraction': PropertySchema(
-      id: 2,
-      name: r'extraction',
-      type: IsarType.string,
-    ),
     r'hadithAuthenticity': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'hadithAuthenticity',
       type: IsarType.string,
       enumMap: _DaleelIsarhadithAuthenticityEnumValueMap,
+    ),
+    r'hadithExtraction': PropertySchema(
+      id: 3,
+      name: r'hadithExtraction',
+      type: IsarType.string,
     ),
     r'id': PropertySchema(
       id: 4,
@@ -99,15 +99,15 @@ int _daleelIsarEstimateSize(
     }
   }
   {
-    final value = object.extraction;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
     final value = object.hadithAuthenticity;
     if (value != null) {
       bytesCount += 3 + value.name.length * 3;
+    }
+  }
+  {
+    final value = object.hadithExtraction;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
     }
   }
   bytesCount += 3 + object.id.length * 3;
@@ -137,8 +137,8 @@ void _daleelIsarSerialize(
 ) {
   writer.writeString(offsets[0], object.daleelType.name);
   writer.writeString(offsets[1], object.description);
-  writer.writeString(offsets[2], object.extraction);
-  writer.writeString(offsets[3], object.hadithAuthenticity?.name);
+  writer.writeString(offsets[2], object.hadithAuthenticity?.name);
+  writer.writeString(offsets[3], object.hadithExtraction);
   writer.writeString(offsets[4], object.id);
   writer.writeDateTime(offsets[5], object.lastRevisedAt);
   writer.writeString(offsets[6], object.priority.name);
@@ -158,16 +158,16 @@ DaleelIsar _daleelIsarDeserialize(
             reader.readStringOrNull(offsets[0])] ??
         DaleelType.hadith,
     description: reader.readStringOrNull(offsets[1]),
-    extraction: reader.readStringOrNull(offsets[2]),
     hadithAuthenticity: _DaleelIsarhadithAuthenticityValueEnumMap[
-        reader.readStringOrNull(offsets[3])],
+        reader.readStringOrNull(offsets[2])],
+    hadithExtraction: reader.readStringOrNull(offsets[3]),
     id: reader.readString(offsets[4]),
     lastRevisedAt: reader.readDateTimeOrNull(offsets[5]),
     priority:
         _DaleelIsarpriorityValueEnumMap[reader.readStringOrNull(offsets[6])] ??
             Priority.urgent,
     sayer: reader.readStringOrNull(offsets[7]),
-    tags: reader.readStringList(offsets[8]) ?? const [],
+    tags: reader.readStringList(offsets[8]) ?? [],
     text: reader.readString(offsets[9]),
   );
   return object;
@@ -187,10 +187,10 @@ P _daleelIsarDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
-    case 3:
       return (_DaleelIsarhadithAuthenticityValueEnumMap[
           reader.readStringOrNull(offset)]) as P;
+    case 3:
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
@@ -202,7 +202,7 @@ P _daleelIsarDeserializeProp<P>(
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
-      return (reader.readStringList(offset) ?? const []) as P;
+      return (reader.readStringList(offset) ?? []) as P;
     case 9:
       return (reader.readString(offset)) as P;
     default:
@@ -674,159 +674,6 @@ extension DaleelIsarQueryFilter
   }
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      extractionIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'extraction',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      extractionIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'extraction',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> extractionEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'extraction',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      extractionGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'extraction',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      extractionLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'extraction',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> extractionBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'extraction',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      extractionStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'extraction',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      extractionEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'extraction',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      extractionContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'extraction',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> extractionMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'extraction',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      extractionIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'extraction',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      extractionIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'extraction',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
       hadithAuthenticityIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -975,6 +822,160 @@ extension DaleelIsarQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'hadithAuthenticity',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      hadithExtractionIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'hadithExtraction',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      hadithExtractionIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'hadithExtraction',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      hadithExtractionEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hadithExtraction',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      hadithExtractionGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hadithExtraction',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      hadithExtractionLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hadithExtraction',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      hadithExtractionBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hadithExtraction',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      hadithExtractionStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'hadithExtraction',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      hadithExtractionEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'hadithExtraction',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      hadithExtractionContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'hadithExtraction',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      hadithExtractionMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'hadithExtraction',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      hadithExtractionIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hadithExtraction',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      hadithExtractionIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'hadithExtraction',
         value: '',
       ));
     });
@@ -1850,18 +1851,6 @@ extension DaleelIsarQuerySortBy
     });
   }
 
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByExtraction() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'extraction', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByExtractionDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'extraction', Sort.desc);
-    });
-  }
-
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy>
       sortByHadithAuthenticity() {
     return QueryBuilder.apply(this, (query) {
@@ -1873,6 +1862,19 @@ extension DaleelIsarQuerySortBy
       sortByHadithAuthenticityDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hadithAuthenticity', Sort.desc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByHadithExtraction() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hadithExtraction', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy>
+      sortByHadithExtractionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hadithExtraction', Sort.desc);
     });
   }
 
@@ -1975,18 +1977,6 @@ extension DaleelIsarQuerySortThenBy
     });
   }
 
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByExtraction() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'extraction', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByExtractionDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'extraction', Sort.desc);
-    });
-  }
-
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy>
       thenByHadithAuthenticity() {
     return QueryBuilder.apply(this, (query) {
@@ -1998,6 +1988,19 @@ extension DaleelIsarQuerySortThenBy
       thenByHadithAuthenticityDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hadithAuthenticity', Sort.desc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByHadithExtraction() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hadithExtraction', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy>
+      thenByHadithExtractionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hadithExtraction', Sort.desc);
     });
   }
 
@@ -2078,17 +2081,18 @@ extension DaleelIsarQueryWhereDistinct
     });
   }
 
-  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByExtraction(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'extraction', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByHadithAuthenticity(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'hadithAuthenticity',
+          caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByHadithExtraction(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hadithExtraction',
           caseSensitive: caseSensitive);
     });
   }
@@ -2154,16 +2158,17 @@ extension DaleelIsarQueryProperty
     });
   }
 
-  QueryBuilder<DaleelIsar, String?, QQueryOperations> extractionProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'extraction');
-    });
-  }
-
   QueryBuilder<DaleelIsar, HadithAuthenticity?, QQueryOperations>
       hadithAuthenticityProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'hadithAuthenticity');
+    });
+  }
+
+  QueryBuilder<DaleelIsar, String?, QQueryOperations>
+      hadithExtractionProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hadithExtraction');
     });
   }
 

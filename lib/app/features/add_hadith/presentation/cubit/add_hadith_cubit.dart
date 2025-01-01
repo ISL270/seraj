@@ -20,16 +20,16 @@ class AddHadithCubit extends Cubit<AddHadithState> {
   AddHadithCubit(this._daleelRepository) : super(const AddHadithState());
   final DaleelRepository _daleelRepository;
 
-  void textOfHadithChanged(String value) => emit(state.copyWith(textOfHadith: Name.dirty(value)));
+  void textOfHadithChanged(String value) => emit(state.copyWith(hadith: Name.dirty(value)));
 
-  void rawiOfHadithChanged(String value) => emit(state.copyWith(sayerOfHadith: value));
+  void rawiOfHadithChanged(String value) => emit(state.copyWith(sayer: value));
 
-  void extractionOfHadithChanged(String value) => emit(state.copyWith(extractionOfHadith: value));
+  void extractionOfHadithChanged(String value) => emit(state.copyWith(extraction: value));
 
   void hadithAuthenticityChanged(HadithAuthenticity hadithAuthenticity) =>
-      emit(state.copyWith(hadithAuthenticity: hadithAuthenticity));
+      emit(state.copyWith(authenticity: hadithAuthenticity));
 
-  void descOfHadithChanged(String value) => emit(state.copyWith(descOfHadith: value));
+  void descOfHadithChanged(String value) => emit(state.copyWith(description: value));
 
   void sliderPriorityChanged(double value) {
     emit(state.copyWith(sliderValue: value));
@@ -39,11 +39,11 @@ class AddHadithCubit extends Cubit<AddHadithState> {
     emit(state.copyWith(status: const Loading()));
     try {
       await _daleelRepository.saveHadith(
-        text: state.textOfHadith.value,
-        sayer: state.sayerOfHadith,
-        description: state.descOfHadith,
-        extraction: state.extractionOfHadith,
-        authenticity: state.hadithAuthenticity,
+        text: state.hadith.value,
+        sayer: state.sayer,
+        description: state.description,
+        extraction: state.extraction,
+        authenticity: state.authenticity,
         lastRevisedAt: DateTime.now(),
         priority: getPriority(state.sliderValue),
         tags: [], // not used for now
