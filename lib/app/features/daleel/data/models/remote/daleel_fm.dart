@@ -3,6 +3,7 @@ import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'daleel_fm.g.dart';
@@ -76,7 +77,6 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
       };
 }
 
-@JsonSerializable()
 final class HadithFM extends DaleelFM {
   final String? extraction;
   final HadithAuthenticity? authenticity;
@@ -109,6 +109,4 @@ final class HadithFM extends DaleelFM {
 
   factory HadithFM.fromJson(String docID, Map<String, dynamic> json) =>
       _$HadithFMFromJson(docID, json);
-
-  Map<String, dynamic> toJson() => _$HadithFMToJson(this);
 }

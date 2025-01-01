@@ -27,6 +27,7 @@ sealed class _Daleel {
   late final tags = 'tags';
   late final lastRevisedAt = 'lastRevisedAt';
   late final priority = 'priority';
+  late final daleelType = 'daleelType';
 }
 
 final class _Hadith extends _Daleel {
