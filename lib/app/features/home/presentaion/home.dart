@@ -5,7 +5,7 @@ import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
-import 'package:athar/app/features/athars/presentation/athars_screen.dart';
+import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:flutter/material.dart';
@@ -13,17 +13,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({
-    required this.navigationShell,
-    Key? key,
-  }) : super(key: key ?? const ValueKey('HomeScreen'));
+  const HomeScreen({required this.navigationShell, Key? key})
+      : super(key: key ?? const ValueKey('HomeScreen'));
 
   final StatefulNavigationShell navigationShell;
 
   void _goBranch(int index) =>
       navigationShell.goBranch(index, initialLocation: index == navigationShell.currentIndex);
 
-  static String get homeBranch => AtharsScreen.name;
+  static String get homeBranch => DaleelScreen.name;
 
   @override
   Widget build(BuildContext context) {

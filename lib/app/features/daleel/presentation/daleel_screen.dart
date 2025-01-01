@@ -1,30 +1,24 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
-import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/athars/presentation/cubit/athars_cubit.dart';
-import 'package:athar/app/features/aya/presentation/aya_search.dart';
-import 'package:athar/app/features/settings/domain/settings.dart';
-import 'package:athar/app/features/settings/settings/settings_bloc.dart';
-import 'package:athar/app/widgets/button.dart';
+import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:super_cupertino_navigation_bar/super_cupertino_navigation_bar.dart';
 
-part 'add_new_hadith.dart';
 part 'widgets/bottom_sheet.dart';
-part 'widgets/hadith_list_view_builder.dart';
 
-class AtharsScreen extends StatelessWidget {
-  const AtharsScreen({super.key});
+class DaleelScreen extends StatelessWidget {
+  const DaleelScreen({super.key});
 
-  static const String name = 'athars';
+  static const String name = 'daleel';
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +30,10 @@ class AtharsScreen extends StatelessWidget {
           actions: [
             GestureDetector(
               onTap: () => _openBottomSheet(context),
-              child: Assets.icons.addSquare.svg(
-                width: 28.w,
-                height: 28.h,
+              child: Assets.icons.plusSquaredOutlined.svg(
+                width: 34.w,
+                height: 34.w,
+                color: context.colorsX.primary,
               ),
             ),
           ],
@@ -47,14 +42,12 @@ class AtharsScreen extends StatelessWidget {
           children: [
             Text(
               context.l10n.athars.capitalizedDefinite,
-              style: context.textThemeX.large.bold
-                  .copyWith(color: context.colorsX.onBackground),
+              style: context.textThemeX.large.bold.copyWith(color: context.colorsX.onBackground),
             ),
           ],
         ),
         backgroundColor: context.colorsX.background,
-        searchBar: SuperSearchBar(
-            placeholderText: context.l10n.search.capitalizedDefinite),
+        searchBar: SuperSearchBar(placeholderText: context.l10n.search.capitalizedDefinite),
       ),
       body: const Column(),
     );

@@ -1,15 +1,14 @@
-part of '../athars_screen.dart';
+part of '../daleel_screen.dart';
 
 Future<void> _openBottomSheet(BuildContext context) async {
   // ignore: inference_failure_on_function_invocation
   await showModalBottomSheet(
     elevation: 0,
-    useSafeArea: true,
     context: context,
     builder: (context) {
       return Container(
         width: double.infinity,
-        height: 150.h,
+        height: 330.h,
         decoration: BoxDecoration(
           color: context.colorsX.background,
           borderRadius: BorderRadius.only(
@@ -18,13 +17,9 @@ Future<void> _openBottomSheet(BuildContext context) async {
           ),
         ),
         child: Padding(
-          padding: EdgeInsets.only(top: 15.w, bottom: 15.w, right: 10.w),
+          padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 20.w),
           child: _BottomSheetBody(
-            items: [
-              context.l10n.prophetichadith,
-              context.l10n.quranicverse,
-              context.l10n.others
-            ],
+            items: [context.l10n.propheticHadith, context.l10n.quranicVerse, context.l10n.others],
           ),
         ),
       );
@@ -41,26 +36,17 @@ class _BottomSheetBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 20.h,
       children: [
         const _DragIndicator(),
-        Gap(10.h),
-        Text(context.l10n.addnew, style: context.textThemeX.large.bold),
-        Gap(20.h),
+        Text(context.l10n.addNew, style: context.textThemeX.large.bold),
         Expanded(
           child: ListView.separated(
-            physics: const BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: items.length,
-            separatorBuilder: (context, index) => const Gap(15),
+            separatorBuilder: (context, index) => Gap(20.h),
             itemBuilder: (context, index) => GestureDetector(
-              onTap: () {
-                switch (index) {
-                  case 0:
-                    context.pushNamed(AddNewHadith.name);
-                  case 1:
-                    context.pushNamed(AyaSearch.name);
-                }
-              },
+              onTap: () => index == 0 ? context.pushNamed(AddHadith.name) : null,
               child: _BottomSheetWidget(items[index]),
             ),
           ),
@@ -81,10 +67,10 @@ class _BottomSheetWidget extends StatelessWidget {
       height: 60.h,
       width: 120.w,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16.w),
-        color: context.colorsX.onBackgroundTint35,
+        borderRadius: BorderRadius.circular(28.w),
+        color: context.colorsX.primary,
       ),
-      child: Center(child: Text(label, style: context.textThemeX.medium.bold)),
+      child: Center(child: Text(label, style: context.textThemeX.large.bold)),
     );
   }
 }

@@ -18,9 +18,6 @@ class $AssetsIconsGen {
   /// File path: assets/icons/add-square.svg
   SvgGenImage get addSquare => const SvgGenImage('assets/icons/add-square.svg');
 
-  /// File path: assets/icons/addsharp.png
-  AssetGenImage get addsharp => const AssetGenImage('assets/icons/addsharp.png');
-
   /// File path: assets/icons/appLogo.png
   AssetGenImage get appLogo => const AssetGenImage('assets/icons/appLogo.png');
 
@@ -64,7 +61,6 @@ class $AssetsIconsGen {
   /// List of all assets
   List<dynamic> get values => [
         addSquare,
-        addsharp,
         appLogo,
         arrowback,
         bookmark,
