@@ -1,6 +1,8 @@
+// ignore_for_file: prefer_if_null_operators
+
 import 'package:athar/app/core/models/reactive_firestore_source.dart';
 import 'package:athar/app/features/authentication/domain/models/user.dart';
-import 'package:athar/app/features/daleel/data/models/remote/daleel_fm.dart';
+import 'package:athar/app/features/daleel/data/sources/remote/daleel_fm.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
@@ -26,13 +28,13 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
       await firestoreSvc.users.daleelCollection(userId).add({
         firestoreSvc.hadith.text: text,
         firestoreSvc.hadith.tags: tags,
-        firestoreSvc.hadith.sayer: sayer,
-        firestoreSvc.hadith.extraction: extraction,
         firestoreSvc.hadith.priority: priority.name,
-        firestoreSvc.hadith.description: description,
         firestoreSvc.hadith.lastRevisedAt: lastRevisedAt,
         firestoreSvc.hadith.authenticity: authenticity?.name,
         firestoreSvc.hadith.daleelType: DaleelType.hadith.name,
+        firestoreSvc.hadith.sayer: sayer!.isEmpty ? null : sayer,
+        firestoreSvc.hadith.description: description!.isEmpty ? null : description,
+        firestoreSvc.hadith.extraction: extraction!.isEmpty ? null : extraction,
       });
     });
   }

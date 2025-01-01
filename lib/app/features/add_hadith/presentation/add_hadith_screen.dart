@@ -148,6 +148,7 @@ class _ExtractionOfHadithTextField extends StatelessWidget {
           key: const Key('hadithForm_extractionOfHadith_textField'),
           onChanged: (value) => context.read<AddHadithCubit>().extractionOfHadithChanged(value),
           minLines: 1,
+          textInputAction: TextInputAction.next,
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,
@@ -213,6 +214,7 @@ class _HadithExplanationTextField extends StatelessWidget {
           onChanged: (value) => context.read<AddHadithCubit>().descOfHadithChanged(value),
           maxLines: 4,
           minLines: 1,
+          textInputAction: TextInputAction.done,
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,

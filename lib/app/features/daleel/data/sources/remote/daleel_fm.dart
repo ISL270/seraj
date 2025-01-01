@@ -52,9 +52,9 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
             text: text,
             description: description,
             sayer: sayer,
-            authenticity: authenticity,
+            hadithAuthenticity: authenticity,
             priority: priority,
-            extraction: extraction,
+            hadithExtraction: extraction,
             tags: tags,
             lastRevisedAt: lastRevisedAt,
             daleelType: DaleelType.hadith,
@@ -67,9 +67,9 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
             text: daleel.text,
             description: daleel.description,
             sayer: daleel.sayer,
-            authenticity: daleel.authenticity,
+            hadithAuthenticity: daleel.authenticity,
             priority: daleel.priority,
-            extraction: daleel.extraction,
+            hadithExtraction: daleel.extraction,
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,
             daleelType: DaleelType.hadith,
@@ -78,8 +78,8 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
 }
 
 final class HadithFM extends DaleelFM {
-  final String? extraction;
-  final HadithAuthenticity? authenticity;
+  final String? hadithExtraction;
+  final HadithAuthenticity? hadithAuthenticity;
 
   HadithFM({
     required super.id,
@@ -89,8 +89,8 @@ final class HadithFM extends DaleelFM {
     required super.priority,
     required super.tags,
     required super.lastRevisedAt,
-    required this.extraction,
-    required this.authenticity,
+    required this.hadithExtraction,
+    required this.hadithAuthenticity,
     required super.daleelType,
   });
 
@@ -100,8 +100,8 @@ final class HadithFM extends DaleelFM {
         text: text,
         priority: priority,
         description: description,
-        authenticity: authenticity,
-        extraction: extraction,
+        authenticity: hadithAuthenticity,
+        extraction: hadithExtraction,
         tags: tags,
         lastRevisedAt: lastRevisedAt,
         sayer: sayer,

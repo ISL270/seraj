@@ -9,8 +9,9 @@ HadithFM _$HadithFMFromJson(String docID, Map<String, dynamic> json) => HadithFM
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
       lastRevisedAt:
           json['lastRevisedAt'] == null ? null : (json['lastRevisedAt'] as Timestamp).toDate(),
-      extraction: json['extraction'] as String?,
-      authenticity: $enumDecodeNullable(_$HadithAuthenticityEnumMap, json['authenticity']),
+      hadithExtraction: json['hadithExtraction'] as String?,
+      hadithAuthenticity:
+          $enumDecodeNullable(_$HadithAuthenticityEnumMap, json['hadithAuthenticity']),
       daleelType: $enumDecode(_$DaleelTypeEnumMap, json['daleelType']),
     );
 
