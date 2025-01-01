@@ -68,5 +68,17 @@
   "saveIt":"حفظه",
   "normal":"يرجى",
   "high":"يفضل",
-  "urgent":"يجب"
+  "urgent":"يجب",
+  "quranicayahsurah":"سورة الآية القرآنية",
+   "surahandnoayah":"السورة ورقم الآية",
+   "searchForAya":"البحث عن آية",
+   "selectAyahs":"حدد الآية",
+   "cancel":"تجاهل",
+   "confirm":"تأكد",
+   "ayah":"آية",
+   "ayahAdded":"تم إضافة الايه بنجاح",
+    "quranicverse": "آية قرآنية",
+    "quranicversec": "آية قرآنية",
+    "quranicayahexp": "تفسير الآية القرآنية",
+    "numofayah": "رقم الآية"
 }

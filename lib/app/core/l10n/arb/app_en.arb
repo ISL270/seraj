@@ -68,5 +68,17 @@
   "saveIt":"save it",
   "normal":"normal",
   "high":"high",
-  "urgent":"urgent"
+  "urgent":"urgent",
+    "quranicayahsurah":"Quranic Ayah Surah",
+    "surahandnoayah":"Surah & Number of Ayah",
+    "searchForAya":"ٍٍSearch For Aya",
+    "selectAyahs":"Select Ayahs",
+    "cancel":"Cancel",
+    "ayah":"Ayah",
+    "ayahAdded":"Ayah added successfully",
+    "quranicverse" : "quranic verse",
+    "quranicversec" : "quranic verse",
+    "quranicayahexp":"Quranic Ayah Explanation",
+     "numofayah":"Ayah No."
+
 }

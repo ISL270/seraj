@@ -18,10 +18,10 @@ final class AyaFirestoreSource extends ReactiveFirestoreSource<AyaFm>
       firestoreOperationHandler(() async {
         final userId = getIt.get<AuthRepository>().user?.id ?? '';
         await firestoreSvc.users.collection.doc(userId).collection('ayat').add({
-          firestoreSvc.ayat.surahOfAya: ayaFm.surahOfAya,
-          firestoreSvc.ayat.nomOfAya: ayaFm.nomOfAya,
-          firestoreSvc.ayat.textOfAya: ayaFm.textOfAya,
-          firestoreSvc.ayat.ayaExplain: ayaFm.ayaExplain,
+          // firestoreSvc.ayat.surahOfAya: ayaFm.surahOfAya,
+          // firestoreSvc.ayat.nomOfAya: ayaFm.nomOfAya,
+          // firestoreSvc.ayat.textOfAya: ayaFm.textOfAya,
+          // firestoreSvc.ayat.ayaExplain: ayaFm.ayaExplain,
         });
       });
 
@@ -31,5 +31,5 @@ final class AyaFirestoreSource extends ReactiveFirestoreSource<AyaFm>
 
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> snapshotQuery(User user) =>
-      super.firestoreSvc.users.ayatCollection(user.id).snapshots();
+      super.firestoreSvc.users.daleelCollection(user.id).snapshots();
 }
