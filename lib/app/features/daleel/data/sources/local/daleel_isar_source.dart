@@ -1,5 +1,5 @@
 import 'package:athar/app/core/isar/isar_source.dart';
-import 'package:athar/app/features/daleel/data/models/local/daleel_isar.dart';
+import 'package:athar/app/features/daleel/data/sources/local/daleel_isar.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:injectable/injectable.dart';
 
