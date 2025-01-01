@@ -1,4 +1,4 @@
-part of '../athars_screen.dart';
+part of '../daleel_screen.dart';
 
 Future<void> _openBottomSheet(BuildContext context) async {
   // ignore: inference_failure_on_function_invocation
@@ -36,18 +36,17 @@ class _BottomSheetBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 20.h,
       children: [
         const _DragIndicator(),
-        const Gap(10),
         Text(context.l10n.addNew, style: context.textThemeX.large.bold),
-        const Gap(20),
         Expanded(
           child: ListView.separated(
             physics: const NeverScrollableScrollPhysics(),
             itemCount: items.length,
-            separatorBuilder: (context, index) => const Gap(20),
+            separatorBuilder: (context, index) => Gap(20.h),
             itemBuilder: (context, index) => GestureDetector(
-              onTap: () {},
+              onTap: () => index == 0 ? context.pushNamed(AddHadith.name) : null,
               child: _BottomSheetWidget(items[index]),
             ),
           ),

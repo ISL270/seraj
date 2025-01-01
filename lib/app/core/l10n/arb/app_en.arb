@@ -53,5 +53,20 @@
   "selectHadithType":"Select Hadith Type",
   "title":"Title",
   "concept": "concept",
-  "hadithType":"hadith type"
+  "hadithType":"hadith type",
+  "textOfHadith":"Text Of Hadith",
+  "rawiOfHadith":"Rawi Of Hadith",
+  "extractionOfHadith":"extraction Of Hadith",
+  "hadithDaif":"Daif",
+  "hadithSahih":"Sahih",
+  "hadithExplain":"Hadith Explanation",
+  "enterTextOfHadith":"Enter Text Of Hadith",
+  "hadithRule":"Hadith Rule",
+  "hadithAddedSuccessf": "Hadith Added Successfully",
+  "hadithHasan":"Hasan",
+  "priority":"priority",
+  "saveIt":"save it",
+  "normal":"normal",
+  "high":"high",
+  "urgent":"urgent"
 }

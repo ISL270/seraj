@@ -53,5 +53,20 @@
   "selectHadithType":"اختر نوع الحديث",
   "title":"عنوان",
   "concept": "مفهوم",
-  "hadithType":"نوع الحديث"
+  "hadithType":"نوع الحديث",
+  "textOfHadith":"المتن",
+  "rawiOfHadith":"الراوي",
+  "extractionOfHadith":"التخريج",
+  "hadithDaif":"ضعيف",
+  "hadithSahih":"صحيح",
+  "hadithExplain":"الشرح",
+  "enterTextOfHadith":"ادخل متن الحديث",
+  "hadithRule": "الحكم",
+  "hadithAddedSuccessf": "تم إضافة الحديث بنجاح",
+  "hadithHasan":"حسن",
+  "priority":"مدى الاهمية",
+  "saveIt":"حفظه",
+  "normal":"يرجى",
+  "high":"يفضل",
+  "urgent":"يجب"
 }
