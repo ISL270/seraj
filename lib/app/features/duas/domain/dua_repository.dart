@@ -1,14 +1,17 @@
+// ignore_for_file: unused_field
+
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/core/models/reactive_repository.dart';
-import 'package:athar/app/features/duas/data/data_source/local/aya_isar_source.dart';
-import 'package:athar/app/features/duas/data/data_source/local/dua_isar.dart';
-import 'package:athar/app/features/duas/data/data_source/remote/dua_firestore_source.dart';
-import 'package:athar/app/features/duas/data/model/dua.dart';
+import 'package:athar/app/features/daleel/domain/models/priority.dart';
+import 'package:athar/app/features/duas/data/sources/local/dua_isar.dart';
+import 'package:athar/app/features/duas/data/sources/local/dua_isar_source.dart';
+import 'package:athar/app/features/duas/data/sources/remote/dua_firestore_source.dart';
+import 'package:athar/app/features/duas/domain/dua.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
-final class DuaRepository extends ReactiveRepository<Dua, DuaFm, DuaIsar> {
+final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
   final DuaFirestoreSource _remoteSource;
   final DuaIsarSource _localSource;
 
@@ -18,17 +21,22 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFm, DuaIsar> {
     this._localSource,
   ) : super(localSource: _localSource, remoteSource: _remoteSource);
 
-  Future<EitherException<void>> saveDua({required Dua dua}) async {
+  Future<EitherException<void>> addDua({
+    required String dua,
+    required String? reward,
+    required Priority priority,
+    required List<String> tags,
+    required String? description,
+  }) async {
     try {
       await _remoteSource.addDua(
-          duaFm: DuaFm(
-        textOfDua: dua.textOfDua,
-        explanation: dua.explanation,
-        numOfRepeat: dua.numOfRepeat,
-        priority: dua.priority,
-        reward: dua.reward,
-      ));
-
+        userId: authRepository.user!.id,
+        dua: dua,
+        tags: tags,
+        reward: reward,
+        priority: priority,
+        description: description,
+      );
       return right(null);
     } catch (e) {
       return left(e as GenericException);

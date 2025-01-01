@@ -2,49 +2,46 @@ part of 'add_dua_cubit.dart';
 
 final class AddDuaState extends Equatable with FormzMixin {
   const AddDuaState({
-    this.textOfDua = const Name.pure(),
+    this.dua = const Name.pure(),
     this.reward = const Name.pure(),
-    this.numOfRepeat = const Name.pure(),
-    this.priority = '',
-    this.explanation = '',
+    this.priority = Priority.normal,
+    this.description = '',
     this.status = const Initial(),
     this.errorMessage,
+    this.tags = const [],
   });
 
-  final Name textOfDua;
+  final Name dua;
   final Name reward;
-  final Name numOfRepeat;
-  final String? priority;
-  final String? explanation;
+  final Priority priority;
+  final String? description;
   final String? errorMessage;
   final VoidStatus status;
+  final List<String> tags;
 
   @override
   List<Object?> get props => [
-        textOfDua,
+        dua,
         reward,
-        numOfRepeat,
-        explanation,
+        description,
         priority,
         status,
         errorMessage,
       ];
 
   AddDuaState copyWith({
-    Name? textOfDua,
+    Name? dua,
     Name? reward,
-    Name? numOfRepeat,
-    String? priority,
-    String? explanation,
+    Priority? priority,
+    String? description,
     VoidStatus? status,
     String? errorMessage,
   }) {
     return AddDuaState(
       priority: priority ?? this.priority,
-      explanation: explanation ?? this.explanation,
-      textOfDua: textOfDua ?? this.textOfDua,
+      description: description ?? this.description,
+      dua: dua ?? this.dua,
       reward: reward ?? this.reward,
-      numOfRepeat: numOfRepeat ?? this.numOfRepeat,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
     );
@@ -52,7 +49,7 @@ final class AddDuaState extends Equatable with FormzMixin {
 
   @override
   // ignore: strict_raw_type
-  List<FormzInput> get inputs => [textOfDua];
+  List<FormzInput> get inputs => [dua];
 
   String get errorMsg {
     if (!status.isFailure) return '';

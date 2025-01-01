@@ -12,11 +12,7 @@ class _DuaTimeDropDownButtonState extends State<_PriorityDropDownButton> {
 
   @override
   Widget build(BuildContext context) {
-    final items = <String>[
-      context.l10n.normal,
-      context.l10n.important,
-      context.l10n.vImportant
-    ];
+    final items = <String>[context.l10n.normal, context.l10n.important, context.l10n.vImportant];
     return Center(
       child: DropdownButtonHideUnderline(
         child: DropdownButton2<String>(
@@ -27,8 +23,8 @@ class _DuaTimeDropDownButtonState extends State<_PriorityDropDownButton> {
               Expanded(
                 child: Text(
                   context.l10n.priority,
-                  style: context.textThemeX.medium
-                      .copyWith(color: context.colorsX.onBackgroundTint35),
+                  style:
+                      context.textThemeX.medium.copyWith(color: context.colorsX.onBackgroundTint35),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -50,7 +46,7 @@ class _DuaTimeDropDownButtonState extends State<_PriorityDropDownButton> {
               .toList(),
           value: selectedValue,
           onChanged: (String? value) {
-            context.read<AddDuaCubit>().priorityChanged(value ?? '');
+            // context.read<AddDuaCubit>().priorityChanged(value ?? '');
             setState(() {
               selectedValue = value;
             });

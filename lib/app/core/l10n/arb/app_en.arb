@@ -68,5 +68,8 @@
    "reward":"Reward",
    "explanation":"Explanation",
    "priority":"Priority",
-   "dua":"Dua"
+   "dua":"Dua",
+   "normal":"Normal",
+  "high":"High",
+  "urgent":"Urgent"
 }

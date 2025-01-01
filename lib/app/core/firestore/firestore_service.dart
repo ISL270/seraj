@@ -14,15 +14,14 @@ final class _Users {
   late final idField = 'id';
   late final emailField = 'email';
   late final nameField = 'name';
-  late final duaCollName = 'duas';
+  late final duaCollName = 'dua';
 }
 
 final class _Dua {
-  late final collection = FirebaseFirestore.instance.collection('duas');
-  late final idField = 'id';
-  late final textOfDua = 'textOfDua';
+  late final id = 'id';
+  late final dua = 'dua';
   late final reward = 'reward';
-  late final numOfRepeat = 'numOfRepeat';
-  late final explanation = 'explanation';
+  late final description = 'description';
   late final priority = 'priority';
+  late final tags = 'tags';
 }

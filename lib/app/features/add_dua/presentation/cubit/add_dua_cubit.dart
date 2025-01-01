@@ -1,6 +1,6 @@
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
-import 'package:athar/app/features/duas/data/model/dua.dart';
+import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/duas/domain/dua_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -16,35 +16,27 @@ class AddDuaCubit extends Cubit<AddDuaState> {
 
   final DuaRepository _duaRepository;
 
-  void textOfDuaChanged(String value) =>
-      emit(state.copyWith(textOfDua: Name.dirty(value)));
+  void duaChanged(String value) => emit(state.copyWith(dua: Name.dirty(value)));
 
-  void rewardOfDuaChanged(String value) =>
-      emit(state.copyWith(reward: Name.dirty(value)));
+  void rewardOfDuaChanged(String value) => emit(state.copyWith(reward: Name.dirty(value)));
 
-  void numOfRepeatChanged(String value) =>
-      emit(state.copyWith(numOfRepeat: Name.dirty(value)));
+  void priorityChanged(Priority value) => emit(state.copyWith(priority: value));
 
-  void priorityChanged(String value) => emit(state.copyWith(priority: value));
-
-  void duaExplanationChanged(String value) =>
-      emit(state.copyWith(explanation: value));
+  void duaExplanationChanged(String value) => emit(state.copyWith(description: value));
 
   Future<void> saveDuaForm() async {
     emit(state.copyWith(status: const Loading()));
     try {
-      await _duaRepository.saveDua(
-        dua: Dua(
-          textOfDua: state.textOfDua.value,
-          explanation: state.explanation,
-          numOfRepeat: state.numOfRepeat.value,
-          priority: state.priority,
-          reward: state.reward.value,
-        ),
+      await _duaRepository.addDua(
+        tags: state.tags,
+        dua: state.dua.value,
+        description: state.description,
+        reward: state.reward.value,
+        priority: state.priority,
       );
       emit(state.copyWith(status: const Success('Saved Aya Successfully')));
     } catch (e) {
-      print(e.toString());
+      print(e);
       emit(state.copyWith(status: Failure(e as GenericException)));
     }
   }

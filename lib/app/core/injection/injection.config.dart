@@ -24,10 +24,10 @@ import 'package:athar/app/features/authentication/domain/repositories/user_repos
     as _i92;
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart'
     as _i562;
-import 'package:athar/app/features/duas/data/data_source/local/aya_isar_source.dart'
-    as _i423;
-import 'package:athar/app/features/duas/data/data_source/remote/dua_firestore_source.dart'
-    as _i446;
+import 'package:athar/app/features/duas/data/sources/local/dua_isar_source.dart'
+    as _i869;
+import 'package:athar/app/features/duas/data/sources/remote/dua_firestore_source.dart'
+    as _i455;
 import 'package:athar/app/features/duas/domain/dua_repository.dart' as _i194;
 import 'package:athar/app/features/settings/data/sources/local/settings_isar_source.dart'
     as _i387;
@@ -64,12 +64,12 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i683.UserFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i387.SettingsIsarSource>(
         () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i423.DuaIsarSource>(
-        () => _i423.DuaIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i869.DuaIsarSource>(
+        () => _i869.DuaIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i602.UserIsarSource>(
         () => _i602.UserIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i446.DuaFirestoreSource>(
-        () => _i446.DuaFirestoreSource(gh<_i516.FirestoreService>()));
+    gh.singleton<_i455.DuaFirestoreSource>(
+        () => _i455.DuaFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i257.SettingsRepository>(
         () => _i257.SettingsRepository(gh<_i387.SettingsIsarSource>()));
     gh.singleton<_i92.UserRepository>(() => _i92.UserRepository(
@@ -90,13 +90,13 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
       dispose: (i) => i.dispose(),
     );
-    gh.singleton<_i562.AuthBloc>(
-        () => _i562.AuthBloc(gh<_i842.AuthRepository>()));
     gh.singleton<_i194.DuaRepository>(() => _i194.DuaRepository(
           gh<_i842.AuthRepository>(),
-          gh<_i446.DuaFirestoreSource>(),
-          gh<_i423.DuaIsarSource>(),
+          gh<_i455.DuaFirestoreSource>(),
+          gh<_i869.DuaIsarSource>(),
         ));
+    gh.singleton<_i562.AuthBloc>(
+        () => _i562.AuthBloc(gh<_i842.AuthRepository>()));
     gh.singleton<_i910.AddDuaCubit>(
         () => _i910.AddDuaCubit(gh<_i194.DuaRepository>()));
     return this;

@@ -68,9 +68,10 @@
   "reward":"الأجر",
   "explanation":"الشرح",
   "priority":"الأولوية",
-  "normal":"عادي",
   "important":"مهم",
   "vImportant":"مهم جدا",
-  "dua":"الدعاء"
-
+  "dua":"الدعاء",
+  "normal":"يرجى",
+  "high":"يفضل",
+  "urgent":"يجب"
 }

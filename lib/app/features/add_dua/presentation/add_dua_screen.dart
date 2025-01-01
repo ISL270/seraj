@@ -9,7 +9,6 @@ import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -52,16 +51,8 @@ class AddDuaScreen extends StatelessWidget {
                     const _DuaRewardTextField(),
                     _LabelTextFieldAlignWidget(label: context.l10n.explanation),
                     const _ExplanationOfDuaTextField(),
-                    _LabelTextFieldAlignWidget(
-                        label: context.l10n.numOfTimesANDpriority),
-                    Row(
-                      children: [
-                        const Expanded(child: _DuaNumOfRepeatTextField()),
-                        Gap(15.w),
-                        const Expanded(
-                            flex: 2, child: _PriorityDropDownButton()),
-                      ],
-                    ),
+                    _LabelTextFieldAlignWidget(label: context.l10n.numOfTimesANDpriority),
+                    const _PriorityDropDownButton()
                   ],
                 ),
               ),
@@ -82,8 +73,7 @@ class _TextOfDuaTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       key: const Key('DuaaForm_TextOfDua_textField'),
-      onChanged: (duaText) =>
-          context.read<AddDuaCubit>().textOfDuaChanged(duaText),
+      onChanged: (duaText) => context.read<AddDuaCubit>().duaChanged(duaText),
       maxLines: 4,
       minLines: 2,
       decoration: InputDecoration(
@@ -107,8 +97,7 @@ class _ExplanationOfDuaTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onChanged: (explain) =>
-          context.read<AddDuaCubit>().duaExplanationChanged(explain),
+      onChanged: (explain) => context.read<AddDuaCubit>().duaExplanationChanged(explain),
       maxLines: 4,
       minLines: 4,
       decoration: InputDecoration(
@@ -132,41 +121,13 @@ class _DuaRewardTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onChanged: (reward) =>
-          context.read<AddDuaCubit>().rewardOfDuaChanged(reward),
+      onChanged: (reward) => context.read<AddDuaCubit>().rewardOfDuaChanged(reward),
       maxLines: 4,
       minLines: 1,
       decoration: InputDecoration(
         labelStyle: context.textThemeX.medium,
         hintMaxLines: 1,
         hintText: 'يُكتب له أجر عمل صالح، ويشمله دعاء الملائكة، ',
-        hintStyle: context.textThemeX.medium.bold.copyWith(
-          height: 1.5.h,
-          overflow: TextOverflow.ellipsis,
-          color: context.colorsX.onBackgroundTint35,
-        ),
-      ),
-    );
-  }
-}
-
-class _DuaNumOfRepeatTextField extends StatelessWidget {
-  const _DuaNumOfRepeatTextField();
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      onChanged: (numOfRepeat) =>
-          context.read<AddDuaCubit>().numOfRepeatChanged(numOfRepeat),
-      key: const Key('DuaaForm_NumOfRepeatDua_textField'),
-      inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-        LengthLimitingTextInputFormatter(3),
-      ],
-      decoration: InputDecoration(
-        labelStyle: context.textThemeX.medium,
-        alignLabelWithHint: true,
-        hintText: context.l10n.numOfTimes,
         hintStyle: context.textThemeX.medium.bold.copyWith(
           height: 1.5.h,
           overflow: TextOverflow.ellipsis,
@@ -206,9 +167,7 @@ class _DuaAddButton extends StatelessWidget {
             maxWidth: true,
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
-            onPressed: state.isValid
-                ? () => context.read<AddDuaCubit>().saveDuaForm()
-                : null,
+            onPressed: state.isValid ? () => context.read<AddDuaCubit>().saveDuaForm() : null,
           ),
         );
       },

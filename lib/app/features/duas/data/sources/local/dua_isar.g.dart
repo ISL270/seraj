@@ -17,35 +17,36 @@ const DuaIsarSchema = CollectionSchema(
   name: r'DuaIsar',
   id: 4882758208056914724,
   properties: {
-    r'explanation': PropertySchema(
+    r'description': PropertySchema(
       id: 0,
-      name: r'explanation',
+      name: r'description',
+      type: IsarType.string,
+    ),
+    r'dua': PropertySchema(
+      id: 1,
+      name: r'dua',
       type: IsarType.string,
     ),
     r'id': PropertySchema(
-      id: 1,
-      name: r'id',
-      type: IsarType.string,
-    ),
-    r'numOfRepeat': PropertySchema(
       id: 2,
-      name: r'numOfRepeat',
+      name: r'id',
       type: IsarType.string,
     ),
     r'priority': PropertySchema(
       id: 3,
       name: r'priority',
       type: IsarType.string,
+      enumMap: _DuaIsarpriorityEnumValueMap,
     ),
     r'reward': PropertySchema(
       id: 4,
       name: r'reward',
       type: IsarType.string,
     ),
-    r'textOfDua': PropertySchema(
+    r'tags': PropertySchema(
       id: 5,
-      name: r'textOfDua',
-      type: IsarType.string,
+      name: r'tags',
+      type: IsarType.stringList,
     )
   },
   estimateSize: _duaIsarEstimateSize,
@@ -54,14 +55,14 @@ const DuaIsarSchema = CollectionSchema(
   deserializeProp: _duaIsarDeserializeProp,
   idName: r'cacheID',
   indexes: {
-    r'textOfDua': IndexSchema(
-      id: -4377764223268392704,
-      name: r'textOfDua',
+    r'dua': IndexSchema(
+      id: -7304514917685321235,
+      name: r'dua',
       unique: false,
       replace: false,
       properties: [
         IndexPropertySchema(
-          name: r'textOfDua',
+          name: r'dua',
           type: IndexType.value,
           caseSensitive: false,
         )
@@ -83,31 +84,27 @@ int _duaIsarEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
-    final value = object.explanation;
+    final value = object.description;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
+  bytesCount += 3 + object.dua.length * 3;
   bytesCount += 3 + object.id.length * 3;
-  {
-    final value = object.numOfRepeat;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.priority;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
+  bytesCount += 3 + object.priority.name.length * 3;
   {
     final value = object.reward;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.textOfDua.length * 3;
+  bytesCount += 3 + object.tags.length * 3;
+  {
+    for (var i = 0; i < object.tags.length; i++) {
+      final value = object.tags[i];
+      bytesCount += value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -117,12 +114,12 @@ void _duaIsarSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.explanation);
-  writer.writeString(offsets[1], object.id);
-  writer.writeString(offsets[2], object.numOfRepeat);
-  writer.writeString(offsets[3], object.priority);
+  writer.writeString(offsets[0], object.description);
+  writer.writeString(offsets[1], object.dua);
+  writer.writeString(offsets[2], object.id);
+  writer.writeString(offsets[3], object.priority.name);
   writer.writeString(offsets[4], object.reward);
-  writer.writeString(offsets[5], object.textOfDua);
+  writer.writeStringList(offsets[5], object.tags);
 }
 
 DuaIsar _duaIsarDeserialize(
@@ -132,12 +129,14 @@ DuaIsar _duaIsarDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = DuaIsar(
-    explanation: reader.readStringOrNull(offsets[0]),
-    id: reader.readString(offsets[1]),
-    numOfRepeat: reader.readStringOrNull(offsets[2]),
-    priority: reader.readStringOrNull(offsets[3]),
+    description: reader.readStringOrNull(offsets[0]),
+    dua: reader.readString(offsets[1]),
+    id: reader.readString(offsets[2]),
+    priority:
+        _DuaIsarpriorityValueEnumMap[reader.readStringOrNull(offsets[3])] ??
+            Priority.urgent,
     reward: reader.readStringOrNull(offsets[4]),
-    textOfDua: reader.readString(offsets[5]),
+    tags: reader.readStringList(offsets[5]) ?? [],
   );
   return object;
 }
@@ -154,17 +153,29 @@ P _duaIsarDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 3:
-      return (reader.readStringOrNull(offset)) as P;
+      return (_DuaIsarpriorityValueEnumMap[reader.readStringOrNull(offset)] ??
+          Priority.urgent) as P;
     case 4:
       return (reader.readStringOrNull(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringList(offset) ?? []) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
+
+const _DuaIsarpriorityEnumValueMap = {
+  r'urgent': r'urgent',
+  r'high': r'high',
+  r'normal': r'normal',
+};
+const _DuaIsarpriorityValueEnumMap = {
+  r'urgent': Priority.urgent,
+  r'high': Priority.high,
+  r'normal': Priority.normal,
+};
 
 Id _duaIsarGetId(DuaIsar object) {
   return object.cacheID;
@@ -183,10 +194,10 @@ extension DuaIsarQueryWhereSort on QueryBuilder<DuaIsar, DuaIsar, QWhere> {
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhere> anyTextOfDua() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhere> anyDua() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        const IndexWhereClause.any(indexName: r'textOfDua'),
+        const IndexWhereClause.any(indexName: r'dua'),
       );
     });
   }
@@ -260,136 +271,134 @@ extension DuaIsarQueryWhere on QueryBuilder<DuaIsar, DuaIsar, QWhereClause> {
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> textOfDuaEqualTo(
-      String textOfDua) {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> duaEqualTo(String dua) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'textOfDua',
-        value: [textOfDua],
+        indexName: r'dua',
+        value: [dua],
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> textOfDuaNotEqualTo(
-      String textOfDua) {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> duaNotEqualTo(String dua) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'textOfDua',
+              indexName: r'dua',
               lower: [],
-              upper: [textOfDua],
+              upper: [dua],
               includeUpper: false,
             ))
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'textOfDua',
-              lower: [textOfDua],
+              indexName: r'dua',
+              lower: [dua],
               includeLower: false,
               upper: [],
             ));
       } else {
         return query
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'textOfDua',
-              lower: [textOfDua],
+              indexName: r'dua',
+              lower: [dua],
               includeLower: false,
               upper: [],
             ))
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'textOfDua',
+              indexName: r'dua',
               lower: [],
-              upper: [textOfDua],
+              upper: [dua],
               includeUpper: false,
             ));
       }
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> textOfDuaGreaterThan(
-    String textOfDua, {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> duaGreaterThan(
+    String dua, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'textOfDua',
-        lower: [textOfDua],
+        indexName: r'dua',
+        lower: [dua],
         includeLower: include,
         upper: [],
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> textOfDuaLessThan(
-    String textOfDua, {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> duaLessThan(
+    String dua, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'textOfDua',
+        indexName: r'dua',
         lower: [],
-        upper: [textOfDua],
+        upper: [dua],
         includeUpper: include,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> textOfDuaBetween(
-    String lowerTextOfDua,
-    String upperTextOfDua, {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> duaBetween(
+    String lowerDua,
+    String upperDua, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'textOfDua',
-        lower: [lowerTextOfDua],
+        indexName: r'dua',
+        lower: [lowerDua],
         includeLower: includeLower,
-        upper: [upperTextOfDua],
+        upper: [upperDua],
         includeUpper: includeUpper,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> textOfDuaStartsWith(
-      String TextOfDuaPrefix) {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> duaStartsWith(
+      String DuaPrefix) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'textOfDua',
-        lower: [TextOfDuaPrefix],
-        upper: ['$TextOfDuaPrefix\u{FFFFF}'],
+        indexName: r'dua',
+        lower: [DuaPrefix],
+        upper: ['$DuaPrefix\u{FFFFF}'],
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> textOfDuaIsEmpty() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> duaIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'textOfDua',
+        indexName: r'dua',
         value: [''],
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> textOfDuaIsNotEmpty() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> duaIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(IndexWhereClause.lessThan(
-              indexName: r'textOfDua',
+              indexName: r'dua',
               upper: [''],
             ))
             .addWhereClause(IndexWhereClause.greaterThan(
-              indexName: r'textOfDua',
+              indexName: r'dua',
               lower: [''],
             ));
       } else {
         return query
             .addWhereClause(IndexWhereClause.greaterThan(
-              indexName: r'textOfDua',
+              indexName: r'dua',
               lower: [''],
             ))
             .addWhereClause(IndexWhereClause.lessThan(
-              indexName: r'textOfDua',
+              indexName: r'dua',
               upper: [''],
             ));
       }
@@ -452,36 +461,36 @@ extension DuaIsarQueryFilter
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> explanationIsNull() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> descriptionIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'explanation',
+        property: r'description',
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> explanationIsNotNull() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> descriptionIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'explanation',
+        property: r'description',
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> explanationEqualTo(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> descriptionEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'explanation',
+        property: r'description',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> explanationGreaterThan(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> descriptionGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -489,14 +498,14 @@ extension DuaIsarQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'explanation',
+        property: r'description',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> explanationLessThan(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> descriptionLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -504,14 +513,14 @@ extension DuaIsarQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'explanation',
+        property: r'description',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> explanationBetween(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> descriptionBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -520,7 +529,7 @@ extension DuaIsarQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'explanation',
+        property: r'description',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -530,70 +539,200 @@ extension DuaIsarQueryFilter
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> explanationStartsWith(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> descriptionStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'explanation',
+        property: r'description',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> explanationEndsWith(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> descriptionEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'explanation',
+        property: r'description',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> explanationContains(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> descriptionContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'explanation',
+        property: r'description',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> explanationMatches(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> descriptionMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'explanation',
+        property: r'description',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> explanationIsEmpty() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> descriptionIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'explanation',
+        property: r'description',
         value: '',
       ));
     });
   }
 
   QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition>
-      explanationIsNotEmpty() {
+      descriptionIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'explanation',
+        property: r'description',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> duaEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'dua',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> duaGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'dua',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> duaLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'dua',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> duaBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'dua',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> duaStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'dua',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> duaEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'dua',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> duaContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'dua',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> duaMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'dua',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> duaIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'dua',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> duaIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'dua',
         value: '',
       ));
     });
@@ -728,171 +867,8 @@ extension DuaIsarQueryFilter
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> numOfRepeatIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'numOfRepeat',
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> numOfRepeatIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'numOfRepeat',
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> numOfRepeatEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'numOfRepeat',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> numOfRepeatGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'numOfRepeat',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> numOfRepeatLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'numOfRepeat',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> numOfRepeatBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'numOfRepeat',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> numOfRepeatStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'numOfRepeat',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> numOfRepeatEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'numOfRepeat',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> numOfRepeatContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'numOfRepeat',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> numOfRepeatMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'numOfRepeat',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> numOfRepeatIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'numOfRepeat',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition>
-      numOfRepeatIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'numOfRepeat',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'priority',
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'priority',
-      ));
-    });
-  }
-
   QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityEqualTo(
-    String? value, {
+    Priority value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -905,7 +881,7 @@ extension DuaIsarQueryFilter
   }
 
   QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityGreaterThan(
-    String? value, {
+    Priority value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -920,7 +896,7 @@ extension DuaIsarQueryFilter
   }
 
   QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityLessThan(
-    String? value, {
+    Priority value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -935,8 +911,8 @@ extension DuaIsarQueryFilter
   }
 
   QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityBetween(
-    String? lower,
-    String? upper, {
+    Priority lower,
+    Priority upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1167,20 +1143,20 @@ extension DuaIsarQueryFilter
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> textOfDuaEqualTo(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'textOfDua',
+        property: r'tags',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> textOfDuaGreaterThan(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1188,14 +1164,14 @@ extension DuaIsarQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'textOfDua',
+        property: r'tags',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> textOfDuaLessThan(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1203,14 +1179,14 @@ extension DuaIsarQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'textOfDua',
+        property: r'tags',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> textOfDuaBetween(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1219,7 +1195,7 @@ extension DuaIsarQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'textOfDua',
+        property: r'tags',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1229,71 +1205,156 @@ extension DuaIsarQueryFilter
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> textOfDuaStartsWith(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'textOfDua',
+        property: r'tags',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> textOfDuaEndsWith(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'textOfDua',
+        property: r'tags',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> textOfDuaContains(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'textOfDua',
+        property: r'tags',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> textOfDuaMatches(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'textOfDua',
+        property: r'tags',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> textOfDuaIsEmpty() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'textOfDua',
+        property: r'tags',
         value: '',
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> textOfDuaIsNotEmpty() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition>
+      tagsElementIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'textOfDua',
+        property: r'tags',
         value: '',
       ));
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'tags',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'tags',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'tags',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'tags',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'tags',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'tags',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
     });
   }
 }
@@ -1305,15 +1366,27 @@ extension DuaIsarQueryLinks
     on QueryBuilder<DuaIsar, DuaIsar, QFilterCondition> {}
 
 extension DuaIsarQuerySortBy on QueryBuilder<DuaIsar, DuaIsar, QSortBy> {
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByExplanation() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByDescription() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'explanation', Sort.asc);
+      return query.addSortBy(r'description', Sort.asc);
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByExplanationDesc() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'explanation', Sort.desc);
+      return query.addSortBy(r'description', Sort.desc);
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByDua() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dua', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByDuaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dua', Sort.desc);
     });
   }
 
@@ -1326,18 +1399,6 @@ extension DuaIsarQuerySortBy on QueryBuilder<DuaIsar, DuaIsar, QSortBy> {
   QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByNumOfRepeat() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'numOfRepeat', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByNumOfRepeatDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'numOfRepeat', Sort.desc);
     });
   }
 
@@ -1364,18 +1425,6 @@ extension DuaIsarQuerySortBy on QueryBuilder<DuaIsar, DuaIsar, QSortBy> {
       return query.addSortBy(r'reward', Sort.desc);
     });
   }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByTextOfDua() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'textOfDua', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByTextOfDuaDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'textOfDua', Sort.desc);
-    });
-  }
 }
 
 extension DuaIsarQuerySortThenBy
@@ -1392,15 +1441,27 @@ extension DuaIsarQuerySortThenBy
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByExplanation() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByDescription() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'explanation', Sort.asc);
+      return query.addSortBy(r'description', Sort.asc);
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByExplanationDesc() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'explanation', Sort.desc);
+      return query.addSortBy(r'description', Sort.desc);
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByDua() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dua', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByDuaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dua', Sort.desc);
     });
   }
 
@@ -1413,18 +1474,6 @@ extension DuaIsarQuerySortThenBy
   QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByNumOfRepeat() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'numOfRepeat', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByNumOfRepeatDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'numOfRepeat', Sort.desc);
     });
   }
 
@@ -1451,26 +1500,21 @@ extension DuaIsarQuerySortThenBy
       return query.addSortBy(r'reward', Sort.desc);
     });
   }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByTextOfDua() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'textOfDua', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByTextOfDuaDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'textOfDua', Sort.desc);
-    });
-  }
 }
 
 extension DuaIsarQueryWhereDistinct
     on QueryBuilder<DuaIsar, DuaIsar, QDistinct> {
-  QueryBuilder<DuaIsar, DuaIsar, QDistinct> distinctByExplanation(
+  QueryBuilder<DuaIsar, DuaIsar, QDistinct> distinctByDescription(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'explanation', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'description', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QDistinct> distinctByDua(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'dua', caseSensitive: caseSensitive);
     });
   }
 
@@ -1478,13 +1522,6 @@ extension DuaIsarQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'id', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QDistinct> distinctByNumOfRepeat(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'numOfRepeat', caseSensitive: caseSensitive);
     });
   }
 
@@ -1502,10 +1539,9 @@ extension DuaIsarQueryWhereDistinct
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QDistinct> distinctByTextOfDua(
-      {bool caseSensitive = true}) {
+  QueryBuilder<DuaIsar, DuaIsar, QDistinct> distinctByTags() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'textOfDua', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'tags');
     });
   }
 }
@@ -1518,9 +1554,15 @@ extension DuaIsarQueryProperty
     });
   }
 
-  QueryBuilder<DuaIsar, String?, QQueryOperations> explanationProperty() {
+  QueryBuilder<DuaIsar, String?, QQueryOperations> descriptionProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'explanation');
+      return query.addPropertyName(r'description');
+    });
+  }
+
+  QueryBuilder<DuaIsar, String, QQueryOperations> duaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'dua');
     });
   }
 
@@ -1530,13 +1572,7 @@ extension DuaIsarQueryProperty
     });
   }
 
-  QueryBuilder<DuaIsar, String?, QQueryOperations> numOfRepeatProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'numOfRepeat');
-    });
-  }
-
-  QueryBuilder<DuaIsar, String?, QQueryOperations> priorityProperty() {
+  QueryBuilder<DuaIsar, Priority, QQueryOperations> priorityProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'priority');
     });
@@ -1548,9 +1584,9 @@ extension DuaIsarQueryProperty
     });
   }
 
-  QueryBuilder<DuaIsar, String, QQueryOperations> textOfDuaProperty() {
+  QueryBuilder<DuaIsar, List<String>, QQueryOperations> tagsProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'textOfDua');
+      return query.addPropertyName(r'tags');
     });
   }
 }
