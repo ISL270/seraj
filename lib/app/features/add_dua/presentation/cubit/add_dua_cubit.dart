@@ -1,7 +1,7 @@
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
-import 'package:athar/app/features/duas/domain/dua_repository.dart';
+import 'package:athar/app/features/duas/domain/repository/dua_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:form_inputs/form_inputs.dart';
@@ -18,11 +18,13 @@ class AddDuaCubit extends Cubit<AddDuaState> {
 
   void duaChanged(String value) => emit(state.copyWith(dua: Name.dirty(value)));
 
-  void rewardOfDuaChanged(String value) => emit(state.copyWith(reward: Name.dirty(value)));
+  void rewardOfDuaChanged(String value) =>
+      emit(state.copyWith(reward: Name.dirty(value)));
 
   void priorityChanged(Priority value) => emit(state.copyWith(priority: value));
 
-  void duaExplanationChanged(String value) => emit(state.copyWith(description: value));
+  void duaExplanationChanged(String value) =>
+      emit(state.copyWith(description: value));
 
   Future<void> saveDuaForm() async {
     emit(state.copyWith(status: const Loading()));

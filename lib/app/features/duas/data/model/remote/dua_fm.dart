@@ -1,4 +1,4 @@
-part of 'dua_firestore_source.dart';
+part of '../../sources/remote/dua_firestore_source.dart';
 
 final class DuaFM implements RemoteModel<Dua> {
   final String id;
@@ -17,7 +17,8 @@ final class DuaFM implements RemoteModel<Dua> {
     this.description,
   });
 
-  factory DuaFM.fromJson(String docID, Map<String, dynamic> json) => _$DuaFMFromJson(docID, json);
+  factory DuaFM.fromJson(String docID, Map<String, dynamic> json) =>
+      _$DuaFMFromJson(docID, json);
 
   Map<String, dynamic> toJson() => _$DuaFMToJson(this);
 

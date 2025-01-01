@@ -3,16 +3,17 @@ import 'package:athar/app/core/firestore/remote_model.dart';
 import 'package:athar/app/core/models/reactive_firestore_source.dart';
 import 'package:athar/app/features/authentication/domain/models/user.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
-import 'package:athar/app/features/duas/domain/dua.dart';
+import 'package:athar/app/features/duas/domain/model/dua.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'dua_firestore_source.g.dart';
-part 'dua_fm.dart';
+part '../../model/remote/dua_fm.dart';
 
 @singleton
-final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM> with FirestoreHelper {
+final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM>
+    with FirestoreHelper {
   DuaFirestoreSource(super.firestoreSvc);
 
   Future<void> addDua({
@@ -33,7 +34,8 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM> with Fires
       });
 
   @override
-  DuaFM fromJson(String docID, Map<String, dynamic> json) => DuaFM.fromJson(docID, json);
+  DuaFM fromJson(String docID, Map<String, dynamic> json) =>
+      DuaFM.fromJson(docID, json);
 
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> snapshotQuery(User user) =>

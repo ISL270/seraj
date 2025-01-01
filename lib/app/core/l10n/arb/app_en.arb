@@ -69,6 +69,7 @@
    "explanation":"Explanation",
    "priority":"Priority",
    "dua":"Dua",
+   "duaAdded":"Dua added successfully",
    "normal":"Normal",
   "high":"High",
   "urgent":"Urgent"

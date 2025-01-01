@@ -28,7 +28,8 @@ import 'package:athar/app/features/duas/data/sources/local/dua_isar_source.dart'
     as _i869;
 import 'package:athar/app/features/duas/data/sources/remote/dua_firestore_source.dart'
     as _i455;
-import 'package:athar/app/features/duas/domain/dua_repository.dart' as _i194;
+import 'package:athar/app/features/duas/domain/repository/dua_repository.dart'
+    as _i194;
 import 'package:athar/app/features/settings/data/sources/local/settings_isar_source.dart'
     as _i387;
 import 'package:athar/app/features/settings/domain/settings_repository.dart'
