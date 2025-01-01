@@ -15,7 +15,8 @@ import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
-final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, DaleelIsar> {
+final class DaleelRepository
+    extends ReactiveRepository<Daleel, DaleelFM, DaleelIsar> {
   final DaleelFirestoreSource _remoteSource;
   final DaleelIsarSource _localSource;
 
@@ -47,6 +48,34 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
       return right(null);
     } catch (e) {
       log(e.toString());
+      return left(e as GenericException);
+    }
+  }
+
+  Future<EitherException<void>> saveAya({
+    required String text,
+    required String ayaExplain,
+    required String surahOfAya,
+    required String nomOfAya,
+    required Priority priority,
+    required DateTime lastRevisedAt,
+    required List<String> tags,
+    String? sayer,
+  }) async {
+    try {
+      await _remoteSource.saveAya(
+        text: text,
+        userId: authRepository.user!.id,
+        sayer: sayer,
+        priority: priority,
+        tags: tags,
+        surahOfAya: surahOfAya,
+        nomOfAya: nomOfAya,
+        ayaExplain: ayaExplain,
+        lastRevisedAt: lastRevisedAt,
+      );
+      return right(null);
+    } catch (e) {
       return left(e as GenericException);
     }
   }

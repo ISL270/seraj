@@ -3,9 +3,9 @@
 import 'dart:developer';
 
 import 'package:athar/app/core/enums/status.dart';
+import 'package:athar/app/core/extension_methods/double_x.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
-import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -20,16 +20,19 @@ class AddHadithCubit extends Cubit<AddHadithState> {
   AddHadithCubit(this._daleelRepository) : super(const AddHadithState());
   final DaleelRepository _daleelRepository;
 
-  void textOfHadithChanged(String value) => emit(state.copyWith(hadith: Name.dirty(value)));
+  void textOfHadithChanged(String value) =>
+      emit(state.copyWith(hadith: Name.dirty(value)));
 
   void rawiOfHadithChanged(String value) => emit(state.copyWith(sayer: value));
 
-  void extractionOfHadithChanged(String value) => emit(state.copyWith(extraction: value));
+  void extractionOfHadithChanged(String value) =>
+      emit(state.copyWith(extraction: value));
 
   void hadithAuthenticityChanged(HadithAuthenticity hadithAuthenticity) =>
       emit(state.copyWith(authenticity: hadithAuthenticity));
 
-  void descOfHadithChanged(String value) => emit(state.copyWith(description: value));
+  void descOfHadithChanged(String value) =>
+      emit(state.copyWith(description: value));
 
   void sliderPriorityChanged(double value) {
     emit(state.copyWith(sliderValue: value));
@@ -45,24 +48,13 @@ class AddHadithCubit extends Cubit<AddHadithState> {
         extraction: state.extraction,
         authenticity: state.authenticity,
         lastRevisedAt: DateTime.now(),
-        priority: getPriority(state.sliderValue),
+        priority: state.sliderValue.getPriority(),
         tags: [], // not used for now
       );
       emit(state.copyWith(status: const Success('Saved Hadith Successfully')));
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(status: Failure(e as GenericException)));
-    }
-  }
-
-  // used cause slider only returns double values
-  Priority getPriority(double value) {
-    if (value == 0.0) {
-      return Priority.normal;
-    } else if (value == 1.0) {
-      return Priority.high;
-    } else {
-      return Priority.urgent;
     }
   }
 }

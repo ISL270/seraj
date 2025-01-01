@@ -1,7 +1,7 @@
 import 'package:athar/app/core/enums/status.dart';
+import 'package:athar/app/core/extension_methods/double_x.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
-import 'package:athar/app/features/aya/domain/models/aya_model.dart';
-import 'package:athar/app/features/aya/domain/repositories/aya_repository.dart';
+import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_quran/flutter_quran.dart';
@@ -11,12 +11,12 @@ import 'package:formz/formz.dart';
 part 'add_aya_state.dart';
 
 class AddAyaCubit extends Cubit<AddAyaState> {
-  final AyaRepository _ayaRepository;
+  final DaleelRepository _daleelRepository;
 
   AddAyaCubit({
-    required AyaRepository ayaRepository,
+    required DaleelRepository ayaRepository,
     required List<Ayah> ayah,
-  })  : _ayaRepository = ayaRepository,
+  })  : _daleelRepository = ayaRepository,
         super(AddAyaState(
           textOfAya:
               Name.dirty(ayah.map((singleAyah) => singleAyah.ayah).join(' ')),
@@ -39,13 +39,14 @@ class AddAyaCubit extends Cubit<AddAyaState> {
   Future<void> saveAyaForm() async {
     emit(state.copyWith(status: const Loading()));
     try {
-      await _ayaRepository.saveAya(
-        ayaModel: AyaModel(
-          textOfAya: state.textOfAya.value,
-          surahOfAya: state.surahOfAya.value,
-          nomOfAya: state.numOfAya,
-          ayaExplain: state.ayaExplain.value,
-        ),
+      await _daleelRepository.saveAya(
+        text: state.textOfAya.value,
+        ayaExplain: state.ayaExplain.value,
+        surahOfAya: state.surahOfAya.value,
+        nomOfAya: state.numOfAya,
+        lastRevisedAt: DateTime.now(),
+        priority: 1.0.getPriority(),
+        tags: [],
       );
       emit(state.copyWith(status: const Success('Saved Aya Successfully')));
     } catch (e) {

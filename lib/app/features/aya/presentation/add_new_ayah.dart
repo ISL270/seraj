@@ -3,8 +3,8 @@ import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/aya/domain/repositories/aya_repository.dart';
 import 'package:athar/app/features/aya/presentation/bloc/add_aya_cubit.dart';
+import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,7 @@ class AddNewAyah extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddAyaCubit(
-        ayaRepository: getIt.get<AyaRepository>(),
+        ayaRepository: getIt.get<DaleelRepository>(),
         ayah: ayah,
       ),
       child: Screen(
@@ -246,7 +246,6 @@ class _AyahAddButton extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 12.w),
           child: Button.filled(
-            key: const Key('ayaForm_saveAyaForm_button'),
             maxWidth: true,
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,

@@ -7,6 +7,7 @@ import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dart';
+import 'package:athar/app/features/aya/presentation/aya_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -42,12 +43,14 @@ class DaleelScreen extends StatelessWidget {
           children: [
             Text(
               context.l10n.athars.capitalizedDefinite,
-              style: context.textThemeX.large.bold.copyWith(color: context.colorsX.onBackground),
+              style: context.textThemeX.large.bold
+                  .copyWith(color: context.colorsX.onBackground),
             ),
           ],
         ),
         backgroundColor: context.colorsX.background,
-        searchBar: SuperSearchBar(placeholderText: context.l10n.search.capitalizedDefinite),
+        searchBar: SuperSearchBar(
+            placeholderText: context.l10n.search.capitalizedDefinite),
       ),
       body: const Column(),
     );

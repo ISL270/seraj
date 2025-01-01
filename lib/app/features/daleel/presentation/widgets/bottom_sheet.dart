@@ -19,7 +19,11 @@ Future<void> _openBottomSheet(BuildContext context) async {
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 20.w),
           child: _BottomSheetBody(
-            items: [context.l10n.propheticHadith, context.l10n.quranicVerse, context.l10n.others],
+            items: [
+              context.l10n.propheticHadith,
+              context.l10n.quranicVerse,
+              context.l10n.others
+            ],
           ),
         ),
       );
@@ -46,7 +50,9 @@ class _BottomSheetBody extends StatelessWidget {
             itemCount: items.length,
             separatorBuilder: (context, index) => Gap(20.h),
             itemBuilder: (context, index) => GestureDetector(
-              onTap: () => index == 0 ? context.pushNamed(AddHadith.name) : null,
+              onTap: () => index == 0
+                  ? context.pushNamed(AddHadith.name)
+                  : context.pushNamed(AyaSearch.name),
               child: _BottomSheetWidget(items[index]),
             ),
           ),

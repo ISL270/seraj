@@ -24,12 +24,6 @@ import 'package:athar/app/features/authentication/domain/repositories/user_repos
     as _i92;
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart'
     as _i562;
-import 'package:athar/app/features/aya/data/datasources/local/aya_isar_source.dart'
-    as _i151;
-import 'package:athar/app/features/aya/data/datasources/remote/aya_firestore_source.dart'
-    as _i957;
-import 'package:athar/app/features/aya/domain/repositories/aya_repository.dart'
-    as _i157;
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar_source.dart'
     as _i53;
 import 'package:athar/app/features/daleel/data/sources/remote/daleel_firestore_source.dart'
@@ -71,14 +65,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i683.UserFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i602.UserIsarSource>(
         () => _i602.UserIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i151.AyaIsarSource>(
-        () => _i151.AyaIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i53.DaleelIsarSource>(
         () => _i53.DaleelIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i387.SettingsIsarSource>(
         () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i957.AyaFirestoreSource>(
-        () => _i957.AyaFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i460.DaleelFirestoreSource>(
         () => _i460.DaleelFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i257.SettingsRepository>(
@@ -101,11 +91,6 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
       dispose: (i) => i.dispose(),
     );
-    gh.singleton<_i157.AyaRepository>(() => _i157.AyaRepository(
-          gh<_i842.AuthRepository>(),
-          gh<_i957.AyaFirestoreSource>(),
-          gh<_i151.AyaIsarSource>(),
-        ));
     gh.singleton<_i143.DaleelRepository>(() => _i143.DaleelRepository(
           gh<_i842.AuthRepository>(),
           gh<_i460.DaleelFirestoreSource>(),

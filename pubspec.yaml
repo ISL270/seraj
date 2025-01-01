@@ -24,6 +24,7 @@ dependencies:
   flutter_gen_runner: ^5.8.0
   flutter_localizations:
     sdk: flutter
+  flutter_quran: ^0.0.2
   flutter_screenutil: ^5.9.3
   flutter_svg: ^2.0.16
   font_awesome_flutter: ^10.8.0
