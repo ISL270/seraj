@@ -2,6 +2,7 @@ import 'package:athar/app/core/extension_methods/getit_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/routing/go_router_refresh_stream.dart';
 import 'package:athar/app/core/routing/go_router_state_extension.dart';
+import 'package:athar/app/features/add_athar/presentation/add_athar_screen.dart';
 import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dart';
 import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
@@ -77,6 +78,15 @@ final appRouter = GoRouter(
                       create: (_) => AddHadithCubit(getIt.get<DaleelRepository>()),
                       child: const AddHadith(),
                     ),
+                  ),
+                ),
+                GoRoute(
+                  name: AddAtharScreen.name,
+                  path: AddAtharScreen.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  pageBuilder: (context, state) => const CupertinoPage(
+                    fullscreenDialog: true,
+                    child: AddAtharScreen(),
                   ),
                 ),
               ],
