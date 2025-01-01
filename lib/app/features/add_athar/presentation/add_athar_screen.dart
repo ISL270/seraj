@@ -33,7 +33,7 @@ class AddAtharScreen extends StatelessWidget {
           child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
         ),
         title: Text(
-          '${context.l10n.add} أثر',
+          '${context.l10n.add} ${context.l10n.athar}',
           style: context.textThemeX.heading.bold,
           textAlign: TextAlign.center,
         ),
@@ -47,15 +47,15 @@ class AddAtharScreen extends StatelessWidget {
                 spacing: 15.h,
                 children: [
                   Gap(10.h),
-                  const _LabelTextFieldAlignWidget(label: 'النص'),
+                  _LabelTextFieldAlignWidget(label: context.l10n.atharText),
                   const _TextOfAtharTextField(),
-                  const _LabelTextFieldAlignWidget(label: 'القائل'),
+                  _LabelTextFieldAlignWidget(label: context.l10n.atharSayer),
                   const _SayerOfAtharTextField(),
-                  const _LabelTextFieldAlignWidget(label: 'الإسناد'),
+                  _LabelTextFieldAlignWidget(label: context.l10n.atharIsnad),
                   const _IsnadOfAtharTextField(),
-                  const _LabelTextFieldAlignWidget(label: 'الحكم'),
+                  _LabelTextFieldAlignWidget(label: context.l10n.atharRule),
                   _RuleSelectionOfAtharTextField(),
-                  const _LabelTextFieldAlignWidget(label: 'التخريج'),
+                  _LabelTextFieldAlignWidget(label: context.l10n.atharExtraction),
                   const _ExtractionOfAtharTextField(),
                   Gap(30.h),
                 ],
@@ -192,7 +192,7 @@ class _RuleSelectionOfAtharTextField extends StatelessWidget {
                     decoration: InputDecoration(
                       labelStyle: context.textThemeX.medium,
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
-                      hintText: 'حكم الأثر',
+                      hintText: context.l10n.atharRule,
                       hintStyle: context.textThemeX.medium.bold.copyWith(
                         height: 1.5.h,
                         color: context.colorsX.onBackgroundTint35,

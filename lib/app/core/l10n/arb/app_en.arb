@@ -68,5 +68,12 @@
   "saveIt":"save it",
   "normal":"normal",
   "high":"high",
-  "urgent":"urgent"
+  "urgent":"urgent",
+  "atharText":"Athar Text",
+  "atharSayer":"Athar Sayer",
+  "atharIsnad":"Athar Isnad",
+  "atharRule":"Athar Rule",
+  "atharExtraction":"Athar Extraction",
+  "intermittent":"Athar Intermittent",
+  "other":"Other"
 }

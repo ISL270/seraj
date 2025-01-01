@@ -68,5 +68,12 @@
   "saveIt":"حفظه",
   "normal":"يرجى",
   "high":"يفضل",
-  "urgent":"يجب"
+  "urgent":"يجب",
+  "atharText":"النص",
+  "atharSayer":"القائل",
+  "atharIsnad":"الإسناد",
+  "atharRule":"الحكم",
+  "atharExtraction":"التخريج",
+  "intermittent":"متقطع",
+  "other":"اخرى"
 }
