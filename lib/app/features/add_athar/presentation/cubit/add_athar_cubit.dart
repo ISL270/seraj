@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:athar/app/features/add_athar/presentation/cubit/cubit/add_athar_state.dart';
+import 'package:athar/app/features/add_athar/presentation/cubit/add_athar_state.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:bloc/bloc.dart';
 import 'package:form_inputs/form_inputs.dart';
