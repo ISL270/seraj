@@ -53,13 +53,14 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
   }) async {
     await firestoreOperationHandler(() async {
       await firestoreSvc.users.daleelCollection(userId).add({
+        firestoreSvc.aya.daleelType: DaleelType.aya.name,
         firestoreSvc.aya.text: text,
         firestoreSvc.aya.tags: tags,
         firestoreSvc.aya.priority: priority.name,
         firestoreSvc.aya.lastRevisedAt: lastRevisedAt,
         firestoreSvc.aya.surahOfAya: surahOfAya,
         firestoreSvc.aya.nomOfAya: nomOfAya,
-        firestoreSvc.aya.sayer: sayer!.isEmpty ? null : sayer,
+        firestoreSvc.aya.sayer: sayer,
         firestoreSvc.aya.description: ayaExplain,
       });
     });

@@ -87,7 +87,7 @@ final class DaleelIsar extends CacheModel<Daleel> {
             text: daleel.text,
             priority: daleel.priority,
             description: daleel.description,
-            daleelType: DaleelType.hadith,
+            daleelType: DaleelType.aya,
             suraOfAya: daleel.surahOfAya,
             nomOfAya: daleel.nomOfAya,
             sayer: daleel.sayer,

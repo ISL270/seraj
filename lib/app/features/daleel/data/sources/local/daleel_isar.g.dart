@@ -49,24 +49,34 @@ const DaleelIsarSchema = CollectionSchema(
       name: r'lastRevisedAt',
       type: IsarType.dateTime,
     ),
-    r'priority': PropertySchema(
+    r'nomOfAya': PropertySchema(
       id: 6,
+      name: r'nomOfAya',
+      type: IsarType.string,
+    ),
+    r'priority': PropertySchema(
+      id: 7,
       name: r'priority',
       type: IsarType.string,
       enumMap: _DaleelIsarpriorityEnumValueMap,
     ),
     r'sayer': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'sayer',
       type: IsarType.string,
     ),
+    r'suraOfAya': PropertySchema(
+      id: 9,
+      name: r'suraOfAya',
+      type: IsarType.string,
+    ),
     r'tags': PropertySchema(
-      id: 8,
+      id: 10,
       name: r'tags',
       type: IsarType.stringList,
     ),
     r'text': PropertySchema(
-      id: 9,
+      id: 11,
       name: r'text',
       type: IsarType.string,
     )
@@ -111,9 +121,21 @@ int _daleelIsarEstimateSize(
     }
   }
   bytesCount += 3 + object.id.length * 3;
+  {
+    final value = object.nomOfAya;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.priority.name.length * 3;
   {
     final value = object.sayer;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.suraOfAya;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -141,10 +163,12 @@ void _daleelIsarSerialize(
   writer.writeString(offsets[3], object.hadithExtraction);
   writer.writeString(offsets[4], object.id);
   writer.writeDateTime(offsets[5], object.lastRevisedAt);
-  writer.writeString(offsets[6], object.priority.name);
-  writer.writeString(offsets[7], object.sayer);
-  writer.writeStringList(offsets[8], object.tags);
-  writer.writeString(offsets[9], object.text);
+  writer.writeString(offsets[6], object.nomOfAya);
+  writer.writeString(offsets[7], object.priority.name);
+  writer.writeString(offsets[8], object.sayer);
+  writer.writeString(offsets[9], object.suraOfAya);
+  writer.writeStringList(offsets[10], object.tags);
+  writer.writeString(offsets[11], object.text);
 }
 
 DaleelIsar _daleelIsarDeserialize(
@@ -163,12 +187,14 @@ DaleelIsar _daleelIsarDeserialize(
     hadithExtraction: reader.readStringOrNull(offsets[3]),
     id: reader.readString(offsets[4]),
     lastRevisedAt: reader.readDateTimeOrNull(offsets[5]),
+    nomOfAya: reader.readStringOrNull(offsets[6]),
     priority:
-        _DaleelIsarpriorityValueEnumMap[reader.readStringOrNull(offsets[6])] ??
+        _DaleelIsarpriorityValueEnumMap[reader.readStringOrNull(offsets[7])] ??
             Priority.urgent,
-    sayer: reader.readStringOrNull(offsets[7]),
-    tags: reader.readStringList(offsets[8]) ?? [],
-    text: reader.readString(offsets[9]),
+    sayer: reader.readStringOrNull(offsets[8]),
+    suraOfAya: reader.readStringOrNull(offsets[9]),
+    tags: reader.readStringList(offsets[10]) ?? [],
+    text: reader.readString(offsets[11]),
   );
   return object;
 }
@@ -196,14 +222,18 @@ P _daleelIsarDeserializeProp<P>(
     case 5:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 6:
+      return (reader.readStringOrNull(offset)) as P;
+    case 7:
       return (_DaleelIsarpriorityValueEnumMap[
               reader.readStringOrNull(offset)] ??
           Priority.urgent) as P;
-    case 7:
-      return (reader.readStringOrNull(offset)) as P;
     case 8:
-      return (reader.readStringList(offset) ?? []) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 9:
+      return (reader.readStringOrNull(offset)) as P;
+    case 10:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 11:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1187,6 +1217,157 @@ extension DaleelIsarQueryFilter
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> nomOfAyaIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'nomOfAya',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      nomOfAyaIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'nomOfAya',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> nomOfAyaEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'nomOfAya',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      nomOfAyaGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'nomOfAya',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> nomOfAyaLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'nomOfAya',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> nomOfAyaBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'nomOfAya',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      nomOfAyaStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'nomOfAya',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> nomOfAyaEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'nomOfAya',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> nomOfAyaContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'nomOfAya',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> nomOfAyaMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'nomOfAya',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      nomOfAyaIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'nomOfAya',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      nomOfAyaIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'nomOfAya',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> priorityEqualTo(
     Priority value, {
     bool caseSensitive = true,
@@ -1463,6 +1644,158 @@ extension DaleelIsarQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'sayer',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      suraOfAyaIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'suraOfAya',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      suraOfAyaIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'suraOfAya',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> suraOfAyaEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'suraOfAya',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      suraOfAyaGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'suraOfAya',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> suraOfAyaLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'suraOfAya',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> suraOfAyaBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'suraOfAya',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      suraOfAyaStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'suraOfAya',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> suraOfAyaEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'suraOfAya',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> suraOfAyaContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'suraOfAya',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> suraOfAyaMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'suraOfAya',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      suraOfAyaIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'suraOfAya',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      suraOfAyaIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'suraOfAya',
         value: '',
       ));
     });
@@ -1904,6 +2237,18 @@ extension DaleelIsarQuerySortBy
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByNomOfAya() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nomOfAya', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByNomOfAyaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nomOfAya', Sort.desc);
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByPriority() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'priority', Sort.asc);
@@ -1925,6 +2270,18 @@ extension DaleelIsarQuerySortBy
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortBySayerDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'sayer', Sort.desc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortBySuraOfAya() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'suraOfAya', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortBySuraOfAyaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'suraOfAya', Sort.desc);
     });
   }
 
@@ -2030,6 +2387,18 @@ extension DaleelIsarQuerySortThenBy
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByNomOfAya() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nomOfAya', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByNomOfAyaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'nomOfAya', Sort.desc);
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByPriority() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'priority', Sort.asc);
@@ -2051,6 +2420,18 @@ extension DaleelIsarQuerySortThenBy
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenBySayerDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'sayer', Sort.desc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenBySuraOfAya() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'suraOfAya', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenBySuraOfAyaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'suraOfAya', Sort.desc);
     });
   }
 
@@ -2112,6 +2493,13 @@ extension DaleelIsarQueryWhereDistinct
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByNomOfAya(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'nomOfAya', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByPriority(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2123,6 +2511,13 @@ extension DaleelIsarQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'sayer', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctBySuraOfAya(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'suraOfAya', caseSensitive: caseSensitive);
     });
   }
 
@@ -2187,6 +2582,12 @@ extension DaleelIsarQueryProperty
     });
   }
 
+  QueryBuilder<DaleelIsar, String?, QQueryOperations> nomOfAyaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'nomOfAya');
+    });
+  }
+
   QueryBuilder<DaleelIsar, Priority, QQueryOperations> priorityProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'priority');
@@ -2196,6 +2597,12 @@ extension DaleelIsarQueryProperty
   QueryBuilder<DaleelIsar, String?, QQueryOperations> sayerProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'sayer');
+    });
+  }
+
+  QueryBuilder<DaleelIsar, String?, QQueryOperations> suraOfAyaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'suraOfAya');
     });
   }
 

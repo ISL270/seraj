@@ -8,7 +8,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'daleel_fm.g.dart';
 
-@JsonSerializable()
 sealed class DaleelFM implements RemoteModel<Daleel> {
   final String id;
   final String text;
@@ -105,7 +104,6 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
       };
 }
 
-@JsonSerializable()
 final class HadithFM extends DaleelFM {
   final String? hadithExtraction;
   final HadithAuthenticity? hadithAuthenticity;
@@ -140,7 +138,6 @@ final class HadithFM extends DaleelFM {
       _$HadithFMFromJson(docID, json);
 }
 
-@JsonSerializable()
 final class AyaFm extends DaleelFM {
   final String? surahOfAya;
   final String? nomOfAya;
@@ -172,5 +169,5 @@ final class AyaFm extends DaleelFM {
       );
 
   factory AyaFm.fromJson(String docID, Map<String, dynamic> json) =>
-      _$AyaFMFromJson(docID, json);
+      _$AyaFmFromJson(docID, json);
 }
