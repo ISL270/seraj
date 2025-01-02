@@ -15,6 +15,7 @@ import 'package:flutter_quran/flutter_quran.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AddNewAyah extends StatelessWidget {
   final List<Ayah> ayah;
@@ -90,8 +91,7 @@ class AddNewAyah extends StatelessWidget {
                               text: ayah
                                   .map((singleAyah) => singleAyah.ayah)
                                   .join(' ')
-                                  .decorateArabicNumbers(), //
-                              // Combine ayahs
+                                  .decorateArabicNumbers(),
                             ),
                           ),
                           Gap(20.h),
@@ -179,6 +179,9 @@ class _QuranicVerseTextField extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 16.h),
       child: TextField(
+        style: context.textThemeX.medium.copyWith(
+          fontFamily: GoogleFonts.amiriQuran().fontFamily,
+        ),
         controller: controller,
         maxLines: 5,
         minLines: 3,

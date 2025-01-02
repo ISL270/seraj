@@ -69,10 +69,11 @@ class _SearchScreenState extends State<AyaSearch> {
                                     .replaceAll('\n', ' ')
                                     .decorateArabicNumbers(),
                                 style: context.textThemeX.large.copyWith(
-                                  fontSize: 18,
+                                  fontSize: 18.sp,
                                   fontFamily:
                                       GoogleFonts.amiriQuran().fontFamily,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                               subtitle: Center(
                                 child: Padding(
@@ -150,7 +151,9 @@ class _SearchScreenState extends State<AyaSearch> {
                         }
                       },
                       title: Text(ayah.ayah.replaceAll('\n', ' '),
-                          style: context.textThemeX.large),
+                          style: context.textThemeX.large.copyWith(
+                            fontFamily: GoogleFonts.amiriQuran().fontFamily,
+                          )),
                     );
                   }).toList(),
                 ),
