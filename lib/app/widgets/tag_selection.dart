@@ -1,4 +1,5 @@
 import 'package:athar/app/core/l10n/l10n.dart';
+import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -28,8 +29,8 @@ class TagSelectionWidget extends StatelessWidget {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text(
-                  errorMessageBuilder?.call(tag) ?? '$tag already exists')),
+              content: Text(errorMessageBuilder?.call(tag) ??
+                  '$tag ${context.l10n.alreadyExists}')),
         );
       }
     }
@@ -60,7 +61,7 @@ class TagSelectionWidget extends StatelessWidget {
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20.sp)),
-                color: Theme.of(context).primaryColor,
+                color: context.colorsX.primary,
               ),
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
               child: Row(
@@ -68,14 +69,14 @@ class TagSelectionWidget extends StatelessWidget {
                 children: [
                   Text(
                     '#$tag',
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(color: context.colorsX.background),
                   ),
                   SizedBox(width: 4.w),
                   InkWell(
                     child: Icon(
                       Icons.cancel,
                       size: 14.sp,
-                      color: Colors.white,
+                      color: context.colorsX.background,
                     ),
                     onTap: () => onRemoveTag(tag),
                   ),

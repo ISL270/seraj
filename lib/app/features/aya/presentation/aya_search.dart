@@ -77,7 +77,7 @@ class _SearchScreenState extends State<AyaSearch> {
                               ),
                               subtitle: Center(
                                 child: Padding(
-                                  padding: const EdgeInsets.only(top: 16),
+                                  padding: EdgeInsets.only(top: 16.h),
                                   child: Text(
                                     '${ayah.surahNameAr} '
                                     '${ayah.ayahNumber.toString().decorateArabicNumbers()}',

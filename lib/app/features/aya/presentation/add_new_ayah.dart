@@ -4,7 +4,7 @@ import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/aya/presentation/bloc/add_aya_cubit.dart';
+import 'package:athar/app/features/aya/presentation/cubit/add_aya_cubit.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
@@ -43,7 +43,7 @@ class AddNewAyah extends StatelessWidget {
                   children: [
                     Padding(
                       padding:
-                          EdgeInsets.only(top: 10.w, left: 16.w, right: 16.w),
+                          EdgeInsets.only(top: 10.h, left: 16.w, right: 16.w),
                       child: Column(
                         spacing: 20.h,
                         children: [
@@ -167,10 +167,9 @@ class _SurahAndVerseNumTextField extends StatelessWidget {
             onChanged: (value) =>
                 context.read<AddAyaCubit>().surahOfAyaChanged(value),
             decoration: InputDecoration(
-              labelStyle: context.textThemeX.medium,
               alignLabelWithHint: true,
-              label: Text(context.l10n.quranicayahsurah,
-                  style: context.textThemeX.medium.bold),
+              hintText: context.l10n.quranicayahsurah,
+              hintStyle: context.textThemeX.medium.bold,
             ),
           ),
         ),
@@ -182,10 +181,9 @@ class _SurahAndVerseNumTextField extends StatelessWidget {
             onChanged: (value) =>
                 context.read<AddAyaCubit>().nomOfAyaChanged(value),
             decoration: InputDecoration(
-              labelStyle: context.textThemeX.medium,
               alignLabelWithHint: true,
-              label: Text(context.l10n.numofayah,
-                  style: context.textThemeX.medium.bold),
+              hintText: context.l10n.numofayah,
+              hintStyle: context.textThemeX.medium.bold,
             ),
           ),
         ),
@@ -210,10 +208,9 @@ class _QuranicVerseTextField extends StatelessWidget {
       minLines: 3,
       onChanged: (value) => context.read<AddAyaCubit>().textOfAyaChanged(value),
       decoration: InputDecoration(
-        labelStyle: context.textThemeX.medium,
         alignLabelWithHint: true,
-        label: Text(context.l10n.quranicversec,
-            style: context.textThemeX.medium.bold),
+        hintText: context.l10n.quranicversec,
+        hintStyle: context.textThemeX.medium.bold,
       ),
     );
   }
@@ -233,10 +230,9 @@ class _QuranicVerseExplanationTextField extends StatelessWidget {
       onChanged: (value) =>
           context.read<AddAyaCubit>().ayaExplainChanged(value),
       decoration: InputDecoration(
-        labelStyle: context.textThemeX.medium,
         alignLabelWithHint: true,
-        label: Text(context.l10n.quranicayahexp,
-            style: context.textThemeX.medium.bold),
+        hintText: context.l10n.quranicayahexp,
+        hintStyle: context.textThemeX.medium,
       ),
     );
   }
@@ -272,7 +268,7 @@ class _AyahAddButton extends StatelessWidget {
       },
       builder: (context, state) {
         return Padding(
-          padding: EdgeInsets.symmetric(vertical: 12.w),
+          padding: EdgeInsets.symmetric(vertical: 12.h),
           child: Button.filled(
             maxWidth: true,
             isLoading: state.status.isLoading,

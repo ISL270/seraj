@@ -72,7 +72,7 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
             nomOfAya: nomOfAya,
             tags: tags,
             lastRevisedAt: lastRevisedAt,
-            daleelType: DaleelType.hadith,
+            daleelType: DaleelType.aya,
           ),
       };
 
@@ -99,7 +99,7 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
             nomOfAya: daleel.nomOfAya,
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,
-            daleelType: DaleelType.hadith,
+            daleelType: DaleelType.aya,
           )
       };
 }
