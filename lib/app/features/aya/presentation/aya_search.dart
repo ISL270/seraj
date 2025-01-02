@@ -1,4 +1,5 @@
 import 'package:athar/app/core/extension_methods/english_x.dart';
+import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quran/flutter_quran.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AyaSearch extends StatefulWidget {
   const AyaSearch({super.key});
@@ -62,8 +64,29 @@ class _SearchScreenState extends State<AyaSearch> {
                         (ayah) => Column(
                           children: [
                             ListTile(
-                              title: Text(ayah.ayah.replaceAll('\n', ' ')),
-                              subtitle: Text(ayah.surahNameAr),
+                              title: Text(
+                                ayah.ayah
+                                    .replaceAll('\n', ' ')
+                                    .decorateArabicNumbers(),
+                                style: context.textThemeX.large.copyWith(
+                                  fontSize: 18,
+                                  fontFamily:
+                                      GoogleFonts.amiriQuran().fontFamily,
+                                ),
+                              ),
+                              subtitle: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 16),
+                                  child: Text(
+                                    '${ayah.surahNameAr} '
+                                    '${ayah.ayahNumber.toString().decorateArabicNumbers()}',
+                                    style: context.textThemeX.small.copyWith(
+                                      color: context.colorsX.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 16.h),
                               onTap: () =>
@@ -126,8 +149,8 @@ class _SearchScreenState extends State<AyaSearch> {
                           });
                         }
                       },
-                      title: Text(ayah.ayah.replaceAll('\n', ' ')),
-                      subtitle: Text('${context.l10n.ayah} ${ayah.ayahNumber}'),
+                      title: Text(ayah.ayah.replaceAll('\n', ' '),
+                          style: context.textThemeX.large),
                     );
                   }).toList(),
                 ),

@@ -1,4 +1,5 @@
 import 'package:athar/app/core/extension_methods/context_x.dart';
+import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
@@ -74,7 +75,8 @@ class AddNewAyah extends StatelessWidget {
                             noAyahController: TextEditingController(
                                 text: ayah
                                     .map((singleAyah) => singleAyah.ayahNumber)
-                                    .join(',')),
+                                    .join(',')
+                                    .decorateArabicNumbers()),
                           ),
                           Align(
                             alignment: Alignment.centerRight,
@@ -87,7 +89,9 @@ class AddNewAyah extends StatelessWidget {
                             controller: TextEditingController(
                               text: ayah
                                   .map((singleAyah) => singleAyah.ayah)
-                                  .join(' '), // Combine ayahs
+                                  .join(' ')
+                                  .decorateArabicNumbers(), //
+                              // Combine ayahs
                             ),
                           ),
                           Gap(20.h),
