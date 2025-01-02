@@ -13,11 +13,11 @@ class TagSelectionWidget extends StatelessWidget {
   final String Function(String tag)? errorMessageBuilder;
 
   TagSelectionWidget({
-    super.key,
     required this.tags,
     required this.onAddTag,
     required this.onRemoveTag,
     required this.onClearTags,
+    super.key,
     this.errorMessageBuilder,
   });
 
@@ -59,11 +59,10 @@ class TagSelectionWidget extends StatelessWidget {
           children: tags.map((String tag) {
             return Container(
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                borderRadius: BorderRadius.all(Radius.circular(20.sp)),
                 color: Theme.of(context).primaryColor,
               ),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
