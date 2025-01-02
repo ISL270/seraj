@@ -43,6 +43,7 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
     required String text,
     required String userId,
     required String? sayer,
+    required String? description,
     required Priority priority,
     required List<String> tags,
     required DateTime? lastRevisedAt,
@@ -55,6 +56,7 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
         firestoreSvc.athar.lastRevisedAt: lastRevisedAt,
         firestoreSvc.athar.daleelType: DaleelType.athar.name,
         firestoreSvc.athar.sayer: sayer!.isEmpty ? null : sayer,
+        firestoreSvc.athar.description: description!.isEmpty ? null : description,
       });
     });
   }
