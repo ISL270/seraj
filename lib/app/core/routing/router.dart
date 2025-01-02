@@ -88,7 +88,7 @@ final appRouter = GoRouter(
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (context) => AddAtharCubit(),
+                      create: (context) => AddAtharCubit(getIt.get<DaleelRepository>()),
                       child: const AddAtharScreen(),
                     ),
                   ),

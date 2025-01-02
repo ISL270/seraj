@@ -41,4 +41,5 @@ const _$HadithAuthenticityEnumMap = {
 
 const _$DaleelTypeEnumMap = {
   DaleelType.hadith: 'hadith',
+  DaleelType.athar: 'athar',
 };

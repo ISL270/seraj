@@ -42,4 +42,9 @@ final class AddAtharState extends Equatable with FormzMixin {
   @override
   @override
   List<FormzInput> get inputs => [athar];
+
+  String get errorMsg {
+    if (!status.isFailure) return '';
+    return (status as Failure).exception.message ?? 'unkown error';
+  }
 }

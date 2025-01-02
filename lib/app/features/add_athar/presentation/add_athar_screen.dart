@@ -1,3 +1,4 @@
+import 'package:athar/app/core/extension_methods/context_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
@@ -221,7 +222,29 @@ class _AtharAddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddAtharCubit, AddAtharState>(
+    return BlocConsumer<AddAtharCubit, AddAtharState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (innerContext, state) {
+        if (state.status.isSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              duration: const Duration(seconds: 2),
+              content: Text(
+                context.l10n.hadithAddedSuccessf,
+                style: context.textThemeX.medium.bold,
+              ),
+            ),
+          );
+          innerContext.pop();
+          context.pop();
+        }
+
+        if (state.status.isFailure) {
+          context.scaffoldMessenger
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(content: Text(state.errorMsg)));
+        }
+      },
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
