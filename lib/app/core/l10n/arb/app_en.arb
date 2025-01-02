@@ -79,6 +79,10 @@
     "quranicverse" : "quranic verse",
     "quranicversec" : "quranic verse",
     "quranicayahexp":"Quranic Ayah Explanation",
-     "numofayah":"Ayah No."
+     "numofayah":"Ayah No.",
+     "alreadyExists":"Already Exists",
+     "tag":"Tag",
+    "addTags":"Add Tags",
+    "delTags":"Delete Tags"
 
 }

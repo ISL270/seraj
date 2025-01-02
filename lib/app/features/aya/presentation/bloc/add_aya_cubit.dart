@@ -36,6 +36,17 @@ class AddAyaCubit extends Cubit<AddAyaState> {
   void ayaExplainChanged(String value) =>
       emit(state.copyWith(ayaExplain: Name.dirty(value)));
 
+  void tagsChanged(List<String> newTags) {
+    // Remove empty or duplicate tags from the input list
+    final uniqueTags = newTags.toSet().toList()
+      ..removeWhere((tag) => tag.isEmpty);
+
+    // Only emit a new state if the tags have actually changed
+    if (uniqueTags.toString() != state.tags.toString()) {
+      emit(state.copyWith(tags: uniqueTags));
+    }
+  }
+
   Future<void> saveAyaForm() async {
     emit(state.copyWith(status: const Loading()));
     try {
@@ -46,7 +57,7 @@ class AddAyaCubit extends Cubit<AddAyaState> {
         nomOfAya: state.numOfAya,
         lastRevisedAt: DateTime.now(),
         priority: 1.0.getPriority(),
-        tags: [],
+        tags: state.tags,
       );
       emit(state.copyWith(status: const Success('Saved Aya Successfully')));
     } catch (e) {

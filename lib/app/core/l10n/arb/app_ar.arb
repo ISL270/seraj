@@ -80,5 +80,10 @@
     "quranicverse": "آية قرآنية",
     "quranicversec": "آية قرآنية",
     "quranicayahexp": "تفسير الآية القرآنية",
-    "numofayah": "رقم الآية"
+    "numofayah": "رقم الآية",
+    "alreadyExists":"موجود بالفعل",
+    "tag":"التاج",
+    "addTags":"اضف علامات",
+    "delTags":"مسح العلامات"
+
 }

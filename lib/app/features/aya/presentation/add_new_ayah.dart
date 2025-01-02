@@ -5,6 +5,7 @@ import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/aya/presentation/bloc/add_aya_cubit.dart';
+import 'package:athar/app/widgets/tag_selection.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
@@ -62,7 +63,6 @@ class AddNewAyah extends StatelessWidget {
                               const Spacer(flex: 2),
                             ],
                           ),
-                          Gap(30.h),
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
@@ -94,7 +94,6 @@ class AddNewAyah extends StatelessWidget {
                                   .decorateArabicNumbers(),
                             ),
                           ),
-                          Gap(20.h),
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(
@@ -104,6 +103,32 @@ class AddNewAyah extends StatelessWidget {
                           ),
                           _QuranicVerseExplanationTextField(
                             controller: TextEditingController(text: ''),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              context.l10n.tag,
+                              style: context.textThemeX.medium.bold,
+                            ),
+                          ),
+                          BlocBuilder<AddAyaCubit, AddAyaState>(
+                            builder: (context, state) {
+                              final cubit = context.read<AddAyaCubit>();
+                              return TagSelectionWidget(
+                                tags: state.tags,
+                                onAddTag: (tag) =>
+                                    cubit.tagsChanged([...state.tags, tag]),
+                                onRemoveTag: (tag) {
+                                  final updatedTags = state.tags
+                                      .where((t) => t != tag)
+                                      .toList();
+                                  cubit.tagsChanged(updatedTags);
+                                },
+                                onClearTags: () => cubit.tagsChanged([]),
+                                errorMessageBuilder: (tag) =>
+                                    '$tag ${context.l10n.alreadyExists}',
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -176,23 +201,19 @@ class _QuranicVerseTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.h),
-      child: TextField(
-        style: context.textThemeX.medium.copyWith(
-          fontFamily: GoogleFonts.amiriQuran().fontFamily,
-        ),
-        controller: controller,
-        maxLines: 5,
-        minLines: 3,
-        onChanged: (value) =>
-            context.read<AddAyaCubit>().textOfAyaChanged(value),
-        decoration: InputDecoration(
-          labelStyle: context.textThemeX.medium,
-          alignLabelWithHint: true,
-          label: Text(context.l10n.quranicversec,
-              style: context.textThemeX.medium.bold),
-        ),
+    return TextField(
+      style: context.textThemeX.medium.copyWith(
+        fontFamily: GoogleFonts.amiriQuran().fontFamily,
+      ),
+      controller: controller,
+      maxLines: 5,
+      minLines: 3,
+      onChanged: (value) => context.read<AddAyaCubit>().textOfAyaChanged(value),
+      decoration: InputDecoration(
+        labelStyle: context.textThemeX.medium,
+        alignLabelWithHint: true,
+        label: Text(context.l10n.quranicversec,
+            style: context.textThemeX.medium.bold),
       ),
     );
   }
