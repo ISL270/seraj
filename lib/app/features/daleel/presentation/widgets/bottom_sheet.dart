@@ -8,7 +8,7 @@ Future<void> _openBottomSheet(BuildContext context) async {
     builder: (context) {
       return Container(
         width: double.infinity,
-        height: 330.h,
+        height: 410.h,
         decoration: BoxDecoration(
           color: context.colorsX.background,
           borderRadius: BorderRadius.only(
@@ -22,6 +22,7 @@ Future<void> _openBottomSheet(BuildContext context) async {
             items: [
               context.l10n.propheticHadith,
               context.l10n.quranicVerse,
+              context.l10n.athar,
               context.l10n.others
             ],
           ),
