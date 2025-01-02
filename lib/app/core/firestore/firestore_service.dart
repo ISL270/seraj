@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 final class FirestoreService {
   final users = _Users();
   final hadith = _Hadith();
+  final athar = _Athar();
 }
 
 final class _Users {
