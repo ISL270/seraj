@@ -1,22 +1,45 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, strict_raw_type
 
+import 'package:athar/app/core/enums/status.dart';
 import 'package:equatable/equatable.dart';
+import 'package:form_inputs/form_inputs.dart';
+import 'package:formz/formz.dart';
 
-final class AddAtharState extends Equatable {
-  AddAtharState({
-    this.selectRule = 0,
+final class AddAtharState extends Equatable with FormzMixin {
+  const AddAtharState({
+    this.sliderValue = 0.0,
+    this.athar = const Name.pure(),
+    this.sayer = '',
+    this.description = '',
+    this.status = const Initial(),
   });
 
-  int selectRule;
+  final double sliderValue;
+  final Name athar;
+  final String sayer;
+  final String description;
+  final VoidStatus status;
 
   AddAtharState copyWith({
-    int? selectRule,
+    double? sliderValue,
+    Name? athar,
+    String? sayer,
+    String? description,
+    VoidStatus? status,
   }) {
     return AddAtharState(
-      selectRule: selectRule ?? this.selectRule,
+      sliderValue: sliderValue ?? this.sliderValue,
+      athar: athar ?? this.athar,
+      sayer: sayer ?? this.sayer,
+      description: description ?? this.description,
+      status: status ?? this.status,
     );
   }
 
   @override
-  List<Object> get props => [selectRule];
+  List<Object> get props => [sliderValue, athar, sayer, description, status];
+
+  @override
+  @override
+  List<FormzInput> get inputs => [athar];
 }

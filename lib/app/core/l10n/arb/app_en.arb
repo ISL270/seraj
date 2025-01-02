@@ -75,5 +75,9 @@
   "atharRule":"Athar Rule",
   "atharExtraction":"Athar Extraction",
   "intermittent":"Athar Intermittent",
-  "other":"Other"
+  "other":"Other",
+  "explaination":"Explaination",
+  "explainationOfAthar":"Explaination Of Athar",
+  "enterTextOfAthar":"Enter Text Of Athar"
+
 }

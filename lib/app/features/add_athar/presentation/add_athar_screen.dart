@@ -1,19 +1,18 @@
 // ignore_for_file: unused_element, avoid_field_initializers_in_const_classes, unnecessary_statements
 
-import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
-import 'package:athar/app/core/l10n/language.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/add_athar/presentation/cubit/cubit/add_athar_cubit.dart';
 import 'package:athar/app/features/add_athar/presentation/cubit/cubit/add_athar_state.dart';
-import 'package:athar/app/features/settings/settings/settings_bloc.dart';
+import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_inputs/form_inputs.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -51,12 +50,9 @@ class AddAtharScreen extends StatelessWidget {
                   const _TextOfAtharTextField(),
                   _LabelTextFieldAlignWidget(label: context.l10n.atharSayer),
                   const _SayerOfAtharTextField(),
-                  _LabelTextFieldAlignWidget(label: context.l10n.atharIsnad),
-                  const _IsnadOfAtharTextField(),
-                  _LabelTextFieldAlignWidget(label: context.l10n.atharRule),
-                  _RuleSelectionOfAtharTextField(),
-                  _LabelTextFieldAlignWidget(label: context.l10n.atharExtraction),
-                  const _ExtractionOfAtharTextField(),
+                  _LabelTextFieldAlignWidget(label: context.l10n.explaination),
+                  const _ExplainationOfAtharTextField(),
+                  const _PrioritySliderWithLabelWidget(),
                   Gap(30.h),
                 ],
               ),
@@ -77,23 +73,30 @@ class _TextOfAtharTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: TextField(
-        maxLines: 3,
-        minLines: 2,
-        decoration: InputDecoration(
-          labelStyle: context.textThemeX.medium,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
-          hintText: 'حدثنا مروان بن معاوية أن عمر فرض للهر مزان',
-          hintMaxLines: 1,
-          hintStyle: context.textThemeX.medium.bold.copyWith(
-            height: 1.5.h,
-            color: context.colorsX.onBackgroundTint35,
+    return BlocSelector<AddAtharCubit, AddAtharState, Name>(
+      selector: (state) => state.athar,
+      builder: (context, athar) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: TextField(
+            maxLines: 3,
+            minLines: 2,
+            onChanged: (value) => context.read<AddAtharCubit>().atharChanged(value),
+            decoration: InputDecoration(
+              labelStyle: context.textThemeX.medium,
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
+              hintText: 'حدثنا مروان بن معاوية أن عمر فرض للهر مزان',
+              hintMaxLines: 1,
+              hintStyle: context.textThemeX.medium.bold.copyWith(
+                height: 1.5.h,
+                color: context.colorsX.onBackgroundTint35,
+              ),
+              errorText: athar.displayError == null ? null : context.l10n.enterTextOfAthar,
+              alignLabelWithHint: false,
+            ),
           ),
-          alignLabelWithHint: false,
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -105,104 +108,22 @@ class _SayerOfAtharTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: TextField(
-        decoration: InputDecoration(
-          labelStyle: context.textThemeX.medium,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
-          hintText: 'أبو عبيد',
-          hintStyle: context.textThemeX.medium.bold.copyWith(
-            height: 1.5.h,
-            color: context.colorsX.onBackgroundTint35,
-          ),
-          alignLabelWithHint: false,
-        ),
-      ),
-    );
-  }
-}
-
-class _IsnadOfAtharTextField extends StatelessWidget {
-  const _IsnadOfAtharTextField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: TextField(
-        decoration: InputDecoration(
-          labelStyle: context.textThemeX.medium,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
-          hintText: 'حميد بن أبي حميد الطويل, أبوعبيدة البصري, ثقة مدلس',
-          hintStyle: context.textThemeX.medium.bold.copyWith(
-            height: 1.5.h,
-            color: context.colorsX.onBackgroundTint35,
-          ),
-          alignLabelWithHint: false,
-        ),
-      ),
-    );
-  }
-}
-
-// ignore: must_be_immutable
-class _RuleSelectionOfAtharTextField extends StatelessWidget {
-  List<String> rules = ['صحيح', 'حسن', 'ضعيف', 'متقطع', 'اخرى'];
-
-  @override
-  Widget build(BuildContext context) {
     return BlocBuilder<AddAtharCubit, AddAtharState>(
       builder: (context, state) {
         return Padding(
-          padding: EdgeInsets.only(
-            right: context.settingsBloc.state.settings.language.isArabic ? 20.w : 0,
-            left: context.settingsBloc.state.settings.language.isEnglish ? 20.w : 0,
-          ),
-          child: Column(
-            spacing: state.selectRule == 4 ? 20.h : 0,
-            children: [
-              SizedBox(
-                height: 60.h,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => InkWell(
-                    splashColor: context.colorsX.primary,
-                    borderRadius: BorderRadius.circular(12.w),
-                    onTap: () => context.read<AddAtharCubit>().selectIndexChanged(index),
-                    child: _AtharRuleContainerSelection(
-                      label: rules[index],
-                      isSelected: state.selectRule == index,
-                    ),
-                  ),
-                  separatorBuilder: (context, index) => Gap(16.w),
-                  itemCount: rules.length,
-                ),
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: TextField(
+            onChanged: (value) => context.read<AddAtharCubit>().sayerChanged(value),
+            decoration: InputDecoration(
+              labelStyle: context.textThemeX.medium,
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
+              hintText: 'أبو عبيد',
+              hintStyle: context.textThemeX.medium.bold.copyWith(
+                height: 1.5.h,
+                color: context.colorsX.onBackgroundTint35,
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                  right: context.settingsBloc.state.settings.language.isArabic ? 0 : 20.w,
-                  left: context.settingsBloc.state.settings.language.isEnglish ? 0 : 20.w,
-                ),
-                child: Visibility(
-                  visible: state.selectRule == 4,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      labelStyle: context.textThemeX.medium,
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
-                      hintText: context.l10n.atharRule,
-                      hintStyle: context.textThemeX.medium.bold.copyWith(
-                        height: 1.5.h,
-                        color: context.colorsX.onBackgroundTint35,
-                      ),
-                      alignLabelWithHint: false,
-                    ),
-                  ),
-                ),
-              )
-            ],
+              alignLabelWithHint: false,
+            ),
           ),
         );
       },
@@ -210,68 +131,77 @@ class _RuleSelectionOfAtharTextField extends StatelessWidget {
   }
 }
 
-class _ExtractionOfAtharTextField extends StatelessWidget {
-  const _ExtractionOfAtharTextField({
+class _ExplainationOfAtharTextField extends StatelessWidget {
+  const _ExplainationOfAtharTextField({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: TextField(
-        decoration: InputDecoration(
-          labelStyle: context.textThemeX.medium,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
-          hintText: 'رواه أبوعبيد في الأموال',
-          hintStyle: context.textThemeX.medium.bold.copyWith(
-            height: 1.5.h,
-            color: context.colorsX.onBackgroundTint35,
+    return BlocBuilder<AddAtharCubit, AddAtharState>(
+      builder: (context, state) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: TextField(
+            maxLines: 3,
+            minLines: 3,
+            onChanged: (value) => context.read<AddAtharCubit>().explainationChanged(value),
+            decoration: InputDecoration(
+              labelStyle: context.textThemeX.medium,
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
+              hintText: context.l10n.explainationOfAthar,
+              hintStyle: context.textThemeX.medium.bold.copyWith(
+                height: 1.5.h,
+                color: context.colorsX.onBackgroundTint35,
+              ),
+              alignLabelWithHint: false,
+            ),
           ),
-          alignLabelWithHint: false,
-        ),
-      ),
+        );
+      },
     );
   }
 }
 
-class _AtharRuleContainerSelection extends StatelessWidget {
-  const _AtharRuleContainerSelection({
-    required this.label,
-    this.isSelected = false,
-  });
-
-  final bool isSelected;
-  final String label;
+class _PrioritySliderWithLabelWidget extends StatelessWidget {
+  const _PrioritySliderWithLabelWidget();
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.w),
-        color: isSelected ? context.colorsX.primary : context.colorsX.onBackgroundTint35,
-        boxShadow: [
-          BoxShadow(
-            color: context.colorsX.onBackgroundTint35,
-            blurStyle: BlurStyle.outer,
-            blurRadius: 0.2,
-          ),
-          BoxShadow(
-            color: context.colorsX.onBackgroundTint35,
-            blurStyle: BlurStyle.outer,
-            blurRadius: 0.4,
-          ),
-          BoxShadow(
-            color: context.colorsX.onBackgroundTint35,
-            blurStyle: BlurStyle.outer,
-            blurRadius: 0.6,
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 15.h),
-        child: Text(label, style: context.textThemeX.large.bold),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      child: BlocBuilder<AddAtharCubit, AddAtharState>(
+        builder: (context, state) {
+          return Column(
+            spacing: 15.h,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  _LabelTextFieldAlignWidget(label: context.l10n.priority),
+                  Gap(8.w),
+                  Text(
+                    '${state.sliderValue.getPriority(context)} ${context.l10n.saveIt}',
+                    style: context.textThemeX.medium.bold.copyWith(
+                      color: context.colorsX.primary,
+                      textBaseline: TextBaseline.alphabetic,
+                    ),
+                  ),
+                ],
+              ),
+              Slider.adaptive(
+                onChanged: (value) => context.read<AddAtharCubit>().sliderPriorityChanged(value),
+                value: state.sliderValue,
+                activeColor: context.colorsX.primary,
+                inactiveColor: context.colorsX.onBackgroundTint35,
+                max: Priority.values.length - 1,
+                divisions: Priority.values.length - 1,
+                label: state.sliderValue.getPriority(context),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -299,15 +229,20 @@ class _AtharAddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
-      child: Button.filled(
-        key: const Key('atharForm_saveAtharForm_button'),
-        maxWidth: true,
-        density: ButtonDensity.comfortable,
-        label: context.l10n.add,
-        onPressed: () {},
-      ),
+    return BlocBuilder<AddAtharCubit, AddAtharState>(
+      builder: (context, state) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
+          child: Button.filled(
+            key: const Key('atharForm_saveAtharForm_button'),
+            maxWidth: true,
+            isLoading: state.status.isLoading,
+            density: ButtonDensity.comfortable,
+            label: context.l10n.add,
+            onPressed: state.isValid ? () => context.read<AddAtharCubit>().saveAtharForm() : null,
+          ),
+        );
+      },
     );
   }
 }

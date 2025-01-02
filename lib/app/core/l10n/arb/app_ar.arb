@@ -75,5 +75,8 @@
   "atharRule":"الحكم",
   "atharExtraction":"التخريج",
   "intermittent":"متقطع",
-  "other":"اخرى"
+  "other":"اخرى",
+  "explaination":"الشرح",
+  "explainationOfAthar":"شرح الاثر",
+  "enterTextOfAthar": "ادخل نص الاثر"
 }
