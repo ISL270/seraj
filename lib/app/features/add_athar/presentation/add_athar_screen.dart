@@ -1,5 +1,3 @@
-// ignore_for_file: unused_element, avoid_field_initializers_in_const_classes, unnecessary_statements
-
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
@@ -67,9 +65,7 @@ class AddAtharScreen extends StatelessWidget {
 }
 
 class _TextOfAtharTextField extends StatelessWidget {
-  const _TextOfAtharTextField({
-    super.key,
-  });
+  const _TextOfAtharTextField();
 
   @override
   Widget build(BuildContext context) {
@@ -102,9 +98,7 @@ class _TextOfAtharTextField extends StatelessWidget {
 }
 
 class _SayerOfAtharTextField extends StatelessWidget {
-  const _SayerOfAtharTextField({
-    super.key,
-  });
+  const _SayerOfAtharTextField();
 
   @override
   Widget build(BuildContext context) {
@@ -132,9 +126,7 @@ class _SayerOfAtharTextField extends StatelessWidget {
 }
 
 class _ExplainationOfAtharTextField extends StatelessWidget {
-  const _ExplainationOfAtharTextField({
-    super.key,
-  });
+  const _ExplainationOfAtharTextField();
 
   @override
   Widget build(BuildContext context) {
