@@ -138,7 +138,7 @@ class AddNewAyah extends StatelessWidget {
               ),
             ),
             const _AyahAddButton(),
-            const Gap(5)
+            Gap(5.h)
           ],
         ),
       ),
