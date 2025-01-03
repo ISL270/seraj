@@ -71,5 +71,6 @@
   "urgent":"urgent",
   "text":"text",
   "sayer":"sayer",
-  "explanation":"explanation"
+  "explanation":"explanation",
+  "enterText":"text is required"
 }
