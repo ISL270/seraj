@@ -4,6 +4,7 @@ import 'package:athar/app/core/routing/go_router_refresh_stream.dart';
 import 'package:athar/app/core/routing/go_router_state_extension.dart';
 import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dart';
 import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
+import 'package:athar/app/features/add_other/presentation/add_other_screen.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
@@ -77,6 +78,15 @@ final appRouter = GoRouter(
                       create: (_) => AddHadithCubit(getIt.get<DaleelRepository>()),
                       child: const AddHadith(),
                     ),
+                  ),
+                ),
+                GoRoute(
+                  name: AddOtherScreen.name,
+                  path: AddOtherScreen.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  pageBuilder: (context, state) => const CupertinoPage(
+                    fullscreenDialog: true,
+                    child: AddOtherScreen(),
                   ),
                 ),
               ],

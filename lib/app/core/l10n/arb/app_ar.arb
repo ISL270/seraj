@@ -68,5 +68,9 @@
   "saveIt":"حفظه",
   "normal":"يرجى",
   "high":"يفضل",
-  "urgent":"يجب"
+  "urgent":"يجب",
+  "text":"النص",
+  "sayer":"القائل",
+  "explanation":"الشرح"
+  
 }

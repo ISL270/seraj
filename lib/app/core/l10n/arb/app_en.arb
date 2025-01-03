@@ -68,5 +68,8 @@
   "saveIt":"save it",
   "normal":"normal",
   "high":"high",
-  "urgent":"urgent"
+  "urgent":"urgent",
+  "text":"text",
+  "sayer":"sayer",
+  "explanation":"explanation"
 }
