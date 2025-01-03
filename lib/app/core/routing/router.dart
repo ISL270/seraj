@@ -88,7 +88,7 @@ final appRouter = GoRouter(
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (context) => AddOtherCubit(),
+                      create: (context) => AddOtherCubit(getIt.get<DaleelRepository>()),
                       child: const AddOtherScreen(),
                     ),
                   ),

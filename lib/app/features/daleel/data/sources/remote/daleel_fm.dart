@@ -32,6 +32,7 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
   factory DaleelFM.fromJson(String docID, Map<String, dynamic> json) =>
       switch ($enumDecode(_$DaleelTypeEnumMap, json['daleelType'])) {
         DaleelType.hadith => HadithFM.fromJson(docID, json),
+        DaleelType.others => OthersFM.fromJson(docID, json),
       };
 
   factory DaleelFM.fromDaleelType(
@@ -59,6 +60,16 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
             lastRevisedAt: lastRevisedAt,
             daleelType: DaleelType.hadith,
           ),
+        DaleelType.others => OthersFM(
+            id: id,
+            text: text,
+            description: description,
+            sayer: sayer,
+            priority: priority,
+            tags: tags,
+            lastRevisedAt: lastRevisedAt,
+            daleelType: DaleelType.others,
+          ),
       };
 
   DaleelFM fromDomain(Daleel daleel) => switch (daleel) {
@@ -73,6 +84,16 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,
             daleelType: DaleelType.hadith,
+          ),
+        Others() => OthersFM(
+            id: daleel.id,
+            text: daleel.text,
+            description: daleel.description,
+            sayer: daleel.sayer,
+            priority: daleel.priority,
+            tags: daleel.tags,
+            lastRevisedAt: daleel.lastRevisedAt,
+            daleelType: DaleelType.others,
           ),
       };
 }
@@ -109,4 +130,31 @@ final class HadithFM extends DaleelFM {
 
   factory HadithFM.fromJson(String docID, Map<String, dynamic> json) =>
       _$HadithFMFromJson(docID, json);
+}
+
+class OthersFM extends DaleelFM {
+  OthersFM({
+    required super.id,
+    required super.text,
+    required super.description,
+    required super.sayer,
+    required super.priority,
+    required super.tags,
+    required super.lastRevisedAt,
+    required super.daleelType,
+  });
+
+  @override
+  Others toDomain() => Others(
+        id: id,
+        text: text,
+        priority: priority,
+        description: description,
+        tags: tags,
+        lastRevisedAt: lastRevisedAt,
+        sayer: sayer,
+      );
+
+  factory OthersFM.fromJson(String docID, Map<String, dynamic> json) =>
+      _$OthersFMFromJson(docID, json);
 }

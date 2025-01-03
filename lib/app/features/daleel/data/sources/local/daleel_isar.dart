@@ -52,6 +52,15 @@ final class DaleelIsar extends CacheModel<Daleel> {
             lastRevisedAt: lastRevisedAt,
             sayer: sayer,
           ),
+        DaleelType.others => Others(
+            id: id,
+            text: text,
+            priority: priority,
+            description: description,
+            tags: tags,
+            lastRevisedAt: lastRevisedAt,
+            sayer: sayer,
+          )
       };
 
   factory DaleelIsar.fromDomain(Daleel daleel) => switch (daleel) {
@@ -66,6 +75,16 @@ final class DaleelIsar extends CacheModel<Daleel> {
             sayer: daleel.sayer,
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,
-          )
+          ),
+        Others() => DaleelIsar(
+            id: daleel.id,
+            text: daleel.text,
+            priority: daleel.priority,
+            description: daleel.description,
+            daleelType: DaleelType.others,
+            sayer: daleel.sayer,
+            tags: daleel.tags,
+            lastRevisedAt: daleel.lastRevisedAt,
+          ),
       };
 }

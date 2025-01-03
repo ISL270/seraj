@@ -1,11 +1,18 @@
+// ignore_for_file: void_checks
+
 import 'dart:developer';
 
+import 'package:athar/app/core/enums/status.dart';
+import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/features/add_other/presentation/cubit/add_other_state.dart';
+import 'package:athar/app/features/daleel/domain/models/priority.dart';
+import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:form_inputs/form_inputs.dart';
 
 class AddOtherCubit extends Cubit<AddOtherState> {
-  AddOtherCubit() : super(const AddOtherState());
+  final DaleelRepository _repository;
+  AddOtherCubit(this._repository) : super(const AddOtherState());
 
   void otherTextChanged(String value) => emit(state.copyWith(other: Name.dirty(value)));
 
@@ -16,9 +23,31 @@ class AddOtherCubit extends Cubit<AddOtherState> {
   void sliderPriorityChanged(double value) => emit(state.copyWith(sliderValue: value));
 
   Future<void> saveOtherForm() async {
-    log(state.other.value);
-    log(state.sayer);
-    log(state.description);
-    log(state.sliderValue.toString());
+    emit(state.copyWith(status: const Loading()));
+    try {
+      await _repository.saveOthers(
+        text: state.other.value,
+        sayer: state.sayer,
+        description: state.description,
+        priority: getPriority(state.sliderValue),
+        lastRevisedAt: DateTime.now(),
+        tags: [], // not used for now
+      );
+      emit(state.copyWith(status: const Success('Saved Other Successfully')));
+    } catch (e) {
+      log(e.toString());
+      emit(state.copyWith(status: Failure(e as GenericException)));
+    }
+  }
+
+  // used cause slider only returns double values
+  Priority getPriority(double value) {
+    if (value == 0.0) {
+      return Priority.normal;
+    } else if (value == 1.0) {
+      return Priority.high;
+    } else {
+      return Priority.urgent;
+    }
   }
 }

@@ -39,6 +39,28 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
     });
   }
 
+  Future<void> saveOthers({
+    required String userId,
+    required String text,
+    required String? sayer,
+    required Priority priority,
+    required List<String> tags,
+    required String? description,
+    required DateTime? lastRevisedAt,
+  }) async {
+    await firestoreOperationHandler(() async {
+      await firestoreSvc.users.daleelCollection(userId).add({
+        firestoreSvc.others.text: text,
+        firestoreSvc.others.tags: tags,
+        firestoreSvc.others.priority: priority.name,
+        firestoreSvc.others.lastRevisedAt: lastRevisedAt,
+        firestoreSvc.others.daleelType: DaleelType.others.name,
+        firestoreSvc.others.sayer: sayer!.isEmpty ? null : sayer,
+        firestoreSvc.others.description: description!.isEmpty ? null : description,
+      });
+    });
+  }
+
   @override
   DaleelFM fromJson(String docID, Map<String, dynamic> json) => DaleelFM.fromJson(docID, json);
 

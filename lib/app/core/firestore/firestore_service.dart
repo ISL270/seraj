@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 final class FirestoreService {
   final users = _Users();
   final hadith = _Hadith();
+  final others = _Others();
 }
 
 final class _Users {
@@ -34,3 +35,5 @@ final class _Hadith extends _Daleel {
   late final extraction = 'hadithExtraction';
   late final authenticity = 'hadithAuthenticity';
 }
+
+final class _Others extends _Daleel {}
