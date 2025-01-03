@@ -55,8 +55,7 @@ final appRouter = GoRouter(
       ],
     ),
     StatefulShellRoute.indexedStack(
-      builder: (_, __, navigationShell) =>
-          HomeScreen(navigationShell: navigationShell),
+      builder: (_, __, navigationShell) => HomeScreen(navigationShell: navigationShell),
       branches: [
         StatefulShellBranch(
           navigatorKey: _hadithNavigatorKey,
@@ -78,8 +77,7 @@ final appRouter = GoRouter(
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (_) =>
-                          AddHadithCubit(getIt.get<DaleelRepository>()),
+                      create: (_) => AddHadithCubit(getIt.get<DaleelRepository>()),
                       child: const AddHadith(),
                     ),
                   ),
@@ -116,8 +114,7 @@ final appRouter = GoRouter(
             GoRoute(
               name: DuasScreen.name,
               path: '/${DuasScreen.name}',
-              pageBuilder: (context, state) =>
-                  const NoTransitionPage(child: DuasScreen()),
+              pageBuilder: (context, state) => const NoTransitionPage(child: DuasScreen()),
             ),
           ],
         ),
@@ -127,8 +124,7 @@ final appRouter = GoRouter(
             GoRoute(
               name: AzkarScreen.name,
               path: '/${AzkarScreen.name}',
-              pageBuilder: (context, state) =>
-                  const NoTransitionPage(child: AzkarScreen()),
+              pageBuilder: (context, state) => const NoTransitionPage(child: AzkarScreen()),
             ),
           ],
         ),
@@ -138,22 +134,18 @@ final appRouter = GoRouter(
             GoRoute(
               name: SettingsScreen.name,
               path: '/${SettingsScreen.name}',
-              pageBuilder: (context, state) =>
-                  const NoTransitionPage(child: SettingsScreen()),
+              pageBuilder: (context, state) => const NoTransitionPage(child: SettingsScreen()),
             ),
           ],
         ),
       ],
     ),
   ],
-  refreshListenable: GoRouterRefreshStream(
-      getIt.authBloc.stream.where((state) => state.isSuccess)),
+  refreshListenable: GoRouterRefreshStream(getIt.authBloc.stream.where((state) => state.isSuccess)),
   redirect: (context, state) {
     // If the user is not logged in, they need to login.
     // Bundle the location the user is coming from into a query parameter
-    final fromloc = (state.isGoingToHome || state.isLoggingOut)
-        ? ''
-        : state.matchedLocation;
+    final fromloc = (state.isGoingToHome || state.isLoggingOut) ? '' : state.matchedLocation;
     if (!getIt.authBloc.state.isAuthenticated) {
       return state.isGoingToSplash || state.isLoggingIn || state.isSigningUp
           ? null
@@ -165,8 +157,7 @@ final appRouter = GoRouter(
 
     // if the user is logged in, send them where they were going before (or home if they weren't going anywhere)
     if (state.isLoggingIn) {
-      return state.uri.queryParameters['from'] ??
-          state.namedLocation(HomeScreen.homeBranch);
+      return state.uri.queryParameters['from'] ?? state.namedLocation(HomeScreen.homeBranch);
     }
 
     // no need to redirect at all
@@ -178,11 +169,7 @@ final appRouter = GoRouter(
 
 // private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _hadithNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: DaleelScreen.name);
-final _duasNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: DuasScreen.name);
-final _azkarNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: AzkarScreen.name);
-final _settingsNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: SettingsScreen.name);
+final _hadithNavigatorKey = GlobalKey<NavigatorState>(debugLabel: DaleelScreen.name);
+final _duasNavigatorKey = GlobalKey<NavigatorState>(debugLabel: DuasScreen.name);
+final _azkarNavigatorKey = GlobalKey<NavigatorState>(debugLabel: AzkarScreen.name);
+final _settingsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: SettingsScreen.name);
