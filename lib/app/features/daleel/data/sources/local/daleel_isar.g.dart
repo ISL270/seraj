@@ -165,7 +165,7 @@ DaleelIsar _daleelIsarDeserialize(
     lastRevisedAt: reader.readDateTime(offsets[5]),
     priority:
         _DaleelIsarpriorityValueEnumMap[reader.readStringOrNull(offsets[6])] ??
-            Priority.urgent,
+            Priority.normal,
     sayer: reader.readStringOrNull(offsets[7]),
     tags: reader.readStringList(offsets[8]) ?? [],
     text: reader.readString(offsets[9]),
@@ -198,7 +198,7 @@ P _daleelIsarDeserializeProp<P>(
     case 6:
       return (_DaleelIsarpriorityValueEnumMap[
               reader.readStringOrNull(offset)] ??
-          Priority.urgent) as P;
+          Priority.normal) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
@@ -229,14 +229,14 @@ const _DaleelIsarhadithAuthenticityValueEnumMap = {
   r'sahih': HadithAuthenticity.sahih,
 };
 const _DaleelIsarpriorityEnumValueMap = {
-  r'urgent': r'urgent',
-  r'high': r'high',
   r'normal': r'normal',
+  r'high': r'high',
+  r'urgent': r'urgent',
 };
 const _DaleelIsarpriorityValueEnumMap = {
-  r'urgent': Priority.urgent,
-  r'high': Priority.high,
   r'normal': Priority.normal,
+  r'high': Priority.high,
+  r'urgent': Priority.urgent,
 };
 
 Id _daleelIsarGetId(DaleelIsar object) {
