@@ -8,24 +8,26 @@ sealed class Daleel {
   final Priority priority;
   final String? sayer;
   final List<String> tags;
-  final DateTime? lastRevisedAt;
+  DateTime lastRevisedAt = DateTime.now();
 
-  const Daleel({
+  Daleel({
     required this.id,
     required this.text,
-    required this.sayer,
+    this.sayer,
     this.priority = Priority.normal,
-    this.lastRevisedAt,
+    DateTime? lastRevisedAt,
     this.tags = const [],
     this.description,
-  });
+  }) {
+    this.lastRevisedAt = lastRevisedAt ?? this.lastRevisedAt;
+  }
 }
 
 final class Hadith extends Daleel {
   final String? extraction;
   final HadithAuthenticity? authenticity;
 
-  const Hadith({
+  Hadith({
     required super.id,
     required super.text,
     super.priority,
@@ -45,13 +47,13 @@ final class Hadith extends Daleel {
         'authenticity': authenticityEnumMap[hadith.authenticity],
         'extraction': hadith.extraction,
         'tags': hadith.tags,
-        'lastRevisedAt': hadith.lastRevisedAt?.toIso8601String(),
+        'lastRevisedAt': hadith.lastRevisedAt.toIso8601String(),
         'sayer': hadith.sayer,
       };
 }
 
 final class Athar extends Daleel {
-  const Athar({
+  Athar({
     required super.id,
     required super.text,
     super.priority,
@@ -67,7 +69,7 @@ final class Athar extends Daleel {
         'priotiy': priorityEnumMap[athar.priority],
         'description': athar.description,
         'tags': athar.tags,
-        'lastRevisedAt': athar.lastRevisedAt?.toIso8601String(),
+        'lastRevisedAt': athar.lastRevisedAt.toIso8601String(),
         'sayer': athar.sayer,
       };
 }
