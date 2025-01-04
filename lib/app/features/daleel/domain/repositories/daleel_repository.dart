@@ -36,12 +36,12 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
       await _remoteSource.saveHadith(
         text: text,
         tags: tags,
-        sayer: sayer,
         priority: priority,
-        extraction: extraction,
-        description: description,
         authenticity: authenticity,
         userId: authRepository.user!.id,
+        sayer: sayer.isBlank ? null : sayer,
+        extraction: extraction.isBlank ? null : extraction,
+        description: description.isBlank ? null : description,
       );
       return right(null);
     } catch (e) {

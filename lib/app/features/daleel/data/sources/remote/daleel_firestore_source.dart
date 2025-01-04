@@ -7,7 +7,6 @@ import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartx/dartx.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
@@ -28,13 +27,13 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
       await firestoreSvc.users.daleelCollection(userId).add({
         firestoreSvc.hadith.text: text,
         firestoreSvc.hadith.tags: tags,
+        firestoreSvc.hadith.sayer: sayer,
+        firestoreSvc.hadith.extraction: extraction,
         firestoreSvc.hadith.priority: priority.name,
+        firestoreSvc.hadith.description: description,
         firestoreSvc.hadith.authenticity: authenticity?.name,
         firestoreSvc.hadith.daleelType: DaleelType.hadith.name,
-        firestoreSvc.hadith.sayer: sayer!.isBlank ? null : sayer,
         firestoreSvc.hadith.lastRevisedAt: FieldValue.serverTimestamp(),
-        firestoreSvc.hadith.description: description!.isBlank ? null : description,
-        firestoreSvc.hadith.extraction: extraction!.isBlank ? null : extraction,
       });
     });
   }
@@ -43,19 +42,19 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
     required String text,
     required String userId,
     required String? sayer,
-    required String? description,
     required Priority priority,
     required List<String> tags,
+    required String? description,
   }) async {
     await firestoreOperationHandler(() async {
       await firestoreSvc.users.daleelCollection(userId).add({
         firestoreSvc.athar.text: text,
         firestoreSvc.athar.tags: tags,
+        firestoreSvc.athar.sayer: sayer,
         firestoreSvc.athar.priority: priority.name,
+        firestoreSvc.athar.description: description,
         firestoreSvc.athar.daleelType: DaleelType.athar.name,
-        firestoreSvc.athar.sayer: sayer!.isEmpty ? null : sayer,
         firestoreSvc.athar.lastRevisedAt: FieldValue.serverTimestamp(),
-        firestoreSvc.athar.description: description!.isEmpty ? null : description,
       });
     });
   }
