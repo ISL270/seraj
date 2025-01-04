@@ -11,13 +11,14 @@ import 'package:athar/app/features/daleel/data/sources/remote/daleel_fm.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
+import 'package:dartx/dartx.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
 final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, DaleelIsar> {
-  final DaleelFirestoreSource _remoteSource;
   final DaleelIsarSource _localSource;
+  final DaleelFirestoreSource _remoteSource;
 
   DaleelRepository(super.authRepository, this._remoteSource, this._localSource)
       : super(localSource: _localSource, remoteSource: _remoteSource);
@@ -25,24 +26,22 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
   Future<EitherException<void>> saveHadith({
     required String text,
     required String sayer,
-    required String description,
-    required HadithAuthenticity? authenticity,
     required Priority priority,
     required String extraction,
-    required DateTime lastRevisedAt,
     required List<String> tags,
+    required String description,
+    required HadithAuthenticity? authenticity,
   }) async {
     try {
       await _remoteSource.saveHadith(
-        userId: authRepository.user!.id,
         text: text,
-        sayer: sayer,
-        description: description,
-        extraction: extraction,
-        authenticity: authenticity,
-        lastRevisedAt: lastRevisedAt,
-        priority: priority,
         tags: tags,
+        sayer: sayer,
+        priority: priority,
+        extraction: extraction,
+        description: description,
+        authenticity: authenticity,
+        userId: authRepository.user!.id,
       );
       return right(null);
     } catch (e) {
@@ -54,20 +53,18 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
   Future<EitherException<void>> saveAthar({
     required String text,
     required String sayer,
-    required String description,
     required Priority priority,
-    required DateTime lastRevisedAt,
     required List<String> tags,
+    required String description,
   }) async {
     try {
       await _remoteSource.saveAthar(
-        userId: authRepository.user!.id,
         text: text,
-        sayer: sayer,
-        description: description,
-        lastRevisedAt: lastRevisedAt,
-        priority: priority,
         tags: tags,
+        priority: priority,
+        userId: authRepository.user!.id,
+        sayer: sayer.isBlank ? null : sayer,
+        description: description.isBlank ? null : description,
       );
       return right(null);
     } catch (e) {

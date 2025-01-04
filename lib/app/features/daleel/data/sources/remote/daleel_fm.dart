@@ -15,7 +15,7 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
   final Priority priority;
   final String? sayer;
   final List<String> tags;
-  final DateTime? lastRevisedAt;
+  final DateTime lastRevisedAt;
   final DaleelType daleelType;
 
   const DaleelFM({
@@ -44,7 +44,7 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
     required String? description,
     required String? sayer,
     required String? extraction,
-    required DateTime? lastRevisedAt,
+    required DateTime lastRevisedAt,
     required HadithAuthenticity? authenticity,
   }) =>
       switch (daleelType) {

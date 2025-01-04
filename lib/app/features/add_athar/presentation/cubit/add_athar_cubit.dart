@@ -26,14 +26,13 @@ class AddAtharCubit extends Cubit<AddAtharState> {
     emit(state.copyWith(status: const Loading()));
     try {
       await _repository.saveAthar(
-        text: state.athar.value,
         sayer: state.sayer,
+        text: state.athar.value,
         description: state.description,
         priority: getPriority(state.sliderValue),
-        lastRevisedAt: DateTime.now(),
         tags: [], // not used for now
       );
-      emit(state.copyWith(status: const Success('Athar added successfully')));
+      emit(state.copyWith(status: const Success(null)));
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(status: Failure(e as GenericException)));

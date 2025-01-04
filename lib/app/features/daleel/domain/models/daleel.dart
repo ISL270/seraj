@@ -8,19 +8,17 @@ sealed class Daleel {
   final Priority priority;
   final String? sayer;
   final List<String> tags;
-  DateTime lastRevisedAt = DateTime.now();
+  final DateTime lastRevisedAt;
 
-  Daleel({
+  const Daleel({
     required this.id,
     required this.text,
+    required this.lastRevisedAt,
     this.sayer,
     this.priority = Priority.normal,
-    DateTime? lastRevisedAt,
     this.tags = const [],
     this.description,
-  }) {
-    this.lastRevisedAt = lastRevisedAt ?? this.lastRevisedAt;
-  }
+  });
 }
 
 final class Hadith extends Daleel {
@@ -30,9 +28,9 @@ final class Hadith extends Daleel {
   Hadith({
     required super.id,
     required super.text,
+    required super.lastRevisedAt,
     super.priority,
     super.tags,
-    super.lastRevisedAt,
     super.description,
     super.sayer,
     this.extraction,
@@ -56,9 +54,9 @@ final class Athar extends Daleel {
   Athar({
     required super.id,
     required super.text,
+    required super.lastRevisedAt,
     super.priority,
     super.tags,
-    super.lastRevisedAt,
     super.description,
     super.sayer,
   });

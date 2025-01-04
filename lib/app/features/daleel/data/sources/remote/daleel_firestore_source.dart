@@ -7,6 +7,7 @@ import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartx/dartx.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
@@ -21,7 +22,6 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
     required List<String> tags,
     required String? extraction,
     required String? description,
-    required DateTime? lastRevisedAt,
     required HadithAuthenticity? authenticity,
   }) async {
     await firestoreOperationHandler(() async {
@@ -29,12 +29,12 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
         firestoreSvc.hadith.text: text,
         firestoreSvc.hadith.tags: tags,
         firestoreSvc.hadith.priority: priority.name,
-        firestoreSvc.hadith.lastRevisedAt: lastRevisedAt,
         firestoreSvc.hadith.authenticity: authenticity?.name,
         firestoreSvc.hadith.daleelType: DaleelType.hadith.name,
-        firestoreSvc.hadith.sayer: sayer!.isEmpty ? null : sayer,
-        firestoreSvc.hadith.description: description!.isEmpty ? null : description,
-        firestoreSvc.hadith.extraction: extraction!.isEmpty ? null : extraction,
+        firestoreSvc.hadith.sayer: sayer!.isBlank ? null : sayer,
+        firestoreSvc.hadith.lastRevisedAt: FieldValue.serverTimestamp(),
+        firestoreSvc.hadith.description: description!.isBlank ? null : description,
+        firestoreSvc.hadith.extraction: extraction!.isBlank ? null : extraction,
       });
     });
   }
@@ -46,16 +46,15 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
     required String? description,
     required Priority priority,
     required List<String> tags,
-    required DateTime? lastRevisedAt,
   }) async {
     await firestoreOperationHandler(() async {
       await firestoreSvc.users.daleelCollection(userId).add({
         firestoreSvc.athar.text: text,
         firestoreSvc.athar.tags: tags,
         firestoreSvc.athar.priority: priority.name,
-        firestoreSvc.athar.lastRevisedAt: lastRevisedAt,
         firestoreSvc.athar.daleelType: DaleelType.athar.name,
         firestoreSvc.athar.sayer: sayer!.isEmpty ? null : sayer,
+        firestoreSvc.athar.lastRevisedAt: FieldValue.serverTimestamp(),
         firestoreSvc.athar.description: description!.isEmpty ? null : description,
       });
     });

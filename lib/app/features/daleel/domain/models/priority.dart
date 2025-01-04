@@ -1,11 +1,7 @@
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
-enum Priority {
-  urgent,
-  high,
-  normal;
-}
+enum Priority { normal, high, urgent }
 
 extension PriorityX on Priority {
   bool get isUrgent => this == Priority.urgent;
@@ -42,3 +38,6 @@ extension PriorityExtension2 on double {
     }
   }
 }
+
+
+
