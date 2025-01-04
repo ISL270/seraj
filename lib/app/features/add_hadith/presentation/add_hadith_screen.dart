@@ -250,7 +250,7 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
                 _LabelTextFieldAlignWidget(label: context.l10n.priority),
                 Gap(8.w),
                 Text(
-                  '${context.priorityTitle(context, state.sliderValue.toInt())} ${context.l10n.saveIt}',
+                  '${state.sliderValue.getPriorityName(context)} ${context.l10n.saveIt}',
                   style: context.textThemeX.medium.bold.copyWith(
                     color: context.colorsX.primary,
                     textBaseline: TextBaseline.alphabetic,
@@ -259,13 +259,14 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
               ],
             ),
             Slider.adaptive(
-                onChanged: (value) => context.read<AddHadithCubit>().sliderPriorityChanged(value),
-                value: state.sliderValue,
-                activeColor: context.colorsX.primary,
-                inactiveColor: context.colorsX.onBackgroundTint35,
-                max: Priority.values.length - 1,
-                divisions: Priority.values.length - 1,
-                label: context.priorityTitle(context, state.sliderValue.toInt())),
+              onChanged: (value) => context.read<AddHadithCubit>().sliderPriorityChanged(value),
+              value: state.sliderValue,
+              activeColor: context.colorsX.primary,
+              inactiveColor: context.colorsX.onBackgroundTint35,
+              max: Priority.values.length - 1,
+              divisions: Priority.values.length - 1,
+              label: state.sliderValue.getPriorityName(context),
+            ),
           ],
         );
       },

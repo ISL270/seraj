@@ -29,7 +29,7 @@ class AddOtherCubit extends Cubit<AddOtherState> {
         text: state.other.value,
         sayer: state.sayer,
         description: state.description,
-        priority: getPriority(state.sliderValue),
+        priority: state.sliderValue.getPriorityType(),
         lastRevisedAt: DateTime.now(),
         tags: [], // not used for now
       );
@@ -37,17 +37,6 @@ class AddOtherCubit extends Cubit<AddOtherState> {
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(status: Failure(e as GenericException)));
-    }
-  }
-
-  // used cause slider only returns double values
-  Priority getPriority(double value) {
-    if (value == 0.0) {
-      return Priority.normal;
-    } else if (value == 1.0) {
-      return Priority.high;
-    } else {
-      return Priority.urgent;
     }
   }
 }

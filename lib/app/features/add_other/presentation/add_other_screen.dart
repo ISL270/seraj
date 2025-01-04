@@ -28,7 +28,7 @@ class AddOtherScreen extends StatelessWidget {
         centerTitle: true,
         leading: GestureDetector(
           onTap: () => context.pop(),
-          child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
+          child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.r),
         ),
         title: Text(
           '${context.l10n.add} ${context.l10n.others}',
@@ -175,12 +175,12 @@ class _PrioritySliderWithLabelBlocBuilder extends StatelessWidget {
       builder: (context, state) {
         return PrioritySliderWithLabel(
           labelText: context.l10n.priority,
-          priorityTitle: '${state.sliderValue.getPriority(context)} ${context.l10n.saveIt}',
+          priorityTitle: '${state.sliderValue.getPriorityName(context)} ${context.l10n.saveIt}',
           onPriorityChanged: (value) => context.read<AddOtherCubit>().sliderPriorityChanged(value),
           priorityValue: state.sliderValue,
           sliderMaxValue: Priority.values.length - 1,
           sliderDivisions: Priority.values.length - 1,
-          sliderLabel: state.sliderValue.getPriority(context),
+          sliderLabel: state.sliderValue.getPriorityName(context),
         );
       },
     );
