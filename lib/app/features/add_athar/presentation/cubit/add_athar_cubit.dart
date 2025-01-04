@@ -29,24 +29,13 @@ class AddAtharCubit extends Cubit<AddAtharState> {
         sayer: state.sayer,
         text: state.athar.value,
         description: state.description,
-        priority: getPriority(state.sliderValue),
+        priority: state.sliderValue.getPriorityType(),
         tags: [], // not used for now
       );
       emit(state.copyWith(status: const Success(null)));
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(status: Failure(e as GenericException)));
-    }
-  }
-
-  // used cause slider only returns double values
-  Priority getPriority(double value) {
-    if (value == 0.0) {
-      return Priority.normal;
-    } else if (value == 1.0) {
-      return Priority.high;
-    } else {
-      return Priority.urgent;
     }
   }
 }

@@ -9,23 +9,21 @@ extension PriorityX on Priority {
   bool get isNormal => this == Priority.normal;
 }
 
-extension PriorityExtension on BuildContext {
-  String priorityTitle(BuildContext context, int index) {
-    switch (index) {
+extension PriorityExtension on double {
+  Priority getPriorityType() {
+    switch (toInt()) {
       case 0:
-        return context.l10n.normal;
+        return Priority.normal;
       case 1:
-        return context.l10n.high;
+        return Priority.high;
       case 2:
-        return context.l10n.urgent;
+        return Priority.urgent;
       default:
-        throw ArgumentError('index must be 0, 1 or 2');
+        throw ArgumentError('Value must be 0.0, 1.0, or 2.0');
     }
   }
-}
 
-extension PriorityExtension2 on double {
-  String getPriority(BuildContext context) {
+  String getPriorityName(BuildContext context) {
     switch (toInt()) {
       case 0:
         return context.l10n.normal;
@@ -38,6 +36,3 @@ extension PriorityExtension2 on double {
     }
   }
 }
-
-
-

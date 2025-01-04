@@ -28,7 +28,7 @@ class AddAtharScreen extends StatelessWidget {
         centerTitle: true,
         leading: GestureDetector(
           onTap: () => context.pop(),
-          child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
+          child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.r),
         ),
         title: Text(
           '${context.l10n.add} ${context.l10n.athar}',
@@ -175,7 +175,7 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
                   _LabelTextFieldAlignWidget(label: context.l10n.priority),
                   Gap(8.w),
                   Text(
-                    '${state.sliderValue.getPriority(context)} ${context.l10n.saveIt}',
+                    '${state.sliderValue.getPriorityName(context)} ${context.l10n.saveIt}',
                     style: context.textThemeX.medium.bold.copyWith(
                       color: context.colorsX.primary,
                       textBaseline: TextBaseline.alphabetic,
@@ -190,7 +190,7 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
                 inactiveColor: context.colorsX.onBackgroundTint35,
                 max: Priority.values.length - 1,
                 divisions: Priority.values.length - 1,
-                label: state.sliderValue.getPriority(context),
+                label: state.sliderValue.getPriorityName(context),
               ),
             ],
           );
