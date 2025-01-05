@@ -252,7 +252,6 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
                 Gap(8.w),
                 Text(
                   '${state.sliderValue.getPriorityName(context)} ${context.l10n.saveIt}',
-                  '${state.sliderValue.getPriorityName(context)} ${context.l10n.saveIt}',
                   style: context.textThemeX.medium.bold.copyWith(
                     color: context.colorsX.primary,
                     textBaseline: TextBaseline.alphabetic,
