@@ -27,7 +27,6 @@ class AddHadith extends StatelessWidget {
         leading: GestureDetector(
           onTap: () => context.pop(),
           child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.r),
-          child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.r),
         ),
         title: Text(
           '${context.l10n.add} ${context.l10n.propheticHadith}',
