@@ -7,7 +7,8 @@ final class AddAyaState extends Equatable with FormzMixin {
     this.textOfAya = const Name.pure(),
     this.surahOfAya = const Name.pure(),
     this.ayaExplain = const Name.pure(),
-    this.numOfAya = '',
+    this.firstAya = 0,
+    this.lastAya = 0,
     this.status = const Initial(),
     this.tags = const [],
     this.hintTexts = const [],
@@ -18,7 +19,8 @@ final class AddAyaState extends Equatable with FormzMixin {
   final Name textOfAya;
   final Name surahOfAya;
   final Name ayaExplain;
-  final String numOfAya;
+  final int firstAya;
+  final int lastAya;
   final List<String> tags;
   final VoidStatus status;
 
@@ -41,7 +43,8 @@ final class AddAyaState extends Equatable with FormzMixin {
       textOfAya: textOfAya ?? this.textOfAya,
       ayaExplain: ayaExplain ?? this.ayaExplain,
       surahOfAya: surahOfAya ?? this.surahOfAya,
-      numOfAya: numOfAya ?? this.numOfAya,
+      lastAya: lastAya,
+      firstAya: firstAya,
       status: status ?? this.status,
       tags: tags ?? this.tags,
     );

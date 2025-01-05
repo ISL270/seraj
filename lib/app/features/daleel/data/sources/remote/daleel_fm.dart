@@ -46,8 +46,8 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
     required String? sayer,
     required String? extraction,
     required String? surahOfAya,
-    required String? firstAya,
-    required String? lastAya,
+    required int? firstAya,
+    required int? lastAya,
     required DateTime lastRevisedAt,
     required HadithAuthenticity? authenticity,
   }) =>
@@ -194,8 +194,8 @@ final class AtharFM extends DaleelFM {
 // @JsonSerializable(createToJson: false)
 final class AyaFm extends DaleelFM {
   final String? surahOfAya;
-  final String? firstAya;
-  final String? lastAya;
+  final int? firstAya;
+  final int? lastAya;
 
   const AyaFm({
     required super.id,

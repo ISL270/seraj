@@ -94,6 +94,7 @@
      "alreadyExists":"Already Exists",
      "tag":"Tag",
     "addTags":"Add Tags",
-    "delTags":"Delete Tags"
-
+    "delTags":"Delete Tags",
+    "from":"From",
+    "to":"To"
 }

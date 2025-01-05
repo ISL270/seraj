@@ -73,11 +73,10 @@ class AddNewAyah extends StatelessWidget {
                           _SurahAndVerseNumTextField(
                             surahController: TextEditingController(
                                 text: ayah[0].surahNameAr),
-                            noAyahController: TextEditingController(
-                                text: ayah
-                                    .map((singleAyah) => singleAyah.ayahNumber)
-                                    .join(',')
-                                    .decorateArabicNumbers()),
+                            firstAyahController: TextEditingController(
+                                text: ayah.first.ayahNumber.toString()),
+                            lastAyahController: TextEditingController(
+                                text: ayah.last.ayahNumber.toString()),
                           ),
                           Align(
                             alignment: Alignment.centerRight,
@@ -148,11 +147,13 @@ class AddNewAyah extends StatelessWidget {
 
 class _SurahAndVerseNumTextField extends StatelessWidget {
   final TextEditingController surahController;
-  final TextEditingController noAyahController;
+  final TextEditingController firstAyahController;
+  final TextEditingController lastAyahController;
 
   const _SurahAndVerseNumTextField({
     required this.surahController,
-    required this.noAyahController,
+    required this.firstAyahController,
+    required this.lastAyahController,
   });
 
   @override
@@ -160,7 +161,7 @@ class _SurahAndVerseNumTextField extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          flex: 3,
+          flex: 2,
           child: TextField(
             controller: surahController,
             minLines: 1,
@@ -173,13 +174,42 @@ class _SurahAndVerseNumTextField extends StatelessWidget {
             ),
           ),
         ),
-        Gap(20.w),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.w),
+          child: Text(
+            '${context.l10n.from} :',
+            style: context.textThemeX.medium,
+          ),
+        ),
         Expanded(
           child: TextField(
-            controller: noAyahController,
+            controller: firstAyahController,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             onChanged: (value) =>
                 context.read<AddAyaCubit>().nomOfAyaChanged(value),
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+              alignLabelWithHint: true,
+              hintText: context.l10n.numofayah,
+              hintStyle: context.textThemeX.medium.bold,
+            ),
+          ),
+        ),
+        // Gap(6.w),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.w),
+          child: Text(
+            '${context.l10n.to} :',
+            style: context.textThemeX.medium,
+          ),
+        ),
+        Expanded(
+          child: TextField(
+            controller: lastAyahController,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            onChanged: (value) =>
+                context.read<AddAyaCubit>().nomOfAyaChanged(value),
+            textAlign: TextAlign.center,
             decoration: InputDecoration(
               alignLabelWithHint: true,
               hintText: context.l10n.numofayah,

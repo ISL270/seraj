@@ -8,13 +8,15 @@ part of 'daleel_fm.dart';
 
 HadithFM _$HadithFMFromJson(String docID, Map<String, dynamic> json) =>
     HadithFM(
-      id: json['id'] as String,
+      id: docID,
       text: json['text'] as String,
       description: json['description'] as String?,
       sayer: json['sayer'] as String?,
       priority: $enumDecode(_$PriorityEnumMap, json['priority']),
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
-      lastRevisedAt: DateTime.parse(json['lastRevisedAt'] as String),
+      lastRevisedAt: json['lastRevisedAt'] != null
+          ? (json['lastRevisedAt'] as Timestamp).toDate()
+          : DateTime.now(),
       hadithExtraction: json['hadithExtraction'] as String?,
       hadithAuthenticity: $enumDecodeNullable(
           _$HadithAuthenticityEnumMap, json['hadithAuthenticity']),
@@ -64,6 +66,6 @@ AyaFm _$AyaFmFromJson(String docID, Map<String, dynamic> json) => AyaFm(
       description: json['description'] as String?,
       sayer: json['sayer'] as String?,
       surahOfAya: json['surahOfAya'] as String?,
-      firstAya: json['firstAya'] as String?,
-      lastAya: json['lastAya'] as String?,
+      firstAya: (json['firstAya'] as num?)?.toInt(),
+      lastAya: (json['lastAya'] as num?)?.toInt(),
     );

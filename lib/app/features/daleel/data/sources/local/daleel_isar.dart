@@ -24,8 +24,8 @@ final class DaleelIsar extends CacheModel<Daleel> {
   // Hadith related
   String? hadithExtraction;
   String? suraOfAya;
-  String? firstAya;
-  String? lastAya;
+  int? firstAya;
+  int? lastAya;
   @Enumerated(EnumType.name)
   HadithAuthenticity? hadithAuthenticity;
 

@@ -31,7 +31,7 @@ const DaleelIsarSchema = CollectionSchema(
     r'firstAya': PropertySchema(
       id: 2,
       name: r'firstAya',
-      type: IsarType.string,
+      type: IsarType.long,
     ),
     r'hadithAuthenticity': PropertySchema(
       id: 3,
@@ -52,7 +52,7 @@ const DaleelIsarSchema = CollectionSchema(
     r'lastAya': PropertySchema(
       id: 6,
       name: r'lastAya',
-      type: IsarType.string,
+      type: IsarType.long,
     ),
     r'lastRevisedAt': PropertySchema(
       id: 7,
@@ -114,12 +114,6 @@ int _daleelIsarEstimateSize(
     }
   }
   {
-    final value = object.firstAya;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
     final value = object.hadithAuthenticity;
     if (value != null) {
       bytesCount += 3 + value.name.length * 3;
@@ -132,12 +126,6 @@ int _daleelIsarEstimateSize(
     }
   }
   bytesCount += 3 + object.id.length * 3;
-  {
-    final value = object.lastAya;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
   bytesCount += 3 + object.priority.name.length * 3;
   {
     final value = object.sayer;
@@ -170,11 +158,11 @@ void _daleelIsarSerialize(
 ) {
   writer.writeString(offsets[0], object.daleelType.name);
   writer.writeString(offsets[1], object.description);
-  writer.writeString(offsets[2], object.firstAya);
+  writer.writeLong(offsets[2], object.firstAya);
   writer.writeString(offsets[3], object.hadithAuthenticity?.name);
   writer.writeString(offsets[4], object.hadithExtraction);
   writer.writeString(offsets[5], object.id);
-  writer.writeString(offsets[6], object.lastAya);
+  writer.writeLong(offsets[6], object.lastAya);
   writer.writeDateTime(offsets[7], object.lastRevisedAt);
   writer.writeString(offsets[8], object.priority.name);
   writer.writeString(offsets[9], object.sayer);
@@ -194,12 +182,12 @@ DaleelIsar _daleelIsarDeserialize(
             reader.readStringOrNull(offsets[0])] ??
         DaleelType.hadith,
     description: reader.readStringOrNull(offsets[1]),
-    firstAya: reader.readStringOrNull(offsets[2]),
+    firstAya: reader.readLongOrNull(offsets[2]),
     hadithAuthenticity: _DaleelIsarhadithAuthenticityValueEnumMap[
         reader.readStringOrNull(offsets[3])],
     hadithExtraction: reader.readStringOrNull(offsets[4]),
     id: reader.readString(offsets[5]),
-    lastAya: reader.readStringOrNull(offsets[6]),
+    lastAya: reader.readLongOrNull(offsets[6]),
     lastRevisedAt: reader.readDateTime(offsets[7]),
     priority:
         _DaleelIsarpriorityValueEnumMap[reader.readStringOrNull(offsets[8])] ??
@@ -226,7 +214,7 @@ P _daleelIsarDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 3:
       return (_DaleelIsarhadithAuthenticityValueEnumMap[
           reader.readStringOrNull(offset)]) as P;
@@ -235,7 +223,7 @@ P _daleelIsarDeserializeProp<P>(
     case 5:
       return (reader.readString(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 7:
       return (reader.readDateTime(offset)) as P;
     case 8:
@@ -740,55 +728,47 @@ extension DaleelIsarQueryFilter
   }
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> firstAyaEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+      int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'firstAya',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
       firstAyaGreaterThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'firstAya',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> firstAyaLessThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'firstAya',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> firstAyaBetween(
-    String? lower,
-    String? upper, {
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -797,78 +777,6 @@ extension DaleelIsarQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      firstAyaStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'firstAya',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> firstAyaEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'firstAya',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> firstAyaContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'firstAya',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> firstAyaMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'firstAya',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      firstAyaIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'firstAya',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      firstAyaIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'firstAya',
-        value: '',
       ));
     });
   }
@@ -1329,55 +1237,47 @@ extension DaleelIsarQueryFilter
   }
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> lastAyaEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+      int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'lastAya',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
       lastAyaGreaterThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'lastAya',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> lastAyaLessThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'lastAya',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> lastAyaBetween(
-    String? lower,
-    String? upper, {
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -1386,76 +1286,6 @@ extension DaleelIsarQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> lastAyaStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'lastAya',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> lastAyaEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'lastAya',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> lastAyaContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'lastAya',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> lastAyaMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'lastAya',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> lastAyaIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'lastAya',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      lastAyaIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'lastAya',
-        value: '',
       ));
     });
   }
@@ -2636,10 +2466,9 @@ extension DaleelIsarQueryWhereDistinct
     });
   }
 
-  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByFirstAya(
-      {bool caseSensitive = true}) {
+  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByFirstAya() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'firstAya', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'firstAya');
     });
   }
 
@@ -2666,10 +2495,9 @@ extension DaleelIsarQueryWhereDistinct
     });
   }
 
-  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByLastAya(
-      {bool caseSensitive = true}) {
+  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByLastAya() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'lastAya', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'lastAya');
     });
   }
 
@@ -2734,7 +2562,7 @@ extension DaleelIsarQueryProperty
     });
   }
 
-  QueryBuilder<DaleelIsar, String?, QQueryOperations> firstAyaProperty() {
+  QueryBuilder<DaleelIsar, int?, QQueryOperations> firstAyaProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'firstAya');
     });
@@ -2760,7 +2588,7 @@ extension DaleelIsarQueryProperty
     });
   }
 
-  QueryBuilder<DaleelIsar, String?, QQueryOperations> lastAyaProperty() {
+  QueryBuilder<DaleelIsar, int?, QQueryOperations> lastAyaProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'lastAya');
     });

@@ -21,7 +21,8 @@ class AddAyaCubit extends Cubit<AddAyaState> {
           textOfAya:
               Name.dirty(ayah.map((singleAyah) => singleAyah.ayah).join(' ')),
           surahOfAya: Name.dirty(ayah.first.surahNameAr),
-          numOfAya: ayah.first.ayahNumber.toString(),
+          firstAya: ayah.first.ayahNumber,
+          lastAya: ayah.last.ayahNumber,
           ayaExplain: const Name.dirty(''),
         ));
 
@@ -54,7 +55,8 @@ class AddAyaCubit extends Cubit<AddAyaState> {
         text: state.textOfAya.value,
         ayaExplain: state.ayaExplain.value,
         surahOfAya: state.surahOfAya.value,
-        nomOfAya: state.numOfAya,
+        firstAya: state.firstAya,
+        lastAya: state.lastAya,
         lastRevisedAt: DateTime.now(),
         priority: 1.0.getPriority(),
         tags: state.tags,

@@ -72,8 +72,8 @@ final class Athar extends Daleel {
 
 final class Aya extends Daleel {
   final String? surahOfAya;
-  final String? firstAya;
-  final String? lastAya;
+  final int? firstAya;
+  final int? lastAya;
 
   const Aya({
     required super.id,
