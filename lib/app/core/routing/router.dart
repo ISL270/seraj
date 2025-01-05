@@ -12,6 +12,7 @@ import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.da
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
+import 'package:athar/app/features/daleel_details/presentation/daleel_details_screen.dart';
 import 'package:athar/app/features/duas/presentation/duas_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/login/cubit/login_cubit.dart';
@@ -101,6 +102,15 @@ final appRouter = GoRouter(
                       create: (context) => AddOtherCubit(getIt.get<DaleelRepository>()),
                       child: const AddOtherScreen(),
                     ),
+                  ),
+                ),
+                GoRoute(
+                  name: DaleelDetailsScreen.name,
+                  path: DaleelDetailsScreen.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  pageBuilder: (context, state) => const CupertinoPage(
+                    fullscreenDialog: true,
+                    child: DaleelDetailsScreen(),
                   ),
                 ),
               ],
