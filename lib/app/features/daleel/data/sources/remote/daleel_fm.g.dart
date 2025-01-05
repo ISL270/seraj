@@ -38,8 +38,7 @@ OthersFM _$OthersFMFromJson(String docID, Map<String, dynamic> json) => OthersFM
       sayer: json['sayer'] as String?,
       priority: $enumDecode(_$PriorityEnumMap, json['priority']),
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
-      lastRevisedAt:
-          json['lastRevisedAt'] == null ? null : (json['lastRevisedAt'] as Timestamp).toDate(),
+      lastRevisedAt: (json['lastRevisedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       daleelType: $enumDecode(_$DaleelTypeEnumMap, json['daleelType']),
     );
 
