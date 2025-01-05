@@ -11,9 +11,14 @@ final class AddAyaState extends Equatable with FormzMixin {
     this.lastAya = 0,
     this.status = const Initial(),
     this.tags = const [],
+    this.query = '',
     this.hintTexts = const [],
+    this.ayahs = const [],
+    this.selectedAyahs = const [],
   });
 
+  final List<Ayah> ayahs;
+  final List<Ayah> selectedAyahs;
   final List<String> hintTexts;
 
   final Name textOfAya;
@@ -23,12 +28,15 @@ final class AddAyaState extends Equatable with FormzMixin {
   final int lastAya;
   final List<String> tags;
   final VoidStatus status;
+  final String? query;
 
   @override
   List<Object> get props => [
         ayaExplain,
         tags,
         status,
+        ayahs,
+        selectedAyahs,
       ];
 
   AddAyaState copyWith({
@@ -36,6 +44,9 @@ final class AddAyaState extends Equatable with FormzMixin {
     Name? ayaExplain,
     Name? surahOfAya,
     String? numOfAya,
+    String? query,
+    List<Ayah>? ayahs,
+    List<Ayah>? selectedAyahs,
     List<String>? tags,
     VoidStatus? status,
   }) {
@@ -45,6 +56,9 @@ final class AddAyaState extends Equatable with FormzMixin {
       surahOfAya: surahOfAya ?? this.surahOfAya,
       lastAya: lastAya,
       firstAya: firstAya,
+      query: query ?? this.query,
+      ayahs: ayahs ?? this.ayahs,
+      selectedAyahs: selectedAyahs ?? this.selectedAyahs,
       status: status ?? this.status,
       tags: tags ?? this.tags,
     );
@@ -53,9 +67,4 @@ final class AddAyaState extends Equatable with FormzMixin {
   @override
   // ignore: override_on_non_overriding_member
   List<FormzInput> get inputs => [ayaExplain];
-
-  String get errorMsg {
-    if (!status.isFailure) return '';
-    return (status as Failure).exception.message ?? 'unkown error';
-  }
 }

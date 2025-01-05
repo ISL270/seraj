@@ -8,7 +8,6 @@ import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dar
 import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
 import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:athar/app/features/aya/presentation/add_new_ayah.dart';
-import 'package:athar/app/features/aya/presentation/aya_search.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
@@ -24,7 +23,6 @@ import 'package:athar/app/features/splash/bloc/splash_bloc.dart';
 import 'package:athar/app/features/splash/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quran/flutter_quran.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
@@ -57,7 +55,8 @@ final appRouter = GoRouter(
       ],
     ),
     StatefulShellRoute.indexedStack(
-      builder: (_, __, navigationShell) => HomeScreen(navigationShell: navigationShell),
+      builder: (_, __, navigationShell) =>
+          HomeScreen(navigationShell: navigationShell),
       branches: [
         StatefulShellBranch(
           navigatorKey: _hadithNavigatorKey,
@@ -79,7 +78,8 @@ final appRouter = GoRouter(
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (_) => AddHadithCubit(getIt.get<DaleelRepository>()),
+                      create: (_) =>
+                          AddHadithCubit(getIt.get<DaleelRepository>()),
                       child: const AddHadith(),
                     ),
                   ),
@@ -91,7 +91,8 @@ final appRouter = GoRouter(
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (context) => AddAtharCubit(getIt.get<DaleelRepository>()),
+                      create: (context) =>
+                          AddAtharCubit(getIt.get<DaleelRepository>()),
                       child: const AddAtharScreen(),
                     ),
                   ),
@@ -102,19 +103,8 @@ final appRouter = GoRouter(
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) {
                     // Pass the Aya model using the `extra` parameter
-                    final ayah = state.extra! as List<Ayah>;
                     return CupertinoPage(
-                      child: AddNewAyah(ayah: ayah),
-                    );
-                  },
-                ),
-                GoRoute(
-                  name: AyaSearch.name,
-                  path: AyaSearch.name,
-                  parentNavigatorKey: _rootNavigatorKey,
-                  pageBuilder: (context, state) {
-                    return const CupertinoPage(
-                      child: AyaSearch(),
+                      child: AddNewAyah(),
                     );
                   },
                 ),
@@ -128,7 +118,8 @@ final appRouter = GoRouter(
             GoRoute(
               name: DuasScreen.name,
               path: '/${DuasScreen.name}',
-              pageBuilder: (context, state) => const NoTransitionPage(child: DuasScreen()),
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: DuasScreen()),
             ),
           ],
         ),
@@ -138,7 +129,8 @@ final appRouter = GoRouter(
             GoRoute(
               name: AzkarScreen.name,
               path: '/${AzkarScreen.name}',
-              pageBuilder: (context, state) => const NoTransitionPage(child: AzkarScreen()),
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: AzkarScreen()),
             ),
           ],
         ),
@@ -148,18 +140,22 @@ final appRouter = GoRouter(
             GoRoute(
               name: SettingsScreen.name,
               path: '/${SettingsScreen.name}',
-              pageBuilder: (context, state) => const NoTransitionPage(child: SettingsScreen()),
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: SettingsScreen()),
             ),
           ],
         ),
       ],
     ),
   ],
-  refreshListenable: GoRouterRefreshStream(getIt.authBloc.stream.where((state) => state.isSuccess)),
+  refreshListenable: GoRouterRefreshStream(
+      getIt.authBloc.stream.where((state) => state.isSuccess)),
   redirect: (context, state) {
     // If the user is not logged in, they need to login.
     // Bundle the location the user is coming from into a query parameter
-    final fromloc = (state.isGoingToHome || state.isLoggingOut) ? '' : state.matchedLocation;
+    final fromloc = (state.isGoingToHome || state.isLoggingOut)
+        ? ''
+        : state.matchedLocation;
     if (!getIt.authBloc.state.isAuthenticated) {
       return state.isGoingToSplash || state.isLoggingIn || state.isSigningUp
           ? null
@@ -171,7 +167,8 @@ final appRouter = GoRouter(
 
     // if the user is logged in, send them where they were going before (or home if they weren't going anywhere)
     if (state.isLoggingIn) {
-      return state.uri.queryParameters['from'] ?? state.namedLocation(HomeScreen.homeBranch);
+      return state.uri.queryParameters['from'] ??
+          state.namedLocation(HomeScreen.homeBranch);
     }
 
     // no need to redirect at all
@@ -183,7 +180,11 @@ final appRouter = GoRouter(
 
 // private navigators
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _hadithNavigatorKey = GlobalKey<NavigatorState>(debugLabel: DaleelScreen.name);
-final _duasNavigatorKey = GlobalKey<NavigatorState>(debugLabel: DuasScreen.name);
-final _azkarNavigatorKey = GlobalKey<NavigatorState>(debugLabel: AzkarScreen.name);
-final _settingsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: SettingsScreen.name);
+final _hadithNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: DaleelScreen.name);
+final _duasNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: DuasScreen.name);
+final _azkarNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: AzkarScreen.name);
+final _settingsNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: SettingsScreen.name);

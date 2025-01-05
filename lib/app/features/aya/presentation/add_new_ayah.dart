@@ -3,6 +3,7 @@ import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
+import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/aya/presentation/cubit/add_aya_cubit.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
@@ -18,19 +19,30 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AddNewAyah extends StatelessWidget {
-  final List<Ayah> ayah;
+part 'aya_search.dart';
 
-  const AddNewAyah({required this.ayah, super.key});
+class AddNewAyah extends StatefulWidget {
+  const AddNewAyah({super.key});
 
   static const String name = 'add-new-aya';
+
+  @override
+  State<AddNewAyah> createState() => _AddNewAyahState();
+}
+
+class _AddNewAyahState extends State<AddNewAyah> {
+  @override
+  void initState() {
+    FlutterQuran().init();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AddAyaCubit(
         ayaRepository: getIt.get<DaleelRepository>(),
-        ayah: ayah,
       ),
       child: Screen(
         body: Column(
@@ -63,70 +75,99 @@ class AddNewAyah extends StatelessWidget {
                               const Spacer(flex: 2),
                             ],
                           ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              context.l10n.surahandnoayah,
-                              style: context.textThemeX.medium.bold,
-                            ),
-                          ),
-                          _SurahAndVerseNumTextField(
-                            surahController: TextEditingController(
-                                text: ayah[0].surahNameAr),
-                            firstAyahController: TextEditingController(
-                                text: ayah.first.ayahNumber.toString()),
-                            lastAyahController: TextEditingController(
-                                text: ayah.last.ayahNumber.toString()),
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              context.l10n.quranicversec,
-                              style: context.textThemeX.medium.bold,
-                            ),
-                          ),
-                          _QuranicVerseTextField(
-                            controller: TextEditingController(
-                              text: ayah
-                                  .map((singleAyah) => singleAyah.ayah)
-                                  .join(' ')
-                                  .decorateArabicNumbers(),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              context.l10n.quranicayahexp,
-                              style: context.textThemeX.medium.bold,
-                            ),
-                          ),
-                          _QuranicVerseExplanationTextField(
-                            controller: TextEditingController(text: ''),
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              context.l10n.tag,
-                              style: context.textThemeX.medium.bold,
-                            ),
-                          ),
+                          const _AyaSearch(),
                           BlocBuilder<AddAyaCubit, AddAyaState>(
                             builder: (context, state) {
-                              final cubit = context.read<AddAyaCubit>();
-                              return TagSelectionWidget(
-                                tags: state.tags,
-                                onAddTag: (tag) =>
-                                    cubit.tagsChanged([...state.tags, tag]),
-                                onRemoveTag: (tag) {
-                                  final updatedTags = state.tags
-                                      .where((t) => t != tag)
-                                      .toList();
-                                  cubit.tagsChanged(updatedTags);
-                                },
-                                onClearTags: () => cubit.tagsChanged([]),
-                                errorMessageBuilder: (tag) =>
-                                    '$tag ${context.l10n.alreadyExists}',
-                              );
+                              return state.selectedAyahs.isNotEmpty
+                                  ? Column(
+                                      spacing: 10.h,
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Text(
+                                            context.l10n.surahandnoayah,
+                                            style:
+                                                context.textThemeX.medium.bold,
+                                          ),
+                                        ),
+                                        _SurahAndVerseNumTextField(
+                                          surahController:
+                                              TextEditingController(
+                                                  text: state.selectedAyahs[0]
+                                                      .surahNameAr),
+                                          firstAyahController:
+                                              TextEditingController(
+                                                  text: state.selectedAyahs
+                                                      .first.ayahNumber
+                                                      .toString()),
+                                          lastAyahController:
+                                              TextEditingController(
+                                                  text: state.selectedAyahs.last
+                                                      .ayahNumber
+                                                      .toString()),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Text(
+                                            context.l10n.quranicversec,
+                                            style:
+                                                context.textThemeX.medium.bold,
+                                          ),
+                                        ),
+                                        _QuranicVerseTextField(
+                                          controller: TextEditingController(
+                                            text: state.selectedAyahs
+                                                .map((singleAyah) =>
+                                                    singleAyah.ayah)
+                                                .join(' ')
+                                                .decorateArabicNumbers(),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Text(
+                                            context.l10n.quranicayahexp,
+                                            style:
+                                                context.textThemeX.medium.bold,
+                                          ),
+                                        ),
+                                        _QuranicVerseExplanationTextField(
+                                          controller:
+                                              TextEditingController(text: ''),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Text(
+                                            context.l10n.tag,
+                                            style:
+                                                context.textThemeX.medium.bold,
+                                          ),
+                                        ),
+                                        BlocBuilder<AddAyaCubit, AddAyaState>(
+                                          builder: (context, state) {
+                                            final cubit =
+                                                context.read<AddAyaCubit>();
+                                            return TagSelectionWidget(
+                                              tags: state.tags,
+                                              onAddTag: (tag) => cubit
+                                                  .tagsChanged(
+                                                      [...state.tags, tag]),
+                                              onRemoveTag: (tag) {
+                                                final updatedTags = state.tags
+                                                    .where((t) => t != tag)
+                                                    .toList();
+                                                cubit.tagsChanged(updatedTags);
+                                              },
+                                              onClearTags: () =>
+                                                  cubit.tagsChanged([]),
+                                              errorMessageBuilder: (tag) =>
+                                                  '$tag ${context.l10n.alreadyExists}',
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    )
+                                  : const SizedBox();
                             },
                           ),
                         ],
@@ -293,7 +334,7 @@ class _AyahAddButton extends StatelessWidget {
         if (state.status.isFailure) {
           context.scaffoldMessenger
             ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(content: Text(state.errorMsg)));
+            ..showSnackBar(SnackBar(content: Text('')));
         }
       },
       builder: (context, state) {

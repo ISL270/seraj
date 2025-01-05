@@ -15,16 +15,8 @@ class AddAyaCubit extends Cubit<AddAyaState> {
 
   AddAyaCubit({
     required DaleelRepository ayaRepository,
-    required List<Ayah> ayah,
   })  : _daleelRepository = ayaRepository,
-        super(AddAyaState(
-          textOfAya:
-              Name.dirty(ayah.map((singleAyah) => singleAyah.ayah).join(' ')),
-          surahOfAya: Name.dirty(ayah.first.surahNameAr),
-          firstAya: ayah.first.ayahNumber,
-          lastAya: ayah.last.ayahNumber,
-          ayaExplain: const Name.dirty(''),
-        ));
+        super(const AddAyaState());
 
   void textOfAyaChanged(String value) =>
       emit(state.copyWith(textOfAya: Name.dirty(value)));
@@ -37,12 +29,18 @@ class AddAyaCubit extends Cubit<AddAyaState> {
   void ayaExplainChanged(String value) =>
       emit(state.copyWith(ayaExplain: Name.dirty(value)));
 
+  void queryChanged(String value) {
+    final ayahsList = FlutterQuran().search(value);
+    emit(state.copyWith(query: value, ayahs: ayahsList));
+  }
+
+  void ayahsChanged(List<Ayah> ayahs) {
+    emit(state.copyWith(selectedAyahs: ayahs, query: '', ayahs: []));
+  }
+
   void tagsChanged(List<String> newTags) {
-    // Remove empty or duplicate tags from the input list
     final uniqueTags = newTags.toSet().toList()
       ..removeWhere((tag) => tag.isEmpty);
-
-    // Only emit a new state if the tags have actually changed
     if (uniqueTags.toString() != state.tags.toString()) {
       emit(state.copyWith(tags: uniqueTags));
     }
