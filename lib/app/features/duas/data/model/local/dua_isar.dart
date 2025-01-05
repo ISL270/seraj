@@ -11,7 +11,7 @@ final class DuaIsar extends CacheModel<Dua> {
   String id;
 
   @Index(type: IndexType.value, caseSensitive: false)
-  String dua;
+  String text;
 
   String? reward;
 
@@ -24,7 +24,7 @@ final class DuaIsar extends CacheModel<Dua> {
 
   DuaIsar({
     required this.id,
-    required this.dua,
+    required this.text,
     required this.priority,
     required this.tags,
     required this.reward,
@@ -33,7 +33,7 @@ final class DuaIsar extends CacheModel<Dua> {
 
   factory DuaIsar.fromDomain(Dua domain) => DuaIsar(
         id: domain.id,
-        dua: domain.dua,
+        text: domain.text,
         priority: domain.priority,
         tags: domain.tags,
         reward: domain.reward,
@@ -44,7 +44,7 @@ final class DuaIsar extends CacheModel<Dua> {
   Dua toDomain() {
     return Dua(
       id: id,
-      dua: dua,
+      text: text,
       tags: tags,
       reward: reward,
       priority: priority,

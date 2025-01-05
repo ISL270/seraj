@@ -20,7 +20,7 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM>
   DuaFirestoreSource(super.firestoreSvc);
 
   Future<void> addDua({
-    required String dua,
+    required String text,
     required String? reward,
     required Priority priority,
     required List<String> tags,
@@ -29,7 +29,7 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM>
       firestoreOperationHandler(() async {
         final userId = getIt.authBloc.state.user!.id;
         await firestoreSvc.users.duaCollection(userId).add({
-          firestoreSvc.dua.dua: dua,
+          firestoreSvc.dua.text: text,
           firestoreSvc.dua.reward: reward,
           firestoreSvc.dua.priority: priority.name,
           firestoreSvc.dua.description: description,

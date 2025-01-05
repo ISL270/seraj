@@ -1,8 +1,9 @@
 part of '../../sources/remote/dua_firestore_source.dart';
 
+@JsonSerializable()
 final class DuaFM implements RemoteModel<Dua> {
   final String id;
-  final String dua;
+  final String text;
   final String? reward;
   final Priority priority;
   final List<String> tags;
@@ -10,7 +11,7 @@ final class DuaFM implements RemoteModel<Dua> {
 
   const DuaFM({
     required this.id,
-    required this.dua,
+    required this.text,
     required this.priority,
     required this.tags,
     this.reward,
@@ -25,7 +26,7 @@ final class DuaFM implements RemoteModel<Dua> {
   @override
   Dua toDomain() => Dua(
         id: id,
-        dua: dua,
+        text: text,
         tags: tags,
         reward: reward,
         priority: priority,

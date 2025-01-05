@@ -36,7 +36,7 @@ class AddDuaCubit extends Cubit<AddDuaState> {
     try {
       await _duaRepository.addDua(
         tags: state.tags,
-        dua: state.dua.value,
+        text: state.dua.value,
         description: state.description,
         reward: state.reward.value,
         priority: state.sliderValue.getPriority(),

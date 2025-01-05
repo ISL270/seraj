@@ -8,7 +8,7 @@ part of 'dua_firestore_source.dart';
 
 DuaFM _$DuaFMFromJson(String docID, Map<String, dynamic> json) => DuaFM(
       id: docID,
-      dua: json['dua'] as String,
+      text: json['text'] as String,
       priority: $enumDecode(_$PriorityEnumMap, json['priority']),
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
       reward: json['reward'] as String?,
@@ -17,7 +17,7 @@ DuaFM _$DuaFMFromJson(String docID, Map<String, dynamic> json) => DuaFM(
 
 Map<String, dynamic> _$DuaFMToJson(DuaFM instance) => <String, dynamic>{
       'id': instance.id,
-      'dua': instance.dua,
+      'text': instance.text,
       'reward': instance.reward,
       'priority': _$PriorityEnumMap[instance.priority]!,
       'tags': instance.tags,
@@ -25,7 +25,7 @@ Map<String, dynamic> _$DuaFMToJson(DuaFM instance) => <String, dynamic>{
     };
 
 const _$PriorityEnumMap = {
-  Priority.urgent: 'urgent',
-  Priority.high: 'high',
   Priority.normal: 'normal',
+  Priority.high: 'high',
+  Priority.urgent: 'urgent',
 };

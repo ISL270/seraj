@@ -28,7 +28,7 @@ final class _Users {
 
 final class _Dua {
   late final id = 'id';
-  late final dua = 'dua';
+  late final text = 'text';
   late final reward = 'reward';
   late final description = 'description';
   late final priority = 'priority';

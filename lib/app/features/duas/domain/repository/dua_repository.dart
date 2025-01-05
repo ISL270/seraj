@@ -22,7 +22,7 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
   ) : super(localSource: _localSource, remoteSource: _remoteSource);
 
   Future<EitherException<void>> addDua({
-    required String dua,
+    required String text,
     required String? reward,
     required Priority priority,
     required List<String> tags,
@@ -30,7 +30,7 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
   }) async {
     try {
       await _remoteSource.addDua(
-        dua: dua,
+        text: text,
         tags: tags,
         reward: reward,
         priority: priority,
