@@ -3,6 +3,7 @@
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/core/isar/isar_helper.dart';
 import 'package:athar/app/features/authentication/data/models/local/user_isar.dart';
+import 'package:athar/app/features/daleel/data/sources/local/daleel_isar.dart';
 import 'package:athar/app/features/duas/data/model/local/dua_isar.dart';
 import 'package:athar/app/features/settings/data/sources/local/settings_isar.dart';
 import 'package:injectable/injectable.dart';
@@ -21,6 +22,7 @@ final class IsarService with IsarHelper {
       [
         UserIsarSchema,
         SettingsIsarSchema,
+        DaleelIsarSchema,
         DuaIsarSchema,
       ],
       directory: dir.path,

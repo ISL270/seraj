@@ -90,7 +90,7 @@ class _NameFormField extends StatelessWidget {
           onChanged: (name) => context.read<SignUpCubit>().nameChanged(name),
           decoration: InputDecoration(
             label: Text(context.l10n.name.capitalizedDefinite),
-            errorText: name.displayError == null ? null : context.l10n.invalidname,
+            errorText: name.displayError == null ? null : context.l10n.invalidName,
           ),
         );
       },
