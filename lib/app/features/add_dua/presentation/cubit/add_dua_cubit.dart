@@ -1,4 +1,5 @@
 import 'package:athar/app/core/enums/status.dart';
+import 'package:athar/app/core/extension_methods/double_x.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/duas/domain/repository/dua_repository.dart';
@@ -21,6 +22,10 @@ class AddDuaCubit extends Cubit<AddDuaState> {
   void rewardOfDuaChanged(String value) =>
       emit(state.copyWith(reward: Name.dirty(value)));
 
+  void sliderPriorityChanged(double value) {
+    emit(state.copyWith(sliderValue: value));
+  }
+
   void priorityChanged(Priority value) => emit(state.copyWith(priority: value));
 
   void duaExplanationChanged(String value) =>
@@ -34,7 +39,7 @@ class AddDuaCubit extends Cubit<AddDuaState> {
         dua: state.dua.value,
         description: state.description,
         reward: state.reward.value,
-        priority: state.priority,
+        priority: state.sliderValue.getPriority(),
       );
       emit(state.copyWith(status: const Success('Saved Dua Successfully')));
     } catch (e) {

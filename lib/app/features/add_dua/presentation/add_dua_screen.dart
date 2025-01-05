@@ -5,17 +5,17 @@ import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/add_dua/presentation/cubit/add_dua_cubit.dart';
+import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/duas/domain/repository/dua_repository.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-part 'widgets/priority_drop_down_button.dart';
+part 'widgets/priority_slider_widget.dart';
 
 class AddDuaScreen extends StatelessWidget {
   const AddDuaScreen({super.key});
@@ -54,7 +54,7 @@ class AddDuaScreen extends StatelessWidget {
                     const _ExplanationOfDuaTextField(),
                     _LabelTextFieldAlignWidget(
                         label: context.l10n.numOfTimesANDpriority),
-                    const _PriorityDropDownButton()
+                    const _PrioritySliderWithLabelWidget()
                   ],
                 ),
               ),
@@ -200,42 +200,4 @@ class _DuaAddButton extends StatelessWidget {
       },
     );
   }
-}
-
-// widgets used in dua time and type drop down button
-MenuItemStyleData _menuItemStyleData() {
-  return MenuItemStyleData(
-    height: 50.h,
-    padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
-  );
-}
-
-ScrollbarThemeData _scrollBarTheme() {
-  return ScrollbarThemeData(
-    radius: Radius.circular(40.sp),
-    thickness: WidgetStateProperty.all<double>(6.w),
-    thumbVisibility: WidgetStateProperty.all<bool>(true),
-  );
-}
-
-IconStyleData _iconStyleData(BuildContext context) {
-  return IconStyleData(
-    icon: const Icon(Icons.arrow_forward_ios_outlined),
-    iconSize: 14.w,
-    iconEnabledColor: context.colorsX.onBackground,
-  );
-}
-
-ButtonStyleData _buttonStyleData(BuildContext context) {
-  return ButtonStyleData(
-    height: 56.h,
-    width: double.infinity,
-    padding: EdgeInsets.symmetric(horizontal: 14.w),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(10.w),
-      border: Border.all(color: context.colorsX.onBackgroundTint),
-      color: context.colorsX.background,
-    ),
-    elevation: 0,
-  );
 }
