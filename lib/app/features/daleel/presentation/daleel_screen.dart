@@ -1,6 +1,7 @@
-// ignore_for_file: deprecated_member_use_from_same_package, deprecated_member_use
+// ignore_for_file: deprecated_member_use_from_same_package, deprecated_member_use, inference_failure_on_function_invocation
 
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
+import 'package:athar/app/core/extension_methods/english_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
@@ -81,10 +82,50 @@ class _DaleelWidget extends StatelessWidget {
             child: Icon(FontAwesomeIcons.edit, color: context.colorsX.onBackground, size: 24.r),
           ),
           Gap(8.w),
-          CircleAvatar(
-            backgroundColor: context.colorsX.error,
-            radius: 24.r,
-            child: Icon(FontAwesomeIcons.trash, color: context.colorsX.onBackground, size: 24.r),
+          GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  contentPadding: EdgeInsets.all(16.sp),
+                  buttonPadding: EdgeInsets.all(16.sp),
+                  titlePadding: EdgeInsets.all(16.sp),
+                  actionsPadding: EdgeInsets.all(16.sp),
+                  actionsAlignment: MainAxisAlignment.spaceAround,
+                  backgroundColor: context.colorsX.background,
+                  title: Padding(
+                    padding: EdgeInsets.all(16.sp),
+                    child: Center(
+                      child: Text(
+                        context.l10n.areYouSure.capitalized,
+                        style: context.textThemeX.large.bold.copyWith(
+                          color: context.colorsX.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  actions: [
+                    TextButton(
+                      onPressed: () => context.pop(),
+                      child: Text(context.l10n.cancel.capitalized,
+                          style: context.textThemeX.large.bold),
+                    ),
+                    TextButton(
+                      onPressed: () => context.pop(),
+                      child: Text(context.l10n.ok.capitalized,
+                          style:
+                              context.textThemeX.large.bold.copyWith(color: context.colorsX.error)),
+                    ),
+                  ],
+                ),
+              );
+            },
+            child: CircleAvatar(
+              backgroundColor: context.colorsX.error,
+              radius: 24.r,
+              child: Icon(FontAwesomeIcons.trash, color: context.colorsX.onBackground, size: 24.r),
+            ),
           ),
         ],
       ),

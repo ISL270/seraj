@@ -82,5 +82,8 @@
   "other":"اخرى",
   "explaination":"الشرح",
   "explainationOfAthar":"شرح الاثر",
-  "enterTextOfAthar": "ادخل نص الاثر"
+  "enterTextOfAthar": "ادخل نص الاثر",
+  "ok":"موافق",
+  "cancel":"الغاء",
+  "areYouSure":"هل انت متاكد من حذف هذا الأثر؟"
 }
