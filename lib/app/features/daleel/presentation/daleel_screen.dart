@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use_from_same_package
+// ignore_for_file: deprecated_member_use_from_same_package, deprecated_member_use
 
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
@@ -11,6 +11,8 @@ import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dar
 import 'package:athar/app/features/add_other/presentation/add_other_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:super_cupertino_navigation_bar/super_cupertino_navigation_bar.dart';
@@ -40,18 +42,91 @@ class DaleelScreen extends StatelessWidget {
             ),
           ],
         ),
-        title: Row(
-          children: [
-            Text(
-              context.l10n.athars.capitalizedDefinite,
-              style: context.textThemeX.large.bold.copyWith(color: context.colorsX.onBackground),
-            ),
-          ],
+        title: Text(
+          context.l10n.athars.capitalizedDefinite,
+          style: context.textThemeX.large.bold.copyWith(color: context.colorsX.onBackground),
         ),
         backgroundColor: context.colorsX.background,
         searchBar: SuperSearchBar(placeholderText: context.l10n.search.capitalizedDefinite),
       ),
-      body: const Column(),
+      body: Column(
+        children: [
+          Slidable(
+            endActionPane: ActionPane(
+              motion: const ScrollMotion(),
+              extentRatio: 0.3.w,
+              children: [
+                CircleAvatar(
+                  backgroundColor: context.colorsX.primary,
+                  radius: 24.r,
+                  child:
+                      Icon(FontAwesomeIcons.edit, color: context.colorsX.onBackground, size: 24.r),
+                ),
+                Gap(8.w),
+                CircleAvatar(
+                  backgroundColor: context.colorsX.error,
+                  radius: 24.r,
+                  child:
+                      Icon(FontAwesomeIcons.trash, color: context.colorsX.onBackground, size: 24.r),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 10.sp),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(4.sp),
+                      height: 170.h,
+                      decoration: BoxDecoration(
+                        color: context.colorsX.primary,
+                        borderRadius: BorderRadius.circular(12.w),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(6.sp),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              context.l10n.propheticHadith,
+                              style: context.textThemeX.large.bold,
+                            ),
+                            Gap(15.h),
+                            Row(
+                              children: [
+                                Gap(5.w),
+                                Expanded(
+                                  child: Text(
+                                    'واللَّهِ ما الدُّنْيا في الآخِرَةِ إلَّا مِثْلُ ما يَجْعَلُ أحَدُكُمْ إصْبَعَهُ هذِه، وأَشارَ يَحْيَى بالسَّبَّابَةِ، في اليَمِّ، فَلْيَنْظُرْ بمَ تَرْجِعُ؟',
+                                    style: context.textThemeX.medium.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Spacer(),
+                            Row(
+                              children: [
+                                Text('مدى الأهمية :', style: context.textThemeX.medium.bold),
+                                Gap(4.w),
+                                Text('يجب', style: context.textThemeX.medium.bold),
+                                const Spacer(),
+                                Text('5 - 1 - 2025', style: context.textThemeX.medium.bold),
+                                Gap(6.w),
+                              ],
+                            ),
+                            Gap(6.h),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
