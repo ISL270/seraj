@@ -21,21 +21,40 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
     required List<String> tags,
     required String? extraction,
     required String? description,
-    required DateTime? lastRevisedAt,
     required HadithAuthenticity? authenticity,
   }) async {
     await firestoreOperationHandler(() async {
       await firestoreSvc.users.daleelCollection(userId).add({
         firestoreSvc.hadith.text: text,
         firestoreSvc.hadith.tags: tags,
+        firestoreSvc.hadith.sayer: sayer,
+        firestoreSvc.hadith.extraction: extraction,
         firestoreSvc.hadith.priority: priority.name,
-        firestoreSvc.hadith.lastRevisedAt: lastRevisedAt,
+        firestoreSvc.hadith.description: description,
         firestoreSvc.hadith.authenticity: authenticity?.name,
         firestoreSvc.hadith.daleelType: DaleelType.hadith.name,
-        firestoreSvc.hadith.sayer: sayer!.isEmpty ? null : sayer,
-        firestoreSvc.hadith.description:
-            description!.isEmpty ? null : description,
-        firestoreSvc.hadith.extraction: extraction!.isEmpty ? null : extraction,
+        firestoreSvc.hadith.lastRevisedAt: FieldValue.serverTimestamp(),
+      });
+    });
+  }
+
+  Future<void> saveAthar({
+    required String text,
+    required String userId,
+    required String? sayer,
+    required Priority priority,
+    required List<String> tags,
+    required String? description,
+  }) async {
+    await firestoreOperationHandler(() async {
+      await firestoreSvc.users.daleelCollection(userId).add({
+        firestoreSvc.athar.text: text,
+        firestoreSvc.athar.tags: tags,
+        firestoreSvc.athar.sayer: sayer,
+        firestoreSvc.athar.priority: priority.name,
+        firestoreSvc.athar.description: description,
+        firestoreSvc.athar.daleelType: DaleelType.athar.name,
+        firestoreSvc.athar.lastRevisedAt: FieldValue.serverTimestamp(),
       });
     });
   }

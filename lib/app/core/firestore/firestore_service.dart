@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
@@ -5,6 +7,7 @@ import 'package:injectable/injectable.dart';
 final class FirestoreService {
   final users = _Users();
   final hadith = _Hadith();
+  final athar = _Athar();
   final aya = _Aya();
 }
 
@@ -35,6 +38,8 @@ final class _Hadith extends _Daleel {
   late final extraction = 'hadithExtraction';
   late final authenticity = 'hadithAuthenticity';
 }
+
+final class _Athar extends _Daleel {}
 
 final class _Aya extends _Daleel {
   late final surahOfAya = 'surahOfAya';

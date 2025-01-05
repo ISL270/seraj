@@ -47,7 +47,6 @@ class AddHadithCubit extends Cubit<AddHadithState> {
         description: state.description,
         extraction: state.extraction,
         authenticity: state.authenticity,
-        lastRevisedAt: DateTime.now(),
         priority: state.sliderValue.getPriority(),
         tags: [], // not used for now
       );

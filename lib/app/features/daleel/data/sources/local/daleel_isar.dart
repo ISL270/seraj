@@ -19,7 +19,7 @@ final class DaleelIsar extends CacheModel<Daleel> {
   @Enumerated(EnumType.name)
   DaleelType daleelType;
   List<String> tags;
-  DateTime? lastRevisedAt;
+  DateTime lastRevisedAt;
 
   // Hadith related
   String? hadithExtraction;
@@ -34,9 +34,9 @@ final class DaleelIsar extends CacheModel<Daleel> {
     required this.priority,
     required this.daleelType,
     required this.tags,
+    required this.lastRevisedAt,
     this.sayer,
     this.description,
-    this.lastRevisedAt,
     this.hadithExtraction,
     this.hadithAuthenticity,
     this.nomOfAya,
@@ -52,6 +52,15 @@ final class DaleelIsar extends CacheModel<Daleel> {
             description: description,
             authenticity: hadithAuthenticity,
             extraction: hadithExtraction,
+            tags: tags,
+            lastRevisedAt: lastRevisedAt,
+            sayer: sayer,
+          ),
+        DaleelType.athar => Athar(
+            id: id,
+            text: text,
+            priority: priority,
+            description: description,
             tags: tags,
             lastRevisedAt: lastRevisedAt,
             sayer: sayer,
@@ -93,6 +102,16 @@ final class DaleelIsar extends CacheModel<Daleel> {
             sayer: daleel.sayer,
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,
-          )
+          ),
+        Athar() => DaleelIsar(
+            id: daleel.id,
+            text: daleel.text,
+            priority: daleel.priority,
+            description: daleel.description,
+            daleelType: DaleelType.athar,
+            sayer: daleel.sayer,
+            tags: daleel.tags,
+            lastRevisedAt: daleel.lastRevisedAt,
+          ),
       };
 }

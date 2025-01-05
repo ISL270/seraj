@@ -186,11 +186,11 @@ DaleelIsar _daleelIsarDeserialize(
         reader.readStringOrNull(offsets[2])],
     hadithExtraction: reader.readStringOrNull(offsets[3]),
     id: reader.readString(offsets[4]),
-    lastRevisedAt: reader.readDateTimeOrNull(offsets[5]),
+    lastRevisedAt: reader.readDateTime(offsets[5]),
     nomOfAya: reader.readStringOrNull(offsets[6]),
     priority:
         _DaleelIsarpriorityValueEnumMap[reader.readStringOrNull(offsets[7])] ??
-            Priority.urgent,
+            Priority.normal,
     sayer: reader.readStringOrNull(offsets[8]),
     suraOfAya: reader.readStringOrNull(offsets[9]),
     tags: reader.readStringList(offsets[10]) ?? [],
@@ -220,13 +220,13 @@ P _daleelIsarDeserializeProp<P>(
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 6:
       return (reader.readStringOrNull(offset)) as P;
     case 7:
       return (_DaleelIsarpriorityValueEnumMap[
               reader.readStringOrNull(offset)] ??
-          Priority.urgent) as P;
+          Priority.normal) as P;
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     case 9:
@@ -242,10 +242,12 @@ P _daleelIsarDeserializeProp<P>(
 
 const _DaleelIsardaleelTypeEnumValueMap = {
   r'hadith': r'hadith',
+  r'athar': r'athar',
   r'aya': r'aya',
 };
 const _DaleelIsardaleelTypeValueEnumMap = {
   r'hadith': DaleelType.hadith,
+  r'athar': DaleelType.athar,
   r'aya': DaleelType.aya,
 };
 const _DaleelIsarhadithAuthenticityEnumValueMap = {
@@ -259,14 +261,14 @@ const _DaleelIsarhadithAuthenticityValueEnumMap = {
   r'sahih': HadithAuthenticity.sahih,
 };
 const _DaleelIsarpriorityEnumValueMap = {
-  r'urgent': r'urgent',
-  r'high': r'high',
   r'normal': r'normal',
+  r'high': r'high',
+  r'urgent': r'urgent',
 };
 const _DaleelIsarpriorityValueEnumMap = {
-  r'urgent': Priority.urgent,
-  r'high': Priority.high,
   r'normal': Priority.normal,
+  r'high': Priority.high,
+  r'urgent': Priority.urgent,
 };
 
 Id _daleelIsarGetId(DaleelIsar object) {
@@ -1144,25 +1146,7 @@ extension DaleelIsarQueryFilter
   }
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      lastRevisedAtIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'lastRevisedAt',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      lastRevisedAtIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'lastRevisedAt',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      lastRevisedAtEqualTo(DateTime? value) {
+      lastRevisedAtEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'lastRevisedAt',
@@ -1173,7 +1157,7 @@ extension DaleelIsarQueryFilter
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
       lastRevisedAtGreaterThan(
-    DateTime? value, {
+    DateTime value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1187,7 +1171,7 @@ extension DaleelIsarQueryFilter
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
       lastRevisedAtLessThan(
-    DateTime? value, {
+    DateTime value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1201,8 +1185,8 @@ extension DaleelIsarQueryFilter
 
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
       lastRevisedAtBetween(
-    DateTime? lower,
-    DateTime? upper, {
+    DateTime lower,
+    DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -2575,8 +2559,7 @@ extension DaleelIsarQueryProperty
     });
   }
 
-  QueryBuilder<DaleelIsar, DateTime?, QQueryOperations>
-      lastRevisedAtProperty() {
+  QueryBuilder<DaleelIsar, DateTime, QQueryOperations> lastRevisedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'lastRevisedAt');
     });

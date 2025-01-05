@@ -15,7 +15,7 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
   final Priority priority;
   final String? sayer;
   final List<String> tags;
-  final DateTime? lastRevisedAt;
+  final DateTime lastRevisedAt;
   final DaleelType daleelType;
 
   const DaleelFM({
@@ -32,6 +32,7 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
   factory DaleelFM.fromJson(String docID, Map<String, dynamic> json) =>
       switch ($enumDecode(_$DaleelTypeEnumMap, json['daleelType'])) {
         DaleelType.hadith => HadithFM.fromJson(docID, json),
+        DaleelType.athar => AtharFM.fromJson(docID, json),
         DaleelType.aya => AyaFm.fromJson(docID, json),
       };
 
@@ -46,7 +47,7 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
     required String? extraction,
     required String? surahOfAya,
     required String? nomOfAya,
-    required DateTime? lastRevisedAt,
+    required DateTime lastRevisedAt,
     required HadithAuthenticity? authenticity,
   }) =>
       switch (daleelType) {
@@ -61,6 +62,16 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
             tags: tags,
             lastRevisedAt: lastRevisedAt,
             daleelType: DaleelType.hadith,
+          ),
+        DaleelType.athar => AtharFM(
+            id: id,
+            text: text,
+            description: description,
+            sayer: sayer,
+            priority: priority,
+            tags: tags,
+            lastRevisedAt: lastRevisedAt,
+            daleelType: DaleelType.athar,
           ),
         DaleelType.aya => AyaFm(
             id: id,
@@ -89,6 +100,16 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
             lastRevisedAt: daleel.lastRevisedAt,
             daleelType: DaleelType.hadith,
           ),
+        Athar() => AtharFM(
+            id: daleel.id,
+            text: daleel.text,
+            description: daleel.description,
+            sayer: daleel.sayer,
+            priority: daleel.priority,
+            tags: daleel.tags,
+            lastRevisedAt: daleel.lastRevisedAt,
+            daleelType: DaleelType.athar,
+          ),
         Aya() => AyaFm(
             id: daleel.id,
             text: daleel.text,
@@ -104,6 +125,7 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
       };
 }
 
+// @JsonSerializable(createToJson: false)
 final class HadithFM extends DaleelFM {
   final String? hadithExtraction;
   final HadithAuthenticity? hadithAuthenticity;
@@ -138,6 +160,35 @@ final class HadithFM extends DaleelFM {
       _$HadithFMFromJson(docID, json);
 }
 
+// @JsonSerializable(createToJson: false)
+final class AtharFM extends DaleelFM {
+  const AtharFM({
+    required super.id,
+    required super.text,
+    required super.description,
+    required super.sayer,
+    required super.priority,
+    required super.tags,
+    required super.lastRevisedAt,
+    required super.daleelType,
+  });
+
+  @override
+  Athar toDomain() => Athar(
+        id: id,
+        text: text,
+        priority: priority,
+        description: description,
+        tags: tags,
+        lastRevisedAt: lastRevisedAt,
+        sayer: sayer,
+      );
+
+  factory AtharFM.fromJson(String docID, Map<String, dynamic> json) =>
+      _$AtharFMFromJson(docID, json);
+}
+
+// @JsonSerializable(createToJson: false)
 final class AyaFm extends DaleelFM {
   final String? surahOfAya;
   final String? nomOfAya;
@@ -168,6 +219,5 @@ final class AyaFm extends DaleelFM {
         nomOfAya: nomOfAya,
       );
 
-  factory AyaFm.fromJson(String docID, Map<String, dynamic> json) =>
-      _$AyaFmFromJson(docID, json);
+  factory AyaFm.fromJson(String docID, Map<String, dynamic> json) => _$AyaFmFromJson(docID, json);
 }
