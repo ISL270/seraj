@@ -82,5 +82,8 @@
   "text":"text",
   "sayer":"sayer",
   "explanation":"explanation",
-  "enterText":"text is required"
+  "enterText":"text is required",
+  "ok":"ok",
+  "cancel":"cancel",
+  "areYouSure":"are you sure you want to delete this athar?"
 }
