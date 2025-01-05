@@ -49,13 +49,13 @@ class DaleelScreen extends StatelessWidget {
         backgroundColor: context.colorsX.background,
         searchBar: SuperSearchBar(placeholderText: context.l10n.search.capitalizedDefinite),
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           children: [
-            _DaleelWidget(label: 'احاديث القران الكريم'),
-            _DaleelWidget(label: 'احاديث القران الكريم'),
-            _DaleelWidget(label: 'احاديث القران الكريم'),
-            _DaleelWidget(label: 'احاديث القران الكريم'),
+            _DaleelWidget(label: context.l10n.propheticHadith),
+            _DaleelWidget(label: context.l10n.propheticHadith),
+            _DaleelWidget(label: context.l10n.propheticHadith),
+            _DaleelWidget(label: context.l10n.propheticHadith),
           ],
         ),
       ),
