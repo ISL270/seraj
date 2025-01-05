@@ -76,9 +76,9 @@ final class Others extends Daleel {
   const Others({
     required super.id,
     required super.text,
+    required super.lastRevisedAt,
     super.priority,
     super.tags,
-    super.lastRevisedAt,
     super.description,
     super.sayer,
   });

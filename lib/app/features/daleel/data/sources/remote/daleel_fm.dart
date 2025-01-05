@@ -15,7 +15,7 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
   final Priority priority;
   final String? sayer;
   final List<String> tags;
-  final DateTime lastRevisedAt;
+  final DateTime? lastRevisedAt;
   final DaleelType daleelType;
 
   const DaleelFM({
@@ -146,7 +146,7 @@ final class HadithFM extends DaleelFM {
         authenticity: hadithAuthenticity,
         extraction: hadithExtraction,
         tags: tags,
-        lastRevisedAt: lastRevisedAt,
+        lastRevisedAt: lastRevisedAt ?? DateTime.now(),
         sayer: sayer,
       );
 
@@ -174,7 +174,7 @@ final class AtharFM extends DaleelFM {
         priority: priority,
         description: description,
         tags: tags,
-        lastRevisedAt: lastRevisedAt,
+        lastRevisedAt: lastRevisedAt ?? DateTime.now(),
         sayer: sayer,
       );
 
@@ -201,7 +201,7 @@ class OthersFM extends DaleelFM {
         priority: priority,
         description: description,
         tags: tags,
-        lastRevisedAt: lastRevisedAt,
+        lastRevisedAt: lastRevisedAt ?? DateTime.now(),
         sayer: sayer,
       );
 
