@@ -55,6 +55,8 @@ class _BottomSheetBody extends StatelessWidget {
                 switch (index) {
                   case 0:
                     context.pushNamed(AddHadith.name);
+                  case 2:
+                    context.pushNamed(AddAtharScreen.name);
                   case 3:
                     context.pushNamed(AddOtherScreen.name);
                 }

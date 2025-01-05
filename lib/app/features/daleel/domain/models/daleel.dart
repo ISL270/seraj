@@ -8,14 +8,14 @@ sealed class Daleel {
   final Priority priority;
   final String? sayer;
   final List<String> tags;
-  final DateTime? lastRevisedAt;
+  final DateTime lastRevisedAt;
 
   const Daleel({
     required this.id,
     required this.text,
-    required this.sayer,
+    required this.lastRevisedAt,
+    this.sayer,
     this.priority = Priority.normal,
-    this.lastRevisedAt,
     this.tags = const [],
     this.description,
   });
@@ -25,12 +25,12 @@ final class Hadith extends Daleel {
   final String? extraction;
   final HadithAuthenticity? authenticity;
 
-  const Hadith({
+  Hadith({
     required super.id,
     required super.text,
+    required super.lastRevisedAt,
     super.priority,
     super.tags,
-    super.lastRevisedAt,
     super.description,
     super.sayer,
     this.extraction,
@@ -45,8 +45,30 @@ final class Hadith extends Daleel {
         'authenticity': authenticityEnumMap[hadith.authenticity],
         'extraction': hadith.extraction,
         'tags': hadith.tags,
-        'lastRevisedAt': hadith.lastRevisedAt?.toIso8601String(),
+        'lastRevisedAt': hadith.lastRevisedAt.toIso8601String(),
         'sayer': hadith.sayer,
+      };
+}
+
+final class Athar extends Daleel {
+  Athar({
+    required super.id,
+    required super.text,
+    required super.lastRevisedAt,
+    super.priority,
+    super.tags,
+    super.description,
+    super.sayer,
+  });
+
+  Map<String, dynamic> toJson(Athar athar) => <String, dynamic>{
+        'id': athar.id,
+        'text': athar.text,
+        'priotiy': priorityEnumMap[athar.priority],
+        'description': athar.description,
+        'tags': athar.tags,
+        'lastRevisedAt': athar.lastRevisedAt.toIso8601String(),
+        'sayer': athar.sayer,
       };
 }
 
@@ -67,7 +89,7 @@ final class Others extends Daleel {
         'priotiy': priorityEnumMap[others.priority],
         'description': others.description,
         'tags': others.tags,
-        'lastRevisedAt': others.lastRevisedAt?.toIso8601String(),
+        'lastRevisedAt': others.lastRevisedAt.toIso8601String(),
         'sayer': others.sayer,
       };
 }

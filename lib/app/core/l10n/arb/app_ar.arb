@@ -72,5 +72,15 @@
   "text":"النص",
   "sayer":"القائل",
   "explanation":"الشرح",
-  "enterText":"ادخل النص"
+  "enterText":"ادخل النص",
+  "atharText":"النص",
+  "atharSayer":"القائل",
+  "atharIsnad":"الإسناد",
+  "atharRule":"الحكم",
+  "atharExtraction":"التخريج",
+  "intermittent":"متقطع",
+  "other":"اخرى",
+  "explaination":"الشرح",
+  "explainationOfAthar":"شرح الاثر",
+  "enterTextOfAthar": "ادخل نص الاثر"
 }
