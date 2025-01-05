@@ -1,4 +1,4 @@
-enum DaleelType { hadith, athar }
+enum DaleelType { hadith, athar, others }
 
 // 1. hadith
 // 2. ayat
@@ -8,4 +8,5 @@ enum DaleelType { hadith, athar }
 extension DaleelTypeX on DaleelType {
   bool get isHadith => this == DaleelType.hadith;
   bool get isAthar => this == DaleelType.athar;
+  bool get isOthers => this == DaleelType.others;
 }

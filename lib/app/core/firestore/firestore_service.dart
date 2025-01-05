@@ -8,6 +8,7 @@ final class FirestoreService {
   final users = _Users();
   final hadith = _Hadith();
   final athar = _Athar();
+  final others = _Others();
 }
 
 final class _Users {
@@ -39,3 +40,5 @@ final class _Hadith extends _Daleel {
 }
 
 final class _Athar extends _Daleel {}
+
+final class _Others extends _Daleel {}

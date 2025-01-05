@@ -20,6 +20,29 @@ HadithFM _$HadithFMFromJson(String docID, Map<String, dynamic> json) => HadithFM
       daleelType: $enumDecode(_$DaleelTypeEnumMap, json['daleelType']),
     );
 
+AtharFM _$AtharFMFromJson(String docID, Map<String, dynamic> json) => AtharFM(
+      id: docID,
+      text: json['text'] as String,
+      description: json['description'] as String?,
+      sayer: json['sayer'] as String?,
+      priority: $enumDecode(_$PriorityEnumMap, json['priority']),
+      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
+      lastRevisedAt: (json['lastRevisedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      daleelType: $enumDecode(_$DaleelTypeEnumMap, json['daleelType']),
+    );
+
+OthersFM _$OthersFMFromJson(String docID, Map<String, dynamic> json) => OthersFM(
+      id: docID,
+      text: json['text'] as String,
+      description: json['description'] as String?,
+      sayer: json['sayer'] as String?,
+      priority: $enumDecode(_$PriorityEnumMap, json['priority']),
+      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
+      lastRevisedAt:
+          json['lastRevisedAt'] == null ? null : (json['lastRevisedAt'] as Timestamp).toDate(),
+      daleelType: $enumDecode(_$DaleelTypeEnumMap, json['daleelType']),
+    );
+
 const _$PriorityEnumMap = {
   Priority.normal: 'normal',
   Priority.high: 'high',
@@ -35,15 +58,5 @@ const _$HadithAuthenticityEnumMap = {
 const _$DaleelTypeEnumMap = {
   DaleelType.hadith: 'hadith',
   DaleelType.athar: 'athar',
+  DaleelType.others: 'others',
 };
-
-AtharFM _$AtharFMFromJson(String docID, Map<String, dynamic> json) => AtharFM(
-      id: docID,
-      text: json['text'] as String,
-      description: json['description'] as String?,
-      sayer: json['sayer'] as String?,
-      priority: $enumDecode(_$PriorityEnumMap, json['priority']),
-      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
-      lastRevisedAt: (json['lastRevisedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      daleelType: $enumDecode(_$DaleelTypeEnumMap, json['daleelType']),
-    );

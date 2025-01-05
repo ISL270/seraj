@@ -72,6 +72,28 @@ final class Athar extends Daleel {
       };
 }
 
+final class Others extends Daleel {
+  const Others({
+    required super.id,
+    required super.text,
+    required super.lastRevisedAt,
+    super.priority,
+    super.tags,
+    super.description,
+    super.sayer,
+  });
+
+  Map<String, dynamic> toJson(Others others) => <String, dynamic>{
+        'id': others.id,
+        'text': others.text,
+        'priotiy': priorityEnumMap[others.priority],
+        'description': others.description,
+        'tags': others.tags,
+        'lastRevisedAt': others.lastRevisedAt.toIso8601String(),
+        'sayer': others.sayer,
+      };
+}
+
 Map<Priority, String> priorityEnumMap = {
   Priority.urgent: 'urgent',
   Priority.high: 'high',

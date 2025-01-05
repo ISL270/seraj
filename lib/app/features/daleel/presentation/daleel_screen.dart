@@ -8,6 +8,7 @@ import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/add_athar/presentation/add_athar_screen.dart';
 import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dart';
+import 'package:athar/app/features/add_other/presentation/add_other_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';

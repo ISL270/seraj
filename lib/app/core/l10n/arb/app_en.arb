@@ -78,6 +78,9 @@
   "other":"Other",
   "explaination":"Explaination",
   "explainationOfAthar":"Explaination Of Athar",
-  "enterTextOfAthar":"Enter Text Of Athar"
-
+  "enterTextOfAthar":"Enter Text Of Athar",
+  "text":"text",
+  "sayer":"sayer",
+  "explanation":"explanation",
+  "enterText":"text is required"
 }

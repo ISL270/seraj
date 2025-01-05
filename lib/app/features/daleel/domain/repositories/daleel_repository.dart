@@ -72,4 +72,29 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
       return left(e as GenericException);
     }
   }
+
+  Future<EitherException<void>> saveOthers({
+    required String text,
+    required String sayer,
+    required String description,
+    required Priority priority,
+    required DateTime lastRevisedAt,
+    required List<String> tags,
+  }) async {
+    try {
+      await _remoteSource.saveOthers(
+        userId: authRepository.user!.id,
+        text: text,
+        sayer: sayer,
+        description: description,
+        lastRevisedAt: lastRevisedAt,
+        priority: priority,
+        tags: tags,
+      );
+      return right(null);
+    } catch (e) {
+      log(e.toString());
+      return left(e as GenericException);
+    }
+  }
 }
