@@ -1,23 +1,19 @@
+import 'package:athar/app/core/models/domain/islamic_text.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
-import 'package:athar/app/features/daleel/domain/models/priority.dart';
+import 'package:equatable/equatable.dart';
 
-sealed class Daleel {
-  final String id;
-  final String text;
-  final String? description;
-  final Priority priority;
+sealed class Daleel extends IslamicText with EquatableMixin {
   final String? sayer;
-  final List<String> tags;
   final DateTime lastRevisedAt;
 
   const Daleel({
-    required this.id,
-    required this.text,
+    required super.id,
+    required super.text,
     required this.lastRevisedAt,
+    super.priority,
     this.sayer,
-    this.priority = Priority.normal,
-    this.tags = const [],
-    this.description,
+    super.description,
+    super.tags,
   });
 }
 
@@ -36,6 +32,19 @@ final class Hadith extends Daleel {
     this.extraction,
     this.authenticity,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        text,
+        tags,
+        lastRevisedAt,
+        sayer,
+        priority,
+        description,
+        extraction,
+        authenticity,
+      ];
 }
 
 final class Athar extends Daleel {
@@ -48,21 +57,48 @@ final class Athar extends Daleel {
     super.description,
     super.sayer,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        text,
+        tags,
+        lastRevisedAt,
+        sayer,
+        priority,
+        description,
+      ];
 }
 
 final class Aya extends Daleel {
   final String? surahOfAya;
-  final String? nomOfAya;
+  final String? firstAya;
+  final String? lastAya;
 
   const Aya({
     required super.id,
     required super.text,
     required super.lastRevisedAt,
     this.surahOfAya,
-    this.nomOfAya,
+    this.firstAya,
+    this.lastAya,
     super.priority,
     super.tags,
     super.description,
     super.sayer,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        text,
+        tags,
+        lastRevisedAt,
+        sayer,
+        priority,
+        description,
+        surahOfAya,
+        firstAya,
+        lastAya,
+      ];
 }

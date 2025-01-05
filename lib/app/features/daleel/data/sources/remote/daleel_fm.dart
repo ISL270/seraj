@@ -46,7 +46,8 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
     required String? sayer,
     required String? extraction,
     required String? surahOfAya,
-    required String? nomOfAya,
+    required String? firstAya,
+    required String? lastAya,
     required DateTime lastRevisedAt,
     required HadithAuthenticity? authenticity,
   }) =>
@@ -80,7 +81,8 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
             sayer: sayer,
             priority: priority,
             surahOfAya: surahOfAya,
-            nomOfAya: nomOfAya,
+            firstAya: firstAya,
+            lastAya: lastAya,
             tags: tags,
             lastRevisedAt: lastRevisedAt,
             daleelType: DaleelType.aya,
@@ -117,7 +119,8 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
             sayer: daleel.sayer,
             surahOfAya: daleel.surahOfAya,
             priority: daleel.priority,
-            nomOfAya: daleel.nomOfAya,
+            firstAya: daleel.firstAya,
+            lastAya: daleel.lastAya,
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,
             daleelType: DaleelType.aya,
@@ -191,7 +194,8 @@ final class AtharFM extends DaleelFM {
 // @JsonSerializable(createToJson: false)
 final class AyaFm extends DaleelFM {
   final String? surahOfAya;
-  final String? nomOfAya;
+  final String? firstAya;
+  final String? lastAya;
 
   const AyaFm({
     required super.id,
@@ -203,7 +207,8 @@ final class AyaFm extends DaleelFM {
     required super.description,
     required super.sayer,
     this.surahOfAya,
-    this.nomOfAya,
+    this.firstAya,
+    this.lastAya,
   });
 
   @override
@@ -216,8 +221,10 @@ final class AyaFm extends DaleelFM {
         lastRevisedAt: lastRevisedAt,
         sayer: sayer,
         surahOfAya: surahOfAya,
-        nomOfAya: nomOfAya,
+        firstAya: firstAya,
+        lastAya: lastAya,
       );
 
-  factory AyaFm.fromJson(String docID, Map<String, dynamic> json) => _$AyaFmFromJson(docID, json);
+  factory AyaFm.fromJson(String docID, Map<String, dynamic> json) =>
+      _$AyaFmFromJson(docID, json);
 }
