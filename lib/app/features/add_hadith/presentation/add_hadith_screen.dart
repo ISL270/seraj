@@ -27,6 +27,7 @@ class AddHadith extends StatelessWidget {
         leading: GestureDetector(
           onTap: () => context.pop(),
           child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.r),
+          child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.r),
         ),
         title: Text(
           '${context.l10n.add} ${context.l10n.propheticHadith}',
@@ -250,6 +251,7 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
                 _LabelTextFieldAlignWidget(label: context.l10n.priority),
                 Gap(8.w),
                 Text(
+                  '${state.sliderValue.getPriorityName(context)} ${context.l10n.saveIt}',
                   '${state.sliderValue.getPriorityName(context)} ${context.l10n.saveIt}',
                   style: context.textThemeX.medium.bold.copyWith(
                     color: context.colorsX.primary,
