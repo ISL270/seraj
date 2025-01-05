@@ -36,18 +36,6 @@ final class Hadith extends Daleel {
     this.extraction,
     this.authenticity,
   });
-
-  Map<String, dynamic> toJson(Hadith hadith) => <String, dynamic>{
-        'id': hadith.id,
-        'text': hadith.text,
-        'priotiy': priorityEnumMap[hadith.priority],
-        'description': hadith.description,
-        'authenticity': authenticityEnumMap[hadith.authenticity],
-        'extraction': hadith.extraction,
-        'tags': hadith.tags,
-        'lastRevisedAt': hadith.lastRevisedAt.toIso8601String(),
-        'sayer': hadith.sayer,
-      };
 }
 
 final class Athar extends Daleel {
@@ -60,16 +48,6 @@ final class Athar extends Daleel {
     super.description,
     super.sayer,
   });
-
-  Map<String, dynamic> toJson(Athar athar) => <String, dynamic>{
-        'id': athar.id,
-        'text': athar.text,
-        'priotiy': priorityEnumMap[athar.priority],
-        'description': athar.description,
-        'tags': athar.tags,
-        'lastRevisedAt': athar.lastRevisedAt.toIso8601String(),
-        'sayer': athar.sayer,
-      };
 }
 
 final class Others extends Daleel {
@@ -82,31 +60,4 @@ final class Others extends Daleel {
     super.description,
     super.sayer,
   });
-
-  Map<String, dynamic> toJson(Others others) => <String, dynamic>{
-        'id': others.id,
-        'text': others.text,
-        'priotiy': priorityEnumMap[others.priority],
-        'description': others.description,
-        'tags': others.tags,
-        'lastRevisedAt': others.lastRevisedAt.toIso8601String(),
-        'sayer': others.sayer,
-      };
 }
-
-Map<Priority, String> priorityEnumMap = {
-  Priority.urgent: 'urgent',
-  Priority.high: 'high',
-  Priority.normal: 'normal',
-};
-Map<HadithAuthenticity, String> authenticityEnumMap = {
-  HadithAuthenticity.daif: 'daif',
-  HadithAuthenticity.hasan: 'hasan',
-  HadithAuthenticity.sahih: 'sahih',
-};
-
-// Ayah class
-
-// Athar class
-
-// Other class
