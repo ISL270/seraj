@@ -1,23 +1,18 @@
+import 'package:athar/app/core/models/domain/islamic_text.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
-import 'package:athar/app/features/daleel/domain/models/priority.dart';
 
-sealed class Daleel {
-  final String id;
-  final String text;
-  final String? description;
-  final Priority priority;
+sealed class Daleel extends IslamicText {
   final String? sayer;
-  final List<String> tags;
   final DateTime lastRevisedAt;
 
   const Daleel({
-    required this.id,
-    required this.text,
+    required super.id,
+    required super.text,
     required this.lastRevisedAt,
     this.sayer,
-    this.priority = Priority.normal,
-    this.tags = const [],
-    this.description,
+    super.tags,
+    super.priority,
+    super.description,
   });
 }
 
@@ -25,28 +20,28 @@ final class Hadith extends Daleel {
   final String? extraction;
   final HadithAuthenticity? authenticity;
 
-  Hadith({
+  const Hadith({
     required super.id,
     required super.text,
     required super.lastRevisedAt,
-    super.priority,
     super.tags,
-    super.description,
     super.sayer,
+    super.priority,
     this.extraction,
+    super.description,
     this.authenticity,
   });
 }
 
 final class Athar extends Daleel {
-  Athar({
+  const Athar({
     required super.id,
     required super.text,
     required super.lastRevisedAt,
-    super.priority,
     super.tags,
-    super.description,
     super.sayer,
+    super.priority,
+    super.description,
   });
 }
 
@@ -55,9 +50,9 @@ final class Others extends Daleel {
     required super.id,
     required super.text,
     required super.lastRevisedAt,
-    super.priority,
     super.tags,
-    super.description,
     super.sayer,
+    super.priority,
+    super.description,
   });
 }
