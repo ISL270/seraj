@@ -8,14 +8,13 @@ import 'package:athar/app/features/add_dua/presentation/cubit/add_dua_cubit.dart
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/duas/domain/repository/dua_repository.dart';
 import 'package:athar/app/widgets/button.dart';
+import 'package:athar/app/widgets/priority_slider_widget.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-
-part 'widgets/priority_slider_widget.dart';
 
 class AddDuaScreen extends StatelessWidget {
   const AddDuaScreen({super.key});
@@ -54,7 +53,7 @@ class AddDuaScreen extends StatelessWidget {
                     const _ExplanationOfDuaTextField(),
                     _LabelTextFieldAlignWidget(
                         label: context.l10n.numOfTimesANDpriority),
-                    const _PrioritySliderWithLabelWidget()
+                    const _PrioritySlider()
                   ],
                 ),
               ),
@@ -64,6 +63,24 @@ class AddDuaScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _PrioritySlider extends StatelessWidget {
+  const _PrioritySlider();
+
+  @override
+  Widget build(BuildContext context) {
+    return PrioritySliderWithLabelWidget<AddDuaCubit, AddDuaState>(
+      getLabel: (context) => context.l10n.priority,
+      getSliderValue: (state) => state.sliderValue,
+      getPriorityName: (context, sliderValue) =>
+          sliderValue.getPriorityName(context),
+      onSliderChanged: (context, value) =>
+          context.read<AddDuaCubit>().sliderPriorityChanged(value),
+      max: Priority.values.length - 1,
+      divisions: Priority.values.length - 1,
     );
   }
 }
