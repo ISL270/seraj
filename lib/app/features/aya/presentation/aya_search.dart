@@ -1,63 +1,59 @@
 part of 'add_new_ayah.dart';
 
-class _AyaSearch extends StatefulWidget {
+class _AyaSearch extends StatelessWidget {
   const _AyaSearch();
 
   @override
-  State<_AyaSearch> createState() => _SearchScreenState();
-}
-
-class _SearchScreenState extends State<_AyaSearch> {
-  late TextEditingController _textController;
-
-  @override
-  void initState() {
-    super.initState();
-    FlutterQuran().init();
-    _textController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final addAyaCubit = context.watch<AddAyaCubit>();
-    final state = addAyaCubit.state;
-    if (_textController.text != state.query) {
-      _textController
-        ..text = state.query ?? ''
-        ..selection = TextSelection.fromPosition(
-          TextPosition(offset: _textController.text.length),
-        );
-    }
-
-    return SizedBox(
-      height: state.ayahs.isEmpty ? 60.h : 400.h,
+    final textController = TextEditingController();
+    return Padding(
+      padding: const EdgeInsets.all(8),
       child: Column(
         children: [
-          TextField(
-            controller: _textController,
-            onChanged: (query) =>
-                context.read<AddAyaCubit>().queryChanged(query),
-            decoration: InputDecoration(
-              hintText: context.l10n.search,
+          SearchBar(
+            backgroundColor: WidgetStateProperty.all(
+                context.colorsX.background.withValues(alpha: 0.9)),
+            shape: WidgetStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(16.r), // Adjust the radius as needed
+              ),
             ),
+            controller: textController,
+            hintText: context.l10n.search,
+            onChanged: (query) {
+              context.read<AddAyaCubit>().queryChanged(query);
+            },
+            trailing: [
+              IconButton(
+                onPressed: () {
+                  textController.clear();
+                  context
+                      .read<AddAyaCubit>()
+                      .queryChanged(''); // Clear query state
+                },
+                icon: const Icon(Icons.clear),
+              ),
+            ],
           ),
-          if (state.ayahs.isNotEmpty && state.query == null) ...[
-            const SizedBox(),
-          ] else ...[
-            Expanded(
-              child: ListView.builder(
-                itemCount: state.ayahs.length,
-                itemBuilder: (context, index) {
-                  final ayah = state.ayahs[index];
-                  return Column(
-                    children: [
-                      ListTile(
+          BlocBuilder<AddAyaCubit, AddAyaState>(
+            builder: (context, state) {
+              if (state.ayahs.isEmpty) {
+                return const SizedBox();
+              }
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: context.colorsX.background,
+                ),
+                height: 300.h,
+                child: ListView.builder(
+                  itemCount: state.ayahs.length,
+                  itemBuilder: (context, index) {
+                    final ayah = state.ayahs[index];
+                    return Column(
+                      children: [
+                        ListTile(
                           title: Text(
                             ayah.ayah
                                 .replaceAll('\n', ' ')
@@ -85,19 +81,22 @@ class _SearchScreenState extends State<_AyaSearch> {
                               EdgeInsets.symmetric(horizontal: 16.h),
                           onTap: () {
                             context.read<AddAyaCubit>().ayahsChanged([ayah]);
-                            context.read<AddAyaCubit>().queryChanged(
-                                ''); // Reset the cubit query state
-                          }),
-                      Divider(
-                        color: context.colorsX.onBackgroundTint35,
-                        thickness: 1,
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-          ]
+                            context
+                                .read<AddAyaCubit>()
+                                .queryChanged(''); // Reset query
+                          },
+                        ),
+                        Divider(
+                          color: context.colorsX.onBackgroundTint35,
+                          thickness: 1,
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

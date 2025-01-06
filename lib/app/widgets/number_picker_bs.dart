@@ -6,14 +6,25 @@ import 'package:go_router/go_router.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 class NumberPickerBS extends StatefulWidget {
-  const NumberPickerBS._({required this.isDecimal, required this.initial});
+  const NumberPickerBS._({required this.isDecimal, required this.initial, required this.renegeMax});
+
   final bool isDecimal;
   final double initial;
+  final int renegeMax;
 
-  static Future<double?> show(BuildContext context, {bool isDecimal = false, double initial = 0}) =>
+  static Future<double?> show(
+    BuildContext context, {
+    bool isDecimal = false,
+    double initial = 0,
+    int renegeMax = 100,
+  }) =>
       showModalBottomSheet<double>(
         context: context,
-        builder: (context) => NumberPickerBS._(isDecimal: isDecimal, initial: initial),
+        builder: (context) => NumberPickerBS._(
+          isDecimal: isDecimal,
+          initial: initial,
+          renegeMax: renegeMax,
+        ),
       );
 
   @override
@@ -45,15 +56,15 @@ class _NumberPickerBSState extends State<NumberPickerBS> {
               child: widget.isDecimal
                   ? DecimalNumberPicker(
                       value: _currentValue,
-                      minValue: 0,
-                      maxValue: 100,
+                      minValue: 1,
+                      maxValue: widget.renegeMax,
                       haptics: true,
                       onChanged: (value) => setState(() => _currentValue = value),
                     )
                   : NumberPicker(
                       value: _currentValue.toInt(),
-                      minValue: 0,
-                      maxValue: 100,
+                      minValue: 1,
+                      maxValue: widget.renegeMax,
                       haptics: true,
                       onChanged: (value) => setState(() => _currentValue = value.toDouble()),
                     ),
