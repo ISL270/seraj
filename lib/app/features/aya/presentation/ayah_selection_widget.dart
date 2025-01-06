@@ -8,6 +8,7 @@ class _AyahSelectionWidget extends StatelessWidget {
 
   final TextEditingController firstAyahController;
   final TextEditingController lastAyahController;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -40,7 +41,7 @@ class _AyahSelectionWidget extends StatelessWidget {
       renegeMax: surahAyahs.length,
     );
 
-    if (_isValidSelection(selectedValue, firstAyah)) {
+    if (_isValidSelection(selectedValue, firstAyah) && context.mounted) {
       _updateLastAyah(selectedValue!.toInt(), surahNumber, firstAyah, context);
     }
   }
@@ -50,22 +51,25 @@ class _AyahSelectionWidget extends StatelessWidget {
   }
 
   bool _isValidSelection(double? selectedValue, int firstAyah) {
-    return selectedValue != null;
+    return selectedValue != null && selectedValue > firstAyah;
   }
 
   void _updateLastAyah(
-    int lastAyahNumber,
-    int surahNumber,
-    int firstAyah,
-    BuildContext context,
-  ) {
-    if (lastAyahNumber < firstAyah) {
-      firstAyah = firstAyah - lastAyahNumber;
-    }
+      int lastAyahNumber,
+      int surahNumber,
+      int firstAyah,
+      BuildContext context,
+      ) {
+    final adjustedFirstAyah = firstAyah > lastAyahNumber
+        ? firstAyah - lastAyahNumber
+        : firstAyah;
+
     lastAyahController.text = lastAyahNumber.toString();
 
-    final surahAyahs =
-        FlutterQuran().getSurah(surahNumber).ayahs.getRange(firstAyah - 1, lastAyahNumber);
+    final surahAyahs = FlutterQuran()
+        .getSurah(surahNumber)
+        .ayahs
+        .getRange(adjustedFirstAyah - 1, lastAyahNumber);
 
     final updatedAyahs = surahAyahs.toList();
     context.read<AddAyaCubit>().ayahsChanged(updatedAyahs);

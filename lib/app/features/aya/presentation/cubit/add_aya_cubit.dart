@@ -15,19 +15,17 @@ class AddAyaCubit extends Cubit<AddAyaState> {
 
   AddAyaCubit({
     required DaleelRepository ayaRepository,
-  })  : _daleelRepository = ayaRepository,
+  })
+      : _daleelRepository = ayaRepository,
         super(const AddAyaState());
 
-  void textOfAyaChanged(String value) =>
-      emit(state.copyWith(textOfAya: Name.dirty(value)));
+  void textOfAyaChanged(String value) => emit(state.copyWith(textOfAya: Name.dirty(value)));
 
-  void surahOfAyaChanged(String value) =>
-      emit(state.copyWith(surahOfAya: Name.dirty(value)));
+  void surahOfAyaChanged(String value) => emit(state.copyWith(surahOfAya: Name.dirty(value)));
 
   void nomOfAyaChanged(String value) => emit(state.copyWith(numOfAya: value));
 
-  void ayaExplainChanged(String value) =>
-      emit(state.copyWith(ayaExplain: Name.dirty(value)));
+  void ayaExplainChanged(String value) => emit(state.copyWith(ayaExplain: Name.dirty(value)));
 
   void queryChanged(String value) {
     final ayahsList = FlutterQuran().search(value);
