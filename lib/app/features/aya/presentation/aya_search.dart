@@ -11,12 +11,11 @@ class _AyaSearch extends StatelessWidget {
       child: Column(
         children: [
           SearchBar(
-            backgroundColor: WidgetStateProperty.all(
-                context.colorsX.background.withValues(alpha: 0.9)),
+            backgroundColor:
+                WidgetStateProperty.all(context.colorsX.background.withValues(alpha: 0.9)),
             shape: WidgetStateProperty.all(
               RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(16.r), // Adjust the radius as needed
+                borderRadius: BorderRadius.circular(16.r), // Adjust the radius as needed
               ),
             ),
             controller: textController,
@@ -28,9 +27,7 @@ class _AyaSearch extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   textController.clear();
-                  context
-                      .read<AddAyaCubit>()
-                      .queryChanged(''); // Clear query state
+                  context.read<AddAyaCubit>().queryChanged('');
                 },
                 icon: const Icon(Icons.clear),
               ),
@@ -55,9 +52,7 @@ class _AyaSearch extends StatelessWidget {
                       children: [
                         ListTile(
                           title: Text(
-                            ayah.ayah
-                                .replaceAll('\n', ' ')
-                                .decorateArabicNumbers(),
+                            ayah.ayah.replaceAll('\n', ' ').decorateArabicNumbers(),
                             style: context.textThemeX.large.copyWith(
                               fontSize: 18.sp,
                               fontFamily: GoogleFonts.amiriQuran().fontFamily,
@@ -77,13 +72,10 @@ class _AyaSearch extends StatelessWidget {
                               ),
                             ),
                           ),
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 16.h),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 16.h),
                           onTap: () {
                             context.read<AddAyaCubit>().ayahsChanged([ayah]);
-                            context
-                                .read<AddAyaCubit>()
-                                .queryChanged(''); // Reset query
+                            context.read<AddAyaCubit>().queryChanged(''); // Reset query
                           },
                         ),
                         Divider(

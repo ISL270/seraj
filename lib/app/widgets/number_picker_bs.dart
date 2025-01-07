@@ -2,6 +2,7 @@ import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -51,7 +52,7 @@ class _NumberPickerBSState extends State<NumberPickerBS> {
           alignment: Alignment.topRight,
           children: [
             SizedBox(
-              height: 150,
+              height: 150.h,
               width: double.infinity,
               child: widget.isDecimal
                   ? DecimalNumberPicker(

@@ -32,6 +32,7 @@ final class AddAyaState extends Equatable with FormzMixin {
 
   @override
   List<Object> get props => [
+        textOfAya,
         ayaExplain,
         tags,
         firstAya,

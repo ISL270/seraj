@@ -105,12 +105,7 @@ class _AddNewAyahState extends State<AddNewAyah> {
                                                 ),
                                               ),
                                               _QuranicVerseTextField(
-                                                controller: TextEditingController(
-                                                  text: state.selectedAyahs
-                                                      .map((singleAyah) => singleAyah.ayah)
-                                                      .join(' ')
-                                                      .decorateArabicNumbers(),
-                                                ),
+                                                controller: cubit.quranicVerseController,
                                               ),
                                               Align(
                                                 alignment: Alignment.centerRight,

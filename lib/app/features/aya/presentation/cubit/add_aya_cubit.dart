@@ -1,5 +1,6 @@
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/extension_methods/double_x.dart';
+import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -14,6 +15,7 @@ part 'add_aya_state.dart';
 class AddAyaCubit extends Cubit<AddAyaState> {
   final DaleelRepository _daleelRepository;
   late TextEditingController surahController;
+  late TextEditingController quranicVerseController;
   late TextEditingController firstAyahController;
   late TextEditingController lastAyahController;
   late TextEditingController explanationController;
@@ -23,6 +25,7 @@ class AddAyaCubit extends Cubit<AddAyaState> {
   })  : _daleelRepository = ayaRepository,
         super(const AddAyaState()) {
     surahController = TextEditingController();
+    quranicVerseController = TextEditingController();
     firstAyahController = TextEditingController();
     lastAyahController = TextEditingController();
     explanationController = TextEditingController();
@@ -43,6 +46,9 @@ class AddAyaCubit extends Cubit<AddAyaState> {
     explanationController.addListener(() {
       ayaExplainChanged(explanationController.text);
     });
+    quranicVerseController.addListener(() {
+      textOfAyaChanged(quranicVerseController.text);
+    });
   }
 
   void textOfAyaChanged(String value) => emit(state.copyWith(textOfAya: Name.dirty(value)));
@@ -55,20 +61,38 @@ class AddAyaCubit extends Cubit<AddAyaState> {
 
   void queryChanged(String value) {
     final ayahsList = FlutterQuran().search(value);
-    emit(state.copyWith(query: value, ayahs: ayahsList));
+    if (ayahsList.isNotEmpty || value.isEmpty) {
+      emit(state.copyWith(query: value, ayahs: ayahsList));
+    }
   }
 
   void _updateControllers() {
     if (state.selectedAyahs.isNotEmpty) {
-      surahController.text = state.selectedAyahs[0].surahNameAr;
-      firstAyahController.text = state.selectedAyahs.first.ayahNumber.toString();
-      lastAyahController.text = state.selectedAyahs.last.ayahNumber.toString();
+      surahController.text = state.surahOfAya.value;
+      firstAyahController.text = state.firstAya.toString();
+      lastAyahController.text = state.lastAya.toString();
       explanationController.text = state.ayaExplain.value;
+      quranicVerseController.text = state.selectedAyahs
+          .map((singleAyah) => singleAyah.ayah)
+          .join(' ')
+          .decorateArabicNumbers();
     }
   }
 
   void ayahsChanged(List<Ayah> ayahs) {
-    emit(state.copyWith(selectedAyahs: ayahs, query: '', ayahs: []));
+    if (ayahs.isNotEmpty) {
+      emit(state.copyWith(
+        selectedAyahs: ayahs,
+        query: '',
+        ayahs: [],
+        surahOfAya: Name.dirty(ayahs[0].surahNameAr),
+        firstAya: ayahs.first.ayahNumber,
+        lastAya: ayahs.last.ayahNumber,
+        ayaExplain: const Name.dirty(''),
+      ));
+    } else {
+      emit(state.copyWith(selectedAyahs: [], query: '', ayahs: []));
+    }
     _updateControllers();
   }
 
