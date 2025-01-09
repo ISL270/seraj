@@ -281,6 +281,8 @@ class _EasyDateTimeLinePickerWidgetState extends State<_EasyDateTimeLinePickerWi
         child: EasyDateTimeLinePicker(
           locale: Language.arabic.locale,
           disableStrategy: const DisableStrategy.afterToday(),
+          monthYearPickerOptions:
+              MonthYearPickerOptions(cancelText: context.l10n.cancel, confirmText: context.l10n.ok),
           firstDate: DateTime.now().subtract(const Duration(days: 30)),
           daySeparatorPadding: 12.w,
           lastDate: DateTime.now(),
