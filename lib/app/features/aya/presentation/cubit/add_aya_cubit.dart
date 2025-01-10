@@ -79,17 +79,29 @@ class AddAyaCubit extends Cubit<AddAyaState> {
     }
   }
 
-  void ayahsChanged(List<Ayah> ayahs) {
+  Future<void> ayahsChanged(List<Ayah> ayahs) async {
     if (ayahs.isNotEmpty) {
-      emit(state.copyWith(
-        selectedAyahs: ayahs,
-        query: '',
-        ayahs: [],
-        surahOfAya: Name.dirty(ayahs[0].surahNameAr),
-        firstAya: ayahs.first.ayahNumber,
-        lastAya: ayahs.last.ayahNumber,
-        ayaExplain: const Name.dirty(''),
-      ));
+      final isExist = await _daleelRepository.isAyahExist(
+        surahName: ayahs[0].surahNameAr,
+        ayahNumber: ayahs[0].ayahNumber,
+      );
+      if (isExist) {
+        emit(state.copyWith(
+            status: const Failure(
+              BusinessException(message: 'Aya already exists', code: '0'),
+            ),
+            ayahs: []));
+      } else {
+        emit(state.copyWith(
+          selectedAyahs: ayahs,
+          query: '',
+          ayahs: [],
+          surahOfAya: Name.dirty(ayahs[0].surahNameAr),
+          firstAya: ayahs.first.ayahNumber,
+          lastAya: ayahs.last.ayahNumber,
+          ayaExplain: const Name.dirty(''),
+        ));
+      }
     } else {
       emit(state.copyWith(selectedAyahs: [], query: '', ayahs: []));
     }
@@ -120,6 +132,10 @@ class AddAyaCubit extends Cubit<AddAyaState> {
     } catch (e) {
       emit(state.copyWith(status: Failure(e as GenericException)));
     }
+  }
+
+  void resetStatus() {
+    emit(state.copyWith(status: const Initial()));
   }
 
   @override

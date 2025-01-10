@@ -16,8 +16,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
-final class DaleelRepository
-    extends ReactiveRepository<Daleel, DaleelFM, DaleelIsar> {
+final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, DaleelIsar> {
   final DaleelIsarSource _localSource;
   final DaleelFirestoreSource _remoteSource;
 
@@ -102,5 +101,9 @@ final class DaleelRepository
     } catch (e) {
       return left(e as GenericException);
     }
+  }
+
+  Future<bool> isAyahExist({required String surahName, required int ayahNumber}) async {
+    return await _localSource.getAyaByText(surahName: surahName, ayahNumber: ayahNumber) != null;
   }
 }

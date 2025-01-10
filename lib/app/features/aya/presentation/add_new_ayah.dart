@@ -1,4 +1,4 @@
-import 'package:athar/app/core/extension_methods/context_x.dart';
+import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
@@ -287,12 +287,6 @@ class _AyahAddButton extends StatelessWidget {
           );
           innerContext.pop();
           context.pop();
-        }
-
-        if (state.status.isFailure) {
-          context.scaffoldMessenger
-            ..hideCurrentSnackBar()
-            ..showSnackBar(const SnackBar(content: Text('')));
         }
       },
       builder: (context, state) {

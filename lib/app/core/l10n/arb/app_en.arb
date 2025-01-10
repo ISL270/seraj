@@ -96,5 +96,8 @@
     "addTags":"Add Tags",
     "delTags":"Delete Tags",
     "from":"From",
-    "to":"To"
+    "to":"To",
+    "warning":"Warning",
+    "edit":"Edit",
+    "ayaExist":"Ayah already exists"
 }
