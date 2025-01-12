@@ -109,7 +109,7 @@ class _DuasScreenState extends State<DuasScreen> {
                     scrollControlDisabledMaxHeightRatio: 0.75,
                     builder: (context) => BlocProvider.value(
                       value: _bloc,
-                      child: DuaFilterBottomSheet(),
+                      child: const DuaFilterBottomSheet(),
                     ),
                   ),
                 ),
