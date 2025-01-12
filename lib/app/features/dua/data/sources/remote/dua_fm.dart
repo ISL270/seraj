@@ -1,6 +1,6 @@
 part of 'dua_firestore_source.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 final class DuaFM implements RemoteModel<Dua> {
   final String id;
   final String text;
@@ -14,14 +14,11 @@ final class DuaFM implements RemoteModel<Dua> {
     required this.text,
     required this.priority,
     required this.tags,
-    this.reward,
-    this.description,
+    required this.reward,
+    required this.description,
   });
 
-  factory DuaFM.fromJson(String docID, Map<String, dynamic> json) =>
-      _$DuaFMFromJson(docID, json);
-
-  Map<String, dynamic> toJson() => _$DuaFMToJson(this);
+  factory DuaFM.fromJson(String docID, Map<String, dynamic> json) => _$DuaFMFromJson(docID, json);
 
   @override
   Dua toDomain() => Dua(
