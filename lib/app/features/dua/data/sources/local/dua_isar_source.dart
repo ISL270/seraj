@@ -9,6 +9,4 @@ final class DuaIsarSource extends IsarSource<Dua, DuaIsar> {
 
   @override
   DuaIsar fromDomain(Dua dm) => DuaIsar.fromDomain(dm);
-
-  Future<int> putDua(DuaIsar dua) => isarService.put<DuaIsar>(dua);
 }
