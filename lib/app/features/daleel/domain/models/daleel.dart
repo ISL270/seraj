@@ -14,6 +14,13 @@ sealed class Daleel extends IslamicText {
     super.priority,
     super.description,
   });
+
+  @override
+  List<Object?> get props => [
+        super.props,
+        sayer,
+        lastRevisedAt,
+      ];
 }
 
 final class Hadith extends Daleel {
@@ -31,6 +38,13 @@ final class Hadith extends Daleel {
     super.description,
     this.authenticity,
   });
+
+  @override
+  List<Object?> get props => [
+        super.props,
+        extraction,
+        authenticity,
+      ];
 }
 
 final class Athar extends Daleel {
