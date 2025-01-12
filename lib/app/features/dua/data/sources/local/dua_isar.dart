@@ -8,22 +8,18 @@ part 'dua_isar.g.dart';
 final class DuaIsar extends CacheModel<Dua> {
   @override
   String id;
-
   @Index(type: IndexType.value, caseSensitive: false)
   String text;
-
   String? reward;
-
   String? description;
-
   List<String> tags;
 
   DuaIsar({
     required this.id,
     required this.text,
     required this.tags,
-    required this.reward,
-    required this.description,
+    this.reward,
+    this.description,
   });
 
   factory DuaIsar.fromDomain(Dua domain) => DuaIsar(
