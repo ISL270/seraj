@@ -16,7 +16,7 @@ import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/button.dart';
-import 'package:athar/app/widgets/priority_slider_w_label.dart';
+import 'package:athar/app/features/daleel/presentation/widgets/priority_slider_w_label.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
