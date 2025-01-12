@@ -7,6 +7,13 @@ sealed class DaleelEvent extends Equatable {
   List<Object> get props => [];
 }
 
+final class DaleelFetchData extends DaleelEvent {}
+
+final class DaleelSearchChanged extends DaleelEvent {
+  final String query;
+  const DaleelSearchChanged(this.query);
+}
+
 final class DaleelTypeFilterChanged extends DaleelEvent {
   final DaleelType daleelType;
   const DaleelTypeFilterChanged(this.daleelType);

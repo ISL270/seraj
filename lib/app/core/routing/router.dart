@@ -65,7 +65,7 @@ final appRouter = GoRouter(
               path: '/${DaleelScreen.name}',
               pageBuilder: (context, state) => NoTransitionPage(
                 child: BlocProvider(
-                  create: (context) => DaleelBloc(),
+                  create: (context) => DaleelBloc(getIt.get<DaleelRepository>()),
                   child: const DaleelScreen(),
                 ),
               ),

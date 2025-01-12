@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use_from_same_package, deprecated_member_use, inference_failure_on_function_invocation, unused_element
 
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
+import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/english_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
@@ -41,7 +42,11 @@ class DaleelScreen extends StatefulWidget {
 }
 
 class _DaleelScreenState extends State<DaleelScreen> {
-  int selectedIndex = 0;
+  @override
+  void initState() {
+    context.read<DaleelBloc>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,14 +126,31 @@ class _DaleelScreenState extends State<DaleelScreen> {
               ),
             ),
             Gap(2.h),
-            Column(
-              children: [
-                _DaleelWidget(label: context.l10n.propheticHadith),
-                _DaleelWidget(label: context.l10n.propheticHadith),
-                _DaleelWidget(label: context.l10n.propheticHadith),
-                _DaleelWidget(label: context.l10n.propheticHadith),
-              ],
+            BlocBuilder<DaleelBloc, DaleelState>(
+              builder: (context, state) {
+                return switch (state.status) {
+                  Loading() => const Center(child: CircularProgressIndicator()),
+                  _ => state.daleels.result.isEmpty
+                      ? const Center(child: Text('لا يوجد نتائج'))
+                      : ListView.separated(
+                          itemBuilder: (context, i) =>
+                              _DaleelWidget(label: state.daleels.result[i].text),
+                          separatorBuilder: (_, __) => const Divider(),
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: state.daleels.result.length,
+                          shrinkWrap: true,
+                        ),
+                };
+              },
             ),
+            // Column(
+            //   children: [
+            //     _DaleelWidget(label: context.l10n.propheticHadith),
+            //     _DaleelWidget(label: context.l10n.propheticHadith),
+            //     _DaleelWidget(label: context.l10n.propheticHadith),
+            //     _DaleelWidget(label: context.l10n.propheticHadith),
+            //   ],
+            // ),
           ],
         ),
       ),

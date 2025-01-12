@@ -12,6 +12,7 @@ Future<void> _openFilterDaleelTypeSelectorBottomSheet(BuildContext context) asyn
     elevation: 0,
     context: context,
     isScrollControlled: true,
+    useRootNavigator: true,
     builder: (context) => Container(
       height: 320.h,
       decoration: BoxDecoration(
@@ -138,6 +139,7 @@ Future<void> _openFilterPrioritySelectorBottomSheet(BuildContext context) async 
   await showModalBottomSheet(
     elevation: 0,
     context: context,
+    useRootNavigator: true,
     isScrollControlled: true,
     builder: (context) => Container(
       height: 260.h,
@@ -211,6 +213,7 @@ Future<void> _openFilterDateSelectorBottomSheet(BuildContext context) async {
     elevation: 0,
     context: context,
     isScrollControlled: true,
+    useRootNavigator: true,
     builder: (context) => Container(
       height: 365.h,
       decoration: BoxDecoration(

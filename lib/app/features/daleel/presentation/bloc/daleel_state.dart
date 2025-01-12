@@ -2,13 +2,16 @@
 
 part of 'daleel_bloc.dart';
 
-final class DaleelState extends Equatable with FormzMixin {
+final class DaleelState extends Equatable {
   bool filterDaleelTypeActive;
   bool filterPriorityActive;
   bool filterDateActive;
   DaleelType selectedDaleelType;
   double selectedPriority;
   DateTime selectedDate;
+
+  final PaginatedResult<Daleel> daleels;
+  final String searchTerm;
   VoidStatus status;
 
   DaleelState._({
@@ -18,6 +21,8 @@ final class DaleelState extends Equatable with FormzMixin {
     required this.selectedDaleelType,
     required this.selectedPriority,
     required this.selectedDate,
+    required this.searchTerm,
+    required this.daleels,
     required this.status,
   });
 
@@ -28,6 +33,8 @@ final class DaleelState extends Equatable with FormzMixin {
           filterDateActive: false,
           selectedDaleelType: DaleelType.hadith,
           selectedPriority: 0,
+          searchTerm: '',
+          daleels: const PaginatedResult(),
           selectedDate: DateTime.now(),
           status: const Initial(),
         );
@@ -39,6 +46,8 @@ final class DaleelState extends Equatable with FormzMixin {
     DaleelType? selectedDaleelType,
     double? selectedPriority,
     DateTime? selectedDate,
+    String? searchTerm,
+    PaginatedResult<Daleel>? daleels,
     VoidStatus? status,
   }) =>
       DaleelState._(
@@ -48,6 +57,8 @@ final class DaleelState extends Equatable with FormzMixin {
         selectedDaleelType: selectedDaleelType ?? this.selectedDaleelType,
         selectedPriority: selectedPriority ?? this.selectedPriority,
         selectedDate: selectedDate ?? this.selectedDate,
+        searchTerm: searchTerm ?? this.searchTerm,
+        daleels: daleels ?? this.daleels,
         status: status ?? this.status,
       );
 
@@ -59,9 +70,8 @@ final class DaleelState extends Equatable with FormzMixin {
         selectedDaleelType,
         selectedPriority,
         selectedDate,
+        searchTerm,
+        daleels,
         status,
       ];
-
-  @override
-  List<FormzInput> get inputs => [];
 }
