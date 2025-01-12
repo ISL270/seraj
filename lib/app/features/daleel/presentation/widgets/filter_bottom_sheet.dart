@@ -70,7 +70,7 @@ class _FilterTypeSelectorBottomSheetBody extends StatelessWidget {
             ],
           ),
         ),
-        const ApplyFilterButton(),
+        ApplyFilterButton(onPressed: () {}),
       ],
     );
   }
@@ -170,39 +170,33 @@ class _FilterPrioritySelectorBottomSheetBody extends StatelessWidget {
       children: [
         Gap(2.h),
         const _DragIndicator(),
-        const _PrioritySelector(),
-        const ApplyFilterButton()
+        _PrioritySelector(),
+        ApplyFilterButton(onPressed: () {})
       ],
     );
   }
 }
 
-class _PrioritySelector extends StatefulWidget {
-  const _PrioritySelector();
-
-  @override
-  State<_PrioritySelector> createState() => _PrioritySelectorState();
-}
-
-class _PrioritySelectorState extends State<_PrioritySelector> {
-  double sliderValue = 0;
+class _PrioritySelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12.w),
-      child: PrioritySliderWithLabel(
-        labelText: context.l10n.priority,
-        priorityTitle: '${sliderValue.getPriorityName(context)} ${context.l10n.saveIt}',
-        onPriorityChanged: (value) {
-          setState(() {
-            sliderValue = value;
-          });
-        },
-        priorityValue: sliderValue,
-        sliderMaxValue: Priority.values.length - 1,
-        sliderDivisions: Priority.values.length - 1,
-        sliderLabel: sliderValue.getPriorityName(context),
-      ),
+    return BlocBuilder<DaleelBloc, DaleelState>(
+      builder: (context, state) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          child: PrioritySliderWithLabel(
+            labelText: context.l10n.priority,
+            priorityTitle:
+                '${state.selectedPriority.getPriorityName(context)} ${context.l10n.saveIt}',
+            onPriorityChanged: (value) =>
+                context.read<DaleelBloc>().add(DaleelPriorityFilterChanged(value)),
+            priorityValue: state.selectedPriority,
+            sliderMaxValue: Priority.values.length - 1,
+            sliderDivisions: Priority.values.length - 1,
+            sliderLabel: state.selectedPriority.getPriorityName(context),
+          ),
+        );
+      },
     );
   }
 }
@@ -249,7 +243,7 @@ class _FilterDateSelectorBottomSheetBody extends StatelessWidget {
         Gap(2.h),
         const _DragIndicator(),
         const _EasyDateTimeLinePickerWidget(),
-        const ApplyFilterButton()
+        ApplyFilterButton(onPressed: () {})
       ],
     );
   }
