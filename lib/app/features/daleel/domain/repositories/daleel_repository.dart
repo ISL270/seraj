@@ -97,4 +97,13 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
       return left(e as GenericException);
     }
   }
+
+  // Future<List<Daleel>> searchDaleels(
+  //   String searchTerm, {
+  //   required int page,
+  //   required int pageSize,
+  //   }
+  // )async {
+  //   final cmDaleels= await _localSource.getDaleel(id)
+  // }
 }

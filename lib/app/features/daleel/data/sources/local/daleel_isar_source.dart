@@ -15,6 +15,20 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
 
   Future<void> deleteSavedDaleel() => isarService.clear<DaleelIsar>();
 
+  Future<void> getAllDaleels() => isarService.getAll<DaleelIsar>();
+
+  // Future<List<DaleelIsar>> getDaleels(
+  //   String searchTerm, {
+  //   required int page,
+  //   required int pageSize,
+  // }) async {
+  //   final query = switch (searchTerm.isNotBlank) {
+  //     true => isarService.instance.daleelIsars.where().text,
+  //     false => isarService.instance.daleelIsars.where().anyText(),
+  //   };
+  //   return query.offset(page * pageSize).limit(pageSize).findAll();
+  // }
+
   @override
   DaleelIsar fromDomain(Daleel dm) => DaleelIsar.fromDomain(dm);
 }
