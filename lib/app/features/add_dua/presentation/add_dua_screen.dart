@@ -6,7 +6,7 @@ import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/add_dua/presentation/cubit/add_dua_cubit.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
-import 'package:athar/app/features/duas/domain/repository/dua_repository.dart';
+import 'package:athar/app/features/dua/domain/repository/dua_repository.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/priority_slider_widget.dart';
 import 'package:athar/app/widgets/screen.dart';

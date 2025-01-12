@@ -3,7 +3,7 @@ import 'package:athar/app/core/firestore/remote_model.dart';
 import 'package:athar/app/core/models/reactive_firestore_source.dart';
 import 'package:athar/app/features/authentication/domain/models/user.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
-import 'package:athar/app/features/duas/domain/model/dua.dart';
+import 'package:athar/app/features/dua/domain/model/dua.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:json_annotation/json_annotation.dart';

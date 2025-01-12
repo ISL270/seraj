@@ -1,6 +1,6 @@
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
-import 'package:athar/app/features/duas/domain/model/dua.dart';
+import 'package:athar/app/features/dua/domain/model/dua.dart';
 import 'package:isar/isar.dart';
 
 part 'dua_isar.g.dart';

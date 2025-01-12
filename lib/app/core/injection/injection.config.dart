@@ -32,11 +32,11 @@ import 'package:athar/app/features/daleel/data/sources/remote/daleel_firestore_s
     as _i460;
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart'
     as _i143;
-import 'package:athar/app/features/duas/data/sources/local/dua_isar_source.dart'
+import 'package:athar/app/features/dua/presentation/data/sources/local/dua_isar_source.dart'
     as _i869;
-import 'package:athar/app/features/duas/data/sources/remote/dua_firestore_source.dart'
+import 'package:athar/app/features/dua/presentation/data/sources/remote/dua_firestore_source.dart'
     as _i455;
-import 'package:athar/app/features/duas/domain/repository/dua_repository.dart'
+import 'package:athar/app/features/dua/domain/repository/dua_repository.dart'
     as _i47;
 import 'package:athar/app/features/settings/data/sources/local/settings_isar_source.dart'
     as _i387;

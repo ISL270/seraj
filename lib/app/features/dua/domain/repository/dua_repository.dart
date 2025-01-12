@@ -3,10 +3,10 @@
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/core/models/reactive_repository.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
-import 'package:athar/app/features/duas/data/model/local/dua_isar.dart';
-import 'package:athar/app/features/duas/data/sources/local/dua_isar_source.dart';
-import 'package:athar/app/features/duas/data/sources/remote/dua_firestore_source.dart';
-import 'package:athar/app/features/duas/domain/model/dua.dart';
+import 'package:athar/app/features/dua/presentation/data/model/local/dua_isar.dart';
+import 'package:athar/app/features/dua/presentation/data/sources/local/dua_isar_source.dart';
+import 'package:athar/app/features/dua/presentation/data/sources/remote/dua_firestore_source.dart';
+import 'package:athar/app/features/dua/domain/model/dua.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
