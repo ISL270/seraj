@@ -44,7 +44,7 @@ class _DuaWidget extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       margin: EdgeInsets.all(16.sp),
       decoration: BoxDecoration(
-        color: context.colorsX.primary.withOpacity(0.15),
+        color: context.colorsX.primary.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(12.w),
         boxShadow: [
           BoxShadow(
@@ -132,6 +132,37 @@ class _DuaWidget extends StatelessWidget {
               Gap(10.w),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _FavoriteIconButton extends StatefulWidget {
+  const _FavoriteIconButton();
+
+  @override
+  _FavoriteIconButtonState createState() => _FavoriteIconButtonState();
+}
+
+class _FavoriteIconButtonState extends State<_FavoriteIconButton> {
+  bool _isFavorited = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () => setState(() {
+        _isFavorited = !_isFavorited;
+      }),
+      icon: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 400),
+        transitionBuilder: (child, animation) {
+          return ScaleTransition(scale: animation, child: child);
+        },
+        child: Icon(
+          _isFavorited ? Icons.favorite : Icons.favorite_border,
+          key: ValueKey<bool>(_isFavorited),
+          color: _isFavorited ? context.colorsX.error : context.colorsX.onBackground,
         ),
       ),
     );

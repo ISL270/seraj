@@ -19,7 +19,7 @@ class _DuasListView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.all(8.w),
+                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
                           child: Text(
                             '${context.l10n.dua.toUpperCase()} '
                             '(${state.duas.result.length})',
@@ -29,6 +29,7 @@ class _DuasListView extends StatelessWidget {
                           ),
                         ),
                         ListView.separated(
+                          padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {

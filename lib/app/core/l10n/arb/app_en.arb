@@ -119,5 +119,10 @@
    "duaAdded":"Dua added successfully",
    "normal":"Normal",
   "high":"High",
-  "urgent":"Urgent"
+  "urgent":"Urgent",
+    "filterOptions":"Filtering Options",
+    "all":"All",
+    "fav":"Favourite",
+    "clear":"Clear"
+
 }
