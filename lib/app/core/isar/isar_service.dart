@@ -74,8 +74,7 @@ final class IsarService with IsarHelper {
   }
 
   bool deleteSync<T extends CacheModel>(T object) {
-    return _isar
-        .writeTxnSync(() => _isar.collection<T>().deleteSync(object.cacheID));
+    return _isar.writeTxnSync(() => _isar.collection<T>().deleteSync(object.cacheID));
   }
 
   Future<int> deleteAll<T extends CacheModel>(List<String> ids) async {
@@ -98,8 +97,7 @@ final class IsarService with IsarHelper {
 
   Future<List<T>> getAllByIDs<T extends CacheModel>(List<String> ids) async {
     return _isar.txn(() async {
-      final docs =
-          await _isar.collection<T>().getAll(ids.map(toIntID).toList());
+      final docs = await _isar.collection<T>().getAll(ids.map(toIntID).toList());
       // Remove nulls.
       return docs.whereType<T>().toList();
     });
