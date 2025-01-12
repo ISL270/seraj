@@ -9,10 +9,15 @@ sealed class DaleelEvent extends Equatable {
 
 final class DaleelFetchData extends DaleelEvent {}
 
-final class DaleelSearchChanged extends DaleelEvent {
-  final String query;
-  const DaleelSearchChanged(this.query);
+final class DaleelSearchFetched extends DaleelEvent {
+  final String searchTerm;
+  const DaleelSearchFetched(this.searchTerm);
+
+  @override
+  List<Object> get props => [searchTerm];
 }
+
+final class DaleelNextPageFetched extends DaleelEvent {}
 
 final class DaleelTypeFilterChanged extends DaleelEvent {
   final DaleelType daleelType;

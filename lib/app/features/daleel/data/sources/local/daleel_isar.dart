@@ -11,6 +11,8 @@ part 'daleel_isar.g.dart';
 final class DaleelIsar extends CacheModel<Daleel> {
   @override
   String id;
+  // used for full-text search feature
+  @Index(type: IndexType.value, caseSensitive: false)
   String text;
   String? description;
   String? sayer;

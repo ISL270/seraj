@@ -98,12 +98,20 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
     }
   }
 
-  // Future<List<Daleel>> searchDaleels(
-  //   String searchTerm, {
-  //   required int page,
-  //   required int pageSize,
-  //   }
-  // )async {
-  //   final cmDaleels= await _localSource.getDaleel(id)
-  // }
+  Future<List<Daleel>> searchDaleel(
+    String searchTerm, {
+    required int page,
+    required int pageSize,
+  }) async {
+    final cms = await _localSource.getDaleels(
+      searchTerm,
+      page: page,
+      pageSize: pageSize,
+    );
+
+    return cms.map((e) => e.toDomain()).toList();
+  }
+
+  @disposeMethod
+  void dispMethod() => dispose();
 }
