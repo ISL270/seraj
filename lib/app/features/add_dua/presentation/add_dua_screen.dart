@@ -51,8 +51,7 @@ class AddDuaScreen extends StatelessWidget {
                     const _DuaRewardTextField(),
                     _LabelTextFieldAlignWidget(label: context.l10n.explanation),
                     const _ExplanationOfDuaTextField(),
-                    _LabelTextFieldAlignWidget(
-                        label: context.l10n.numOfTimesANDpriority),
+                    _LabelTextFieldAlignWidget(label: context.l10n.numOfTimesANDpriority),
                     const _PrioritySlider()
                   ],
                 ),
@@ -75,10 +74,8 @@ class _PrioritySlider extends StatelessWidget {
     return PrioritySliderWithLabelWidget<AddDuaCubit, AddDuaState>(
       getLabel: (context) => context.l10n.priority,
       getSliderValue: (state) => state.sliderValue,
-      getPriorityName: (context, sliderValue) =>
-          sliderValue.getPriorityName(context),
-      onSliderChanged: (context, value) =>
-          context.read<AddDuaCubit>().sliderPriorityChanged(value),
+      getPriorityName: Priority.translate,
+      onSliderChanged: (context, value) => context.read<AddDuaCubit>().sliderPriorityChanged(value),
       max: Priority.values.length - 1,
       divisions: Priority.values.length - 1,
     );
@@ -116,8 +113,7 @@ class _ExplanationOfDuaTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onChanged: (explain) =>
-          context.read<AddDuaCubit>().duaExplanationChanged(explain),
+      onChanged: (explain) => context.read<AddDuaCubit>().duaExplanationChanged(explain),
       maxLines: 4,
       minLines: 4,
       decoration: InputDecoration(
@@ -141,8 +137,7 @@ class _DuaRewardTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onChanged: (reward) =>
-          context.read<AddDuaCubit>().rewardOfDuaChanged(reward),
+      onChanged: (reward) => context.read<AddDuaCubit>().rewardOfDuaChanged(reward),
       maxLines: 4,
       minLines: 1,
       decoration: InputDecoration(
@@ -209,9 +204,7 @@ class _DuaAddButton extends StatelessWidget {
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
             label: context.l10n.add,
-            onPressed: state.isValid
-                ? () => context.read<AddDuaCubit>().saveDuaForm()
-                : null,
+            onPressed: state.isValid ? () => context.read<AddDuaCubit>().saveDuaForm() : null,
           ),
         );
       },

@@ -1,5 +1,4 @@
 import 'package:athar/app/core/enums/status.dart';
-import 'package:athar/app/core/extension_methods/double_x.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/duas/domain/repository/dua_repository.dart';
@@ -19,8 +18,7 @@ class AddDuaCubit extends Cubit<AddDuaState> {
 
   void duaChanged(String value) => emit(state.copyWith(dua: Name.dirty(value)));
 
-  void rewardOfDuaChanged(String value) =>
-      emit(state.copyWith(reward: Name.dirty(value)));
+  void rewardOfDuaChanged(String value) => emit(state.copyWith(reward: Name.dirty(value)));
 
   void sliderPriorityChanged(double value) {
     emit(state.copyWith(sliderValue: value));
@@ -28,8 +26,7 @@ class AddDuaCubit extends Cubit<AddDuaState> {
 
   void priorityChanged(Priority value) => emit(state.copyWith(priority: value));
 
-  void duaExplanationChanged(String value) =>
-      emit(state.copyWith(description: value));
+  void duaExplanationChanged(String value) => emit(state.copyWith(description: value));
 
   Future<void> saveDuaForm() async {
     emit(state.copyWith(status: const Loading()));
@@ -39,7 +36,7 @@ class AddDuaCubit extends Cubit<AddDuaState> {
         text: state.dua.value,
         description: state.description,
         reward: state.reward.value,
-        priority: state.sliderValue.getPriority(),
+        priority: Priority.fromDouble(state.sliderValue),
       );
       emit(state.copyWith(status: const Success('Saved Dua Successfully')));
     } catch (e) {
