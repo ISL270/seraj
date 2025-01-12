@@ -40,31 +40,24 @@ class _BottomSheetBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 20.h,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const _DragIndicator(),
         Text(context.l10n.addNew, style: context.textThemeX.large.bold),
         Expanded(
           child: ListView.separated(
-            physics: const NeverScrollableScrollPhysics(),
             itemCount: items.length,
+            physics: const NeverScrollableScrollPhysics(),
             separatorBuilder: (context, index) => Gap(20.h),
             itemBuilder: (context, index) => GestureDetector(
               onTap: () => switch (index) {
-                0 => context.goNamed(AddHadith.name),
-                1 => context.goNamed(AddAtharScreen.name),
-                2 => context.goNamed(AddNewAyah.name),
-                _ => UnimplementedError(),
+                0 => context.pushNamed(AddHadith.name),
+                1 => context.goNamed(AddNewAyah.name),
+                2 => context.pushNamed(AddAtharScreen.name),
+                3 => context.pushNamed(AddOtherScreen.name),
+                _ => {}
               },
-              // onTap: () {
-              //   switch (index) {
-              //     case 0:
-              //       context.goNamed(AddHadith.name);
-              //     case 2:
-              //       context.pushNamed(AddAtharScreen.name);
-              //   }
-              // },
               child: _BottomSheetWidget(items[index]),
             ),
           ),

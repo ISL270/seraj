@@ -4,35 +4,36 @@ import 'dart:developer';
 
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
-import 'package:athar/app/features/add_athar/presentation/cubit/add_athar_state.dart';
+import 'package:athar/app/features/add_other/presentation/cubit/add_other_state.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:form_inputs/form_inputs.dart';
 
-class AddAtharCubit extends Cubit<AddAtharState> {
+class AddOtherCubit extends Cubit<AddOtherState> {
   final DaleelRepository _repository;
-  AddAtharCubit(this._repository) : super(const AddAtharState());
+  AddOtherCubit(this._repository) : super(const AddOtherState());
 
-  void atharChanged(String athar) => emit(state.copyWith(athar: Name.dirty(athar)));
+  void otherTextChanged(String value) => emit(state.copyWith(other: Name.dirty(value)));
 
-  void sayerChanged(String sayer) => emit(state.copyWith(sayer: sayer));
+  void sayerChanged(String value) => emit(state.copyWith(sayer: value));
 
-  void explainationChanged(String explaination) => emit(state.copyWith(description: explaination));
+  void explanationChanged(String value) => emit(state.copyWith(description: value));
 
   void sliderPriorityChanged(double value) => emit(state.copyWith(sliderValue: value));
 
-  Future<void> saveAtharForm() async {
+  Future<void> saveOtherForm() async {
     emit(state.copyWith(status: const Loading()));
     try {
-      await _repository.saveAthar(
+      await _repository.saveOthers(
+        text: state.other.value,
         sayer: state.sayer,
-        text: state.athar.value,
         description: state.description,
         priority: Priority.fromDouble(state.sliderValue),
+        lastRevisedAt: DateTime.now(),
         tags: [], // not used for now
       );
-      emit(state.copyWith(status: const Success(null)));
+      emit(state.copyWith(status: const Success('Saved Other Successfully')));
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(status: Failure(e as GenericException)));

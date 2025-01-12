@@ -11,6 +11,8 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
 
   Future<DaleelIsar?> getSavedDaleel() => isarService.getFirst<DaleelIsar>();
 
+  Future<DaleelIsar?> getDaleel(String id) => isarService.get<DaleelIsar>(id);
+
   Future<void> saveDaleel(Daleel daleel) => isarService.put(DaleelIsar.fromDomain(daleel));
 
   Future<void> deleteSavedDaleel() => isarService.clear<DaleelIsar>();
@@ -24,7 +26,7 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
       final matchingDaleels = daleelIsars.where(
         (daleel) =>
             daleel.daleelType == DaleelType.aya &&
-            daleel.suraOfAya == surahName &&
+            daleel.surah == surahName &&
             daleel.firstAya == ayahNumber,
       );
       if (matchingDaleels.isNotEmpty) {
