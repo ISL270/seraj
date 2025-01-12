@@ -6,7 +6,7 @@ import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/dua/data/sources/local/dua_isar.dart';
 import 'package:athar/app/features/dua/data/sources/local/dua_isar_source.dart';
 import 'package:athar/app/features/dua/data/sources/remote/dua_firestore_source.dart';
-import 'package:athar/app/features/dua/domain/model/dua.dart';
+import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 

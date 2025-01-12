@@ -5,14 +5,12 @@ final class DuaFM implements RemoteModel<Dua> {
   final String id;
   final String text;
   final String? reward;
-  final Priority priority;
   final List<String> tags;
   final String? description;
 
   const DuaFM({
     required this.id,
     required this.text,
-    required this.priority,
     required this.tags,
     required this.reward,
     required this.description,
@@ -26,7 +24,6 @@ final class DuaFM implements RemoteModel<Dua> {
         text: text,
         tags: tags,
         reward: reward,
-        priority: priority,
         description: description,
       );
 }

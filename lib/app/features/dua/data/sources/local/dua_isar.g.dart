@@ -27,24 +27,18 @@ const DuaIsarSchema = CollectionSchema(
       name: r'id',
       type: IsarType.string,
     ),
-    r'priority': PropertySchema(
-      id: 2,
-      name: r'priority',
-      type: IsarType.string,
-      enumMap: _DuaIsarpriorityEnumValueMap,
-    ),
     r'reward': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'reward',
       type: IsarType.string,
     ),
     r'tags': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'tags',
       type: IsarType.stringList,
     ),
     r'text': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'text',
       type: IsarType.string,
     )
@@ -90,7 +84,6 @@ int _duaIsarEstimateSize(
     }
   }
   bytesCount += 3 + object.id.length * 3;
-  bytesCount += 3 + object.priority.name.length * 3;
   {
     final value = object.reward;
     if (value != null) {
@@ -116,10 +109,9 @@ void _duaIsarSerialize(
 ) {
   writer.writeString(offsets[0], object.description);
   writer.writeString(offsets[1], object.id);
-  writer.writeString(offsets[2], object.priority.name);
-  writer.writeString(offsets[3], object.reward);
-  writer.writeStringList(offsets[4], object.tags);
-  writer.writeString(offsets[5], object.text);
+  writer.writeString(offsets[2], object.reward);
+  writer.writeStringList(offsets[3], object.tags);
+  writer.writeString(offsets[4], object.text);
 }
 
 DuaIsar _duaIsarDeserialize(
@@ -131,12 +123,9 @@ DuaIsar _duaIsarDeserialize(
   final object = DuaIsar(
     description: reader.readStringOrNull(offsets[0]),
     id: reader.readString(offsets[1]),
-    priority:
-        _DuaIsarpriorityValueEnumMap[reader.readStringOrNull(offsets[2])] ??
-            Priority.normal,
-    reward: reader.readStringOrNull(offsets[3]),
-    tags: reader.readStringList(offsets[4]) ?? [],
-    text: reader.readString(offsets[5]),
+    reward: reader.readStringOrNull(offsets[2]),
+    tags: reader.readStringList(offsets[3]) ?? [],
+    text: reader.readString(offsets[4]),
   );
   return object;
 }
@@ -153,29 +142,15 @@ P _duaIsarDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (_DuaIsarpriorityValueEnumMap[reader.readStringOrNull(offset)] ??
-          Priority.normal) as P;
-    case 3:
       return (reader.readStringOrNull(offset)) as P;
-    case 4:
+    case 3:
       return (reader.readStringList(offset) ?? []) as P;
-    case 5:
+    case 4:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
-
-const _DuaIsarpriorityEnumValueMap = {
-  r'normal': r'normal',
-  r'high': r'high',
-  r'urgent': r'urgent',
-};
-const _DuaIsarpriorityValueEnumMap = {
-  r'normal': Priority.normal,
-  r'high': Priority.high,
-  r'urgent': Priority.urgent,
-};
 
 Id _duaIsarGetId(DuaIsar object) {
   return object.cacheID;
@@ -738,136 +713,6 @@ extension DuaIsarQueryFilter
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityEqualTo(
-    Priority value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'priority',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityGreaterThan(
-    Priority value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'priority',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityLessThan(
-    Priority value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'priority',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityBetween(
-    Priority lower,
-    Priority upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'priority',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'priority',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'priority',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'priority',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'priority',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'priority',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> priorityIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'priority',
-        value: '',
-      ));
-    });
-  }
-
   QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> rewardIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1391,18 +1236,6 @@ extension DuaIsarQuerySortBy on QueryBuilder<DuaIsar, DuaIsar, QSortBy> {
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByPriority() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'priority', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByPriorityDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'priority', Sort.desc);
-    });
-  }
-
   QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByReward() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'reward', Sort.asc);
@@ -1466,18 +1299,6 @@ extension DuaIsarQuerySortThenBy
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByPriority() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'priority', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByPriorityDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'priority', Sort.desc);
-    });
-  }
-
   QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByReward() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'reward', Sort.asc);
@@ -1519,13 +1340,6 @@ extension DuaIsarQueryWhereDistinct
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QDistinct> distinctByPriority(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'priority', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<DuaIsar, DuaIsar, QDistinct> distinctByReward(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1564,12 +1378,6 @@ extension DuaIsarQueryProperty
   QueryBuilder<DuaIsar, String, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
-    });
-  }
-
-  QueryBuilder<DuaIsar, Priority, QQueryOperations> priorityProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'priority');
     });
   }
 

@@ -1,6 +1,6 @@
 import 'package:athar/app/core/isar/isar_source.dart';
 import 'package:athar/app/features/dua/data/sources/local/dua_isar.dart';
-import 'package:athar/app/features/dua/domain/model/dua.dart';
+import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton

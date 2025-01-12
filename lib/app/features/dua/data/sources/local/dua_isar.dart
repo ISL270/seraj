@@ -1,6 +1,5 @@
 import 'package:athar/app/core/isar/cache_model.dart';
-import 'package:athar/app/features/daleel/domain/models/priority.dart';
-import 'package:athar/app/features/dua/domain/model/dua.dart';
+import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:isar/isar.dart';
 
 part 'dua_isar.g.dart';
@@ -19,13 +18,9 @@ final class DuaIsar extends CacheModel<Dua> {
 
   List<String> tags;
 
-  @Enumerated(EnumType.name)
-  Priority priority;
-
   DuaIsar({
     required this.id,
     required this.text,
-    required this.priority,
     required this.tags,
     required this.reward,
     required this.description,
@@ -34,7 +29,6 @@ final class DuaIsar extends CacheModel<Dua> {
   factory DuaIsar.fromDomain(Dua domain) => DuaIsar(
         id: domain.id,
         text: domain.text,
-        priority: domain.priority,
         tags: domain.tags,
         reward: domain.reward,
         description: domain.description,
@@ -47,7 +41,6 @@ final class DuaIsar extends CacheModel<Dua> {
       text: text,
       tags: tags,
       reward: reward,
-      priority: priority,
       description: description,
     );
   }

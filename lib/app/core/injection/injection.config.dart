@@ -33,11 +33,10 @@ import 'package:athar/app/features/daleel/data/sources/remote/daleel_firestore_s
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart'
     as _i143;
 import 'package:athar/app/features/dua/data/sources/local/dua_isar_source.dart'
-    as _i869;
+    as _i620;
 import 'package:athar/app/features/dua/data/sources/remote/dua_firestore_source.dart'
-    as _i455;
-import 'package:athar/app/features/dua/domain/repository/dua_repository.dart'
-    as _i47;
+    as _i833;
+import 'package:athar/app/features/dua/domain/dua_repository.dart' as _i1008;
 import 'package:athar/app/features/settings/data/sources/local/settings_isar_source.dart'
     as _i387;
 import 'package:athar/app/features/settings/domain/settings_repository.dart'
@@ -75,14 +74,14 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i53.DaleelIsarSource>(
         () => _i53.DaleelIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i869.DuaIsarSource>(
-        () => _i869.DuaIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i602.UserIsarSource>(
         () => _i602.UserIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i620.DuaIsarSource>(
+        () => _i620.DuaIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i460.DaleelFirestoreSource>(
         () => _i460.DaleelFirestoreSource(gh<_i516.FirestoreService>()));
-    gh.singleton<_i455.DuaFirestoreSource>(
-        () => _i455.DuaFirestoreSource(gh<_i516.FirestoreService>()));
+    gh.singleton<_i833.DuaFirestoreSource>(
+        () => _i833.DuaFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i257.SettingsRepository>(
         () => _i257.SettingsRepository(gh<_i387.SettingsIsarSource>()));
     gh.singleton<_i92.UserRepository>(() => _i92.UserRepository(
@@ -103,10 +102,10 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
       dispose: (i) => i.dispose(),
     );
-    gh.singleton<_i47.DuaRepository>(() => _i47.DuaRepository(
+    gh.singleton<_i1008.DuaRepository>(() => _i1008.DuaRepository(
           gh<_i842.AuthRepository>(),
-          gh<_i455.DuaFirestoreSource>(),
-          gh<_i869.DuaIsarSource>(),
+          gh<_i833.DuaFirestoreSource>(),
+          gh<_i620.DuaIsarSource>(),
         ));
     gh.singleton<_i143.DaleelRepository>(() => _i143.DaleelRepository(
           gh<_i842.AuthRepository>(),
@@ -118,7 +117,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i397.AddHadithCubit>(
         () => _i397.AddHadithCubit(gh<_i143.DaleelRepository>()));
     gh.singleton<_i910.AddDuaCubit>(
-        () => _i910.AddDuaCubit(gh<_i47.DuaRepository>()));
+        () => _i910.AddDuaCubit(gh<_i1008.DuaRepository>()));
     return this;
   }
 }

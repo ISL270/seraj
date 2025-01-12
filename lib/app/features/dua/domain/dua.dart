@@ -9,7 +9,6 @@ final class Dua extends IslamicText with EquatableMixin {
     required super.text,
     super.tags,
     this.reward,
-    super.priority,
     super.description,
   });
 
