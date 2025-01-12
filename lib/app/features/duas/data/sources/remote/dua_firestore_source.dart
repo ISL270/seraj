@@ -1,10 +1,7 @@
-import 'package:athar/app/core/extension_methods/getit_x.dart';
 import 'package:athar/app/core/firestore/firestore_helper.dart';
 import 'package:athar/app/core/firestore/remote_model.dart';
-import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/models/reactive_firestore_source.dart';
 import 'package:athar/app/features/authentication/domain/models/user.dart';
-import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/duas/domain/model/dua.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,11 +12,11 @@ part '../../model/remote/dua_fm.dart';
 part 'dua_firestore_source.g.dart';
 
 @singleton
-final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM>
-    with FirestoreHelper {
+final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM> with FirestoreHelper {
   DuaFirestoreSource(super.firestoreSvc);
 
   Future<void> addDua({
+    required String uid,
     required String text,
     required String? reward,
     required Priority priority,
@@ -27,8 +24,7 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM>
     required String? description,
   }) async =>
       firestoreOperationHandler(() async {
-        final userId = getIt.authBloc.state.user!.id;
-        await firestoreSvc.users.duaCollection(userId).add({
+        await firestoreSvc.users.duaCollection(uid).add({
           firestoreSvc.dua.text: text,
           firestoreSvc.dua.reward: reward,
           firestoreSvc.dua.priority: priority.name,
@@ -38,8 +34,7 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM>
       });
 
   @override
-  DuaFM fromJson(String docID, Map<String, dynamic> json) =>
-      DuaFM.fromJson(docID, json);
+  DuaFM fromJson(String docID, Map<String, dynamic> json) => DuaFM.fromJson(docID, json);
 
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> snapshotQuery(User user) =>

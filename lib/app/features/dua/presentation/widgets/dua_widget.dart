@@ -1,6 +1,6 @@
 // ignore_for_file: inference_failure_on_function_invocation
 
-part of '../duas_screen.dart';
+part of '../dua_screen.dart';
 
 class _DuaWithNumWidget extends StatelessWidget {
   const _DuaWithNumWidget({required this.label, required this.labelIndex});

@@ -30,6 +30,7 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
   }) async {
     try {
       await _remoteSource.addDua(
+        uid: authRepository.user!.id,
         text: text,
         tags: tags,
         reward: reward,

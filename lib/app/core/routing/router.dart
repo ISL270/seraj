@@ -13,7 +13,7 @@ import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
-import 'package:athar/app/features/duas/presentation/duas_screen.dart';
+import 'package:athar/app/features/dua/presentation/dua_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/login/cubit/login_cubit.dart';
 import 'package:athar/app/features/login/login_screen.dart';
