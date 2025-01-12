@@ -192,7 +192,7 @@ class _PrioritySelectorState extends State<_PrioritySelector> {
       padding: EdgeInsets.symmetric(horizontal: 12.w),
       child: PrioritySliderWithLabel(
         labelText: context.l10n.priority,
-        priorityTitle: '${sliderValue.getPriorityName(context)} ${context.l10n.saveIt}',
+        priorityTitle: '${Priority.translate(context, sliderValue)} ${context.l10n.saveIt}',
         onPriorityChanged: (value) {
           setState(() {
             sliderValue = value;
@@ -201,7 +201,7 @@ class _PrioritySelectorState extends State<_PrioritySelector> {
         priorityValue: sliderValue,
         sliderMaxValue: Priority.values.length - 1,
         sliderDivisions: Priority.values.length - 1,
-        sliderLabel: sliderValue.getPriorityName(context),
+        sliderLabel: Priority.translate(context, sliderValue),
       ),
     );
   }
