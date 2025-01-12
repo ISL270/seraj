@@ -29,7 +29,7 @@ class AddOtherCubit extends Cubit<AddOtherState> {
         text: state.other.value,
         sayer: state.sayer,
         description: state.description,
-        priority: state.sliderValue.getPriorityType(),
+        priority: Priority.fromDouble(state.sliderValue),
         lastRevisedAt: DateTime.now(),
         tags: [], // not used for now
       );
