@@ -40,4 +40,20 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
       return left(e as GenericException);
     }
   }
+
+  Future<List<Dua>> searchDua(
+    String searchTerm, {
+    required int page,
+    required int pageSize,
+  }) async {
+    final cms = await _localSource.getDuas(
+      searchTerm,
+      page: page,
+      pageSize: pageSize,
+    );
+    return cms.map((e) => e.toDomain()).toList();
+  }
+
+  @disposeMethod
+  void dispMethod() => dispose();
 }

@@ -12,6 +12,7 @@ import 'package:athar/app/features/add_other/presentation/cubit/add_other_cubit.
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
+import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
 import 'package:athar/app/features/dua/presentation/dua_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/login/cubit/login_cubit.dart';
@@ -113,7 +114,12 @@ final appRouter = GoRouter(
             GoRoute(
               name: DuasScreen.name,
               path: '/${DuasScreen.name}',
-              pageBuilder: (context, state) => const NoTransitionPage(child: DuasScreen()),
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: BlocProvider(
+                  create: (context) => getIt.get<DuaBloc>(),
+                  child: const DuasScreen(),
+                ),
+              ),
               routes: [
                 GoRoute(
                   name: AddDuaScreen.name,
