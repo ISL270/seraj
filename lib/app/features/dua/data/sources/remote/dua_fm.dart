@@ -1,4 +1,4 @@
-part of '../../sources/remote/dua_firestore_source.dart';
+part of 'dua_firestore_source.dart';
 
 @JsonSerializable()
 final class DuaFM implements RemoteModel<Dua> {

@@ -8,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part '../../model/remote/dua_fm.dart';
+part 'dua_fm.dart';
 part 'dua_firestore_source.g.dart';
 
 @singleton
