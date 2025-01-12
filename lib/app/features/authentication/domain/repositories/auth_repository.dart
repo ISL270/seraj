@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/features/authentication/data/models/remote/auth_exceptions.dart';
+import 'package:athar/app/features/authentication/domain/models/auth_state.dart';
 import 'package:athar/app/features/authentication/domain/models/user.dart';
 import 'package:athar/app/features/authentication/domain/repositories/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
@@ -10,6 +11,17 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/subjects.dart';
 
+/// Manages authentication-related operations and user state in the application.
+///
+/// This repository handles user authentication processes including:
+/// - Sign up
+/// - Sign in
+/// - Sign out
+/// - Google Sign In
+/// - User state management
+///
+/// It uses Firebase Authentication and maintains a reactive stream of [AuthState]
+/// to track the current authentication status.
 @singleton
 final class AuthRepository {
   AuthRepository(
@@ -21,18 +33,45 @@ final class AuthRepository {
   final fire_auth.FirebaseAuth _fireAuth;
   final UserRepository _userRepository;
 
-  // Using BehaviorSubject, any new listeners when begin listening to the stream,
-  // they immediately get the lastly emitted Stream of data.
-  final _stream = BehaviorSubject<User?>.seeded(null);
+  final _subject = BehaviorSubject<AuthState>.seeded(const Unauthenticated());
 
-  Stream<User?> getUpdates() => _stream.asBroadcastStream();
+  /// Provides a broadcast stream of authentication state changes
+  ///
+  /// Listeners can subscribe to this stream to react to authentication status updates
+  ///
+  /// Returns a [Stream] of [AuthState]
+  Stream<AuthState> stream() => _subject.asBroadcastStream();
 
-  User? get user => _stream.value;
+  /// Gets the current authentication state
+  ///
+  /// Returns the latest [AuthState] from the subject
+  AuthState get authState => _subject.value;
 
+  /// Gets the current user
+  ///
+  /// Returns the user associated with the current authentication state
+  /// or `null` if the state is [Unauthenticated]
+  User? get user => switch (authState) {
+        Authenticated(user: final user) => user,
+        Unauthenticated() => null,
+      };
+
+  /// Initializes the authentication repository
+  ///
+  /// Attempts to retrieve a local user and update the authentication state:
+  /// - If a local user exists, sets state to [Authenticated]
+  /// - If no local user is found, sets state to [Unauthenticated]
+  ///
+  /// This method is called automatically after construction
   @PostConstruct(preResolve: true)
   Future<void> init() async {
     final user = await _userRepository.geUserLocal();
-    _stream.add(user);
+
+    if (user != null) {
+      _subject.add(Authenticated(user, false));
+    } else {
+      _subject.add(const Unauthenticated());
+    }
   }
 
   /// Creates a new user with the provided [email] and [password].
@@ -62,7 +101,7 @@ final class AuthRepository {
       await res.fold(
         (e) => throw SignUpWithEmailAndPasswordException.fromCode(e.code),
         (user) async {
-          _stream.add(user);
+          _subject.add(Authenticated(user, true));
           await _userRepository.saveUserLocally(user);
         },
       );
@@ -99,7 +138,7 @@ final class AuthRepository {
       await res.fold(
         (e) => throw LogInWithEmailAndPasswordException.fromCode(e.code),
         (user) async {
-          _stream.add(user);
+          _subject.add(Authenticated(user, true));
           await _userRepository.saveUserLocally(user);
         },
       );
@@ -147,7 +186,7 @@ final class AuthRepository {
       await res.fold(
         (e) => throw LogInWithGoogleException.fromCode(e.code),
         (user) async {
-          _stream.add(user);
+          _subject.add(Authenticated(user, true));
           await _userRepository.saveUserLocally(user);
         },
       );
@@ -165,7 +204,7 @@ final class AuthRepository {
         _fireAuth.signOut(),
         _googleSignIn.signOut(),
       ]);
-      _stream.add(null);
+      _subject.add(const Unauthenticated());
       await _userRepository.deleteLocalUser();
     } catch (_) {
       throw BusinessException.unkown();
@@ -174,6 +213,6 @@ final class AuthRepository {
 
   @disposeMethod
   void dispose() {
-    _stream.close();
+    _subject.close();
   }
 }
