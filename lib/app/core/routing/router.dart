@@ -2,10 +2,9 @@ import 'package:athar/app/core/extension_methods/getit_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/routing/go_router_refresh_stream.dart';
 import 'package:athar/app/core/routing/go_router_state_extension.dart';
-import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:athar/app/features/athars/presentation/athars_screen.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/duas/presentation/duas_screen.dart';
-import 'package:athar/app/features/athars/presentation/athars_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/login/cubit/login_cubit.dart';
 import 'package:athar/app/features/login/login_screen.dart';
@@ -98,7 +97,7 @@ final appRouter = GoRouter(
     // If the user is not logged in, they need to login.
     // Bundle the location the user is coming from into a query parameter
     final fromloc = (state.isGoingToHome || state.isLoggingOut) ? '' : state.matchedLocation;
-    if (!getIt.authBloc.state.isAuthenticated) {
+    if (!getIt.authBloc.state.data!.isAuthenticated) {
       return state.isGoingToSplash || state.isLoggingIn || state.isSigningUp
           ? null
           : state.namedLocation(

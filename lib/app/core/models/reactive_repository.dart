@@ -8,20 +8,30 @@ import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/core/isar/isar_source.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/core/models/reactive_firestore_source.dart';
+import 'package:athar/app/features/authentication/domain/models/auth_state.dart';
 import 'package:athar/app/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/subjects.dart';
 
-/// An abstract reactive repository that synchronizes data between remote and local sources
+/// An abstract reactive repository that manages synchronization between
+/// remote (Firestore) and local (Isar) data sources.
 ///
-/// This generic class provides a comprehensive data management strategy:
-/// - Handles authentication-based data synchronization
-/// - Manages remote (Firestore) and local (Isar) data sources
-/// - Provides a reactive stream of data with status updates
+/// This generic class provides a robust mechanism for:
+/// - Handling authentication-based data synchronization
+/// - Managing real-time updates from remote sources
+/// - Caching and local storage of domain models
+/// - Tracking data synchronization status
 ///
-/// [D] represents the Domain model type
-/// [R] represents the Remote model type, which must extend [RemoteModel<D>]
-/// [C] represents the Cache model type, which must extend [CacheModel<D>]
+/// Key Generic Type Parameters:
+/// - [D]: Domain model type
+/// - [R]: Remote model type (implements RemoteModel<D>)
+/// - [C]: Cache model type (implements CacheModel<D>)
+///
+/// Main Features:
+/// - Automatic data synchronization on authentication changes
+/// - Status tracking (Initial, Loading, Success, Failure)
+/// - Selective data updates for authorized users
+/// - Error handling and cache management
 ///
 /// For a visual representation check -> https://shrktna.atlassian.net/wiki/spaces/CA/whiteboard/36896771?atl_f=PAGETREE
 abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheModel<D>> {
@@ -37,75 +47,76 @@ abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheMo
     required this.remoteSource,
     required this.localSource,
   }) {
-    // Sets up initial data synchronization and stream management
     _createSubject();
     _init();
   }
 
   /// Behavior subject to manage and broadcast data status
-  late BehaviorSubject<Status<List<D>>> _subject;
+  late BehaviorSubject<VoidStatus> _subject;
 
-  /// Creates a new behavior subject with an initial state
-  void _createSubject() => _subject = BehaviorSubject<Status<List<D>>>.seeded(Initial<List<D>>());
+  void _createSubject() => _subject = BehaviorSubject<VoidStatus>.seeded(const Initial());
 
   /// Provides a broadcast stream of data status updates
   ///
   /// Allows multiple listeners to receive data synchronization updates
-  Stream<Status<List<D>>> getUpdates() => _subject.asBroadcastStream();
+  Stream<VoidStatus> stream() => _subject.asBroadcastStream();
 
-  /// Optional method for additional initialization logic
-  ///
-  /// Can be overridden by subclasses to add custom initialization steps
   @protected
   Future<void> toBeAwaited() => Future.value();
 
-  /// Initializes data synchronization based on user authentication
+  /// Initializes the repository's data synchronization mechanism
   ///
-  /// Handles:
-  /// - User authentication state changes
-  /// - Remote data subscription
-  /// - Local data caching
-  /// - Status updates
+  /// Core responsibilities:
+  /// 1. Listen to authentication state changes
+  /// 2. Manage remote and local data sources
+  /// 3. Handle data synchronization and status updates
   void _init() {
-    authRepository.getUpdates().listen((user) async {
-      // Clear data if user signs out and abandon the process
-      if (user == null) {
+    authRepository.stream().listen((authState) async {
+      // Clear data and close subject for unauthenticated users
+      if (authState.isUnauthenticated) {
         unawaited(remoteSource.cancelRemoteSub());
         unawaited(localSource.clear());
         _closeSubject();
         return;
       }
 
-      // Reinitialize subject if closed
+      // Recreate subject if closed
       if (_subject.isClosed) _createSubject();
 
-      _subject.add(const Loading());
+      // Indicate loading state
+      _subject.add(_subject.value.toLoading());
 
+      // Waits for any external tasks to complete
       await toBeAwaited();
 
       // Subscribe to remote data source
-      remoteSource.subToRemote(user);
+      remoteSource.subToRemote(authState as Authenticated);
 
-      // Listen to remote data updates
+      // Listen to remote updates and synchronize local data
       remoteSource.listToBeUpdated.listen(
         (remoteModels) async {
+          // Convert remote models to domain models
           final domainModels = remoteModels.map((e) => e.toDomain()).toList();
+
+          // Update local storage
           await localSource.putAll(domainModels);
-          _subject.add(Success(domainModels));
+
+          // Mark synchronization as successful
+          _subject.add(_subject.value.toSuccess(null));
         },
         onError: (e) {
           // Ignore cache-related errors
           if ((e as GenericException).code == 'is_from_cache') {
-            _subject.add(const Success([]));
+            _subject.add(_subject.value.toSuccess(null));
             return;
           }
-          _subject.add(Failure(e));
+          _subject.add(_subject.value.toFailure(e));
         },
       );
     });
   }
 
-  /// Closes the existing subject if it's open
+  /// Closes the status subject if it's open
   void _closeSubject() {
     if (_subject.isClosed) return;
     _subject.close();
@@ -113,10 +124,12 @@ abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheMo
 
   /// Disposes of repository resources
   ///
-  /// Closes remote source and subject to prevent memory leaks
+  /// Responsibilities:
+  /// - Cancel remote subscriptions
+  /// - Close status subject
   @protected
   void dispose() {
-    remoteSource.dispose();
+    remoteSource.cancelRemoteSub();
     _closeSubject();
   }
 }
