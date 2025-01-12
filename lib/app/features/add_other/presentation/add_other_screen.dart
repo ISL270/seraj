@@ -175,12 +175,12 @@ class _PrioritySliderWithLabelBlocBuilder extends StatelessWidget {
       builder: (context, state) {
         return PrioritySliderWithLabel(
           labelText: context.l10n.priority,
-          priorityTitle: '${state.sliderValue.getPriorityName(context)} ${context.l10n.saveIt}',
+          priorityTitle: '${Priority.translate(context, state.sliderValue)} ${context.l10n.saveIt}',
           onPriorityChanged: (value) => context.read<AddOtherCubit>().sliderPriorityChanged(value),
           priorityValue: state.sliderValue,
           sliderMaxValue: Priority.values.length - 1,
           sliderDivisions: Priority.values.length - 1,
-          sliderLabel: state.sliderValue.getPriorityName(context),
+          sliderLabel: Priority.translate(context, state.sliderValue),
         );
       },
     );
