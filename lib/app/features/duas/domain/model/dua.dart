@@ -7,19 +7,12 @@ final class Dua extends IslamicText with EquatableMixin {
   const Dua({
     required super.id,
     required super.text,
-    super.priority,
-    this.reward,
-    super.description,
     super.tags,
+    this.reward,
+    super.priority,
+    super.description,
   });
 
   @override
-  List<Object?> get props => [
-        id,
-        text,
-        tags,
-        reward,
-        priority,
-        description,
-      ];
+  List<Object?> get props => [super.props, reward];
 }
