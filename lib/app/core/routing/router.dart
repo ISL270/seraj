@@ -11,7 +11,6 @@ import 'package:athar/app/features/add_other/presentation/add_other_screen.dart'
 import 'package:athar/app/features/add_other/presentation/cubit/add_other_cubit.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
-import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
 import 'package:athar/app/features/dua/presentation/dua_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
@@ -64,11 +63,8 @@ final appRouter = GoRouter(
             GoRoute(
               name: DaleelScreen.name,
               path: '/${DaleelScreen.name}',
-              pageBuilder: (context, state) => NoTransitionPage(
-                child: BlocProvider(
-                  create: (context) => DaleelBloc(),
-                  child: const DaleelScreen(),
-                ),
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: DaleelScreen(),
               ),
               routes: [
                 GoRoute(
