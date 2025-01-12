@@ -1,8 +1,10 @@
 import 'package:athar/app/core/models/domain/islamic_text.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
+import 'package:athar/app/features/daleel/domain/models/priority.dart';
 
 sealed class Daleel extends IslamicText {
   final String? sayer;
+  final Priority priority;
   final DateTime lastRevisedAt;
 
   const Daleel({
@@ -11,9 +13,17 @@ sealed class Daleel extends IslamicText {
     required this.lastRevisedAt,
     this.sayer,
     super.tags,
-    super.priority,
     super.description,
+    this.priority = Priority.normal,
   });
+
+  @override
+  List<Object?> get props => [
+        super.props,
+        sayer,
+        priority,
+        lastRevisedAt,
+      ];
 }
 
 final class Hadith extends Daleel {
@@ -31,6 +41,13 @@ final class Hadith extends Daleel {
     super.description,
     this.authenticity,
   });
+
+  @override
+  List<Object?> get props => [
+        super.props,
+        extraction,
+        authenticity,
+      ];
 }
 
 final class Athar extends Daleel {

@@ -29,7 +29,7 @@ class AddAtharCubit extends Cubit<AddAtharState> {
         sayer: state.sayer,
         text: state.athar.value,
         description: state.description,
-        priority: state.sliderValue.getPriorityType(),
+        priority: Priority.fromDouble(state.sliderValue),
         tags: [], // not used for now
       );
       emit(state.copyWith(status: const Success(null)));

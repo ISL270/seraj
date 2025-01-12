@@ -8,7 +8,6 @@ import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dar
 import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
 import 'package:athar/app/features/add_other/presentation/add_other_screen.dart';
 import 'package:athar/app/features/add_other/presentation/cubit/add_other_cubit.dart';
-import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
@@ -149,7 +148,7 @@ final appRouter = GoRouter(
     // If the user is not logged in, they need to login.
     // Bundle the location the user is coming from into a query parameter
     final fromloc = (state.isGoingToHome || state.isLoggingOut) ? '' : state.matchedLocation;
-    if (!getIt.authBloc.state.isAuthenticated) {
+    if (!getIt.authBloc.state.data!.isAuthenticated) {
       return state.isGoingToSplash || state.isLoggingIn || state.isSigningUp
           ? null
           : state.namedLocation(
