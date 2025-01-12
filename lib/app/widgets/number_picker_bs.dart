@@ -2,18 +2,30 @@ import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 class NumberPickerBS extends StatefulWidget {
-  const NumberPickerBS._({required this.isDecimal, required this.initial});
+  const NumberPickerBS._({required this.isDecimal, required this.initial, required this.renegeMax});
+
   final bool isDecimal;
   final double initial;
+  final int renegeMax;
 
-  static Future<double?> show(BuildContext context, {bool isDecimal = false, double initial = 0}) =>
+  static Future<double?> show(
+    BuildContext context, {
+    bool isDecimal = false,
+    double initial = 0,
+    int renegeMax = 100,
+  }) =>
       showModalBottomSheet<double>(
         context: context,
-        builder: (context) => NumberPickerBS._(isDecimal: isDecimal, initial: initial),
+        builder: (context) => NumberPickerBS._(
+          isDecimal: isDecimal,
+          initial: initial,
+          renegeMax: renegeMax,
+        ),
       );
 
   @override
@@ -40,20 +52,20 @@ class _NumberPickerBSState extends State<NumberPickerBS> {
           alignment: Alignment.topRight,
           children: [
             SizedBox(
-              height: 150,
+              height: 150.h,
               width: double.infinity,
               child: widget.isDecimal
                   ? DecimalNumberPicker(
                       value: _currentValue,
-                      minValue: 0,
-                      maxValue: 100,
+                      minValue: 1,
+                      maxValue: widget.renegeMax,
                       haptics: true,
                       onChanged: (value) => setState(() => _currentValue = value),
                     )
                   : NumberPicker(
                       value: _currentValue.toInt(),
-                      minValue: 0,
-                      maxValue: 100,
+                      minValue: 1,
+                      maxValue: widget.renegeMax,
                       haptics: true,
                       onChanged: (value) => setState(() => _currentValue = value.toDouble()),
                     ),

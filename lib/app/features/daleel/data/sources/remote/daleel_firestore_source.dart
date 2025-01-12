@@ -66,7 +66,8 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
     required Priority priority,
     required List<String> tags,
     required String surahOfAya,
-    required String nomOfAya,
+    required int firstAya,
+    required int lastAya,
     required String? ayaExplain,
     required DateTime? lastRevisedAt,
   }) async {
@@ -78,7 +79,8 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
         firestoreSvc.aya.priority: priority.name,
         firestoreSvc.aya.lastRevisedAt: lastRevisedAt,
         firestoreSvc.aya.surahOfAya: surahOfAya,
-        firestoreSvc.aya.nomOfAya: nomOfAya,
+        firestoreSvc.aya.firstAya: firstAya,
+        firestoreSvc.aya.lastAya: lastAya,
         firestoreSvc.aya.sayer: sayer,
         firestoreSvc.aya.description: ayaExplain,
       });

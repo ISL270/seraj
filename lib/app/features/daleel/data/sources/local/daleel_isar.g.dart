@@ -28,55 +28,60 @@ const DaleelIsarSchema = CollectionSchema(
       name: r'description',
       type: IsarType.string,
     ),
-    r'hadithAuthenticity': PropertySchema(
+    r'firstAya': PropertySchema(
       id: 2,
+      name: r'firstAya',
+      type: IsarType.long,
+    ),
+    r'hadithAuthenticity': PropertySchema(
+      id: 3,
       name: r'hadithAuthenticity',
       type: IsarType.string,
       enumMap: _DaleelIsarhadithAuthenticityEnumValueMap,
     ),
     r'hadithExtraction': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'hadithExtraction',
       type: IsarType.string,
     ),
     r'id': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'id',
       type: IsarType.string,
     ),
+    r'lastAya': PropertySchema(
+      id: 6,
+      name: r'lastAya',
+      type: IsarType.long,
+    ),
     r'lastRevisedAt': PropertySchema(
-      id: 5,
+      id: 7,
       name: r'lastRevisedAt',
       type: IsarType.dateTime,
     ),
-    r'nomOfAya': PropertySchema(
-      id: 6,
-      name: r'nomOfAya',
-      type: IsarType.string,
-    ),
     r'priority': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'priority',
       type: IsarType.string,
       enumMap: _DaleelIsarpriorityEnumValueMap,
     ),
     r'sayer': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'sayer',
       type: IsarType.string,
     ),
     r'suraOfAya': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'suraOfAya',
       type: IsarType.string,
     ),
     r'tags': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'tags',
       type: IsarType.stringList,
     ),
     r'text': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'text',
       type: IsarType.string,
     )
@@ -121,12 +126,6 @@ int _daleelIsarEstimateSize(
     }
   }
   bytesCount += 3 + object.id.length * 3;
-  {
-    final value = object.nomOfAya;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
   bytesCount += 3 + object.priority.name.length * 3;
   {
     final value = object.sayer;
@@ -159,16 +158,17 @@ void _daleelIsarSerialize(
 ) {
   writer.writeString(offsets[0], object.daleelType.name);
   writer.writeString(offsets[1], object.description);
-  writer.writeString(offsets[2], object.hadithAuthenticity?.name);
-  writer.writeString(offsets[3], object.hadithExtraction);
-  writer.writeString(offsets[4], object.id);
-  writer.writeDateTime(offsets[5], object.lastRevisedAt);
-  writer.writeString(offsets[6], object.nomOfAya);
-  writer.writeString(offsets[7], object.priority.name);
-  writer.writeString(offsets[8], object.sayer);
-  writer.writeString(offsets[9], object.suraOfAya);
-  writer.writeStringList(offsets[10], object.tags);
-  writer.writeString(offsets[11], object.text);
+  writer.writeLong(offsets[2], object.firstAya);
+  writer.writeString(offsets[3], object.hadithAuthenticity?.name);
+  writer.writeString(offsets[4], object.hadithExtraction);
+  writer.writeString(offsets[5], object.id);
+  writer.writeLong(offsets[6], object.lastAya);
+  writer.writeDateTime(offsets[7], object.lastRevisedAt);
+  writer.writeString(offsets[8], object.priority.name);
+  writer.writeString(offsets[9], object.sayer);
+  writer.writeString(offsets[10], object.suraOfAya);
+  writer.writeStringList(offsets[11], object.tags);
+  writer.writeString(offsets[12], object.text);
 }
 
 DaleelIsar _daleelIsarDeserialize(
@@ -182,19 +182,20 @@ DaleelIsar _daleelIsarDeserialize(
             reader.readStringOrNull(offsets[0])] ??
         DaleelType.hadith,
     description: reader.readStringOrNull(offsets[1]),
+    firstAya: reader.readLongOrNull(offsets[2]),
     hadithAuthenticity: _DaleelIsarhadithAuthenticityValueEnumMap[
-        reader.readStringOrNull(offsets[2])],
-    hadithExtraction: reader.readStringOrNull(offsets[3]),
-    id: reader.readString(offsets[4]),
-    lastRevisedAt: reader.readDateTime(offsets[5]),
-    nomOfAya: reader.readStringOrNull(offsets[6]),
+        reader.readStringOrNull(offsets[3])],
+    hadithExtraction: reader.readStringOrNull(offsets[4]),
+    id: reader.readString(offsets[5]),
+    lastAya: reader.readLongOrNull(offsets[6]),
+    lastRevisedAt: reader.readDateTime(offsets[7]),
     priority:
-        _DaleelIsarpriorityValueEnumMap[reader.readStringOrNull(offsets[7])] ??
+        _DaleelIsarpriorityValueEnumMap[reader.readStringOrNull(offsets[8])] ??
             Priority.normal,
-    sayer: reader.readStringOrNull(offsets[8]),
-    suraOfAya: reader.readStringOrNull(offsets[9]),
-    tags: reader.readStringList(offsets[10]) ?? [],
-    text: reader.readString(offsets[11]),
+    sayer: reader.readStringOrNull(offsets[9]),
+    suraOfAya: reader.readStringOrNull(offsets[10]),
+    tags: reader.readStringList(offsets[11]) ?? [],
+    text: reader.readString(offsets[12]),
   );
   return object;
 }
@@ -213,27 +214,29 @@ P _daleelIsarDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
+      return (reader.readLongOrNull(offset)) as P;
+    case 3:
       return (_DaleelIsarhadithAuthenticityValueEnumMap[
           reader.readStringOrNull(offset)]) as P;
-    case 3:
-      return (reader.readStringOrNull(offset)) as P;
     case 4:
-      return (reader.readString(offset)) as P;
-    case 5:
-      return (reader.readDateTime(offset)) as P;
-    case 6:
       return (reader.readStringOrNull(offset)) as P;
+    case 5:
+      return (reader.readString(offset)) as P;
+    case 6:
+      return (reader.readLongOrNull(offset)) as P;
     case 7:
+      return (reader.readDateTime(offset)) as P;
+    case 8:
       return (_DaleelIsarpriorityValueEnumMap[
               reader.readStringOrNull(offset)] ??
           Priority.normal) as P;
-    case 8:
-      return (reader.readStringOrNull(offset)) as P;
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
-      return (reader.readStringList(offset) ?? []) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 11:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 12:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -707,6 +710,77 @@ extension DaleelIsarQueryFilter
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> firstAyaIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'firstAya',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      firstAyaIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'firstAya',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> firstAyaEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'firstAya',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      firstAyaGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'firstAya',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> firstAyaLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'firstAya',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> firstAyaBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'firstAya',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
       hadithAuthenticityIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -1145,6 +1219,77 @@ extension DaleelIsarQueryFilter
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> lastAyaIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'lastAya',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      lastAyaIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'lastAya',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> lastAyaEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'lastAya',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      lastAyaGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'lastAya',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> lastAyaLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'lastAya',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> lastAyaBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'lastAya',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
       lastRevisedAtEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
@@ -1197,157 +1342,6 @@ extension DaleelIsarQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> nomOfAyaIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'nomOfAya',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      nomOfAyaIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'nomOfAya',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> nomOfAyaEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'nomOfAya',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      nomOfAyaGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'nomOfAya',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> nomOfAyaLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'nomOfAya',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> nomOfAyaBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'nomOfAya',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      nomOfAyaStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'nomOfAya',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> nomOfAyaEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'nomOfAya',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> nomOfAyaContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'nomOfAya',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> nomOfAyaMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'nomOfAya',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      nomOfAyaIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'nomOfAya',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      nomOfAyaIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'nomOfAya',
-        value: '',
       ));
     });
   }
@@ -2170,6 +2164,18 @@ extension DaleelIsarQuerySortBy
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByFirstAya() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'firstAya', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByFirstAyaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'firstAya', Sort.desc);
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy>
       sortByHadithAuthenticity() {
     return QueryBuilder.apply(this, (query) {
@@ -2209,6 +2215,18 @@ extension DaleelIsarQuerySortBy
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByLastAya() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastAya', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByLastAyaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastAya', Sort.desc);
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByLastRevisedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastRevisedAt', Sort.asc);
@@ -2218,18 +2236,6 @@ extension DaleelIsarQuerySortBy
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByLastRevisedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastRevisedAt', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByNomOfAya() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'nomOfAya', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByNomOfAyaDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'nomOfAya', Sort.desc);
     });
   }
 
@@ -2320,6 +2326,18 @@ extension DaleelIsarQuerySortThenBy
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByFirstAya() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'firstAya', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByFirstAyaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'firstAya', Sort.desc);
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy>
       thenByHadithAuthenticity() {
     return QueryBuilder.apply(this, (query) {
@@ -2359,6 +2377,18 @@ extension DaleelIsarQuerySortThenBy
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByLastAya() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastAya', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByLastAyaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastAya', Sort.desc);
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByLastRevisedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastRevisedAt', Sort.asc);
@@ -2368,18 +2398,6 @@ extension DaleelIsarQuerySortThenBy
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByLastRevisedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastRevisedAt', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByNomOfAya() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'nomOfAya', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByNomOfAyaDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'nomOfAya', Sort.desc);
     });
   }
 
@@ -2448,6 +2466,12 @@ extension DaleelIsarQueryWhereDistinct
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByFirstAya() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'firstAya');
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByHadithAuthenticity(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2471,16 +2495,15 @@ extension DaleelIsarQueryWhereDistinct
     });
   }
 
-  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByLastRevisedAt() {
+  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByLastAya() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'lastRevisedAt');
+      return query.addDistinctBy(r'lastAya');
     });
   }
 
-  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByNomOfAya(
-      {bool caseSensitive = true}) {
+  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByLastRevisedAt() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'nomOfAya', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'lastRevisedAt');
     });
   }
 
@@ -2539,6 +2562,12 @@ extension DaleelIsarQueryProperty
     });
   }
 
+  QueryBuilder<DaleelIsar, int?, QQueryOperations> firstAyaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'firstAya');
+    });
+  }
+
   QueryBuilder<DaleelIsar, HadithAuthenticity?, QQueryOperations>
       hadithAuthenticityProperty() {
     return QueryBuilder.apply(this, (query) {
@@ -2559,15 +2588,15 @@ extension DaleelIsarQueryProperty
     });
   }
 
-  QueryBuilder<DaleelIsar, DateTime, QQueryOperations> lastRevisedAtProperty() {
+  QueryBuilder<DaleelIsar, int?, QQueryOperations> lastAyaProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'lastRevisedAt');
+      return query.addPropertyName(r'lastAya');
     });
   }
 
-  QueryBuilder<DaleelIsar, String?, QQueryOperations> nomOfAyaProperty() {
+  QueryBuilder<DaleelIsar, DateTime, QQueryOperations> lastRevisedAtProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'nomOfAya');
+      return query.addPropertyName(r'lastRevisedAt');
     });
   }
 

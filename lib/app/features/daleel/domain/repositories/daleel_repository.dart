@@ -77,7 +77,8 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
     required String text,
     required String ayaExplain,
     required String surahOfAya,
-    required String nomOfAya,
+    required int firstAya,
+    required int lastAya,
     required Priority priority,
     required DateTime lastRevisedAt,
     required List<String> tags,
@@ -91,7 +92,8 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
         priority: priority,
         tags: tags,
         surahOfAya: surahOfAya,
-        nomOfAya: nomOfAya,
+        firstAya: firstAya,
+        lastAya: lastAya,
         ayaExplain: ayaExplain,
         lastRevisedAt: lastRevisedAt,
       );
@@ -99,5 +101,9 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
     } catch (e) {
       return left(e as GenericException);
     }
+  }
+
+  Future<bool> isAyahExist({required String surahName, required int ayahNumber}) async {
+    return await _localSource.getAyaByText(surahName: surahName, ayahNumber: ayahNumber) != null;
   }
 }

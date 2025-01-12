@@ -24,7 +24,8 @@ final class DaleelIsar extends CacheModel<Daleel> {
   // Hadith related
   String? hadithExtraction;
   String? suraOfAya;
-  String? nomOfAya;
+  int? firstAya;
+  int? lastAya;
   @Enumerated(EnumType.name)
   HadithAuthenticity? hadithAuthenticity;
 
@@ -39,7 +40,8 @@ final class DaleelIsar extends CacheModel<Daleel> {
     this.description,
     this.hadithExtraction,
     this.hadithAuthenticity,
-    this.nomOfAya,
+    this.firstAya,
+    this.lastAya,
     this.suraOfAya,
   });
 
@@ -71,7 +73,8 @@ final class DaleelIsar extends CacheModel<Daleel> {
             priority: priority,
             description: description,
             surahOfAya: suraOfAya,
-            nomOfAya: nomOfAya,
+            firstAya: firstAya,
+            lastAya: lastAya,
             tags: tags,
             lastRevisedAt: lastRevisedAt,
             sayer: sayer,
@@ -98,7 +101,8 @@ final class DaleelIsar extends CacheModel<Daleel> {
             description: daleel.description,
             daleelType: DaleelType.aya,
             suraOfAya: daleel.surahOfAya,
-            nomOfAya: daleel.nomOfAya,
+            firstAya: daleel.firstAya,
+            lastAya: daleel.lastAya,
             sayer: daleel.sayer,
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,

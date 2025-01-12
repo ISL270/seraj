@@ -7,6 +7,7 @@ environment:
   sdk: ^3.5.0
 
 dependencies:
+  advanced_search: ^2.2.4
   bloc: ^8.1.4
   bloc_concurrency: ^0.2.5
   cached_network_image: ^3.4.0
@@ -43,6 +44,7 @@ dependencies:
   isar: ^3.1.0+1
   isar_flutter_libs: ^3.1.0+1
   json_annotation: ^4.9.0
+  material_floating_search_bar_2: ^0.5.0
   modal_progress_hud_nsn: ^0.5.1
   numberpicker: ^2.1.2
   path_provider: ^2.1.5

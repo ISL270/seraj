@@ -43,5 +43,6 @@ final class _Athar extends _Daleel {}
 
 final class _Aya extends _Daleel {
   late final surahOfAya = 'surahOfAya';
-  late final nomOfAya = 'nomOfAya';
+  late final firstAya = 'firstAya';
+  late final lastAya = 'lastAya';
 }

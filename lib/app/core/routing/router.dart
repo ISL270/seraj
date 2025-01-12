@@ -7,7 +7,6 @@ import 'package:athar/app/features/add_athar/presentation/cubit/add_athar_cubit.
 import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dart';
 import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
 import 'package:athar/app/features/aya/presentation/add_new_ayah.dart';
-import 'package:athar/app/features/aya/presentation/aya_search.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
@@ -23,7 +22,6 @@ import 'package:athar/app/features/splash/bloc/splash_bloc.dart';
 import 'package:athar/app/features/splash/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_quran/flutter_quran.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
@@ -101,19 +99,8 @@ final appRouter = GoRouter(
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) {
                     // Pass the Aya model using the `extra` parameter
-                    final ayah = state.extra! as List<Ayah>;
-                    return CupertinoPage(
-                      child: AddNewAyah(ayah: ayah),
-                    );
-                  },
-                ),
-                GoRoute(
-                  name: AyaSearch.name,
-                  path: AyaSearch.name,
-                  parentNavigatorKey: _rootNavigatorKey,
-                  pageBuilder: (context, state) {
                     return const CupertinoPage(
-                      child: AyaSearch(),
+                      child: AddNewAyah(),
                     );
                   },
                 ),
