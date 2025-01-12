@@ -5,24 +5,28 @@ import 'dart:async';
 import 'package:athar/app/core/firestore/firestore_helper.dart';
 import 'package:athar/app/core/firestore/firestore_service.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
+import 'package:athar/app/features/authentication/domain/models/auth_state.dart';
 import 'package:athar/app/features/authentication/domain/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
-/// An abstract reactive data source for Firestore collections
+/// An abstract base class for creating reactive Firestore data sources.
 ///
-/// This class provides a generic, reusable mechanism for:
-/// - Subscribing to real-time Firestore collection updates
-/// - Converting Firestore documents to domain models
-/// - Managing stream subscriptions
-/// - Handling errors and edge cases
+/// This class provides a generic mechanism for:
+/// - Subscribing to Firestore collection updates
+/// - Transforming Firestore document snapshots into domain models
+/// - Managing stream subscriptions for real-time data synchronization
 ///
-/// [FM] represents the Firebase Model type to be converted from Firestore documents
+/// Key Features:
+/// - Supports real-time updates from Firestore
+/// - Handles caching and fresh login scenarios
+/// - Provides error handling for network and Firestore-related issues
+///
+/// [FM] refers to Firestore Model.
 abstract base class ReactiveFirestoreSource<FM> with FirestoreHelper {
   @protected
   final FirestoreService firestoreSvc;
 
-  /// Constructor initializes the stream creation
   ReactiveFirestoreSource(this.firestoreSvc) {
     _createStream();
   }
@@ -47,7 +51,7 @@ abstract base class ReactiveFirestoreSource<FM> with FirestoreHelper {
   /// Allows cancellation of the real-time listener
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _collectionSubscription;
 
-  /// Convert a Firestore document to a domain model
+  /// Converts a Firestore document to a domain model
   ///
   /// [docID] The unique identifier of the Firestore document
   /// [json] The raw document data to be converted
@@ -64,62 +68,59 @@ abstract base class ReactiveFirestoreSource<FM> with FirestoreHelper {
   @protected
   Stream<QuerySnapshot<Map<String, dynamic>>> snapshotQuery(User user);
 
-  /// Subscribe to remote Firestore collection updates
+  /// Subscribes to remote Firestore collection updates
   ///
-  /// Handles:
-  /// - Stream recreation if closed
-  /// - Listening to collection changes
-  /// - Converting documents to models
-  /// - Error handling
-  ///
-  /// [user] The user context for the collection query
-  void subToRemote(User user) {
-    // Recreate stream if it has been closed
+  /// This method:
+  /// - Handles stream recreation if previously closed
+  /// - Listens to Firestore document changes
+  /// - Transforms documents to domain models
+  /// - Manages caching and fresh login scenarios
+  void subToRemote(Authenticated authState) {
+    // Recreate the stream if it was previously closed
     if (_updatedListCntrlr.isClosed) _createStream();
 
-    // Subscribe to the Firestore collection query
-    _collectionSubscription = snapshotQuery(user).listen(
+    // Subscribe to the Firestore query for the authenticated user
+    _collectionSubscription = snapshotQuery(authState.user).listen(
       (snapshot) {
-        // Prevent processing if snapshot is from local cache
-        if (snapshot.docChanges.isNotEmpty && snapshot.metadata.isFromCache) {
+        // Check if the snapshot is from cache and not a fresh login
+        if (snapshot.metadata.isFromCache && !authState.isFreshLogin) {
+          // Add an error for stale cached data
           _updatedListCntrlr.addError(const BusinessException(code: 'is_from_cache'));
         } else {
+          // List to store transformed models
           final toBeUpdated = <FM>[];
 
           for (final change in snapshot.docChanges) {
             final json = change.doc.data() ?? {};
 
-            // Convert non-empty documents to models
             if (json.isNotEmpty) {
+              // Convert Firestore document to domain model
               toBeUpdated.add(fromJson(change.doc.id, json));
             }
           }
 
-          // Emit the list of updated models
+          // Add the list of transformed models to the stream
           _updatedListCntrlr.sink.add(toBeUpdated);
         }
       },
       onError: (e) {
         if (e is FirebaseException) {
+          // Convert Firestore exceptions to business exceptions
           throw BusinessException(code: e.code, message: e.message);
         }
+        // Throw a generic network exception for unhandled errors
         throw NetworkException.unkown();
       },
     );
   }
 
-  /// Cancel the active remote subscription
-  ///
-  /// Closes the stream controller and cancels Firestore listener
+  /// This method:
+  /// - Closes the stream controller if not already closed
+  /// - Cancels the active Firestore collection subscription
   Future<void> cancelRemoteSub() async {
-    // Close stream if not already closed
     if (!_updatedListCntrlr.isClosed) {
       await _updatedListCntrlr.close();
     }
-    // Cancel Firestore subscription
     await _collectionSubscription?.cancel();
   }
-
-  /// Cleanup method to ensure resources are released
-  void dispose() => cancelRemoteSub();
 }
