@@ -36,7 +36,6 @@ class AddDuaCubit extends Cubit<AddDuaState> {
         text: state.dua.value,
         description: state.description,
         reward: state.reward.value,
-        priority: Priority.fromDouble(state.sliderValue),
       );
       emit(state.copyWith(status: const Success('Saved Dua Successfully')));
     } catch (e) {
