@@ -118,7 +118,7 @@ sealed class DaleelFM implements RemoteModel<Daleel> {
       };
 }
 
-@JsonSerializable(createToJson: false)
+// @JsonSerializable(createToJson: false)
 final class HadithFM extends DaleelFM {
   final String? hadithExtraction;
   final HadithAuthenticity? hadithAuthenticity;
@@ -153,7 +153,7 @@ final class HadithFM extends DaleelFM {
       _$HadithFMFromJson(docID, json);
 }
 
-@JsonSerializable(createToJson: false)
+// @JsonSerializable(createToJson: false)
 final class AtharFM extends DaleelFM {
   const AtharFM({
     required super.id,
@@ -181,7 +181,7 @@ final class AtharFM extends DaleelFM {
       _$AtharFMFromJson(docID, json);
 }
 
-@JsonSerializable(createToJson: false)
+// @JsonSerializable(createToJson: false)
 class OthersFM extends DaleelFM {
   OthersFM({
     required super.id,

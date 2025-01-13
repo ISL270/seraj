@@ -76,10 +76,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i602.UserIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i53.DaleelIsarSource>(
         () => _i53.DaleelIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i620.DuaIsarSource>(
-        () => _i620.DuaIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i387.SettingsIsarSource>(
         () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i620.DuaIsarSource>(
+        () => _i620.DuaIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i460.DaleelFirestoreSource>(
         () => _i460.DaleelFirestoreSource(gh<_i516.FirestoreService>()));
     gh.singleton<_i833.DuaFirestoreSource>(

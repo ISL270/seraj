@@ -10,6 +10,7 @@ DuaFM _$DuaFMFromJson(String docID, Map<String, dynamic> json) => DuaFM(
       id: docID,
       text: json['text'] as String,
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
+      isFavorite: json['isFavorite'] as bool,
       reward: json['reward'] as String?,
       description: json['description'] as String?,
     );

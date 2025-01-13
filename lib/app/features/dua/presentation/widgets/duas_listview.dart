@@ -14,7 +14,11 @@ class _DuasListView extends StatelessWidget {
             builder: (context, state) => switch (state.status) {
               Loading() => const Center(child: CircularProgressIndicator()),
               _ => state.duas.result.isEmpty
-                  ? Center(child: Text(context.l10n.noDua, style: context.textThemeX.medium.bold))
+                  ? Padding(
+                      padding: EdgeInsets.only(top: 20.h),
+                      child: Center(
+                          child: Text(context.l10n.noDua, style: context.textThemeX.medium.bold)),
+                    )
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -34,8 +38,7 @@ class _DuasListView extends StatelessWidget {
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             return _DuaWithNumWidget(
-                              label: state.duas.result[index].text,
-                              labelIndex: index,
+                              dua: state.duas.result[index],
                             );
                           },
                           separatorBuilder: (BuildContext context, int index) {

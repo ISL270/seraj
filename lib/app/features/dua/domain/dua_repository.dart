@@ -29,6 +29,7 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
   }) async {
     try {
       await _remoteSource.addDua(
+        isFavorite: false,
         uid: authRepository.user!.id,
         text: text,
         tags: tags,
@@ -52,6 +53,14 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
       pageSize: pageSize,
     );
     return cms.map((e) => e.toDomain()).toList();
+  }
+
+  Future<void> addToFavorite({
+    required String duaId,
+    required bool currentStatus,
+  }) async {
+    await _remoteSource.addToFavorite(
+        uid: authRepository.user!.id, duaId: duaId, currentStatus: currentStatus);
   }
 
   @disposeMethod

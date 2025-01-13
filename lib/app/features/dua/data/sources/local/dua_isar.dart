@@ -10,6 +10,7 @@ final class DuaIsar extends CacheModel<Dua> {
   String id;
   @Index(type: IndexType.value, caseSensitive: false)
   String text;
+  bool isFavorite;
   String? reward;
   String? description;
   List<String> tags;
@@ -18,6 +19,7 @@ final class DuaIsar extends CacheModel<Dua> {
     required this.id,
     required this.text,
     required this.tags,
+    required this.isFavorite,
     this.reward,
     this.description,
   });
@@ -28,11 +30,13 @@ final class DuaIsar extends CacheModel<Dua> {
         tags: domain.tags,
         reward: domain.reward,
         description: domain.description,
+        isFavorite: domain.isFavorite,
       );
 
   @override
   Dua toDomain() {
     return Dua(
+      isFavorite: isFavorite,
       id: id,
       text: text,
       tags: tags,
