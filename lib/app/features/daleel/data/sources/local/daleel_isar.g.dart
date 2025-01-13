@@ -91,7 +91,21 @@ const DaleelIsarSchema = CollectionSchema(
   deserialize: _daleelIsarDeserialize,
   deserializeProp: _daleelIsarDeserializeProp,
   idName: r'cacheID',
-  indexes: {},
+  indexes: {
+    r'text': IndexSchema(
+      id: 5145922347574273553,
+      name: r'text',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'text',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
+    )
+  },
   links: {},
   embeddedSchemas: {},
   getId: _daleelIsarGetId,
@@ -293,6 +307,14 @@ extension DaleelIsarQueryWhereSort
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhere> anyText() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'text'),
+      );
+    });
+  }
 }
 
 extension DaleelIsarQueryWhere
@@ -363,6 +385,142 @@ extension DaleelIsarQueryWhere
         upper: upperCacheID,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> textEqualTo(
+      String text) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'text',
+        value: [text],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> textNotEqualTo(
+      String text) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'text',
+              lower: [],
+              upper: [text],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'text',
+              lower: [text],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'text',
+              lower: [text],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'text',
+              lower: [],
+              upper: [text],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> textGreaterThan(
+    String text, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'text',
+        lower: [text],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> textLessThan(
+    String text, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'text',
+        lower: [],
+        upper: [text],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> textBetween(
+    String lowerText,
+    String upperText, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'text',
+        lower: [lowerText],
+        includeLower: includeLower,
+        upper: [upperText],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> textStartsWith(
+      String TextPrefix) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'text',
+        lower: [TextPrefix],
+        upper: ['$TextPrefix\u{FFFFF}'],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> textIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'text',
+        value: [''],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> textIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'text',
+              upper: [''],
+            ))
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'text',
+              lower: [''],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'text',
+              lower: [''],
+            ))
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'text',
+              upper: [''],
+            ));
+      }
     });
   }
 }

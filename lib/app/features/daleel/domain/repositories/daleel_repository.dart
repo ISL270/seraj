@@ -131,4 +131,21 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
       return left(e as GenericException);
     }
   }
+
+  Future<List<Daleel>> searchDaleel(
+    String searchTerm, {
+    required int page,
+    required int pageSize,
+  }) async {
+    final cms = await _localSource.getDaleels(
+      searchTerm,
+      page: page,
+      pageSize: pageSize,
+    );
+
+    return cms.map((e) => e.toDomain()).toList();
+  }
+
+  @disposeMethod
+  void dispMethod() => dispose();
 }

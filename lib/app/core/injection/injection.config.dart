@@ -30,6 +30,8 @@ import 'package:athar/app/features/daleel/data/sources/remote/daleel_firestore_s
     as _i460;
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart'
     as _i143;
+import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart'
+    as _i722;
 import 'package:athar/app/features/settings/data/sources/local/settings_isar_source.dart'
     as _i387;
 import 'package:athar/app/features/settings/domain/settings_repository.dart'
@@ -91,11 +93,16 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
       dispose: (i) => i.dispose(),
     );
-    gh.singleton<_i143.DaleelRepository>(() => _i143.DaleelRepository(
-          gh<_i842.AuthRepository>(),
-          gh<_i460.DaleelFirestoreSource>(),
-          gh<_i53.DaleelIsarSource>(),
-        ));
+    gh.singleton<_i143.DaleelRepository>(
+      () => _i143.DaleelRepository(
+        gh<_i842.AuthRepository>(),
+        gh<_i460.DaleelFirestoreSource>(),
+        gh<_i53.DaleelIsarSource>(),
+      ),
+      dispose: (i) => i.dispMethod(),
+    );
+    gh.factory<_i722.DaleelBloc>(
+        () => _i722.DaleelBloc(gh<_i143.DaleelRepository>()));
     gh.singleton<_i562.AuthBloc>(
         () => _i562.AuthBloc(gh<_i842.AuthRepository>()));
     gh.factory<_i397.AddHadithCubit>(
