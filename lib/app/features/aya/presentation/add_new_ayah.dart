@@ -65,7 +65,7 @@ class _AddNewAyahState extends State<AddNewAyah> {
                             ),
                             const Spacer(flex: 2),
                             Text(
-                              '${context.l10n.add} ${context.l10n.quranicverse}',
+                              context.l10n.addAyahs,
                               style: context.textThemeX.heading.bold,
                               textAlign: TextAlign.center,
                             ),
