@@ -1,5 +1,7 @@
+import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
+import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -29,8 +31,8 @@ class TagSelectionWidget extends StatelessWidget {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text(errorMessageBuilder?.call(tag) ??
-                  '$tag ${context.l10n.alreadyExists}')),
+              content:
+                  Text(errorMessageBuilder?.call(tag) ?? '$tag ${context.l10n.alreadyExists}')),
         );
       }
     }
@@ -46,7 +48,7 @@ class TagSelectionWidget extends StatelessWidget {
           focusNode: _focusNode,
           decoration: InputDecoration(
             isDense: true,
-            hintText: context.l10n.addTags,
+            hintText: context.l10n.tag,
           ),
           onSubmitted: (value) {
             _addTag(context, value.trim());
@@ -85,9 +87,17 @@ class TagSelectionWidget extends StatelessWidget {
             );
           }).toList(),
         ),
-        TextButton(
-          onPressed: onClearTags,
-          child: Text(context.l10n.delTags),
+        InkWell(
+          onTap: onClearTags,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            child: Text(
+              context.l10n.delTags,
+              style: context.textThemeX.medium.bold.copyWith(
+                color: context.colorsX.primary,
+              ),
+            ),
+          ),
         ),
       ],
     );

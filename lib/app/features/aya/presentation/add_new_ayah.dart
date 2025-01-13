@@ -54,100 +54,85 @@ class _AddNewAyahState extends State<AddNewAyah> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.h, left: 16.w, right: 16.w),
-                      child: Column(
-                        spacing: 20.h,
-                        children: [
-                          Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () => context.pop(),
-                                child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
+                    Column(
+                      spacing: 20.h,
+                      children: [
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () => context.pop(),
+                              child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
+                            ),
+                            const Spacer(flex: 2),
+                            Text(
+                              '${context.l10n.add} ${context.l10n.quranicverse}',
+                              style: context.textThemeX.heading.bold,
+                              textAlign: TextAlign.center,
+                            ),
+                            const Spacer(flex: 3),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: 80.h),
+                              child: BlocBuilder<AddAyaCubit, AddAyaState>(
+                                builder: (context, state) {
+                                  final cubit = context.read<AddAyaCubit>();
+                                  return state.selectedAyahs.isNotEmpty
+                                      ? Column(
+                                          spacing: 10.h,
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Text(
+                                                context.l10n.surahandnoayah,
+                                                style: context.textThemeX.medium.bold,
+                                              ),
+                                            ),
+                                            _SurahAndVerseNumTextField(
+                                              surahController: cubit.surahController,
+                                              firstAyahController: cubit.firstAyahController,
+                                              lastAyahController: cubit.lastAyahController,
+                                            ),
+                                            Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Text(
+                                                context.l10n.ayahs,
+                                                style: context.textThemeX.medium.bold,
+                                              ),
+                                            ),
+                                            _QuranicVerseTextField(
+                                              controller: cubit.quranicVerseController,
+                                            ),
+                                            Gap(5.h),
+                                            _QuranicVerseExplanationTextField(
+                                              controller: cubit.explanationController,
+                                            ),
+                                            Gap(5.h),
+                                            TagSelectionWidget(
+                                              tags: state.tags,
+                                              onAddTag: (tag) =>
+                                                  cubit.tagsChanged([...state.tags, tag]),
+                                              onRemoveTag: (tag) {
+                                                final updatedTags =
+                                                    state.tags.where((t) => t != tag).toList();
+                                                cubit.tagsChanged(updatedTags);
+                                              },
+                                              onClearTags: () => cubit.tagsChanged([]),
+                                              errorMessageBuilder: (tag) =>
+                                                  '$tag ${context.l10n.alreadyExists}',
+                                            )
+                                          ],
+                                        )
+                                      : const SizedBox();
+                                },
                               ),
-                              const Spacer(),
-                              Text(
-                                '${context.l10n.add} ${context.l10n.quranicverse}',
-                                style: context.textThemeX.heading.bold,
-                                textAlign: TextAlign.center,
-                              ),
-                              const Spacer(flex: 2),
-                            ],
-                          ),
-                          Stack(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(top: 80.h),
-                                child: BlocBuilder<AddAyaCubit, AddAyaState>(
-                                  builder: (context, state) {
-                                    final cubit = context.read<AddAyaCubit>();
-                                    return state.selectedAyahs.isNotEmpty
-                                        ? Column(
-                                            spacing: 10.h,
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.centerRight,
-                                                child: Text(
-                                                  context.l10n.surahandnoayah,
-                                                  style: context.textThemeX.medium.bold,
-                                                ),
-                                              ),
-                                              _SurahAndVerseNumTextField(
-                                                surahController: cubit.surahController,
-                                                firstAyahController: cubit.firstAyahController,
-                                                lastAyahController: cubit.lastAyahController,
-                                              ),
-                                              Align(
-                                                alignment: Alignment.centerRight,
-                                                child: Text(
-                                                  context.l10n.quranicversec,
-                                                  style: context.textThemeX.medium.bold,
-                                                ),
-                                              ),
-                                              _QuranicVerseTextField(
-                                                controller: cubit.quranicVerseController,
-                                              ),
-                                              Align(
-                                                alignment: Alignment.centerRight,
-                                                child: Text(
-                                                  context.l10n.quranicayahexp,
-                                                  style: context.textThemeX.medium.bold,
-                                                ),
-                                              ),
-                                              _QuranicVerseExplanationTextField(
-                                                controller: cubit.explanationController,
-                                              ),
-                                              Align(
-                                                alignment: Alignment.centerRight,
-                                                child: Text(
-                                                  context.l10n.tag,
-                                                  style: context.textThemeX.medium.bold,
-                                                ),
-                                              ),
-                                              TagSelectionWidget(
-                                                tags: state.tags,
-                                                onAddTag: (tag) =>
-                                                    cubit.tagsChanged([...state.tags, tag]),
-                                                onRemoveTag: (tag) {
-                                                  final updatedTags =
-                                                      state.tags.where((t) => t != tag).toList();
-                                                  cubit.tagsChanged(updatedTags);
-                                                },
-                                                onClearTags: () => cubit.tagsChanged([]),
-                                                errorMessageBuilder: (tag) =>
-                                                    '$tag ${context.l10n.alreadyExists}',
-                                              )
-                                            ],
-                                          )
-                                        : const SizedBox();
-                                  },
-                                ),
-                              ),
-                              const _AyaSearch(),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            const _AyaSearch(),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),

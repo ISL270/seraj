@@ -23,84 +23,89 @@ class _AyaSearch extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: [
-              SearchBar(
-                backgroundColor:
-                    WidgetStateProperty.all(context.colorsX.background.withValues(alpha: 0.9)),
-                shape: WidgetStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
+        return Column(
+          children: [
+            SearchBar(
+              backgroundColor:
+                  WidgetStateProperty.all(context.colorsX.background.withValues(alpha: 0.9)),
+              shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.r),
                 ),
-                controller: textController,
-                hintText: context.l10n.search,
-                onChanged: (query) {
-                  context.read<AddAyaCubit>().queryChanged(query);
-                },
-                trailing: [
-                  IconButton(
-                    onPressed: () {
-                      textController.clear();
-                      context.read<AddAyaCubit>().queryChanged('');
-                    },
-                    icon: const Icon(Icons.clear),
-                  ),
-                ],
               ),
-              if (state.ayahs.isNotEmpty)
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: context.colorsX.background,
-                  ),
-                  height: 300.h,
-                  child: ListView.builder(
-                    itemCount: state.ayahs.length,
-                    itemBuilder: (context, index) {
-                      final ayah = state.ayahs[index];
-                      return Column(
-                        children: [
-                          ListTile(
-                            title: Text(
-                              ayah.ayah.replaceAll('\n', ' ').decorateArabicNumbers(),
-                              style: context.textThemeX.large.copyWith(
-                                fontSize: 18.sp,
-                                fontFamily: GoogleFonts.amiriQuran().fontFamily,
+              controller: textController,
+              hintText: context.l10n.search,
+              onChanged: (query) {
+                context.read<AddAyaCubit>().queryChanged(query);
+              },
+              trailing: [
+                IconButton(
+                  onPressed: () {
+                    textController.clear();
+                    context.read<AddAyaCubit>().queryChanged('');
+                  },
+                  icon: const Icon(Icons.clear),
+                ),
+              ],
+            ),
+            if (state.ayahs.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Material(
+                  elevation: 7,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.r),
+                      color: context.colorsX.background,
+                    ),
+                    height: 0.9.sh,
+                    child: ListView.builder(
+                      itemCount: state.ayahs.length,
+                      itemBuilder: (context, index) {
+                        final ayah = state.ayahs[index];
+                        return Column(
+                          children: [
+                            ListTile(
+                              title: Text(
+                                ayah.ayah.replaceAll('\n', ' ').decorateArabicNumbers(),
+                                style: context.textThemeX.large.copyWith(
+                                  fontSize: 18.sp,
+                                  fontFamily: GoogleFonts.amiriQuran().fontFamily,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                            subtitle: Center(
-                              child: Padding(
-                                padding: EdgeInsets.only(top: 16.h),
-                                child: Text(
-                                  '${ayah.surahNameAr} ${ayah.ayahNumber.toString().decorateArabicNumbers()}',
-                                  style: context.textThemeX.small.copyWith(
-                                    color: context.colorsX.primary,
-                                    fontWeight: FontWeight.bold,
+                              subtitle: Center(
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 16.h),
+                                  child: Text(
+                                    '${ayah.surahNameAr} ${ayah.ayahNumber.toString().decorateArabicNumbers()}',
+                                    style: context.textThemeX.small.copyWith(
+                                      color: context.colorsX.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 16.h),
+                              onTap: () {
+                                FocusScope.of(context).unfocus();
+                                textController.clear();
+                                context.read<AddAyaCubit>().ayahsChanged([ayah]);
+                                context.read<AddAyaCubit>().queryChanged(''); // Reset query
+                              },
                             ),
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16.h),
-                            onTap: () {
-                              context.read<AddAyaCubit>().ayahsChanged([ayah]);
-                              context.read<AddAyaCubit>().queryChanged(''); // Reset query
-                            },
-                          ),
-                          Divider(
-                            color: context.colorsX.onBackgroundTint35,
-                            thickness: 1,
-                          ),
-                        ],
-                      );
-                    },
+                            Divider(
+                              color: context.colorsX.onBackgroundTint35,
+                              thickness: 1,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
-            ],
-          ),
+              ),
+          ],
         );
       },
     );
