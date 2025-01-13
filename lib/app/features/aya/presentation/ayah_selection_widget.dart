@@ -29,7 +29,7 @@ class _AyahSelectionWidget extends StatelessWidget {
     final surahNumber = currentState.selectedAyahs.first.surahNumber;
     final surahAyahs = FlutterQuran().getSurah(surahNumber).ayahs;
     final firstAyah = _parseToInt(cubit.firstAyahController.text);
-    final initialValue = double.tryParse(cubit.firstAyahController.text) ?? 0;
+    final initialValue = double.tryParse(cubit.lastAyahController.text) ?? 0;
 
     final selectedValue = await NumberPickerBS.show(
       context,
