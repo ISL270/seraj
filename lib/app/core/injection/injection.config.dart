@@ -93,11 +93,14 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
       dispose: (i) => i.dispose(),
     );
-    gh.singleton<_i143.DaleelRepository>(() => _i143.DaleelRepository(
-          gh<_i842.AuthRepository>(),
-          gh<_i460.DaleelFirestoreSource>(),
-          gh<_i53.DaleelIsarSource>(),
-        ));
+    gh.singleton<_i143.DaleelRepository>(
+      () => _i143.DaleelRepository(
+        gh<_i842.AuthRepository>(),
+        gh<_i460.DaleelFirestoreSource>(),
+        gh<_i53.DaleelIsarSource>(),
+      ),
+      dispose: (i) => i.dispMethod(),
+    );
     gh.factory<_i722.DaleelBloc>(
         () => _i722.DaleelBloc(gh<_i143.DaleelRepository>()));
     gh.singleton<_i562.AuthBloc>(

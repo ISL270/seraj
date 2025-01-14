@@ -15,8 +15,10 @@ import 'package:athar/app/features/add_athar/presentation/add_athar_screen.dart'
 import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dart';
 import 'package:athar/app/features/add_other/presentation/add_other_screen.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
+import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
+import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/button.dart';
@@ -45,10 +47,34 @@ class DaleelScreen extends StatefulWidget {
 }
 
 class _DaleelScreenState extends State<DaleelScreen> {
+  late final TextEditingController _searchCntrlr;
+  late final ScrollController _scrollCntrlr;
+  final isCollapsed = ValueNotifier<bool>(false);
+
+  late final DaleelBloc _bloc;
+  late final DaleelFilters filters;
   @override
   void initState() {
-    context.read<DaleelBloc>();
     super.initState();
+    filters = context.read<DaleelBloc>().state.daleelFilters;
+    _scrollCntrlr = ScrollController();
+    _bloc = context.read<DaleelBloc>();
+    _searchCntrlr = TextEditingController();
+    _searchCntrlr.addListener(
+      () {
+        if (_searchCntrlr.text.isEmpty) {
+          _bloc.add(const DaleelSearched(''));
+        }
+      },
+    );
+    _scrollCntrlr.addListener(
+      () {
+        if (_bloc.state.status.isSuccess && _bloc.state.daleels.result.length > 5) {
+          return;
+        }
+        _scrollCntrlr.jumpTo(0);
+      },
+    );
   }
 
   @override
@@ -75,21 +101,15 @@ class _DaleelScreenState extends State<DaleelScreen> {
         ),
         backgroundColor: context.colorsX.background,
         searchBar: SuperSearchBar(
-          placeholderText: context.l10n.search.capitalizedDefinite,
-          animationDuration: const Duration(milliseconds: 300),
-          cancelButtonText: context.l10n.cancel,
-          cancelTextStyle: TextStyle(color: context.colorsX.primary, fontSize: 16.sp),
-          searchResult: const Center(child: Text('نتيجه البحث')),
-          actions: [
-            SuperAction(child: SizedBox(width: 12.w)),
-            SuperAction(
-              child: InkWell(
-                onTap: () {},
-                child: Icon(Icons.filter_list_outlined, color: context.colorsX.onBackground),
-              ),
-            ),
-            SuperAction(child: SizedBox(width: 12.w)),
-          ],
+          height: 45.h,
+          searchController: _searchCntrlr,
+          placeholderText: context.l10n.search,
+          cancelButtonText: context.l10n.cancel.capitalized,
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          resultBehavior: SearchBarResultBehavior.neverVisible,
+          cancelTextStyle: context.textThemeX.medium.bold.copyWith(color: context.colorsX.primary),
+          onChanged: (searchTerm) => _bloc.add(DaleelSearched(searchTerm)),
+          actions: [SuperAction(child: Gap(10.w))],
         ),
       ),
       body: SingleChildScrollView(
@@ -100,6 +120,7 @@ class _DaleelScreenState extends State<DaleelScreen> {
             SizedBox(
               height: 60.h,
               child: SingleChildScrollView(
+                controller: _scrollCntrlr,
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -109,19 +130,19 @@ class _DaleelScreenState extends State<DaleelScreen> {
                     _DaleelFilterTypeWidget(
                       label: context.l10n.daleelType,
                       onTap: () async {
-                        await _openFilterDaleelTypeSelectorBottomSheet(context);
+                        await _openFilterDaleelTypeSelectorBottomSheet(filters, context);
                       },
                     ),
                     _DaleelFilterTypeWidget(
                       label: context.l10n.priority,
                       onTap: () async {
-                        await _openFilterPrioritySelectorBottomSheet(context);
+                        await _openFilterPrioritySelectorBottomSheet(filters, context);
                       },
                     ),
                     _DaleelFilterTypeWidget(
                       label: context.l10n.date,
                       onTap: () async {
-                        await _openFilterDateSelectorBottomSheet(context);
+                        await _openFilterDateSelectorBottomSheet(filters, context);
                       },
                     ),
                     Gap(12.w),

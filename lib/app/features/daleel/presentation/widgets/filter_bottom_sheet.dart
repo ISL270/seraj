@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use, must_be_immutable
 
 part of '../daleel_screen.dart';
 
@@ -6,7 +6,8 @@ part of '../daleel_screen.dart';
 //----------------- Filter Daleel Type Bottom Sheet ----------------------------
 //------------------------------------------------------------------------------
 
-Future<void> _openFilterDaleelTypeSelectorBottomSheet(BuildContext context) async {
+Future<void> _openFilterDaleelTypeSelectorBottomSheet(
+    DaleelFilters filters, BuildContext context) async {
   // ignore: inference_failure_on_function_invocation
   await showModalBottomSheet(
     elevation: 0,
@@ -29,13 +30,15 @@ Future<void> _openFilterDaleelTypeSelectorBottomSheet(BuildContext context) asyn
           ),
         ],
       ),
-      child: const _FilterTypeSelectorBottomSheetBody(),
+      child: _FilterTypeSelectorBottomSheetBody(filters),
     ),
   );
 }
 
 class _FilterTypeSelectorBottomSheetBody extends StatelessWidget {
-  const _FilterTypeSelectorBottomSheetBody();
+  _FilterTypeSelectorBottomSheetBody(this.filters);
+
+  DaleelFilters filters;
 
   @override
   Widget build(BuildContext context) {
@@ -57,74 +60,86 @@ class _FilterTypeSelectorBottomSheetBody extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: _MultiSelectDaleelType(daleelFilter: [
-                    context.l10n.athars.capitalizedDefinite,
-                    context.l10n.hadiths,
-                    context.l10n.ayahs,
-                    context.l10n.atharsOfSahaba,
-                    context.l10n.others.capitalizedDefinite
-                  ]),
-                ),
+                child: _MultiSelectDaleelType(filters: filters),
               ),
             ],
           ),
         ),
-        ApplyFilterButton(onPressed: () {}),
       ],
     );
   }
 }
 
 class _MultiSelectDaleelType extends StatefulWidget {
-  const _MultiSelectDaleelType({required this.daleelFilter});
+  const _MultiSelectDaleelType({required this.filters});
 
-  final List<String> daleelFilter;
+  final DaleelFilters filters;
 
   @override
   State<_MultiSelectDaleelType> createState() => _MultiSelectDaleelTypeState();
 }
 
 class _MultiSelectDaleelTypeState extends State<_MultiSelectDaleelType> {
-  final List<int> selectedIndices = [];
+  @override
+  void initState() {
+    context.read<DaleelBloc>().state.daleelFilters.clone();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(8.w),
-      child: Wrap(
-        spacing: 12.w,
-        runSpacing: 12.h,
-        children: List.generate(
-          widget.daleelFilter.length,
-          (index) {
-            final isSelected = selectedIndices.contains(index); // Check if selected
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  isSelected ? selectedIndices.remove(index) : selectedIndices.add(index);
-                });
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 400),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.w),
-                  color: isSelected ? context.colorsX.primary : context.colorsX.onBackgroundTint35,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(8.w),
-                  child: Text(
-                    widget.daleelFilter[index],
-                    style: context.textThemeX.medium.bold.copyWith(
-                      color: isSelected ? context.colorsX.background : context.colorsX.onBackground,
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(20.sp),
+            child: Wrap(
+              spacing: 12.w,
+              runSpacing: 12.h,
+              children: List.generate(
+                DaleelType.values.length,
+                (index) {
+                  final type = DaleelType.values[index];
+                  final isSelected = widget.filters.daleelType.contains(type); // Check if selected
+                  return GestureDetector(
+                    onTap: () {
+                      if (isSelected) {
+                        widget.filters.daleelType.remove(type);
+                      } else {
+                        widget.filters.daleelType.add(type);
+                      }
+                      setState(() {});
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 400),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.w),
+                        color: isSelected
+                            ? context.colorsX.primary
+                            : context.colorsX.onBackgroundTint35,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 12.h),
+                        child: Text(
+                          DaleelType.values[index].toTranslate(context),
+                          style: context.textThemeX.medium.bold.copyWith(
+                            color: isSelected
+                                ? context.colorsX.background
+                                : context.colorsX.onBackground,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
-            );
-          },
-        ),
+            ),
+          ),
+          ApplyFilterButton(onPressed: () {
+            context.read<DaleelBloc>().add(DaleelFiltered(widget.filters));
+          }),
+        ],
       ),
     );
   }
@@ -134,7 +149,8 @@ class _MultiSelectDaleelTypeState extends State<_MultiSelectDaleelType> {
 //----------------- Filter Priority Bottom Sheet -------------------------------
 //------------------------------------------------------------------------------
 
-Future<void> _openFilterPrioritySelectorBottomSheet(BuildContext context) async {
+Future<void> _openFilterPrioritySelectorBottomSheet(
+    DaleelFilters filters, BuildContext context) async {
   // ignore: inference_failure_on_function_invocation
   await showModalBottomSheet(
     elevation: 0,
@@ -207,7 +223,7 @@ class _PrioritySelector extends StatelessWidget {
 //----------------- Filter Date Bottom Sheet -----------------------------------
 //------------------------------------------------------------------------------
 
-Future<void> _openFilterDateSelectorBottomSheet(BuildContext context) async {
+Future<void> _openFilterDateSelectorBottomSheet(DaleelFilters filters, BuildContext context) async {
   // ignore: inference_failure_on_function_invocation
   await showModalBottomSheet(
     elevation: 0,

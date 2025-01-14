@@ -11,20 +11,22 @@ final class DaleelState extends Equatable {
   // DateTime selectedDate;
 
   final PaginatedResult<Daleel> daleels;
+  final DaleelFilters daleelFilters;
   final String searchTerm;
   VoidStatus status;
 
-  DaleelState({
-    this.filterDaleelTypeActive = false,
-    this.filterPriorityActive = false,
-    this.filterDateActive = false,
-    this.selectedDaleelType = DaleelType.others,
-    this.selectedPriority = 0,
-    // this.selectedDate = DateTime.now(),
-    this.searchTerm = '',
-    this.daleels = const PaginatedResult(),
-    this.status = const Initial(),
-  });
+  // DaleelState({
+  //   this.filterDaleelTypeActive = false,
+  //   this.filterPriorityActive = false,
+  //   this.filterDateActive = false,
+  //   this.selectedDaleelType = DaleelType.others,
+  //   this.selectedPriority = 0,
+  //   // this.selectedDate = DateTime.now(),
+  //   this.searchTerm = '',
+  //   this.daleels = const PaginatedResult(),
+  //   this.status = const Initial(),
+  //   this.daleelFilters = const DaleelFilters(),
+  // });
 
   DaleelState._({
     required this.filterDaleelTypeActive,
@@ -32,6 +34,7 @@ final class DaleelState extends Equatable {
     required this.filterDateActive,
     required this.selectedDaleelType,
     required this.selectedPriority,
+    required this.daleelFilters,
     // required this.selectedDate,
     required this.searchTerm,
     required this.daleels,
@@ -49,6 +52,7 @@ final class DaleelState extends Equatable {
           daleels: const PaginatedResult(),
           // selectedDate: DateTime.now(),
           status: const Initial(),
+          daleelFilters: DaleelFilters(),
         );
 
   DaleelState copyWith({
@@ -61,6 +65,7 @@ final class DaleelState extends Equatable {
     String? searchTerm,
     PaginatedResult<Daleel>? daleels,
     VoidStatus? status,
+    DaleelFilters? daleelFilters,
   }) =>
       DaleelState._(
         filterDaleelTypeActive: filterDaleelTypeActive ?? this.filterDaleelTypeActive,
@@ -72,6 +77,7 @@ final class DaleelState extends Equatable {
         searchTerm: searchTerm ?? this.searchTerm,
         daleels: daleels ?? this.daleels,
         status: status ?? this.status,
+        daleelFilters: daleelFilters ?? this.daleelFilters,
       );
 
   @override
@@ -85,5 +91,6 @@ final class DaleelState extends Equatable {
         searchTerm,
         daleels,
         status,
+        daleelFilters,
       ];
 }

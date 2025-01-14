@@ -11,6 +11,7 @@ import 'package:athar/app/features/daleel/data/sources/remote/daleel_fm.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
+import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
 import 'package:dartx/dartx.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
@@ -102,10 +103,12 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
     String searchTerm, {
     required int page,
     required int pageSize,
+    DaleelFilters? filters,
   }) async {
     final cms = await _localSource.getDaleels(
       searchTerm,
       page: page,
+      filters: filters,
       pageSize: pageSize,
     );
 

@@ -9,40 +9,48 @@ class _DaleelListViewBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DaleelBloc, DaleelState>(
       builder: (context, state) {
-        return switch (state.status) {
-          Loading() => const Center(child: CircularProgressIndicator()),
-          _ => state.daleels.result.isEmpty
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 210.h),
-                    Center(
-                      child: Text(
-                        context.l10n.noResult,
-                        style: context.textThemeX.large.bold
-                            .copyWith(color: context.colorsX.onBackgroundTint35),
+        return NotificationListener<ScrollNotification>(
+          onNotification: (notification) {
+            if (notification.metrics.pixels >= notification.metrics.maxScrollExtent * 0.7) {
+              context.read<DaleelBloc>().add(DaleelNextPageFetched());
+            }
+            return true;
+          },
+          child: switch (state.status) {
+            Loading() => const Center(child: CircularProgressIndicator()),
+            _ => state.daleels.result.isEmpty
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 210.h),
+                      Center(
+                        child: Text(
+                          context.l10n.noResult,
+                          style: context.textThemeX.large.bold
+                              .copyWith(color: context.colorsX.onBackgroundTint35),
+                        ),
                       ),
-                    ),
-                  ],
-                )
-              : ListView.separated(
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (context, i) => _DaleelWidget(daleel: state.daleels.result[i]),
-                  physics: const NeverScrollableScrollPhysics(),
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
-                      child: Divider(
-                        height: 1,
-                        thickness: 0.5,
-                        color: context.colorsX.onBackgroundTint35.withValues(alpha: 0.1),
-                      ),
-                    );
-                  },
-                  itemCount: state.daleels.result.length,
-                  shrinkWrap: true,
-                ),
-        };
+                    ],
+                  )
+                : ListView.separated(
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (context, i) => _DaleelWidget(daleel: state.daleels.result[i]),
+                    physics: const NeverScrollableScrollPhysics(),
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
+                        child: Divider(
+                          height: 1,
+                          // thickness: 0.5,
+                          color: context.colorsX.onBackground,
+                        ),
+                      );
+                    },
+                    itemCount: state.daleels.result.length,
+                    shrinkWrap: true,
+                  ),
+          },
+        );
       },
     );
   }
@@ -120,21 +128,25 @@ class _DaleelWidget extends StatelessWidget {
             Expanded(
               child: Container(
                 padding: EdgeInsets.all(4.sp),
-                height: 170.h,
+                height: daleel.text.length >= 120
+                    ? 170.h + daleel.text.length * 0.35.h
+                    : 140.h + daleel.text.length * 0.30.h,
                 decoration: BoxDecoration(
-                  color: context.colorsX.primary,
+                  color: context.colorsX.background,
                   borderRadius: BorderRadius.circular(12.w),
+                  boxShadow: [
+                    BoxShadow(
+                      color: context.colorsX.onBackgroundTint35,
+                      blurRadius: 1,
+                      blurStyle: BlurStyle.outer,
+                    ),
+                  ],
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(6.sp),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        daleel.id,
-                        style: context.textThemeX.large.bold,
-                      ),
-                      Gap(15.h),
                       Row(
                         children: [
                           Gap(5.w),
@@ -147,21 +159,31 @@ class _DaleelWidget extends StatelessWidget {
                         ],
                       ),
                       const Spacer(),
-                      Row(
-                        children: [
-                          Text('${context.l10n.priority}:', style: context.textThemeX.medium.bold),
-                          Gap(4.w),
-                          Text(daleel.priority.toTranslate(context),
-                              style: context.textThemeX.medium.bold),
-                          const Spacer(),
-                          Text(
-                            daleel.lastRevisedAt.formatted,
-                            style: context.textThemeX.small.bold.copyWith(
-                              color: context.colorsX.onBackgroundTint35,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 32.sp),
+                        child: Divider(color: context.colorsX.onBackgroundTint35),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4.sp),
+                        child: Row(
+                          children: [
+                            Text(
+                              switch (daleel) {
+                                Hadith() => context.l10n.propheticHadith,
+                                Athar() => context.l10n.athar,
+                                Others() => context.l10n.other,
+                              },
+                              style: context.textThemeX.small.bold,
                             ),
-                          ),
-                          Gap(6.w),
-                        ],
+                            const Spacer(),
+                            Text(
+                              daleel.lastRevisedAt.formatted,
+                              style: context.textThemeX.small.bold.copyWith(
+                                color: context.colorsX.onBackgroundTint,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Gap(6.h),
                     ],

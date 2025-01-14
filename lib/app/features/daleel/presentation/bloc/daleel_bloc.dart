@@ -6,6 +6,7 @@ import 'package:athar/app/core/models/domain/paginated_result.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
+import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -17,22 +18,14 @@ part 'daleel_state.dart';
 class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
   final DaleelRepository _repository;
 
-  DaleelBloc(this._repository) : super(DaleelState()) {
+  DaleelBloc(this._repository) : super(DaleelState._initial()) {
     on<DaleelFetchData>(_daleelFetchData);
-    on<DaleelSearchFetched>(_onSearched);
+    on<DaleelSearched>(_onSearched);
+    on<DaleelFiltered>(_onFilterUpdate);
     on<DaleelNextPageFetched>(
       _onNextPageFetched,
       transformer: EventTransformers.throttleDroppable(),
     );
-    on<DaleelEvent>((event, emit) {
-      if (event is DaleelTypeFilterChanged) {
-        emit(state.copyWith(selectedDaleelType: event.daleelType));
-      } else if (event is DaleelPriorityFilterChanged) {
-        emit(state.copyWith(selectedPriority: event.priority));
-      } else if (event is DaleelDateFilterChanged) {
-        emit(state.copyWith(selectedDate: event.date));
-      }
-    });
     add(DaleelFetchData());
   }
 
@@ -40,30 +33,22 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
     DaleelFetchData event,
     Emitter<DaleelState> emit,
   ) async {
-    // log('daleel fetch data');
-    // log(state.daleels.result.length.toString());
-    await emit.forEach(
+    await emit.onEach(
       _repository.stream(),
-      onData: (status) {
-        if (status.isSuccess) {
-          add(DaleelSearchFetched(state.searchTerm));
-        }
-        return state;
+      onData: (status) => switch (status) {
+        Loading<void>() => state.daleels.result.isEmpty
+            ? emit(state.copyWith(status: state.status.toLoading()))
+            : {},
+        Success<void>() => add(DaleelSearched(state.searchTerm)),
+        Failure<void>(exception: final e) =>
+          emit(state.copyWith(status: state.status.toFailure(e))),
+        _ => {},
       },
     );
   }
 
-  // onData: (status) => switch (status) {
-  //   Loading<void>() => state.daleels.result.isEmpty
-  //       ? emit(state.copyWith(status: state.status.toLoading()))
-  //       : {},
-  //   Success<void>() => add(DaleelSearchFetched(state.searchTerm)),
-  //   Failure<void>(exception: final e) => emit(state.copyWith(status: Failure(e))),
-  //   _ => {},
-  // },
-
   Future<void> _onSearched(
-    DaleelSearchFetched event,
+    DaleelSearched event,
     Emitter<DaleelState> emit,
   ) async {
     emit(state.copyWith(searchTerm: event.searchTerm, status: const Loading()));
@@ -71,12 +56,13 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
     final searchResult = await _repository.searchDaleel(
       page: 0,
       event.searchTerm,
+      filters: state.daleelFilters,
       pageSize: state.daleels.pageSize,
     );
 
     emit(state.copyWith(
+      status: state.status.toSuccess(null),
       daleels: PaginatedResult(result: searchResult),
-      status: const Success(null),
     ));
   }
 
@@ -88,17 +74,27 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
 
     final searchResult = await _repository.searchDaleel(
       state.searchTerm,
+      filters: state.daleelFilters,
       page: state.daleels.page + 1,
       pageSize: state.daleels.pageSize,
     );
 
     emit(state.copyWith(
-      status: const Success(null),
+      status: state.status.toSuccess(null),
       daleels: state.daleels.appendResult(
         searchResult,
         hasReachedMax: searchResult.length < state.daleels.pageSize,
       ),
     ));
+  }
+
+  void _onFilterUpdate(
+    DaleelFiltered event,
+    Emitter<DaleelState> emit,
+  ) {
+    if (state.daleelFilters == event.filters) return;
+    emit(state.copyWith(daleelFilters: event.filters));
+    add(DaleelSearched(state.searchTerm));
   }
 
   @override
