@@ -24,15 +24,15 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
       _onNextPageFetched,
       transformer: EventTransformers.throttleDroppable(),
     );
-    // on<DaleelEvent>((event, emit) {
-    //   if (event is DaleelTypeFilterChanged) {
-    //     emit(state.copyWith(selectedDaleelType: event.daleelType));
-    //   } else if (event is DaleelPriorityFilterChanged) {
-    //     emit(state.copyWith(selectedPriority: event.priority));
-    //   } else if (event is DaleelDateFilterChanged) {
-    //     emit(state.copyWith(selectedDate: event.date));
-    //   }
-    // });
+    on<DaleelEvent>((event, emit) {
+      if (event is DaleelTypeFilterChanged) {
+        emit(state.copyWith(selectedDaleelType: event.daleelType));
+      } else if (event is DaleelPriorityFilterChanged) {
+        emit(state.copyWith(selectedPriority: event.priority));
+      } else if (event is DaleelDateFilterChanged) {
+        emit(state.copyWith(selectedDate: event.date));
+      }
+    });
     add(DaleelFetchData());
   }
 

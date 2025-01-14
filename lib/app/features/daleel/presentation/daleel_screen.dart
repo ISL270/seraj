@@ -3,6 +3,7 @@
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
+import 'package:athar/app/core/extension_methods/datetime_x.dart';
 import 'package:athar/app/core/extension_methods/english_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
@@ -13,6 +14,7 @@ import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/add_athar/presentation/add_athar_screen.dart';
 import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dart';
 import 'package:athar/app/features/add_other/presentation/add_other_screen.dart';
+import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
@@ -31,6 +33,7 @@ import 'package:super_cupertino_navigation_bar/super_cupertino_navigation_bar.da
 
 part 'widgets/bottom_sheet.dart';
 part 'widgets/filter_bottom_sheet.dart';
+part 'widgets/daleel_list_view_builder.dart';
 
 class DaleelScreen extends StatefulWidget {
   const DaleelScreen({super.key});
@@ -90,6 +93,7 @@ class _DaleelScreenState extends State<DaleelScreen> {
         ),
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.zero,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -125,32 +129,7 @@ class _DaleelScreenState extends State<DaleelScreen> {
                 ),
               ),
             ),
-            Gap(2.h),
-            BlocBuilder<DaleelBloc, DaleelState>(
-              builder: (context, state) {
-                return switch (state.status) {
-                  Loading() => const Center(child: CircularProgressIndicator()),
-                  _ => state.daleels.result.isEmpty
-                      ? const Center(child: Text('لا يوجد نتائج'))
-                      : ListView.separated(
-                          itemBuilder: (context, i) =>
-                              _DaleelWidget(label: state.daleels.result[i].text),
-                          separatorBuilder: (_, __) => const Divider(),
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.daleels.result.length,
-                          shrinkWrap: true,
-                        ),
-                };
-              },
-            ),
-            // Column(
-            //   children: [
-            //     _DaleelWidget(label: context.l10n.propheticHadith),
-            //     _DaleelWidget(label: context.l10n.propheticHadith),
-            //     _DaleelWidget(label: context.l10n.propheticHadith),
-            //     _DaleelWidget(label: context.l10n.propheticHadith),
-            //   ],
-            // ),
+            const _DaleelListViewBuilder(),
           ],
         ),
       ),
@@ -195,133 +174,6 @@ class _DaleelFilterTypeWidget extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _DaleelWidget extends StatelessWidget {
-  const _DaleelWidget({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Slidable(
-      endActionPane: ActionPane(
-        motion: const ScrollMotion(),
-        extentRatio: 0.3.w,
-        children: [
-          CircleAvatar(
-            backgroundColor: context.colorsX.primary,
-            radius: 24.r,
-            child: Icon(FontAwesomeIcons.edit, color: context.colorsX.onBackground, size: 24.r),
-          ),
-          Gap(8.w),
-          GestureDetector(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  contentPadding: EdgeInsets.all(16.sp),
-                  buttonPadding: EdgeInsets.all(16.sp),
-                  titlePadding: EdgeInsets.all(16.sp),
-                  actionsPadding: EdgeInsets.all(16.sp),
-                  actionsAlignment: MainAxisAlignment.spaceAround,
-                  backgroundColor: context.colorsX.background,
-                  title: Padding(
-                    padding: EdgeInsets.all(16.sp),
-                    child: Center(
-                      child: Text(
-                        context.l10n.areYouSure.capitalized,
-                        style: context.textThemeX.large.bold.copyWith(
-                          color: context.colorsX.primary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  actions: [
-                    TextButton(
-                      onPressed: () => context.pop(),
-                      child: Text(context.l10n.cancel.capitalized,
-                          style: context.textThemeX.large.bold),
-                    ),
-                    TextButton(
-                      onPressed: () => context.pop(),
-                      child: Text(context.l10n.ok.capitalized,
-                          style:
-                              context.textThemeX.large.bold.copyWith(color: context.colorsX.error)),
-                    ),
-                  ],
-                ),
-              );
-            },
-            child: CircleAvatar(
-              backgroundColor: context.colorsX.error,
-              radius: 24.r,
-              child: Icon(FontAwesomeIcons.trash, color: context.colorsX.onBackground, size: 24.r),
-            ),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 10.sp),
-        child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.all(4.sp),
-                height: 170.h,
-                decoration: BoxDecoration(
-                  color: context.colorsX.primary,
-                  borderRadius: BorderRadius.circular(12.w),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(6.sp),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        context.l10n.propheticHadith,
-                        style: context.textThemeX.large.bold,
-                      ),
-                      Gap(15.h),
-                      Row(
-                        children: [
-                          Gap(5.w),
-                          Expanded(
-                            child: Text(
-                              label,
-                              style: context.textThemeX.medium.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      Row(
-                        children: [
-                          Text('${context.l10n.priority}:', style: context.textThemeX.medium.bold),
-                          Gap(4.w),
-                          Text(context.l10n.high, style: context.textThemeX.medium.bold),
-                          const Spacer(),
-                          Text(
-                            '٥ يناير ٢٠٢٥',
-                            style: context.textThemeX.small.bold.copyWith(
-                              color: context.colorsX.onBackgroundTint35,
-                            ),
-                          ),
-                          Gap(6.w),
-                        ],
-                      ),
-                      Gap(6.h),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );
