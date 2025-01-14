@@ -1,5 +1,7 @@
 // ignore_for_file: unused_field
 
+import 'dart:developer';
+
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/core/models/reactive_repository.dart';
 import 'package:athar/app/features/dua/data/sources/local/dua_isar.dart';
@@ -59,8 +61,12 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
     required String duaId,
     required bool currentStatus,
   }) async {
-    await _remoteSource.addToFavorite(
-        uid: authRepository.user!.id, duaId: duaId, currentStatus: currentStatus);
+    try {
+      await _remoteSource.addToFavorite(
+          uid: authRepository.user!.id, duaId: duaId, currentStatus: currentStatus);
+    } on Exception catch (e) {
+      log(e.toString());
+    }
   }
 
   @disposeMethod

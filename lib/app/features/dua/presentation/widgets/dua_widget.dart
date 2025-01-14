@@ -10,8 +10,10 @@ class _DuaWithNumWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-        key: const Key('onDismissibleDua'),
-        onDismissed: (v) {},
+      key: const Key('onDismissibleDua'),
+      onDismissed: (v) {},
+      child: InkWell(
+        onTap: () => context.pushNamed(DuaDetails.name, extra: dua),
         child: Container(
           clipBehavior: Clip.hardEdge,
           margin: EdgeInsets.all(16.sp),
@@ -121,6 +123,8 @@ class _DuaWithNumWidget extends StatelessWidget {
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

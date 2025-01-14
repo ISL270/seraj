@@ -123,6 +123,9 @@
     "filterOptions":"Filtering Options",
     "all":"All",
     "fav":"Favourite",
-    "clear":"Clear"
+    "clear":"Clear",
+    "share": "مشاركة",
+    "copy": "نسخ",
+    "copied": "تم نسخ النص إلى الحافظة!"
 
 }

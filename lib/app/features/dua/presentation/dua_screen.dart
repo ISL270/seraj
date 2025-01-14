@@ -11,6 +11,7 @@ import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/add_dua/presentation/add_dua_screen.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
+import 'package:athar/app/features/dua/presentation/dua_details.dart';
 import 'package:athar/app/features/dua/presentation/widgets/filter_buttom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

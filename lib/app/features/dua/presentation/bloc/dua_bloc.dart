@@ -86,7 +86,6 @@ class DuaBloc extends Bloc<DuaEvent, DuaState> {
     Emitter<DuaState> emit,
   ) async {
     try {
-      emit(state.copyWith(status: const Loading()));
       await _repository.addToFavorite(duaId: event.duaId, currentStatus: event.currantStatus);
       emit(state.copyWith(status: const Success('Added to favorites successfully')));
     } catch (e) {
