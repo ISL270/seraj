@@ -17,22 +17,22 @@ part 'daleel_state.dart';
 class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
   final DaleelRepository _repository;
 
-  DaleelBloc(this._repository) : super(DaleelState._initial()) {
+  DaleelBloc(this._repository) : super(DaleelState()) {
     on<DaleelFetchData>(_daleelFetchData);
     on<DaleelSearchFetched>(_onSearched);
     on<DaleelNextPageFetched>(
       _onNextPageFetched,
       transformer: EventTransformers.throttleDroppable(),
     );
-    on<DaleelEvent>((event, emit) {
-      if (event is DaleelTypeFilterChanged) {
-        emit(state.copyWith(selectedDaleelType: event.daleelType));
-      } else if (event is DaleelPriorityFilterChanged) {
-        emit(state.copyWith(selectedPriority: event.priority));
-      } else if (event is DaleelDateFilterChanged) {
-        emit(state.copyWith(selectedDate: event.date));
-      }
-    });
+    // on<DaleelEvent>((event, emit) {
+    //   if (event is DaleelTypeFilterChanged) {
+    //     emit(state.copyWith(selectedDaleelType: event.daleelType));
+    //   } else if (event is DaleelPriorityFilterChanged) {
+    //     emit(state.copyWith(selectedPriority: event.priority));
+    //   } else if (event is DaleelDateFilterChanged) {
+    //     emit(state.copyWith(selectedDate: event.date));
+    //   }
+    // });
     add(DaleelFetchData());
   }
 
@@ -69,9 +69,9 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
     emit(state.copyWith(searchTerm: event.searchTerm, status: const Loading()));
 
     final searchResult = await _repository.searchDaleel(
-      event.searchTerm,
       page: 0,
-      pageSize: state.daleels.page,
+      event.searchTerm,
+      pageSize: state.daleels.pageSize,
     );
 
     emit(state.copyWith(
@@ -86,13 +86,18 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
   ) async {
     if (state.daleels.hasReachedMax) return;
 
-    final searchResult = await _repository.searchDaleel(state.searchTerm,
-        page: state.daleels.page + 1, pageSize: state.daleels.page);
+    final searchResult = await _repository.searchDaleel(
+      state.searchTerm,
+      page: state.daleels.page + 1,
+      pageSize: state.daleels.pageSize,
+    );
 
     emit(state.copyWith(
       status: const Success(null),
-      daleels: state.daleels
-          .appendResult(searchResult, hasReachedMax: searchResult.length < state.daleels.pageSize),
+      daleels: state.daleels.appendResult(
+        searchResult,
+        hasReachedMax: searchResult.length < state.daleels.pageSize,
+      ),
     ));
   }
 
