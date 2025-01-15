@@ -101,7 +101,7 @@ class _MultiSelectDaleelTypeState extends State<_MultiSelectDaleelType> {
                 DaleelType.values.length,
                 (index) {
                   final type = DaleelType.values[index];
-                  final isSelected = widget.filters.daleelType.contains(type); // Check if selected
+                  final isSelected = widget.filters.daleelType.contains(type);
                   return GestureDetector(
                     onTap: () {
                       if (isSelected) {
@@ -138,6 +138,7 @@ class _MultiSelectDaleelTypeState extends State<_MultiSelectDaleelType> {
           ),
           ApplyFilterButton(onPressed: () {
             context.read<DaleelBloc>().add(DaleelFiltered(widget.filters));
+            context.pop();
           }),
         ],
       ),

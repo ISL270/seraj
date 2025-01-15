@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_statements
 
+import 'dart:developer';
+
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/bloc_event_transformers.dart';
 import 'package:athar/app/core/models/domain/paginated_result.dart';
@@ -51,7 +53,10 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
     DaleelSearched event,
     Emitter<DaleelState> emit,
   ) async {
-    emit(state.copyWith(searchTerm: event.searchTerm, status: const Loading()));
+    emit(state.copyWith(
+      searchTerm: event.searchTerm,
+      status: state.status.toLoading(),
+    ));
 
     final searchResult = await _repository.searchDaleel(
       page: 0,
@@ -92,8 +97,11 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
     DaleelFiltered event,
     Emitter<DaleelState> emit,
   ) {
+    log('filter updated');
+
     if (state.daleelFilters == event.filters) return;
     emit(state.copyWith(daleelFilters: event.filters));
+
     add(DaleelSearched(state.searchTerm));
   }
 

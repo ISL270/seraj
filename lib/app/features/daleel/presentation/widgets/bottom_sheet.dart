@@ -23,7 +23,7 @@ Future<void> _openBottomSheet(BuildContext context) async {
               context.l10n.propheticHadith,
               context.l10n.quranicVerse,
               context.l10n.athar,
-              context.l10n.others
+              context.l10n.others,
             ],
           ),
         ),

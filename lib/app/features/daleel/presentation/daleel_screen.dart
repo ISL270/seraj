@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use_from_same_package, deprecated_member_use, inference_failure_on_function_invocation, unused_element
+// ignore_for_file: deprecated_member_use_from_same_package, unused_element, deprecated_member_use
 
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
 import 'package:athar/app/core/enums/status.dart';
@@ -131,6 +131,7 @@ class _DaleelScreenState extends State<DaleelScreen> {
                       label: context.l10n.daleelType,
                       onTap: () async {
                         await _openFilterDaleelTypeSelectorBottomSheet(filters, context);
+                        _bloc.add(const DaleelSearched(''));
                       },
                     ),
                     _DaleelFilterTypeWidget(
