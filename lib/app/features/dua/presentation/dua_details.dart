@@ -1,9 +1,12 @@
+import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
+import 'package:athar/app/features/settings/domain/settings.dart';
+import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -114,6 +117,9 @@ class _DuaDetailsState extends State<DuaDetails> {
             expanded: Text(
               widget.dua.reward ?? '',
               style: context.textThemeX.medium.copyWith(fontSize: 18.sp),
+              textDirection: context.settingsBloc.state.settings.isArabic
+                  ? TextDirection.rtl
+                  : TextDirection.ltr,
             ),
           ),
           const Spacer(),
