@@ -1,6 +1,5 @@
-// ignore_for_file: deprecated_member_use_from_same_package, deprecated_member_use, inference_failure_on_function_invocation, unused_element
-
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
+import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/english_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
@@ -12,13 +11,16 @@ import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/add_athar/presentation/add_athar_screen.dart';
 import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dart';
 import 'package:athar/app/features/add_other/presentation/add_other_screen.dart';
+import 'package:athar/app/features/aya/presentation/add_new_ayah.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
+import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/features/daleel/presentation/widgets/priority_slider_w_label.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -39,7 +41,11 @@ class DaleelScreen extends StatefulWidget {
 }
 
 class _DaleelScreenState extends State<DaleelScreen> {
-  int selectedIndex = 0;
+  @override
+  void initState() {
+    context.read<DaleelBloc>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,14 +125,31 @@ class _DaleelScreenState extends State<DaleelScreen> {
               ),
             ),
             Gap(2.h),
-            Column(
-              children: [
-                _DaleelWidget(label: context.l10n.propheticHadith),
-                _DaleelWidget(label: context.l10n.propheticHadith),
-                _DaleelWidget(label: context.l10n.propheticHadith),
-                _DaleelWidget(label: context.l10n.propheticHadith),
-              ],
+            BlocBuilder<DaleelBloc, DaleelState>(
+              builder: (context, state) {
+                return switch (state.status) {
+                  Loading() => const Center(child: CircularProgressIndicator()),
+                  _ => state.daleels.result.isEmpty
+                      ? const Center(child: Text('لا يوجد نتائج'))
+                      : ListView.separated(
+                          itemBuilder: (context, i) =>
+                              _DaleelWidget(label: state.daleels.result[i].text),
+                          separatorBuilder: (_, __) => const Divider(),
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: state.daleels.result.length,
+                          shrinkWrap: true,
+                        ),
+                };
+              },
             ),
+            // Column(
+            //   children: [
+            //     _DaleelWidget(label: context.l10n.propheticHadith),
+            //     _DaleelWidget(label: context.l10n.propheticHadith),
+            //     _DaleelWidget(label: context.l10n.propheticHadith),
+            //     _DaleelWidget(label: context.l10n.propheticHadith),
+            //   ],
+            // ),
           ],
         ),
       ),

@@ -73,6 +73,40 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
     }
   }
 
+  Future<EitherException<void>> saveAya({
+    required String text,
+    required String ayaExplain,
+    required String surahOfAya,
+    required int firstAya,
+    required int lastAya,
+    required Priority priority,
+    required DateTime lastRevisedAt,
+    required List<String> tags,
+    String? sayer,
+  }) async {
+    try {
+      await _remoteSource.saveAya(
+        text: text,
+        userId: authRepository.user!.id,
+        sayer: sayer,
+        priority: priority,
+        tags: tags,
+        surahOfAya: surahOfAya,
+        firstAya: firstAya,
+        lastAya: lastAya,
+        ayaExplain: ayaExplain,
+        lastRevisedAt: lastRevisedAt,
+      );
+      return right(null);
+    } catch (e) {
+      return left(e as GenericException);
+    }
+  }
+
+  Future<bool> isAyahExist({required String surahName, required int ayahNumber}) async {
+    return await _localSource.getAyaByText(surahName: surahName, ayahNumber: ayahNumber) != null;
+  }
+
   Future<EitherException<void>> saveOthers({
     required String text,
     required String sayer,
@@ -97,4 +131,21 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
       return left(e as GenericException);
     }
   }
+
+  Future<List<Daleel>> searchDaleel(
+    String searchTerm, {
+    required int page,
+    required int pageSize,
+  }) async {
+    final cms = await _localSource.getDaleels(
+      searchTerm,
+      page: page,
+      pageSize: pageSize,
+    );
+
+    return cms.map((e) => e.toDomain()).toList();
+  }
+
+  @disposeMethod
+  void dispMethod() => dispose();
 }

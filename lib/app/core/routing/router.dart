@@ -9,8 +9,10 @@ import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dar
 import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
 import 'package:athar/app/features/add_other/presentation/add_other_screen.dart';
 import 'package:athar/app/features/add_other/presentation/cubit/add_other_cubit.dart';
+import 'package:athar/app/features/aya/presentation/add_new_ayah.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
+import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
@@ -66,8 +68,11 @@ final appRouter = GoRouter(
             GoRoute(
               name: DaleelScreen.name,
               path: '/${DaleelScreen.name}',
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: DaleelScreen(),
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: BlocProvider(
+                  create: (context) => DaleelBloc(getIt.get<DaleelRepository>()),
+                  child: const DaleelScreen(),
+                ),
               ),
               routes: [
                 GoRoute(
@@ -93,6 +98,17 @@ final appRouter = GoRouter(
                       child: const AddAtharScreen(),
                     ),
                   ),
+                ),
+                GoRoute(
+                  name: AddNewAyah.name,
+                  path: AddNewAyah.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  pageBuilder: (context, state) {
+                    // Pass the Aya model using the `extra` parameter
+                    return const CupertinoPage(
+                      child: AddNewAyah(),
+                    );
+                  },
                 ),
                 GoRoute(
                   name: AddOtherScreen.name,

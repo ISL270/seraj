@@ -12,6 +12,7 @@ Future<void> _openFilterDaleelTypeSelectorBottomSheet(BuildContext context) asyn
     elevation: 0,
     context: context,
     isScrollControlled: true,
+    useRootNavigator: true,
     builder: (context) => Container(
       height: 320.h,
       decoration: BoxDecoration(
@@ -70,7 +71,7 @@ class _FilterTypeSelectorBottomSheetBody extends StatelessWidget {
             ],
           ),
         ),
-        const ApplyFilterButton(),
+        ApplyFilterButton(onPressed: () {}),
       ],
     );
   }
@@ -138,6 +139,7 @@ Future<void> _openFilterPrioritySelectorBottomSheet(BuildContext context) async 
   await showModalBottomSheet(
     elevation: 0,
     context: context,
+    useRootNavigator: true,
     isScrollControlled: true,
     builder: (context) => Container(
       height: 260.h,
@@ -170,39 +172,33 @@ class _FilterPrioritySelectorBottomSheetBody extends StatelessWidget {
       children: [
         Gap(2.h),
         const _DragIndicator(),
-        const _PrioritySelector(),
-        const ApplyFilterButton()
+        _PrioritySelector(),
+        ApplyFilterButton(onPressed: () {})
       ],
     );
   }
 }
 
-class _PrioritySelector extends StatefulWidget {
-  const _PrioritySelector();
-
-  @override
-  State<_PrioritySelector> createState() => _PrioritySelectorState();
-}
-
-class _PrioritySelectorState extends State<_PrioritySelector> {
-  double sliderValue = 0;
+class _PrioritySelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12.w),
-      child: PrioritySliderWithLabel(
-        labelText: context.l10n.priority,
-        priorityTitle: '${Priority.translate(context, sliderValue)} ${context.l10n.saveIt}',
-        onPriorityChanged: (value) {
-          setState(() {
-            sliderValue = value;
-          });
-        },
-        priorityValue: sliderValue,
-        sliderMaxValue: Priority.values.length - 1,
-        sliderDivisions: Priority.values.length - 1,
-        sliderLabel: Priority.translate(context, sliderValue),
-      ),
+    return BlocBuilder<DaleelBloc, DaleelState>(
+      builder: (context, state) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          child: PrioritySliderWithLabel(
+            labelText: context.l10n.priority,
+            priorityTitle:
+                '${Priority.translate(context, state.selectedPriority)} ${context.l10n.saveIt}',
+            onPriorityChanged: (value) =>
+                context.read<DaleelBloc>().add(DaleelPriorityFilterChanged(value)),
+            priorityValue: state.selectedPriority,
+            sliderMaxValue: Priority.values.length - 1,
+            sliderDivisions: Priority.values.length - 1,
+            sliderLabel: Priority.translate(context, state.selectedPriority),
+          ),
+        );
+      },
     );
   }
 }
@@ -217,6 +213,7 @@ Future<void> _openFilterDateSelectorBottomSheet(BuildContext context) async {
     elevation: 0,
     context: context,
     isScrollControlled: true,
+    useRootNavigator: true,
     builder: (context) => Container(
       height: 365.h,
       decoration: BoxDecoration(
@@ -249,7 +246,7 @@ class _FilterDateSelectorBottomSheetBody extends StatelessWidget {
         Gap(2.h),
         const _DragIndicator(),
         const _EasyDateTimeLinePickerWidget(),
-        const ApplyFilterButton()
+        ApplyFilterButton(onPressed: () {})
       ],
     );
   }
