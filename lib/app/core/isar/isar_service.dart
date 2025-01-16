@@ -1,7 +1,7 @@
 // ignore_for_file: strict_raw_type
 
+import 'package:athar/app/core/extension_methods/id_helper.dart';
 import 'package:athar/app/core/isar/cache_model.dart';
-import 'package:athar/app/core/isar/isar_helper.dart';
 import 'package:athar/app/features/authentication/data/models/local/user_isar.dart';
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar.dart';
 import 'package:athar/app/features/dua/data/sources/local/dua_isar.dart';
@@ -11,7 +11,7 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
 @singleton
-final class IsarService with IsarHelper {
+final class IsarService {
   const IsarService._(this._isar);
   final Isar _isar;
 
@@ -110,4 +110,7 @@ final class IsarService with IsarHelper {
       return docs.whereType<T>().toList();
     });
   }
+
+  Stream<T?> watchObject<T extends CacheModel>(String id) =>
+      _isar.collection<T>().watchObject(toIntID(id));
 }

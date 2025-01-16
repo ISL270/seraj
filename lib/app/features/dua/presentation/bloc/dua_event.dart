@@ -19,14 +19,3 @@ final class DuaSearched extends DuaEvent {
 final class _DuaSubscriptionRequested extends DuaEvent {}
 
 final class DuaNextPageFetched extends DuaEvent {}
-
-/// New event for adding a Dua to favorites
-final class DuaAddToFavorite extends DuaEvent {
-  final String duaId;
-  final bool currantStatus;
-
-  const DuaAddToFavorite(this.duaId, this.currantStatus);
-
-  @override
-  List<Object> get props => [duaId, currantStatus];
-}

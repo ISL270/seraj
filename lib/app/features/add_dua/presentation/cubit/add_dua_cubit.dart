@@ -37,6 +37,7 @@ class AddDuaCubit extends Cubit<AddDuaState> {
         description: state.description,
         reward: state.reward.value,
       );
+      //TODO: to be fixed
       emit(state.copyWith(status: const Success('Saved Dua Successfully')));
     } catch (e) {
       print(e);

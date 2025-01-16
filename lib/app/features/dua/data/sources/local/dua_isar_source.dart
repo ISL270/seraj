@@ -12,8 +12,6 @@ final class DuaIsarSource extends IsarSource<Dua, DuaIsar> {
   @override
   DuaIsar fromDomain(Dua dm) => DuaIsar.fromDomain(dm);
 
-  Future<List<DuaIsar>> getAllDuas() => isarService.getAll<DuaIsar>();
-
   Future<List<DuaIsar>> getDuas(
     String searchTerm, {
     required int page,

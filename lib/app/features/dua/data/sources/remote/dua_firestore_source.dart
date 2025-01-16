@@ -17,30 +17,28 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM> with Fires
   Future<void> addDua({
     required String uid,
     required String text,
-    required bool isFavorite,
     required String? reward,
+    required bool isFavorite,
     required List<String> tags,
-    required String? description,
+    required String? description,   
   }) async =>
       firestoreOperationHandler(() async {
         await firestoreSvc.users.duaCollection(uid).add({
           firestoreSvc.dua.text: text,
-          firestoreSvc.dua.isFavorite: isFavorite,
           firestoreSvc.dua.tags: tags,
           firestoreSvc.dua.reward: reward,
+          firestoreSvc.dua.isFavorite: isFavorite,
           firestoreSvc.dua.description: description,
         });
       });
-  Future<void> addToFavorite({
-    required String uid,
-    required String duaId,
-    required bool currentStatus,
-  }) async =>
+
+  Future<void> toggleFavorite({required String uid, required Dua dua}) async =>
       firestoreOperationHandler(() async {
-        await firestoreSvc.users.duaCollection(uid).doc(duaId).update({
-          firestoreSvc.dua.isFavorite: !currentStatus,
+        await firestoreSvc.users.duaCollection(uid).doc(dua.id).update({
+          firestoreSvc.dua.isFavorite: !dua.isFavorite,
         });
       });
+
   @override
   DuaFM fromJson(String docID, Map<String, dynamic> json) => DuaFM.fromJson(docID, json);
 

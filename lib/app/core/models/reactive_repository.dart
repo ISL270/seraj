@@ -116,6 +116,9 @@ abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheMo
     });
   }
 
+  /// Watches an object in the local source by its ID and maps it to a domain model.
+  Stream<D?> watchLocalObject(String id) => localSource.watchObject(id).map((cm) => cm?.toDomain());
+
   /// Closes the status subject if it's open
   void _closeSubject() {
     if (_subject.isClosed) return;

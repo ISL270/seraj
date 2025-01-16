@@ -16,7 +16,7 @@ import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
-import 'package:athar/app/features/dua/presentation/dua_details.dart';
+import 'package:athar/app/features/dua/presentation/dua_details/dua_details.dart';
 import 'package:athar/app/features/dua/presentation/dua_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/login/cubit/login_cubit.dart';
@@ -126,13 +126,11 @@ final appRouter = GoRouter(
                   name: DuaDetails.name,
                   path: DuaDetails.name,
                   parentNavigatorKey: _rootNavigatorKey,
-                  pageBuilder: (context, state) {
-                    final dua = state.extra! as Dua; // Retrieve the `Dua` object.
-                    return NoTransitionPage(
-                      child: BlocProvider(
-                        create: (context) => getIt.get<DuaBloc>(),
-                        child: DuaDetails(dua: dua),
-                      ),
+                  builder: (context, state) {
+                    final dua = state.extra! as Dua;
+                    return BlocProvider(
+                      create: (context) => getIt.get<DuaBloc>(),
+                      child: DuaDetails(dua: dua),
                     );
                   },
                 ),

@@ -1,9 +1,11 @@
+import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
+import 'package:athar/app/features/dua/domain/dua_repository.dart';
 import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
@@ -18,17 +20,22 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 
-class DuaDetails extends StatefulWidget {
+class DuaDetailsCubit extends Cubit<Dua> {
+  final DuaRepository repository;
+  DuaDetailsCubit({required this.repository, required Dua dua}) : super(dua){
+    
+  }
+}
+
+
+
+class DuaDetails extends StatelessWidget {
   const DuaDetails({required this.dua, super.key});
 
   final Dua dua;
-  static const String name = 'dua-details';
 
-  @override
-  State<DuaDetails> createState() => _DuaDetailsState();
-}
+  static const name = 'dua-details';
 
-class _DuaDetailsState extends State<DuaDetails> {
   @override
   Widget build(BuildContext context) {
     return Screen(
@@ -39,7 +46,7 @@ class _DuaDetailsState extends State<DuaDetails> {
           Row(
             children: [
               GestureDetector(
-                onTap: () => context.pop(),
+                onTap: context.pop,
                 child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
               ),
               const Spacer(flex: 2),
@@ -71,7 +78,7 @@ class _DuaDetailsState extends State<DuaDetails> {
               children: [
                 const Spacer(flex: 4),
                 Text(
-                  widget.dua.text,
+                  dua.text,
                   style: context.textThemeX.heading.copyWith(
                     fontSize: 28.sp,
                     fontFamily: GoogleFonts.amiriQuran().fontFamily,
@@ -81,16 +88,15 @@ class _DuaDetailsState extends State<DuaDetails> {
                 const Spacer(flex: 2),
                 Row(
                   children: [
-                    BlocBuilder<DuaBloc, DuaState>(
+                    BlocSelector<DuaDetailsCubit, Status<Dua>, bool>(
+                      selector: (state) => state.data!.isFavorite,
                       builder: (context, state) {
                         return _HeaderIcon(
-                          icon: widget.dua.isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: widget.dua.isFavorite
-                              ? context.colorsX.primary
-                              : context.colorsX.background,
-                          onTap: () => context
-                              .read<DuaBloc>()
-                              .add(DuaAddToFavorite(widget.dua.id, widget.dua.isFavorite)),
+                          icon: dua.isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color:
+                              dua.isFavorite ? context.colorsX.primary : context.colorsX.background,
+                          onTap: () =>
+                              context.read<DuaBloc>().add(DuaAddToFavorite(dua.id, dua.isFavorite)),
                         );
                       },
                     ),
@@ -115,7 +121,7 @@ class _DuaDetailsState extends State<DuaDetails> {
             ),
             collapsed: const SizedBox(),
             expanded: Text(
-              widget.dua.reward ?? '',
+              dua.reward ?? '',
               style: context.textThemeX.medium.copyWith(fontSize: 18.sp),
               textDirection: context.settingsBloc.state.settings.isArabic
                   ? TextDirection.rtl
@@ -123,9 +129,7 @@ class _DuaDetailsState extends State<DuaDetails> {
             ),
           ),
           const Spacer(),
-          _ShareAndCopyWidget(
-            text: widget.dua.text,
-          ),
+          _ShareAndCopyWidget(text: dua.text),
           Gap(20.h)
         ],
       ),

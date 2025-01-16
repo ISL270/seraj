@@ -7,7 +7,6 @@ import 'package:athar/app/features/dua/data/sources/local/dua_isar_source.dart';
 import 'package:athar/app/features/dua/data/sources/remote/dua_firestore_source.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:dartx/dartx_io.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
@@ -21,7 +20,7 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
     this._localSource,
   ) : super(localSource: _localSource, remoteSource: _remoteSource);
 
-  Future<EitherException<void>> addDua({
+  Future<void> addDua({
     required String text,
     required String reward,
     required List<String> tags,
@@ -36,9 +35,8 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
         reward: reward.isBlank ? null : reward,
         description: description.isBlank ? null : description,
       );
-      return right(null);
     } catch (e) {
-      return left(e as GenericException);
+      throw e as GenericException;
     }
   }
 
@@ -55,12 +53,12 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
     return cms.map((e) => e.toDomain()).toList();
   }
 
-  Future<void> addToFavorite({
-    required String duaId,
-    required bool currentStatus,
-  }) async {
-    await _remoteSource.addToFavorite(
-        uid: authRepository.user!.id, duaId: duaId, currentStatus: currentStatus);
+  Future<void> toggleFavorite(Dua dua) async {
+    try {
+      await _remoteSource.toggleFavorite(uid: authRepository.user!.id, dua: dua);
+    } catch (e) {
+      throw e as GenericException;
+    }
   }
 
   @disposeMethod

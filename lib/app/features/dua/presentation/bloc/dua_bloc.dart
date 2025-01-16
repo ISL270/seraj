@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/bloc_event_transformers.dart';
-import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/core/models/domain/paginated_result.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
@@ -19,7 +16,6 @@ class DuaBloc extends Bloc<DuaEvent, DuaState> {
 
   DuaBloc(this._repository) : super(const DuaState()) {
     on<_DuaSubscriptionRequested>(_onSubscriptionRequested);
-    on<DuaAddToFavorite>(onAddToFavorite);
 
     on<DuaSearched>(_onSearched);
     on<DuaNextPageFetched>(
@@ -81,22 +77,6 @@ class DuaBloc extends Bloc<DuaEvent, DuaState> {
         hasReachedMax: searchResult.length < state.duas.pageSize,
       ),
     ));
-  }
-
-  Future<void> onAddToFavorite(
-    DuaAddToFavorite event,
-    Emitter<DuaState> emit,
-  ) async {
-    try {
-      await _repository.addToFavorite(duaId: event.duaId, currentStatus: event.currantStatus);
-      print(event.currantStatus);
-      print(event.duaId);
-      emit(state.copyWith(status: const Success('Added to favorites successfully')));
-      log('success');
-    } catch (e) {
-      log(e.toString());
-      emit(state.copyWith(status: Failure(e as GenericException)));
-    }
   }
 
   @override
