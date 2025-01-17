@@ -81,6 +81,13 @@ class _DaleelScreenState extends State<DaleelScreen> {
   }
 
   @override
+  void dispose() {
+    _searchCntrlr.dispose();
+    _scrollCntrlr.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SuperScaffold(
       appBar: SuperAppBar(
