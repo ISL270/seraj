@@ -50,7 +50,7 @@ class DuaDetailsBloc extends Bloc<_DuaDetailsEvent, DuaState> {
     Emitter<DuaState> emit,
   ) async {
     try {
-      await repository.(state.data!.id);
+      await repository.deleteDoc(state.data!.id);
     } catch (e) {
       emit(state.toFailure(e as GenericException));
     }

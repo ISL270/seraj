@@ -116,6 +116,11 @@ abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheMo
     });
   }
 
+  Future<void> deleteDoc(String docID) => remoteSource.deleteDoc(
+        uid: authRepository.user!.id,
+        docID: docID,
+      );
+
   /// Watches an object in the local source by its ID and maps it to a domain model.
   Stream<D?> watchLocalObject(String id) => localSource.watchObject(id).map((cm) => cm?.toDomain());
 

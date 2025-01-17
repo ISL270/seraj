@@ -22,7 +22,7 @@ final class DuaFM implements RemoteModel<Dua> {
 
   @override
   Dua toDomain() => Dua(
-        isFavorite: isFavorite,
+        isFavourite: isFavorite,
         id: id,
         text: text,
         tags: tags,

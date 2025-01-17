@@ -1,12 +1,10 @@
-import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
-import 'package:athar/app/features/dua/domain/dua_repository.dart';
-import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
+import 'package:athar/app/features/dua/presentation/dua_details/bloc/dua_details_bloc.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/screen.dart';
@@ -20,17 +18,8 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 
-class DuaDetailsCubit extends Cubit<Dua> {
-  final DuaRepository repository;
-  DuaDetailsCubit({required this.repository, required Dua dua}) : super(dua){
-    
-  }
-}
-
-
-
-class DuaDetails extends StatelessWidget {
-  const DuaDetails({required this.dua, super.key});
+class DuaDetailsScreen extends StatelessWidget {
+  const DuaDetailsScreen(this.dua, {super.key});
 
   final Dua dua;
 
@@ -88,19 +77,25 @@ class DuaDetails extends StatelessWidget {
                 const Spacer(flex: 2),
                 Row(
                   children: [
-                    BlocSelector<DuaDetailsCubit, Status<Dua>, bool>(
-                      selector: (state) => state.data!.isFavorite,
-                      builder: (context, state) {
-                        return _HeaderIcon(
-                          icon: dua.isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color:
-                              dua.isFavorite ? context.colorsX.primary : context.colorsX.background,
-                          onTap: () =>
-                              context.read<DuaBloc>().add(DuaAddToFavorite(dua.id, dua.isFavorite)),
-                        );
+                    BlocSelector<DuaDetailsBloc, DuaState, bool>(
+                      selector: (state) => state.data!.isFavourite,
+                      builder: (context, isFavourite) => IconButton(
+                        onPressed: () =>
+                            context.read<DuaDetailsBloc>().add(const DuaFavouriteToggled()),
+                        icon: Icon(isFavourite ? Icons.favorite : Icons.favorite_border),
+                      ),
+                    ),
+                    BlocConsumer<DuaDetailsBloc, DuaState>(
+                      builder: (context, state) => IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () => context.read<DuaDetailsBloc>().add(const DuaDeleted()),
+                      ),
+                      listener: (context, state) {
+                        if (state.isSuccess && state.data == null) {
+                          context.pop();
+                        }
                       },
                     ),
-                    const _HeaderIcon(icon: Icons.delete),
                   ],
                 ),
                 const Spacer(),
@@ -132,34 +127,6 @@ class DuaDetails extends StatelessWidget {
           _ShareAndCopyWidget(text: dua.text),
           Gap(20.h)
         ],
-      ),
-    );
-  }
-}
-
-class _HeaderIcon extends StatelessWidget {
-  const _HeaderIcon({required this.icon, this.onTap, this.color});
-
-  final IconData icon;
-  final Color? color;
-  final void Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: EdgeInsets.all(5.w),
-        child: Container(
-          decoration: BoxDecoration(
-            color: context.colorsX.onBackgroundTint35,
-            shape: BoxShape.circle,
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(10.w),
-            child: Icon(icon, size: 16.w, color: color ?? context.colorsX.background),
-          ),
-        ),
       ),
     );
   }

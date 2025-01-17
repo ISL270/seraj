@@ -114,7 +114,7 @@ abstract base class ReactiveFirestoreSource<FM> with FirestoreHelper {
     );
   }
 
-  Future<void> deleteDoc(String docID);
+  Future<void> deleteDoc({required String uid, required String docID});
 
   /// This method:
   /// - Closes the stream controller if not already closed

@@ -15,8 +15,10 @@ import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
+import 'package:athar/app/features/dua/domain/dua_repository.dart';
 import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
-import 'package:athar/app/features/dua/presentation/dua_details/dua_details.dart';
+import 'package:athar/app/features/dua/presentation/dua_details/bloc/dua_details_bloc.dart';
+import 'package:athar/app/features/dua/presentation/dua_details/dua_details_screen.dart';
 import 'package:athar/app/features/dua/presentation/dua_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/login/cubit/login_cubit.dart';
@@ -122,18 +124,6 @@ final appRouter = GoRouter(
                     ),
                   ),
                 ),
-                GoRoute(
-                  name: DuaDetails.name,
-                  path: DuaDetails.name,
-                  parentNavigatorKey: _rootNavigatorKey,
-                  builder: (context, state) {
-                    final dua = state.extra! as Dua;
-                    return BlocProvider(
-                      create: (context) => getIt.get<DuaBloc>(),
-                      child: DuaDetails(dua: dua),
-                    );
-                  },
-                ),
               ],
             ),
           ],
@@ -159,6 +149,18 @@ final appRouter = GoRouter(
                     fullscreenDialog: true,
                     child: AddDuaScreen(),
                   ),
+                ),
+                GoRoute(
+                  name: DuaDetailsScreen.name,
+                  path: DuaDetailsScreen.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  builder: (context, state) {
+                    final dua = state.extra! as Dua;
+                    return BlocProvider(
+                      create: (context) => DuaDetailsBloc(getIt.get<DuaRepository>(), dua),
+                      child: DuaDetailsScreen(dua),
+                    );
+                  },
                 ),
               ],
             ),

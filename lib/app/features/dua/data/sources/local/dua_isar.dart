@@ -30,13 +30,13 @@ final class DuaIsar extends CacheModel<Dua> {
         tags: domain.tags,
         reward: domain.reward,
         description: domain.description,
-        isFavorite: domain.isFavorite,
+        isFavorite: domain.isFavourite,
       );
 
   @override
   Dua toDomain() {
     return Dua(
-      isFavorite: isFavorite,
+      isFavourite: isFavorite,
       id: id,
       text: text,
       tags: tags,

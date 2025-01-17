@@ -20,7 +20,7 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM> with Fires
     required String? reward,
     required bool isFavorite,
     required List<String> tags,
-    required String? description,   
+    required String? description,
   }) async =>
       firestoreOperationHandler(() async {
         await firestoreSvc.users.duaCollection(uid).add({
@@ -35,7 +35,7 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM> with Fires
   Future<void> toggleFavorite({required String uid, required Dua dua}) async =>
       firestoreOperationHandler(() async {
         await firestoreSvc.users.duaCollection(uid).doc(dua.id).update({
-          firestoreSvc.dua.isFavorite: !dua.isFavorite,
+          firestoreSvc.dua.isFavorite: !dua.isFavourite,
         });
       });
 
@@ -45,4 +45,11 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM> with Fires
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> snapshotQuery(User user) =>
       firestoreSvc.users.duaCollection(user.id).snapshots();
+
+  @override
+  Future<void> deleteDoc({required String uid, required String docID}) async {
+    await firestoreOperationHandler(
+      () async => firestoreSvc.users.duaCollection(uid).doc(docID).delete(),
+    );
+  }
 }

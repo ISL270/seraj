@@ -10,7 +10,7 @@ class _DuasListView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BlocBuilder<DuaBloc, DuaState>(
+          BlocBuilder<DuaBloc, DuaScreenState>(
             builder: (context, state) => switch (state.status) {
               Loading() => const Center(child: CircularProgressIndicator()),
               _ => state.duas.result.isEmpty

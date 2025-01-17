@@ -13,7 +13,7 @@ class _DuaWithNumWidget extends StatelessWidget {
       key: const Key('onDismissibleDua'),
       onDismissed: (v) {},
       child: InkWell(
-        onTap: () => context.pushNamed(DuaDetails.name, extra: dua),
+        onTap: () => context.pushNamed(DuaDetailsScreen.name, extra: dua),
         child: Container(
           clipBehavior: Clip.hardEdge,
           margin: EdgeInsets.all(16.sp),
@@ -61,18 +61,17 @@ class _DuaWithNumWidget extends StatelessWidget {
                   ),
                   Gap(5.w),
                   IconButton(
-                    onPressed: () =>
-                        context.read<DuaBloc>().add(DuaAddToFavorite(dua.id, dua.isFavorite)),
+                    onPressed: () {},
                     icon: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 400),
                       transitionBuilder: (child, animation) {
                         return ScaleTransition(scale: animation, child: child);
                       },
                       child: Icon(
-                        dua.isFavorite ? Icons.favorite : Icons.favorite_border,
-                        key: ValueKey<bool>(dua.isFavorite),
+                        dua.isFavourite ? Icons.favorite : Icons.favorite_border,
+                        key: ValueKey<bool>(dua.isFavourite),
                         color:
-                            dua.isFavorite ? context.colorsX.error : context.colorsX.onBackground,
+                            dua.isFavourite ? context.colorsX.error : context.colorsX.onBackground,
                       ),
                     ),
                   ),

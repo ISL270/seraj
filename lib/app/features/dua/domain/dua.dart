@@ -3,12 +3,12 @@ import 'package:equatable/equatable.dart';
 
 final class Dua extends IslamicText with EquatableMixin {
   final String? reward;
-  final bool isFavorite;
+  final bool isFavourite;
 
   const Dua({
     required super.id,
     required super.text,
-    required this.isFavorite,
+    required this.isFavourite,
     super.tags,
     this.reward,
     super.description,

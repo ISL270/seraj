@@ -1,22 +1,22 @@
 part of 'dua_bloc.dart';
 
-final class DuaState extends Equatable {
+final class DuaScreenState extends Equatable {
   final VoidStatus status;
   final String searchTerm;
   final PaginatedResult<Dua> duas;
 
-  const DuaState({
+  const DuaScreenState({
     this.searchTerm = '',
     this.status = const Initial(),
     this.duas = const PaginatedResult(),
   });
 
-  DuaState copyWith({
+  DuaScreenState copyWith({
     VoidStatus? status,
     String? searchTerm,
     PaginatedResult<Dua>? dua,
   }) {
-    return DuaState(
+    return DuaScreenState(
       status: status ?? this.status,
       duas: dua ?? this.duas,
       searchTerm: searchTerm ?? this.searchTerm,

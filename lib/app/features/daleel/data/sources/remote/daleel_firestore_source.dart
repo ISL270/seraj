@@ -115,4 +115,11 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> snapshotQuery(User user) =>
       super.firestoreSvc.users.daleelCollection(user.id).snapshots();
+
+  @override
+  Future<void> deleteDoc({required String uid, required String docID}) async {
+    await firestoreOperationHandler(
+      () async => firestoreSvc.users.daleelCollection(uid).doc(docID).delete(),
+    );
+  }
 }

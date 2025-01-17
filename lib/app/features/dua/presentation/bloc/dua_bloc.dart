@@ -11,10 +11,10 @@ part 'dua_event.dart';
 part 'dua_state.dart';
 
 @injectable
-class DuaBloc extends Bloc<DuaEvent, DuaState> {
+class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
   final DuaRepository _repository;
 
-  DuaBloc(this._repository) : super(const DuaState()) {
+  DuaBloc(this._repository) : super(const DuaScreenState()) {
     on<_DuaSubscriptionRequested>(_onSubscriptionRequested);
 
     on<DuaSearched>(_onSearched);
@@ -27,7 +27,7 @@ class DuaBloc extends Bloc<DuaEvent, DuaState> {
 
   Future<void> _onSubscriptionRequested(
     _DuaSubscriptionRequested event,
-    Emitter<DuaState> emit,
+    Emitter<DuaScreenState> emit,
   ) async {
     await emit.forEach(
       _repository.stream(),
@@ -40,7 +40,7 @@ class DuaBloc extends Bloc<DuaEvent, DuaState> {
     );
   }
 
-  Future<void> _onSearched(DuaSearched event, Emitter<DuaState> emit) async {
+  Future<void> _onSearched(DuaSearched event, Emitter<DuaScreenState> emit) async {
     emit(state.copyWith(
       status: const Loading(),
       searchTerm: event.searchTerm,
@@ -60,7 +60,7 @@ class DuaBloc extends Bloc<DuaEvent, DuaState> {
 
   Future<void> _onNextPageFetched(
     DuaNextPageFetched event,
-    Emitter<DuaState> emit,
+    Emitter<DuaScreenState> emit,
   ) async {
     if (state.duas.hasReachedMax) return;
 
