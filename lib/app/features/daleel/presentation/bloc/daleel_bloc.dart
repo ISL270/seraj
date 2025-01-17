@@ -28,6 +28,15 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
       _onNextPageFetched,
       transformer: EventTransformers.throttleDroppable(),
     );
+
+    on<DaleelPriorityFilterChanged>((event, emit) {
+      emit(state.copyWith(
+        selectedPriority: event.priority,
+        daleelFilters: state.daleelFilters,
+      ));
+      add(DaleelSearched(state.searchTerm));
+    });
+
     add(DaleelFetchData());
   }
 
@@ -101,7 +110,6 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
 
     if (state.daleelFilters == event.filters) return;
     emit(state.copyWith(daleelFilters: event.filters));
-
     add(DaleelSearched(state.searchTerm));
   }
 

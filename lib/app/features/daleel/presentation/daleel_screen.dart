@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use_from_same_package, unused_element, deprecated_member_use
 
+import 'dart:developer';
+
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
@@ -127,17 +129,32 @@ class _DaleelScreenState extends State<DaleelScreen> {
                   spacing: 8.w,
                   children: [
                     Gap(12.w),
-                    _DaleelFilterTypeWidget(
-                      label: context.l10n.daleelType,
-                      onTap: () async {
-                        await _openFilterDaleelTypeSelectorBottomSheet(filters, context);
-                        _bloc.add(const DaleelSearched(''));
+                    BlocBuilder<DaleelBloc, DaleelState>(
+                      builder: (context, state) {
+                        return _DaleelFilterTypeWidget(
+                          label: state.daleelFilters.daleelType.isEmpty
+                              ? context.l10n.daleelType
+                              : '${context.l10n.daleelType} : ${state.daleelFilters.daleelType.map((e) => e.toTranslate(context)).join(', ')}',
+                          isActive: state.daleelFilters.daleelType.isNotEmpty,
+                          onTap: () async {
+                            await _openFilterDaleelTypeSelectorBottomSheet(filters, context);
+                            _bloc.add(const DaleelSearched(''));
+                          },
+                        );
                       },
                     ),
-                    _DaleelFilterTypeWidget(
-                      label: context.l10n.priority,
-                      onTap: () async {
-                        await _openFilterPrioritySelectorBottomSheet(filters, context);
+                    BlocBuilder<DaleelBloc, DaleelState>(
+                      builder: (context, state) {
+                        return _DaleelFilterTypeWidget(
+                          label: state.daleelFilters.priority.isEmpty
+                              ? context.l10n.priority
+                              : '${context.l10n.priority} : ${state.daleelFilters.priority.map((e) => e.toTranslate(context)).join(', ')}',
+                          isActive: state.daleelFilters.priority.isNotEmpty,
+                          onTap: () async {
+                            await _openFilterPrioritySelectorBottomSheet(filters, context);
+                            _bloc.add(const DaleelSearched(''));
+                          },
+                        );
                       },
                     ),
                     _DaleelFilterTypeWidget(

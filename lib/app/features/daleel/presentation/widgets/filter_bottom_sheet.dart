@@ -59,9 +59,7 @@ class _FilterTypeSelectorBottomSheetBody extends StatelessWidget {
           width: double.infinity,
           child: Row(
             children: [
-              Expanded(
-                child: _MultiSelectDaleelType(filters: filters),
-              ),
+              Expanded(child: _MultiSelectDaleelType(filters: filters)),
             ],
           ),
         ),
@@ -136,10 +134,12 @@ class _MultiSelectDaleelTypeState extends State<_MultiSelectDaleelType> {
               ),
             ),
           ),
-          ApplyFilterButton(onPressed: () {
-            context.read<DaleelBloc>().add(DaleelFiltered(widget.filters));
-            context.pop();
-          }),
+          ApplyFilterButton(
+            onPressed: () {
+              context.read<DaleelBloc>().add(DaleelFiltered(widget.filters));
+              context.pop();
+            },
+          ),
         ],
       ),
     );
@@ -174,13 +174,15 @@ Future<void> _openFilterPrioritySelectorBottomSheet(
           ),
         ],
       ),
-      child: const _FilterPrioritySelectorBottomSheetBody(),
+      child: _FilterPrioritySelectorBottomSheetBody(filters),
     ),
   );
 }
 
 class _FilterPrioritySelectorBottomSheetBody extends StatelessWidget {
-  const _FilterPrioritySelectorBottomSheetBody();
+  const _FilterPrioritySelectorBottomSheetBody(this.filters);
+
+  final DaleelFilters filters;
 
   @override
   Widget build(BuildContext context) {
@@ -189,31 +191,78 @@ class _FilterPrioritySelectorBottomSheetBody extends StatelessWidget {
       children: [
         Gap(2.h),
         const _DragIndicator(),
-        _PrioritySelector(),
-        ApplyFilterButton(onPressed: () {})
+        _PrioritySelector(filters: filters),
       ],
     );
   }
 }
 
-class _PrioritySelector extends StatelessWidget {
+class _PrioritySelector extends StatefulWidget {
+  const _PrioritySelector({required this.filters});
+  final DaleelFilters filters;
+
+  @override
+  State<_PrioritySelector> createState() => _PrioritySelectorState();
+}
+
+class _PrioritySelectorState extends State<_PrioritySelector> {
+  late DaleelFilters updatedFilters;
+
+  @override
+  void initState() {
+    updatedFilters = widget.filters;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DaleelBloc, DaleelState>(
       builder: (context, state) {
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.w),
-          child: PrioritySliderWithLabel(
-            labelText: context.l10n.priority,
-            priorityTitle:
-                '${Priority.translate(context, state.selectedPriority)} ${context.l10n.saveIt}',
-            onPriorityChanged: (value) =>
-                context.read<DaleelBloc>().add(DaleelPriorityFilterChanged(value)),
-            priorityValue: state.selectedPriority,
-            sliderMaxValue: Priority.values.length - 1,
-            sliderDivisions: Priority.values.length - 1,
-            sliderLabel: Priority.translate(context, state.selectedPriority),
-          ),
+        return Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
+              child: PrioritySliderWithLabel(
+                labelText: context.l10n.priority,
+                priorityTitle:
+                    '${Priority.translate(context, state.selectedPriority)} ${context.l10n.saveIt}',
+                onPriorityChanged: (value) =>
+                    context.read<DaleelBloc>().add(DaleelPriorityFilterChanged(value)),
+                priorityValue: state.selectedPriority,
+                sliderMaxValue: Priority.values.length - 1,
+                sliderDivisions: Priority.values.length - 1,
+                sliderLabel: Priority.translate(context, state.selectedPriority),
+              ),
+            ),
+            ApplyFilterButton(
+              onPressed: () {
+                // Retrieve the new priority from the selected state
+                final selectedPriority = Priority.fromDouble(state.selectedPriority);
+
+                // Check if the selected priority is already in the list
+                if (updatedFilters.priority.length == 1 &&
+                    updatedFilters.priority.contains(selectedPriority)) {
+                  context.pop();
+                  return;
+                }
+
+                // Clear the list to ensure only the priority remains
+                updatedFilters.priority.clear();
+
+                // Add the selected priority
+                updatedFilters.priority.add(selectedPriority);
+
+                // Dispatch the event to update the Bloc state
+                context.read<DaleelBloc>().add(DaleelFiltered(updatedFilters));
+
+                // Log the updated priorities for debugging
+                log(updatedFilters.priority.toString());
+
+                // Close the current context (e.g., modal or navigation pop)
+                context.pop();
+              },
+            )
+          ],
         );
       },
     );
