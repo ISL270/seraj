@@ -129,19 +129,20 @@ class _DaleelWidget extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(4.sp),
                 height: daleel.text.length >= 120
-                    ? 170.h + daleel.text.length * 0.35.h
-                    : 140.h + daleel.text.length * 0.30.h,
-                decoration: BoxDecoration(
-                  color: context.colorsX.background,
-                  borderRadius: BorderRadius.circular(12.w),
-                  boxShadow: [
-                    BoxShadow(
-                      color: context.colorsX.onBackgroundTint35,
-                      blurRadius: 1,
-                      blurStyle: BlurStyle.outer,
+                    ? 170.h + daleel.text.length * 0.15.h
+                    : 140.h + daleel.text.length * 0.25.h,
+                decoration: const BoxDecoration(
+                    // color: context.colorsX.background,
+                    // borderRadius: BorderRadius.circular(12.w),
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     color: context.colorsX.onBackgroundTint35,
+                    //     blurRadius: 1,
+
+                    //     blurStyle: BlurStyle.outer,
+                    //   ),
+                    // ],
                     ),
-                  ],
-                ),
                 child: Padding(
                   padding: EdgeInsets.all(6.sp),
                   child: Column(
@@ -153,16 +154,17 @@ class _DaleelWidget extends StatelessWidget {
                           Expanded(
                             child: Text(
                               daleel.text,
-                              style: context.textThemeX.medium.bold,
+                              style: context.textThemeX.large
+                                  .copyWith(fontFamily: GoogleFonts.amiriQuran().fontFamily),
                             ),
                           ),
                         ],
                       ),
                       const Spacer(),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 32.sp),
-                        child: Divider(color: context.colorsX.onBackgroundTint35),
-                      ),
+                      // Padding(
+                      //   padding: EdgeInsets.symmetric(horizontal: 32.sp),
+                      //   child: Divider(color: context.colorsX.onBackgroundTint35),
+                      // ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 4.sp),
                         child: Row(
@@ -173,14 +175,14 @@ class _DaleelWidget extends StatelessWidget {
                                 Athar() => context.l10n.athar,
                                 Others() => context.l10n.other,
                               },
-                              style: context.textThemeX.small.bold,
+                              style: context.textThemeX.small.bold
+                                  .copyWith(color: context.colorsX.primary),
                             ),
                             const Spacer(),
                             Text(
                               daleel.lastRevisedAt.formatted,
-                              style: context.textThemeX.small.bold.copyWith(
-                                color: context.colorsX.onBackgroundTint,
-                              ),
+                              style: context.textThemeX.small.bold
+                                  .copyWith(color: context.colorsX.primary),
                             ),
                           ],
                         ),
