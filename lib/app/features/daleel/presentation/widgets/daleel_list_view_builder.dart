@@ -70,7 +70,7 @@ class _DaleelWidget extends StatelessWidget {
           CircleAvatar(
             backgroundColor: context.colorsX.primary,
             radius: 24.r,
-            child: Icon(FontAwesomeIcons.edit, color: context.colorsX.onBackground, size: 24.r),
+            child: Icon(FontAwesomeIcons.edit, color: context.colorsX.background, size: 24.r),
           ),
           Gap(8.w),
           GestureDetector(
@@ -115,7 +115,7 @@ class _DaleelWidget extends StatelessWidget {
             child: CircleAvatar(
               backgroundColor: context.colorsX.error,
               radius: 24.r,
-              child: Icon(FontAwesomeIcons.trash, color: context.colorsX.onBackground, size: 24.r),
+              child: Icon(FontAwesomeIcons.trash, color: context.colorsX.background, size: 24.r),
             ),
           ),
         ],
