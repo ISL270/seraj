@@ -7,7 +7,7 @@ sealed class DaleelEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class DaleelFetchData extends DaleelEvent {}
+final class DaleelSubscriptionRequested extends DaleelEvent {}
 
 final class DaleelSearched extends DaleelEvent {
   final String searchTerm;

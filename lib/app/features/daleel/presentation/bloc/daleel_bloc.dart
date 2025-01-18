@@ -21,7 +21,7 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
   final DaleelRepository _repository;
 
   DaleelBloc(this._repository) : super(DaleelState._initial()) {
-    on<DaleelFetchData>(_daleelFetchData);
+    on<DaleelSubscriptionRequested>(_onSubscriptionRequested);
     on<DaleelSearched>(_onSearched);
     on<DaleelFiltered>(_onFilterUpdate);
     on<DaleelNextPageFetched>(
@@ -37,11 +37,11 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
       add(DaleelSearched(state.searchTerm));
     });
 
-    add(DaleelFetchData());
+    add(DaleelSubscriptionRequested());
   }
 
-  Future<void> _daleelFetchData(
-    DaleelFetchData event,
+  Future<void> _onSubscriptionRequested(
+    DaleelSubscriptionRequested event,
     Emitter<DaleelState> emit,
   ) async {
     await emit.onEach(
