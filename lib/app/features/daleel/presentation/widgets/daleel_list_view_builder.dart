@@ -41,7 +41,6 @@ class _DaleelListViewBuilder extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
                         child: Divider(
                           height: 1,
-                          // thickness: 0.5,
                           color: context.colorsX.onBackground,
                         ),
                       );
@@ -131,18 +130,6 @@ class _DaleelWidget extends StatelessWidget {
                 height: daleel.text.length >= 120
                     ? 170.h + daleel.text.length * 0.15.h
                     : 140.h + daleel.text.length * 0.25.h,
-                decoration: const BoxDecoration(
-                    // color: context.colorsX.background,
-                    // borderRadius: BorderRadius.circular(12.w),
-                    // boxShadow: [
-                    //   BoxShadow(
-                    //     color: context.colorsX.onBackgroundTint35,
-                    //     blurRadius: 1,
-
-                    //     blurStyle: BlurStyle.outer,
-                    //   ),
-                    // ],
-                    ),
                 child: Padding(
                   padding: EdgeInsets.all(6.sp),
                   child: Column(
@@ -161,10 +148,6 @@ class _DaleelWidget extends StatelessWidget {
                         ],
                       ),
                       const Spacer(),
-                      // Padding(
-                      //   padding: EdgeInsets.symmetric(horizontal: 32.sp),
-                      //   child: Divider(color: context.colorsX.onBackgroundTint35),
-                      // ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 4.sp),
                         child: Row(

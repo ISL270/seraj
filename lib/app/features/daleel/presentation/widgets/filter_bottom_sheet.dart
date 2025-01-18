@@ -15,12 +15,12 @@ Future<void> _openFilterDaleelTypeSelectorBottomSheet(
     isScrollControlled: true,
     useRootNavigator: true,
     builder: (context) => Container(
-      height: 320.h,
+      height: 280.h,
       decoration: BoxDecoration(
         color: context.colorsX.background,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24.h),
-          topRight: Radius.circular(24.h),
+          topLeft: Radius.circular(24.r),
+          topRight: Radius.circular(24.r),
         ),
         boxShadow: [
           BoxShadow(
@@ -57,11 +57,7 @@ class _FilterTypeSelectorBottomSheetBody extends StatelessWidget {
         ),
         SizedBox(
           width: double.infinity,
-          child: Row(
-            children: [
-              Expanded(child: _MultiSelectDaleelType(filters: filters)),
-            ],
-          ),
+          child: _MultiSelectDaleelType(filters: filters),
         ),
       ],
     );
@@ -86,62 +82,59 @@ class _MultiSelectDaleelTypeState extends State<_MultiSelectDaleelType> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(8.w),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(20.sp),
-            child: Wrap(
-              spacing: 12.w,
-              runSpacing: 12.h,
-              children: List.generate(
-                DaleelType.values.length,
-                (index) {
-                  final type = DaleelType.values[index];
-                  final isSelected = widget.filters.daleelType.contains(type);
-                  return GestureDetector(
-                    onTap: () {
-                      if (isSelected) {
-                        widget.filters.daleelType.remove(type);
-                      } else {
-                        widget.filters.daleelType.add(type);
-                      }
-                      setState(() {});
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 400),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.w),
-                        color: isSelected
-                            ? context.colorsX.primary
-                            : context.colorsX.onBackgroundTint35,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 12.h),
-                        child: Text(
-                          DaleelType.values[index].toTranslate(context),
-                          style: context.textThemeX.medium.bold.copyWith(
-                            color: isSelected
-                                ? context.colorsX.background
-                                : context.colorsX.onBackground,
-                          ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: EdgeInsets.all(20.sp),
+          child: Wrap(
+            spacing: 12.w,
+            runSpacing: 12.h,
+            children: List.generate(
+              DaleelType.values.length,
+              (index) {
+                final type = DaleelType.values[index];
+                final isSelected = widget.filters.daleelType.contains(type);
+                return GestureDetector(
+                  onTap: () {
+                    if (isSelected) {
+                      widget.filters.daleelType.remove(type);
+                    } else {
+                      widget.filters.daleelType.add(type);
+                    }
+                    setState(() {});
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 400),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.r),
+                      color:
+                          isSelected ? context.colorsX.primary : context.colorsX.onBackgroundTint35,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 12.h),
+                      child: Text(
+                        DaleelType.values[index].toTranslate(context),
+                        style: context.textThemeX.medium.bold.copyWith(
+                          color: isSelected
+                              ? context.colorsX.background
+                              : context.colorsX.onBackground,
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
-          ApplyFilterButton(
-            onPressed: () {
-              context.read<DaleelBloc>().add(DaleelFiltered(widget.filters));
-              context.pop();
-            },
-          ),
-        ],
-      ),
+        ),
+        ApplyFilterButton(
+          onPressed: () {
+            context.read<DaleelBloc>().add(DaleelFiltered(widget.filters));
+            context.pop();
+          },
+        ),
+      ],
     );
   }
 }
@@ -163,8 +156,8 @@ Future<void> _openFilterPrioritySelectorBottomSheet(
       decoration: BoxDecoration(
         color: context.colorsX.background,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24.h),
-          topRight: Radius.circular(24.h),
+          topLeft: Radius.circular(24.r),
+          topRight: Radius.circular(24.r),
         ),
         boxShadow: [
           BoxShadow(
@@ -187,11 +180,13 @@ class _FilterPrioritySelectorBottomSheetBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       spacing: 16.h,
       children: [
         Gap(2.h),
         const _DragIndicator(),
         _PrioritySelector(filters: filters),
+        Gap(6.h),
       ],
     );
   }
@@ -285,8 +280,8 @@ Future<void> _openFilterDateSelectorBottomSheet(DaleelFilters filters, BuildCont
       decoration: BoxDecoration(
         color: context.colorsX.background,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24.h),
-          topRight: Radius.circular(24.h),
+          topLeft: Radius.circular(24.r),
+          topRight: Radius.circular(24.r),
         ),
         boxShadow: [
           BoxShadow(
@@ -338,7 +333,7 @@ class _EasyDateTimeLinePickerWidgetState extends State<_EasyDateTimeLinePickerWi
         decoration: context.settingsBloc.state.settings.isThemeLight
             ? null
             : BoxDecoration(
-                borderRadius: BorderRadius.circular(12.w),
+                borderRadius: BorderRadius.circular(12.r),
                 color: context.colorsX.onBackgroundTint35,
               ),
         child: EasyDateTimeLinePicker(

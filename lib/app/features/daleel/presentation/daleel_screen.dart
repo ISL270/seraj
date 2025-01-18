@@ -43,7 +43,7 @@ part 'widgets/daleel_list_view_builder.dart';
 class DaleelScreen extends StatefulWidget {
   const DaleelScreen({super.key});
 
-  static const String name = 'daleel';
+  static const String name = 'daleel-screen';
 
   @override
   State<DaleelScreen> createState() => _DaleelScreenState();
