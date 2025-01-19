@@ -7,7 +7,7 @@ import 'package:athar/app/features/add_other/presentation/cubit/add_other_cubit.
 import 'package:athar/app/features/add_other/presentation/cubit/add_other_state.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/widgets/button.dart';
-import 'package:athar/app/widgets/priority_slider_w_label.dart';
+import 'package:athar/app/features/daleel/presentation/widgets/priority_slider_w_label.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

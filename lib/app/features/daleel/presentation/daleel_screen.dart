@@ -21,10 +21,10 @@ import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
+import 'package:athar/app/features/daleel/presentation/widgets/priority_slider_w_label.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/button.dart';
-import 'package:athar/app/widgets/priority_slider_w_label.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,8 +37,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:super_cupertino_navigation_bar/super_cupertino_navigation_bar.dart';
 
 part 'widgets/bottom_sheet.dart';
-part 'widgets/filter_bottom_sheet.dart';
 part 'widgets/daleel_list_view_builder.dart';
+part 'widgets/filter_bottom_sheet.dart';
 
 class DaleelScreen extends StatefulWidget {
   const DaleelScreen({super.key});

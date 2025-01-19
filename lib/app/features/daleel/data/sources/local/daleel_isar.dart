@@ -28,14 +28,21 @@ final class DaleelIsar extends CacheModel<Daleel> {
   @Enumerated(EnumType.name)
   HadithAuthenticity? hadithAuthenticity;
 
+  String? surah;
+  int? firstAya;
+  int? lastAya;
+
   DaleelIsar({
     required this.id,
     required this.text,
+    required this.tags,
     required this.priority,
     required this.daleelType,
-    required this.tags,
     required this.lastRevisedAt,
     this.sayer,
+    this.surah,
+    this.lastAya,
+    this.firstAya,
     this.description,
     this.hadithExtraction,
     this.hadithAuthenticity,
@@ -43,34 +50,46 @@ final class DaleelIsar extends CacheModel<Daleel> {
 
   @override
   Daleel toDomain() => switch (daleelType) {
+        DaleelType.aya => Aya(
+            id: id,
+            text: text,
+            tags: tags,
+            sayer: sayer,
+            surah: surah!,
+            lastAya: lastAya,
+            priority: priority,
+            firstAya: firstAya!,
+            description: description,
+            lastRevisedAt: lastRevisedAt,
+          ),
         DaleelType.hadith => Hadith(
             id: id,
             text: text,
+            tags: tags,
+            sayer: sayer,
             priority: priority,
             description: description,
-            authenticity: hadithAuthenticity,
             extraction: hadithExtraction,
-            tags: tags,
             lastRevisedAt: lastRevisedAt,
-            sayer: sayer,
+            authenticity: hadithAuthenticity,
           ),
         DaleelType.athar => Athar(
             id: id,
             text: text,
+            tags: tags,
+            sayer: sayer,
             priority: priority,
             description: description,
-            tags: tags,
             lastRevisedAt: lastRevisedAt,
-            sayer: sayer,
           ),
-        DaleelType.others => Others(
+        DaleelType.other => Other(
             id: id,
             text: text,
+            tags: tags,
+            sayer: sayer,
             priority: priority,
             description: description,
-            tags: tags,
             lastRevisedAt: lastRevisedAt,
-            sayer: sayer,
           )
       };
 
@@ -87,6 +106,19 @@ final class DaleelIsar extends CacheModel<Daleel> {
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,
           ),
+        Aya() => DaleelIsar(
+            id: daleel.id,
+            text: daleel.text,
+            priority: daleel.priority,
+            description: daleel.description,
+            daleelType: DaleelType.aya,
+            surah: daleel.surah,
+            firstAya: daleel.firstAya,
+            lastAya: daleel.lastAya,
+            sayer: daleel.sayer,
+            tags: daleel.tags,
+            lastRevisedAt: daleel.lastRevisedAt,
+          ),
         Athar() => DaleelIsar(
             id: daleel.id,
             text: daleel.text,
@@ -97,12 +129,12 @@ final class DaleelIsar extends CacheModel<Daleel> {
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,
           ),
-        Others() => DaleelIsar(
+        Other() => DaleelIsar(
             id: daleel.id,
             text: daleel.text,
             priority: daleel.priority,
             description: daleel.description,
-            daleelType: DaleelType.others,
+            daleelType: DaleelType.other,
             sayer: daleel.sayer,
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,

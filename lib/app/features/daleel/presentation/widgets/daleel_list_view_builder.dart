@@ -153,7 +153,8 @@ class _DaleelWidget extends StatelessWidget {
                               switch (daleel) {
                                 Hadith() => context.l10n.propheticHadith,
                                 Athar() => context.l10n.athar,
-                                Others() => context.l10n.other,
+                                Other() => context.l10n.other,
+                                Aya() => context.l10n.aya,
                               },
                               style: context.textThemeX.small.bold
                                   .copyWith(color: context.colorsX.primary),

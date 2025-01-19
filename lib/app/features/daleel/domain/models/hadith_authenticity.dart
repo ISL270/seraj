@@ -1,7 +1,11 @@
-enum HadithAuthenticity { daif, hasan, sahih }
+enum HadithAuthenticity {
+  sahih,
+  hasan,
+  daif;
+}
 
 extension HadithTypeX on HadithAuthenticity {
-  bool get isDaif => this == HadithAuthenticity.daif;
   bool get isSahih => this == HadithAuthenticity.sahih;
   bool get isHasan => this == HadithAuthenticity.hasan;
+  bool get isDaif => this == HadithAuthenticity.daif;
 }

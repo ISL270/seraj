@@ -12,6 +12,7 @@ sealed class GenericException implements Exception {
 }
 
 /// Short for [Either<GenericException, T>]
+@Deprecated('Not needed in this app, dont use it, we will remove it')
 typedef EitherException<T> = Either<GenericException, T>;
 
 /// Business Exception.

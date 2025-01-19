@@ -59,6 +59,34 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
     });
   }
 
+  Future<void> saveAya({
+    required String text,
+    required String userId,
+    required String? sayer,
+    required Priority priority,
+    required List<String> tags,
+    required String surahOfAya,
+    required int firstAya,
+    required int lastAya,
+    required String? ayaExplain,
+    required DateTime? lastRevisedAt,
+  }) async {
+    await firestoreOperationHandler(() async {
+      await firestoreSvc.users.daleelCollection(userId).add({
+        firestoreSvc.aya.daleelType: DaleelType.aya.name,
+        firestoreSvc.aya.text: text,
+        firestoreSvc.aya.tags: tags,
+        firestoreSvc.aya.priority: priority.name,
+        firestoreSvc.aya.lastRevisedAt: lastRevisedAt,
+        firestoreSvc.aya.surahOfAya: surahOfAya,
+        firestoreSvc.aya.firstAya: firstAya,
+        firestoreSvc.aya.lastAya: lastAya,
+        firestoreSvc.aya.sayer: sayer,
+        firestoreSvc.aya.description: ayaExplain,
+      });
+    });
+  }
+
   Future<void> saveOthers({
     required String userId,
     required String text,
@@ -70,13 +98,13 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
   }) async {
     await firestoreOperationHandler(() async {
       await firestoreSvc.users.daleelCollection(userId).add({
-        firestoreSvc.others.text: text,
-        firestoreSvc.others.tags: tags,
-        firestoreSvc.others.priority: priority.name,
-        firestoreSvc.others.lastRevisedAt: lastRevisedAt,
-        firestoreSvc.others.daleelType: DaleelType.others.name,
-        firestoreSvc.others.sayer: sayer!.isEmpty ? null : sayer,
-        firestoreSvc.others.description: description!.isEmpty ? null : description,
+        firestoreSvc.other.text: text,
+        firestoreSvc.other.tags: tags,
+        firestoreSvc.other.priority: priority.name,
+        firestoreSvc.other.lastRevisedAt: lastRevisedAt,
+        firestoreSvc.other.daleelType: DaleelType.other.name,
+        firestoreSvc.other.sayer: sayer!.isEmpty ? null : sayer,
+        firestoreSvc.other.description: description!.isEmpty ? null : description,
       });
     });
   }
@@ -87,4 +115,11 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> snapshotQuery(User user) =>
       super.firestoreSvc.users.daleelCollection(user.id).snapshots();
+
+  @override
+  Future<void> deleteDoc({required String uid, required String docID}) async {
+    await firestoreOperationHandler(
+      () async => firestoreSvc.users.daleelCollection(uid).doc(docID).delete(),
+    );
+  }
 }

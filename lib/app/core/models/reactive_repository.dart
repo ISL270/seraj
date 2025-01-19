@@ -6,6 +6,7 @@ import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/firestore/remote_model.dart';
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/core/isar/isar_source.dart';
+import 'package:athar/app/core/models/doc_change.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/core/models/reactive_firestore_source.dart';
 import 'package:athar/app/features/authentication/domain/models/auth_state.dart';
@@ -33,7 +34,16 @@ import 'package:rxdart/subjects.dart';
 /// - Selective data updates for authorized users
 /// - Error handling and cache management
 ///
-/// For a visual representation check -> https://shrktna.atlassian.net/wiki/spaces/CA/whiteboard/36896771?atl_f=PAGETREE
+/// Recommended Reading:
+/// - Architecture Diagram: https://shrktna.atlassian.net/wiki/spaces/CA/whiteboard/36896771?atl_f=PAGETREE
+///
+/// Example Usage:
+/// ```dart
+/// class UserRepository extends ReactiveRepository<User, UserRemote, UserCache> {
+///   UserRepository(AuthRepository auth, UserRemoteSource remote, UserLocalSource local)
+///     : super(auth, remoteSource: remote, localSource: local);
+/// }
+/// ```
 abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheModel<D>> {
   @protected
   final AuthRepository authRepository;
@@ -56,20 +66,25 @@ abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheMo
 
   void _createSubject() => _subject = BehaviorSubject<VoidStatus>.seeded(const Initial());
 
-  /// Provides a broadcast stream of data status updates
+  /// Provides a broadcast stream of data synchronization status updates
   ///
   /// Allows multiple listeners to receive data synchronization updates
   Stream<VoidStatus> stream() => _subject.asBroadcastStream();
 
+  /// Optional hook for additional asynchronous initialization tasks
+  ///
+  /// Subclasses can override this to perform custom setup before data synchronization
+  /// Useful for complex initialization scenarios requiring pre-sync operations
   @protected
   Future<void> toBeAwaited() => Future.value();
 
-  /// Initializes the repository's data synchronization mechanism
+  /// Core initialization method for repository's data synchronization
   ///
-  /// Core responsibilities:
+  /// Responsibilities:
   /// 1. Listen to authentication state changes
-  /// 2. Manage remote and local data sources
-  /// 3. Handle data synchronization and status updates
+  /// 2. Manage remote and local data sources dynamically
+  /// 3. Handle complex data synchronization workflows
+  /// 4. Provide comprehensive status updates
   void _init() {
     authRepository.stream().listen((authState) async {
       // Clear data and close subject for unauthenticated users
@@ -93,13 +108,18 @@ abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheMo
       remoteSource.subToRemote(authState as Authenticated);
 
       // Listen to remote updates and synchronize local data
-      remoteSource.listToBeUpdated.listen(
-        (remoteModels) async {
-          // Convert remote models to domain models
-          final domainModels = remoteModels.map((e) => e.toDomain()).toList();
-
-          // Update local storage
-          await localSource.putAll(domainModels);
+      remoteSource.changes.listen(
+        (remoteChanges) async {
+          for (final change in remoteChanges) {
+            switch (change) {
+              case DocAdded<R>():
+                unawaited(localSource.put(change.newDoc.toDomain()));
+              case DocModified<R>():
+                unawaited(localSource.put(change.modifiedDoc.toDomain()));
+              case DocRemoved<R>():
+                unawaited(localSource.deleteByID(change.id));
+            }
+          }
 
           // Mark synchronization as successful
           _subject.add(_subject.value.toSuccess(null));
@@ -116,7 +136,30 @@ abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheMo
     });
   }
 
-  /// Closes the status subject if it's open
+  /// Deletes a specific document from the remote source
+  ///
+  /// Uses the current authenticated user's ID for context
+  ///
+  /// Parameters:
+  /// - [docID] Unique identifier of the document to be deleted
+  Future<void> deleteDoc(String docID) => remoteSource.deleteDoc(
+        uid: authRepository.user!.id,
+        docID: docID,
+      );
+
+  /// Watches a specific object in the local source
+  ///
+  /// Provides a stream of domain models for a given document ID
+  ///
+  /// Parameters:
+  /// - [id] Unique identifier of the object to watch
+  ///
+  /// Returns a stream of nullable domain models
+  Stream<D?> watchLocalObject(String id) => localSource.watchObject(id).map((cm) => cm?.toDomain());
+
+  /// Closes the status subject if it's currently open
+  ///
+  /// Prevents memory leaks and ensures proper resource management
   void _closeSubject() {
     if (_subject.isClosed) return;
     _subject.close();
@@ -124,9 +167,10 @@ abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheMo
 
   /// Disposes of repository resources
   ///
-  /// Responsibilities:
-  /// - Cancel remote subscriptions
-  /// - Close status subject
+  /// Ensures clean shutdown by:
+  /// - Cancelling remote data subscriptions
+  /// - Closing status subject
+  /// - Releasing any held resources
   @protected
   void dispose() {
     remoteSource.cancelRemoteSub();
