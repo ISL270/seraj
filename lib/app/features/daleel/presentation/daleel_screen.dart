@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use_from_same_package, unused_element, deprecated_member_use
+// ignore_for_file: deprecated_member_use_from_same_package, unused_element, deprecated_member_use, inference_failure_on_function_invocation
 
 import 'dart:developer';
 
@@ -212,117 +212,36 @@ class _DaleelFilterTypeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      endActionPane: ActionPane(
-        motion: const ScrollMotion(),
-        extentRatio: 0.3.w,
-        children: [
-          CircleAvatar(
-            backgroundColor: context.colorsX.primary,
-            radius: 24.r,
-            child: Icon(FontAwesomeIcons.edit, color: context.colorsX.onBackground, size: 24.r),
-          ),
-          Gap(8.w),
-          GestureDetector(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  contentPadding: EdgeInsets.all(16.sp),
-                  buttonPadding: EdgeInsets.all(16.sp),
-                  titlePadding: EdgeInsets.all(16.sp),
-                  actionsPadding: EdgeInsets.all(16.sp),
-                  actionsAlignment: MainAxisAlignment.spaceAround,
-                  backgroundColor: context.colorsX.background,
-                  title: Padding(
-                    padding: EdgeInsets.all(16.sp),
-                    child: Center(
-                      child: Text(
-                        context.l10n.areYouSure.capitalized,
-                        style: context.textThemeX.large.bold.copyWith(
-                          color: context.colorsX.primary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  actions: [
-                    TextButton(
-                      onPressed: () => context.pop(),
-                      child: Text(context.l10n.cancel.capitalized,
-                          style: context.textThemeX.large.bold),
-                    ),
-                    TextButton(
-                      onPressed: () => context.pop(),
-                      child: Text(context.l10n.ok.capitalized,
-                          style:
-                              context.textThemeX.large.bold.copyWith(color: context.colorsX.error)),
-                    ),
-                  ],
-                ),
-              );
-            },
-            child: CircleAvatar(
-              backgroundColor: context.colorsX.error,
-              radius: 24.r,
-              child: Icon(FontAwesomeIcons.trash, color: context.colorsX.onBackground, size: 24.r),
-            ),
-          ),
-        ],
-      ),
-      child: GestureDetector(
-        onTap: () => context.pushNamed(DaleelDetailsScreen.name),
+    return InkWell(
+      borderRadius: BorderRadius.circular(16.w),
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 400),
+        height: 40.h,
+        decoration: BoxDecoration(
+          color: isActive
+              ? context.colorsX.primary.withOpacity(0.15)
+              : context.colorsX.onBackgroundTint35.withOpacity(0.10),
+          borderRadius: BorderRadius.circular(16.w),
+        ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 10.sp),
-          child: Row(
-            children: [
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(4.sp),
-                  height: 170.h,
-                  decoration: BoxDecoration(
-                    color: context.colorsX.primary,
-                    borderRadius: BorderRadius.circular(12.w),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(6.sp),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          context.l10n.propheticHadith,
-                          style: context.textThemeX.large.bold,
-                        ),
-                        Gap(15.h),
-                        Row(
-                          children: [
-                            Gap(5.w),
-                            Expanded(
-                              child: Text(
-                                label,
-                                style: context.textThemeX.medium.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        Row(
-                          children: [
-                            Text('مدى الأهمية :', style: context.textThemeX.medium.bold),
-                            Gap(4.w),
-                            Text('يجب', style: context.textThemeX.medium.bold),
-                            const Spacer(),
-                            Text('5 - 1 - 2025', style: context.textThemeX.medium.bold),
-                            Gap(6.w),
-                          ],
-                        ),
-                        Gap(6.h),
-                      ],
-                    ),
+          padding: EdgeInsets.all(4.sp),
+          child: Center(
+            child: Row(
+              spacing: 3.w,
+              children: [
+                Gap(4.w),
+                Text(
+                  label,
+                  style: context.textThemeX.medium.bold.copyWith(
+                    color: isActive ? context.colorsX.primary : context.colorsX.onBackgroundTint,
                   ),
                 ),
-              ),
-            ],
+                Gap(3.w),
+                if (cancelFilterActive) CancelFilterButton(onTap: cancelFilteronTap),
+                Gap(1.w),
+              ],
+            ),
           ),
         ),
       ),
