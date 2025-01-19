@@ -11,6 +11,7 @@ import 'package:athar/app/features/add_other/presentation/add_other_screen.dart'
 import 'package:athar/app/features/add_other/presentation/cubit/add_other_cubit.dart';
 import 'package:athar/app/features/aya/presentation/add_new_ayah.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
+import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
@@ -129,9 +130,11 @@ final appRouter = GoRouter(
                   name: DaleelDetailsScreen.name,
                   path: DaleelDetailsScreen.name,
                   parentNavigatorKey: _rootNavigatorKey,
-                  pageBuilder: (context, state) => const CupertinoPage(
+                  pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
-                    child: DaleelDetailsScreen(),
+                    child: DaleelDetailsScreen(
+                      daleel: state.extra! as Daleel,
+                    ),
                   ),
                 ),
               ],

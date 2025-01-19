@@ -122,54 +122,59 @@ class _DaleelWidget extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: Container(
-                padding: EdgeInsets.all(4.sp),
-                height: daleel.text.length >= 120
-                    ? 170.h + daleel.text.length * 0.15.h
-                    : 140.h + daleel.text.length * 0.25.h,
-                child: Padding(
-                  padding: EdgeInsets.all(6.sp),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Gap(5.w),
-                          Expanded(
-                            child: Text(
-                              daleel.text,
-                              style: context.textThemeX.large
-                                  .copyWith(fontFamily: GoogleFonts.amiriQuran().fontFamily),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 4.sp),
-                        child: Row(
+              child: InkWell(
+                onTap: () {
+                  context.pushNamed(DaleelDetailsScreen.name, extra: daleel);
+                },
+                child: Container(
+                  padding: EdgeInsets.all(4.sp),
+                  height: daleel.text.length >= 120
+                      ? 170.h + daleel.text.length * 0.15.h
+                      : 140.h + daleel.text.length * 0.25.h,
+                  child: Padding(
+                    padding: EdgeInsets.all(6.sp),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
                           children: [
-                            Text(
-                              switch (daleel) {
-                                Hadith() => context.l10n.propheticHadith,
-                                Athar() => context.l10n.athar,
-                                Other() => context.l10n.other,
-                                Aya() => context.l10n.aya,
-                              },
-                              style: context.textThemeX.small.bold
-                                  .copyWith(color: context.colorsX.primary),
-                            ),
-                            const Spacer(),
-                            Text(
-                              daleel.lastRevisedAt.formatted,
-                              style: context.textThemeX.small.bold
-                                  .copyWith(color: context.colorsX.primary),
+                            Gap(5.w),
+                            Expanded(
+                              child: Text(
+                                daleel.text,
+                                style: context.textThemeX.large
+                                    .copyWith(fontFamily: GoogleFonts.amiriQuran().fontFamily),
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                      Gap(6.h),
-                    ],
+                        const Spacer(),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 4.sp),
+                          child: Row(
+                            children: [
+                              Text(
+                                switch (daleel) {
+                                  Hadith() => context.l10n.propheticHadith,
+                                  Athar() => context.l10n.athar,
+                                  Other() => context.l10n.other,
+                                  Aya() => context.l10n.aya,
+                                },
+                                style: context.textThemeX.small.bold
+                                    .copyWith(color: context.colorsX.primary),
+                              ),
+                              const Spacer(),
+                              Text(
+                                daleel.lastRevisedAt.formatted,
+                                style: context.textThemeX.small.bold
+                                    .copyWith(color: context.colorsX.primary),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Gap(6.h),
+                      ],
+                    ),
                   ),
                 ),
               ),
