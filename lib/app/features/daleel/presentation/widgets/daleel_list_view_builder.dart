@@ -39,10 +39,7 @@ class _DaleelListViewBuilder extends StatelessWidget {
                     separatorBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
-                        child: Divider(
-                          height: 1,
-                          color: context.colorsX.onBackground,
-                        ),
+                        child: Divider(height: 1.h, color: context.colorsX.onBackground),
                       );
                     },
                     itemCount: state.daleels.result.length,
@@ -177,6 +174,31 @@ class _DaleelWidget extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class CancelFilterButton extends StatelessWidget {
+  const CancelFilterButton({
+    super.key,
+    this.onTap,
+  });
+
+  final void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: CircleAvatar(
+        backgroundColor: context.colorsX.primary,
+        radius: 8.r,
+        child: Icon(
+          Icons.cancel,
+          color: context.colorsX.onBackground,
+          size: 12.r,
         ),
       ),
     );

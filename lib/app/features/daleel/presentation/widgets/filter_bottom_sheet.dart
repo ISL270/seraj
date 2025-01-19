@@ -55,10 +55,7 @@ class _FilterTypeSelectorBottomSheetBody extends StatelessWidget {
             style: context.textThemeX.medium.bold.copyWith(fontSize: 16.w),
           ),
         ),
-        SizedBox(
-          width: double.infinity,
-          child: _MultiSelectDaleelType(filters: filters),
-        ),
+        SizedBox(width: double.infinity, child: _MultiSelectDaleelType(filters: filters)),
       ],
     );
   }
@@ -223,7 +220,7 @@ class _PrioritySelectorState extends State<_PrioritySelector> {
                     '${Priority.translate(context, state.selectedPriority)} ${context.l10n.saveIt}',
                 onPriorityChanged: (value) =>
                     context.read<DaleelBloc>().add(DaleelPriorityFilterChanged(value)),
-                priorityValue: state.selectedPriority,
+                priorityValue: state.selectedPriority == 0 ? 0 : state.selectedPriority,
                 sliderMaxValue: Priority.values.length - 1,
                 sliderDivisions: Priority.values.length - 1,
                 sliderLabel: Priority.translate(context, state.selectedPriority),

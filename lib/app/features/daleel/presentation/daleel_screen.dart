@@ -139,53 +139,39 @@ class _DaleelScreenState extends State<DaleelScreen> {
                     Gap(12.w),
                     BlocBuilder<DaleelBloc, DaleelState>(
                       builder: (context, state) {
-                        return Row(
-                          spacing: 8.w,
-                          children: [
-                            _DaleelFilterTypeWidget(
-                              label: state.daleelFilters.daleelType.isEmpty
-                                  ? context.l10n.daleelType
-                                  : '${context.l10n.daleelType} : ${state.daleelFilters.daleelType.map((e) => e.toTranslate(context)).join(', ')}',
-                              isActive: state.daleelFilters.daleelType.isNotEmpty,
-                              onTap: () async {
-                                await _openFilterDaleelTypeSelectorBottomSheet(filters, context);
-                                _bloc.add(const DaleelSearched(''));
-                              },
-                            ),
-                            if (state.daleelFilters.daleelType.isNotEmpty)
-                              CancelFilterButton(
-                                onTap: () {
-                                  context.read<DaleelBloc>().state.daleelFilters.daleelType.clear();
-                                  _bloc.add(const DaleelSearched(''));
-                                },
-                              ),
-                          ],
+                        return _DaleelFilterTypeWidget(
+                          label: state.daleelFilters.daleelType.isEmpty
+                              ? context.l10n.daleelType
+                              : '${context.l10n.daleelType} : ${state.daleelFilters.daleelType.map((e) => e.toTranslate(context)).join(', ')}',
+                          isActive: state.daleelFilters.daleelType.isNotEmpty,
+                          onTap: () async {
+                            await _openFilterDaleelTypeSelectorBottomSheet(filters, context);
+                            _bloc.add(const DaleelSearched(''));
+                          },
+                          cancelFilterActive: state.daleelFilters.daleelType.isNotEmpty,
+                          cancelFilteronTap: () {
+                            state.daleelFilters.daleelType.clear();
+                            _bloc.add(const DaleelSearched(''));
+                          },
                         );
                       },
                     ),
                     BlocBuilder<DaleelBloc, DaleelState>(
                       builder: (context, state) {
-                        return Row(
-                          spacing: 8.w,
-                          children: [
-                            _DaleelFilterTypeWidget(
-                              label: state.daleelFilters.priority.isEmpty
-                                  ? context.l10n.priority
-                                  : '${context.l10n.priority} : ${state.daleelFilters.priority.map((e) => e.toTranslate(context)).join(', ')}',
-                              isActive: state.daleelFilters.priority.isNotEmpty,
-                              onTap: () async {
-                                await _openFilterPrioritySelectorBottomSheet(filters, context);
-                                _bloc.add(const DaleelSearched(''));
-                              },
-                            ),
-                            if (state.daleelFilters.priority.isNotEmpty)
-                              CancelFilterButton(
-                                onTap: () {
-                                  context.read<DaleelBloc>().state.daleelFilters.priority.clear();
-                                  _bloc.add(const DaleelSearched(''));
-                                },
-                              ),
-                          ],
+                        return _DaleelFilterTypeWidget(
+                          label: state.daleelFilters.priority.isEmpty
+                              ? context.l10n.priority
+                              : '${context.l10n.priority} : ${state.daleelFilters.priority.map((e) => e.toTranslate(context)).join(', ')}',
+                          isActive: state.daleelFilters.priority.isNotEmpty,
+                          onTap: () async {
+                            await _openFilterPrioritySelectorBottomSheet(filters, context);
+                            _bloc.add(const DaleelSearched(''));
+                          },
+                          cancelFilterActive: state.daleelFilters.priority.isNotEmpty,
+                          cancelFilteronTap: () {
+                            state.daleelFilters.priority.clear();
+                            _bloc.add(const DaleelSearched(''));
+                          },
                         );
                       },
                     ),
@@ -208,37 +194,20 @@ class _DaleelScreenState extends State<DaleelScreen> {
   }
 }
 
-class CancelFilterButton extends StatelessWidget {
-  const CancelFilterButton({
-    super.key,
-    this.onTap,
-  });
-
-  final void Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: CircleAvatar(
-        backgroundColor: context.colorsX.primary,
-        radius: 12.r,
-        child: Icon(
-          Icons.cancel,
-          color: context.colorsX.onBackground,
-          size: 16.r,
-        ),
-      ),
-    );
-  }
-}
-
 class _DaleelFilterTypeWidget extends StatelessWidget {
-  const _DaleelFilterTypeWidget({this.label = 'تصنيف', this.isActive = false, this.onTap});
+  const _DaleelFilterTypeWidget({
+    this.label = 'تصنيف',
+    this.isActive = false,
+    this.onTap,
+    this.cancelFilteronTap,
+    this.cancelFilterActive = false,
+  });
 
   final String label;
   final bool isActive;
   final void Function()? onTap;
+  final void Function()? cancelFilteronTap;
+  final bool cancelFilterActive;
 
   @override
   Widget build(BuildContext context) {
@@ -258,8 +227,9 @@ class _DaleelFilterTypeWidget extends StatelessWidget {
           padding: EdgeInsets.all(4.sp),
           child: Center(
             child: Row(
+              spacing: 3.w,
               children: [
-                Gap(3.w),
+                Gap(4.w),
                 Text(
                   label,
                   style: context.textThemeX.medium.bold.copyWith(
@@ -267,6 +237,8 @@ class _DaleelFilterTypeWidget extends StatelessWidget {
                   ),
                 ),
                 Gap(3.w),
+                if (cancelFilterActive) CancelFilterButton(onTap: cancelFilteronTap),
+                Gap(1.w),
               ],
             ),
           ),
