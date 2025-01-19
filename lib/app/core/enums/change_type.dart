@@ -19,7 +19,7 @@
 ///     case ChangeType.removed:
 ///       // Handle deleted object
 ///       break;
-///     case ChangeType.initial: 
+///     case ChangeType.initial:
 ///       // Handle initial state
 ///       break;
 ///   }
