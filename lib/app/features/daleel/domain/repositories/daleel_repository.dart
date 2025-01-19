@@ -11,6 +11,7 @@ import 'package:athar/app/features/daleel/data/sources/remote/daleel_fm.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
+import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
 import 'package:dartx/dartx.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
@@ -73,6 +74,40 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
     }
   }
 
+  Future<EitherException<void>> saveAya({
+    required String text,
+    required String ayaExplain,
+    required String surahOfAya,
+    required int firstAya,
+    required int lastAya,
+    required Priority priority,
+    required DateTime lastRevisedAt,
+    required List<String> tags,
+    String? sayer,
+  }) async {
+    try {
+      await _remoteSource.saveAya(
+        text: text,
+        userId: authRepository.user!.id,
+        sayer: sayer,
+        priority: priority,
+        tags: tags,
+        surahOfAya: surahOfAya,
+        firstAya: firstAya,
+        lastAya: lastAya,
+        ayaExplain: ayaExplain,
+        lastRevisedAt: lastRevisedAt,
+      );
+      return right(null);
+    } catch (e) {
+      return left(e as GenericException);
+    }
+  }
+
+  Future<bool> isAyahExist({required String surahName, required int ayahNumber}) async {
+    return await _localSource.getAyaByText(surahName: surahName, ayahNumber: ayahNumber) != null;
+  }
+
   Future<EitherException<void>> saveOthers({
     required String text,
     required String sayer,
@@ -97,4 +132,23 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
       return left(e as GenericException);
     }
   }
+
+  Future<List<Daleel>> searchDaleel(
+    String searchTerm, {
+    required int page,
+    required int pageSize,
+    DaleelFilters? filters,
+  }) async {
+    final cms = await _localSource.getDaleels(
+      searchTerm,
+      page: page,
+      filters: filters,
+      pageSize: pageSize,
+    );
+
+    return cms.map((e) => e.toDomain()).toList();
+  }
+
+  @disposeMethod
+  void dispMethod() => dispose();
 }

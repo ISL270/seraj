@@ -44,7 +44,7 @@ class AddHadithCubit extends Cubit<AddHadithState> {
         description: state.description,
         extraction: state.extraction,
         authenticity: state.authenticity,
-        priority: state.sliderValue.getPriorityType(),
+        priority: Priority.fromDouble(state.sliderValue),
         tags: [], // not used for now
       );
       emit(state.copyWith(status: const Success('Saved Hadith Successfully')));

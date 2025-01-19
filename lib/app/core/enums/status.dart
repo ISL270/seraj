@@ -1,83 +1,96 @@
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:equatable/equatable.dart';
 
-/// Status of a data model.
+/// Represents a type-safe state management mechanism for handling data loading states.
 ///
-/// It can be in one of the following states:
-/// - [Initial]: Initial state, no data has been loaded or processed yet.
-/// - [Loading]: Data is being loaded or processed.
-/// - [Success]: Data has been successfully loaded or processed.
-/// - [Failure]: Data could not be loaded or processed due to an error.
+/// The [Status] class is a sealed generic class that provides a robust way to
+/// manage the lifecycle of data loading across different states. It supports
+/// type-safe state transitions and preserves data integrity throughout the process.
 ///
-/// The state transitions are as follows:
-/// - [Initial] -> [Loading]
-/// - [Loading] -> [Success] or [Failure]
-/// - [Success] -> [Loading]
-/// - [Failure] -> [Loading]
+/// States:
+/// - [Initial]: Represents the starting state before any data loading begins.
+/// - [Loading]: Indicates an ongoing data retrieval or processing operation.
+/// - [Success]: Represents successful data retrieval or processing.
+/// - [Failure]: Represents a state where an error occurred during data handling.
 ///
-/// Note that the [Status] class is sealed, which means that it can not be
-/// instantiated directly. Instead, you should use the corresponding state
-/// classes.
+/// Key Features:
+/// - Immutable state representation
+/// - Type-safe state transitions
+/// - Data preservation across state changes
+/// - Flexible error handling
+///
+/// Example:
+/// ```dart
+/// VoidStatus status = Initial();
+/// status = status.toLoading(); // Transitions to Loading state
+/// status = status.toSuccess(data); // Transitions to Success state
+/// status = status.toFailure(exception); // Transitions to Failure state
+/// ```
 sealed class Status<T> extends Equatable {
   const Status();
 
-  /// Converts the current state to a Loading state.
+  /// Converts the current state to a [Loading] state.
   ///
-  /// Handles state transitions from Initial, Success, and Failure states.
-  /// - For Initial state, preserves the intial data if exists in the Loading state
-  /// - For Success state, preserves the current data in the Loading state
-  /// - For Failure state, preserves the old data if ewists in the Loading state
+  /// Handles state transitions from [Initial], [Success], and [Failure] states.
+  /// Preserves existing data during the transition:
+  /// - For [Initial] state, keeps initial data
+  /// - For [Success] state, keeps current data
+  /// - For [Failure] state, keeps previous data
   ///
-  /// Throws an exception if already in a Loading state.
-  ///
-  /// Returns a [Loading] state with optional current data.
+  /// Returns a new [Loading] state with optional current data.
   Loading<T> toLoading() => switch (this) {
         Initial<T>(initialData: final currentData) => Loading(currentData),
+        Loading<T>(currentData: final currentData) => Loading(currentData),
         Success<T>(newData: final currentData) => Loading(currentData),
         Failure<T>(oldData: final currentData) => Loading(currentData),
-        Loading<T>() => throw Exception('State is already loading'),
       };
 
-  /// Converts the current state to a Failure state.
+  /// Transitions the current state to a [Failure] state with the provided exception.
+  /// Preserves the existing data before the failure occurred.
   ///
-  /// Can only be called from a Loading state, preserving the current data.
-  /// Throws an exception if called from any other state.
+  /// [exception] The [GenericException] that caused the failure.
   ///
-  /// [exception] The error that caused the failure.
-  /// Returns a [Failure] state with the exception and optional old data.
+  /// Returns a new [Failure] state with the exception and optional previous data.
   Failure<T> toFailure(GenericException exception) => switch (this) {
-        Loading<T>(currentData: final currentData) => Failure(exception, oldData: currentData),
-        _ => throw Exception('Can only go to failure from loading state'),
+        Initial<T>(initialData: final oldData) => Failure(exception, oldData: oldData),
+        Loading<T>(currentData: final oldData) => Failure(exception, oldData: oldData),
+        Success<T>(newData: final oldData) => Failure(exception, oldData: oldData),
+        Failure<T>(oldData: final oldData) => Failure(exception, oldData: oldData),
       };
 
-  /// Converts the current state to a Success state.
+  /// Transitions the current state to a [Success] state with the provided data.
+  /// Can be called from any state, replacing the previous data.
   ///
-  /// Can only be called from a Loading state.
-  /// Throws an exception if called from any other state.
+  /// [newData] The successful result data of type [T].
   ///
-  /// [newData] The successful result data.
-  /// Returns a [Success] state with the new data.
+  /// Returns a new [Success] state with the new data.
   Success<T> toSuccess(T newData) => switch (this) {
+        Initial<T>() => Success(newData),
         Loading<T>() => Success(newData),
         Success<T>() => Success(newData),
-        _ => throw Exception('Can only go to success from loading state'),
+        Failure<T>() => Success(newData),
+      };
+
+  /// Returns the data associated with the current state, which may be null.
+  T? get data => switch (this) {
+        Initial<T>(initialData: final data) => data,
+        Loading<T>(currentData: final data) => data,
+        Success<T>(newData: final data) => data,
+        Failure<T>(oldData: final data) => data,
       };
 
   bool get isInitial => this is Initial;
-  bool get isSuccess => this is Success;
   bool get isLoading => this is Loading;
+  bool get isSuccess => this is Success;
   bool get isFailure => this is Failure;
-
-  @override
-  List<Object?> get props => [];
 }
 
-/// Represents the initial state of a data model.
+/// This state indicates that no data has been loaded or processed yet.
+/// It can optionally contain initial or default data.
 ///
-/// This state is used when the data model has just been initialized and no data has been loaded or processed yet.
-///
-/// The initial data is optional and can be used for example to prefill the data model with some default values.
+/// [T] represents the type of data that will be loaded.
 final class Initial<T> extends Status<T> {
+  /// Optional initial data that can be used to prefill the model.
   final T? initialData;
   const Initial([this.initialData]);
 
@@ -85,32 +98,28 @@ final class Initial<T> extends Status<T> {
   List<Object?> get props => [initialData];
 }
 
-/// Represents a successful state with loaded or processed data.
+/// Represents a successful state after data has been loaded or processed.
 ///
-/// This state contains the successfully retrieved or processed data.
-/// It provides methods to transition to other states and access the data.
+/// Contains the successfully retrieved or processed data of type [T].
+/// Provides a way to transition to other states or access the new data.
 ///
-/// Type parameter [T] represents the type of data in the successful state.
+/// [T] represents the type of the successfully loaded data.
 final class Success<T> extends Status<T> {
   /// The data associated with the successful state.
   final T newData;
-
   const Success(this.newData);
 
   @override
   List<Object?> get props => [newData];
 }
 
-/// Represents a loading state during data retrieval or processing.
+/// Indicates that an operation is in progress and optionally carries
+/// the current or previous data during the loading process.
 ///
-/// This state indicates that an operation is in progress.
-/// It can optionally carry the current or previous data during the loading process.
-///
-/// Type parameter [T] represents the type of data being loaded.
+/// [T] represents the type of data being loaded.
 final class Loading<T> extends Status<T> {
   /// The current data during the loading state (optional).
   final T? currentData;
-
   const Loading([this.currentData]);
 
   @override
@@ -119,17 +128,16 @@ final class Loading<T> extends Status<T> {
 
 /// Represents a failure state when an error occurs during data processing.
 ///
-/// This state contains information about the error and optionally the previous data.
-/// It allows for graceful error handling and potential retry mechanisms.
+/// Contains information about the error and optionally the previous data.
+/// Allows for graceful error handling and potential retry mechanisms.
 ///
-/// Type parameter [T] represents the type of data associated with the failure.
+/// [T] represents the type of data associated with the failure.
 final class Failure<T> extends Status<T> {
   /// The exception that caused the failure.
   final GenericException exception;
 
   /// The data available before the failure occurred (optional).
   final T? oldData;
-
   const Failure(this.exception, {this.oldData});
 
   @override
@@ -137,4 +145,7 @@ final class Failure<T> extends Status<T> {
 }
 
 /// A type alias for a [Status] with a type argument of [void].
+///
+/// Useful for operations that do not require a specific data type,
+/// such as simple state management without associated data.
 typedef VoidStatus = Status<void>;

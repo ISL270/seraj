@@ -1,10 +1,9 @@
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
-enum HadithAuthenticity { daif, hasan, sahih }
+enum HadithAuthenticity { sahih, hasan, daif }
 
 extension HadithTypeX on HadithAuthenticity {
-  bool get isDaif => this == HadithAuthenticity.daif;
   bool get isSahih => this == HadithAuthenticity.sahih;
   bool get isHasan => this == HadithAuthenticity.hasan;
 }

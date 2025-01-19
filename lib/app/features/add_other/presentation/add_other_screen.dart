@@ -7,7 +7,7 @@ import 'package:athar/app/features/add_other/presentation/cubit/add_other_cubit.
 import 'package:athar/app/features/add_other/presentation/cubit/add_other_state.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/widgets/button.dart';
-import 'package:athar/app/widgets/priority_slider_w_label.dart';
+import 'package:athar/app/features/daleel/presentation/widgets/priority_slider_w_label.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -175,12 +175,12 @@ class _PrioritySliderWithLabelBlocBuilder extends StatelessWidget {
       builder: (context, state) {
         return PrioritySliderWithLabel(
           labelText: context.l10n.priority,
-          priorityTitle: '${state.sliderValue.getPriorityName(context)} ${context.l10n.saveIt}',
+          priorityTitle: '${Priority.translate(context, state.sliderValue)} ${context.l10n.saveIt}',
           onPriorityChanged: (value) => context.read<AddOtherCubit>().sliderPriorityChanged(value),
           priorityValue: state.sliderValue,
           sliderMaxValue: Priority.values.length - 1,
           sliderDivisions: Priority.values.length - 1,
-          sliderLabel: state.sliderValue.getPriorityName(context),
+          sliderLabel: Priority.translate(context, state.sliderValue),
         );
       },
     );

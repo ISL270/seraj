@@ -4,16 +4,23 @@ import 'package:athar/app/core/routing/go_router_refresh_stream.dart';
 import 'package:athar/app/core/routing/go_router_state_extension.dart';
 import 'package:athar/app/features/add_athar/presentation/add_athar_screen.dart';
 import 'package:athar/app/features/add_athar/presentation/cubit/add_athar_cubit.dart';
+import 'package:athar/app/features/add_dua/presentation/add_dua_screen.dart';
 import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dart';
 import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
 import 'package:athar/app/features/add_other/presentation/add_other_screen.dart';
 import 'package:athar/app/features/add_other/presentation/cubit/add_other_cubit.dart';
-import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:athar/app/features/aya/presentation/add_new_ayah.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
+import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
 import 'package:athar/app/features/daleel_details/presentation/daleel_details_screen.dart';
-import 'package:athar/app/features/duas/presentation/duas_screen.dart';
+import 'package:athar/app/features/dua/domain/dua.dart';
+import 'package:athar/app/features/dua/domain/dua_repository.dart';
+import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
+import 'package:athar/app/features/dua/presentation/dua_details/bloc/dua_details_bloc.dart';
+import 'package:athar/app/features/dua/presentation/dua_details/dua_details_screen.dart';
+import 'package:athar/app/features/dua/presentation/dua_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/login/cubit/login_cubit.dart';
 import 'package:athar/app/features/login/login_screen.dart';
@@ -64,8 +71,11 @@ final appRouter = GoRouter(
             GoRoute(
               name: DaleelScreen.name,
               path: '/${DaleelScreen.name}',
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: DaleelScreen(),
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: BlocProvider(
+                  create: (context) => DaleelBloc(getIt.get<DaleelRepository>()),
+                  child: const DaleelScreen(),
+                ),
               ),
               routes: [
                 GoRoute(
@@ -91,6 +101,17 @@ final appRouter = GoRouter(
                       child: const AddAtharScreen(),
                     ),
                   ),
+                ),
+                GoRoute(
+                  name: AddNewAyah.name,
+                  path: AddNewAyah.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  pageBuilder: (context, state) {
+                    // Pass the Aya model using the `extra` parameter
+                    return const CupertinoPage(
+                      child: AddNewAyah(),
+                    );
+                  },
                 ),
                 GoRoute(
                   name: AddOtherScreen.name,
@@ -123,7 +144,35 @@ final appRouter = GoRouter(
             GoRoute(
               name: DuasScreen.name,
               path: '/${DuasScreen.name}',
-              pageBuilder: (context, state) => const NoTransitionPage(child: DuasScreen()),
+              pageBuilder: (context, state) => NoTransitionPage(
+                child: BlocProvider(
+                  create: (context) => getIt.get<DuaBloc>(),
+                  child: const DuasScreen(),
+                ),
+              ),
+              routes: [
+                GoRoute(
+                  name: AddDuaScreen.name,
+                  path: AddDuaScreen.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  pageBuilder: (context, state) => const CupertinoPage(
+                    fullscreenDialog: true,
+                    child: AddDuaScreen(),
+                  ),
+                ),
+                GoRoute(
+                  name: DuaDetailsScreen.name,
+                  path: DuaDetailsScreen.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  builder: (context, state) {
+                    final dua = state.extra! as Dua;
+                    return BlocProvider(
+                      create: (context) => DuaDetailsBloc(getIt.get<DuaRepository>(), dua),
+                      child: DuaDetailsScreen(dua),
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),
@@ -155,7 +204,7 @@ final appRouter = GoRouter(
     // If the user is not logged in, they need to login.
     // Bundle the location the user is coming from into a query parameter
     final fromloc = (state.isGoingToHome || state.isLoggingOut) ? '' : state.matchedLocation;
-    if (!getIt.authBloc.state.isAuthenticated) {
+    if (!getIt.authBloc.state.data!.isAuthenticated) {
       return state.isGoingToSplash || state.isLoggingIn || state.isSigningUp
           ? null
           : state.namedLocation(

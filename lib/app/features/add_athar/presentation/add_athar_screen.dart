@@ -83,7 +83,7 @@ class _TextOfAtharTextField extends StatelessWidget {
               labelStyle: context.textThemeX.medium,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
               hintText: 'حدثنا مروان بن معاوية أن عمر فرض للهر مزان',
-              hintMaxLines: 1,
+              hintMaxLines: 2,
               hintStyle: context.textThemeX.medium.bold.copyWith(
                 height: 1.5.h,
                 color: context.colorsX.onBackgroundTint35,
@@ -175,7 +175,7 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
                   _LabelTextFieldAlignWidget(label: context.l10n.priority),
                   Gap(8.w),
                   Text(
-                    '${state.sliderValue.getPriorityName(context)} ${context.l10n.saveIt}',
+                    '${Priority.translate(context, state.sliderValue)} ${context.l10n.saveIt}',
                     style: context.textThemeX.medium.bold.copyWith(
                       color: context.colorsX.primary,
                       textBaseline: TextBaseline.alphabetic,
@@ -190,7 +190,7 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
                 inactiveColor: context.colorsX.onBackgroundTint35,
                 max: Priority.values.length - 1,
                 divisions: Priority.values.length - 1,
-                label: state.sliderValue.getPriorityName(context),
+                label: Priority.translate(context, state.sliderValue),
               ),
             ],
           );

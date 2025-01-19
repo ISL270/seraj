@@ -3,7 +3,8 @@ import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/language.dart';
 import 'package:athar/app/core/routing/router.dart';
 import 'package:athar/app/core/theming/app_theme.dart';
-import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
+import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/settings/domain/settings_repository.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/flavors/flavors.dart';
@@ -25,24 +26,20 @@ class App extends StatelessWidget {
           providers: [
             BlocProvider(create: (_) => SettingsBloc(getIt.get<SettingsRepository>())),
             BlocProvider(create: (_) => getIt.authBloc),
+            BlocProvider(create: (_) => DaleelBloc(getIt.get<DaleelRepository>())),
           ],
-          child: BlocBuilder<AuthBloc, UserState>(
-            buildWhen: hasUserTypeChanged,
-            builder: (context, authState) {
-              return BlocBuilder<SettingsBloc, SettingsState>(
-                builder: (context, settingsState) {
-                  return MaterialApp.router(
-                    theme: AppTheme.light,
-                    darkTheme: AppTheme.dark,
-                    themeMode: settingsState.settings.themeMode,
-                    // locale: settingsState.language.locale,
-                    locale: Language.arabic.locale,
-                    supportedLocales: AppLocalizations.supportedLocales,
-                    localizationsDelegates: AppLocalizations.localizationsDelegates,
-                    debugShowCheckedModeBanner: appFlavor != Flavors.production.name,
-                    routerConfig: appRouter,
-                  );
-                },
+          child: BlocBuilder<SettingsBloc, SettingsState>(
+            builder: (context, settingsState) {
+              return MaterialApp.router(
+                theme: AppTheme.light,
+                darkTheme: AppTheme.dark,
+                themeMode: settingsState.settings.themeMode,
+                // locale: settingsState.language.locale,
+                locale: Language.arabic.locale,
+                supportedLocales: AppLocalizations.supportedLocales,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                debugShowCheckedModeBanner: appFlavor != Flavors.production.name,
+                routerConfig: appRouter,
               );
             },
           ),
