@@ -83,9 +83,6 @@ sealed class Status<T> extends Equatable {
   bool get isLoading => this is Loading;
   bool get isSuccess => this is Success;
   bool get isFailure => this is Failure;
-
-  @override
-  List<Object?> get props => [];
 }
 
 /// This state indicates that no data has been loaded or processed yet.
