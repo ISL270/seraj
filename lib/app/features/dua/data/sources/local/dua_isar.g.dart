@@ -27,9 +27,9 @@ const DuaIsarSchema = CollectionSchema(
       name: r'id',
       type: IsarType.string,
     ),
-    r'isFavorite': PropertySchema(
+    r'isFavourite': PropertySchema(
       id: 2,
-      name: r'isFavorite',
+      name: r'isFavourite',
       type: IsarType.bool,
     ),
     r'reward': PropertySchema(
@@ -114,7 +114,7 @@ void _duaIsarSerialize(
 ) {
   writer.writeString(offsets[0], object.description);
   writer.writeString(offsets[1], object.id);
-  writer.writeBool(offsets[2], object.isFavorite);
+  writer.writeBool(offsets[2], object.isFavourite);
   writer.writeString(offsets[3], object.reward);
   writer.writeStringList(offsets[4], object.tags);
   writer.writeString(offsets[5], object.text);
@@ -129,7 +129,7 @@ DuaIsar _duaIsarDeserialize(
   final object = DuaIsar(
     description: reader.readStringOrNull(offsets[0]),
     id: reader.readString(offsets[1]),
-    isFavorite: reader.readBool(offsets[2]),
+    isFavourite: reader.readBool(offsets[2]),
     reward: reader.readStringOrNull(offsets[3]),
     tags: reader.readStringList(offsets[4]) ?? [],
     text: reader.readString(offsets[5]),
@@ -722,11 +722,11 @@ extension DuaIsarQueryFilter
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> isFavoriteEqualTo(
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> isFavouriteEqualTo(
       bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'isFavorite',
+        property: r'isFavourite',
         value: value,
       ));
     });
@@ -1255,15 +1255,15 @@ extension DuaIsarQuerySortBy on QueryBuilder<DuaIsar, DuaIsar, QSortBy> {
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByIsFavorite() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByIsFavourite() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isFavorite', Sort.asc);
+      return query.addSortBy(r'isFavourite', Sort.asc);
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByIsFavoriteDesc() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByIsFavouriteDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isFavorite', Sort.desc);
+      return query.addSortBy(r'isFavourite', Sort.desc);
     });
   }
 
@@ -1330,15 +1330,15 @@ extension DuaIsarQuerySortThenBy
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByIsFavorite() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByIsFavourite() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isFavorite', Sort.asc);
+      return query.addSortBy(r'isFavourite', Sort.asc);
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByIsFavoriteDesc() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByIsFavouriteDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isFavorite', Sort.desc);
+      return query.addSortBy(r'isFavourite', Sort.desc);
     });
   }
 
@@ -1383,9 +1383,9 @@ extension DuaIsarQueryWhereDistinct
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QDistinct> distinctByIsFavorite() {
+  QueryBuilder<DuaIsar, DuaIsar, QDistinct> distinctByIsFavourite() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'isFavorite');
+      return query.addDistinctBy(r'isFavourite');
     });
   }
 
@@ -1430,9 +1430,9 @@ extension DuaIsarQueryProperty
     });
   }
 
-  QueryBuilder<DuaIsar, bool, QQueryOperations> isFavoriteProperty() {
+  QueryBuilder<DuaIsar, bool, QQueryOperations> isFavouriteProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'isFavorite');
+      return query.addPropertyName(r'isFavourite');
     });
   }
 

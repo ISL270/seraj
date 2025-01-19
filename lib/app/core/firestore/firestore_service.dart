@@ -24,8 +24,8 @@ final class _Users {
   late final idField = 'id';
   late final nameField = 'name';
   late final emailField = 'email';
-  late final daleelCollName = 'daleel';
   late final duaCollName = 'dua';
+  late final daleelCollName = 'daleel';
 }
 
 sealed class _Daleel {
@@ -53,11 +53,11 @@ final class _Hadith extends _Daleel {
 final class _Dua {
   late final id = 'id';
   late final text = 'text';
-  late final isFavorite = 'isFavorite';
-  late final reward = 'reward';
-  late final description = 'description';
-  late final priority = 'priority';
   late final tags = 'tags';
+  late final reward = 'reward';
+  late final priority = 'priority';
+  late final isFavourite = 'isFavourite';
+  late final description = 'description';
 }
 
 final class _Athar extends _Daleel {}

@@ -18,7 +18,7 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM> with Fires
     required String uid,
     required String text,
     required String? reward,
-    required bool isFavorite,
+    required bool isFavourite,
     required List<String> tags,
     required String? description,
   }) async =>
@@ -27,7 +27,7 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM> with Fires
           firestoreSvc.dua.text: text,
           firestoreSvc.dua.tags: tags,
           firestoreSvc.dua.reward: reward,
-          firestoreSvc.dua.isFavorite: isFavorite,
+          firestoreSvc.dua.isFavourite: isFavourite,
           firestoreSvc.dua.description: description,
         });
       });
@@ -35,7 +35,7 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM> with Fires
   Future<void> toggleFavorite({required String uid, required Dua dua}) async =>
       firestoreOperationHandler(() async {
         await firestoreSvc.users.duaCollection(uid).doc(dua.id).update({
-          firestoreSvc.dua.isFavorite: !dua.isFavourite,
+          firestoreSvc.dua.isFavourite: !dua.isFavourite,
         });
       });
 

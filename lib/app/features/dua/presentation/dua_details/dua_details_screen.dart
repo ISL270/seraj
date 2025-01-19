@@ -27,106 +27,105 @@ class DuaDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Screen(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Gap(10.h),
-          Row(
-            children: [
-              GestureDetector(
-                onTap: context.pop,
-                child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
-              ),
-              const Spacer(flex: 2),
-              Text(
-                context.l10n.dua,
-                style: context.textThemeX.heading.bold,
-                textAlign: TextAlign.center,
-              ),
-              const Spacer(flex: 3),
-            ],
-          ),
-          Gap(20.h),
-          Container(
-            height: 300.h,
-            decoration: BoxDecoration(
-              color: context.colorsX.primary.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(16.sp),
-              boxShadow: [
-                BoxShadow(
-                  color: context.colorsX.primary.withValues(alpha: 0.2),
-                  spreadRadius: 2,
-                  blurRadius: 3,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+    return BlocListener<DuaDetailsBloc, DuaDetailsState>(
+      listenWhen: (previous, current) => previous.action != current.action,
+      listener: (context, state) {
+        if (state.action.isRemoved) context.pop();
+      },
+      child: Screen(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Gap(10.h),
+            Row(
               children: [
-                const Spacer(flex: 4),
-                Text(
-                  dua.text,
-                  style: context.textThemeX.heading.copyWith(
-                    fontSize: 28.sp,
-                    fontFamily: GoogleFonts.amiriQuran().fontFamily,
-                  ),
-                  textAlign: TextAlign.center,
+                GestureDetector(
+                  onTap: context.pop,
+                  child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
                 ),
                 const Spacer(flex: 2),
-                Row(
-                  children: [
-                    BlocSelector<DuaDetailsBloc, DuaState, bool>(
-                      selector: (state) => state.data!.isFavourite,
-                      builder: (context, isFavourite) => IconButton(
-                        onPressed: () =>
-                            context.read<DuaDetailsBloc>().add(const DuaFavouriteToggled()),
-                        icon: Icon(isFavourite ? Icons.favorite : Icons.favorite_border),
-                      ),
+                Text(
+                  context.l10n.dua,
+                  style: context.textThemeX.heading.bold,
+                  textAlign: TextAlign.center,
+                ),
+                const Spacer(flex: 3),
+              ],
+            ),
+            Gap(20.h),
+            Container(
+              height: 300.h,
+              decoration: BoxDecoration(
+                color: context.colorsX.primary.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(16.sp),
+                boxShadow: [
+                  BoxShadow(
+                    color: context.colorsX.primary.withValues(alpha: 0.2),
+                    spreadRadius: 2,
+                    blurRadius: 3,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(flex: 4),
+                  Text(
+                    dua.text,
+                    style: context.textThemeX.heading.copyWith(
+                      fontSize: 28.sp,
+                      fontFamily: GoogleFonts.amiriQuran().fontFamily,
                     ),
-                    BlocConsumer<DuaDetailsBloc, DuaState>(
-                      builder: (context, state) => IconButton(
+                    textAlign: TextAlign.center,
+                  ),
+                  const Spacer(flex: 2),
+                  Row(
+                    children: [
+                      BlocSelector<DuaDetailsBloc, DuaDetailsState, bool>(
+                        selector: (state) => state.dua.isFavourite,
+                        builder: (context, isFavourite) => IconButton(
+                          onPressed: () =>
+                              context.read<DuaDetailsBloc>().add(const DuaFavouriteToggled()),
+                          icon: Icon(isFavourite ? Icons.favorite : Icons.favorite_border),
+                        ),
+                      ),
+                      IconButton(
                         icon: const Icon(Icons.delete),
                         onPressed: () => context.read<DuaDetailsBloc>().add(const DuaDeleted()),
                       ),
-                      listener: (context, state) {
-                        if (state.isSuccess && state.data == null) {
-                          context.pop();
-                        }
-                      },
-                    ),
-                  ],
-                ),
-                const Spacer(),
-              ],
+                    ],
+                  ),
+                  const Spacer(),
+                ],
+              ),
             ),
-          ),
-          Gap(25.h),
-          ExpandablePanel(
-            theme: ExpandableThemeData(
-              hasIcon: true,
-              expandIcon: Icons.expand_more,
-              collapseIcon: Icons.expand_less,
-              iconSize: 24.w,
+            Gap(25.h),
+            ExpandablePanel(
+              theme: ExpandableThemeData(
+                hasIcon: true,
+                expandIcon: Icons.expand_more,
+                collapseIcon: Icons.expand_less,
+                iconSize: 24.w,
+              ),
+              header: Text(
+                context.l10n.reward,
+                style: context.textThemeX.heading.bold.copyWith(fontSize: 20.sp),
+              ),
+              collapsed: const SizedBox(),
+              expanded: Text(
+                dua.reward ?? '',
+                style: context.textThemeX.medium.copyWith(fontSize: 18.sp),
+                textDirection: context.settingsBloc.state.settings.isArabic
+                    ? TextDirection.rtl
+                    : TextDirection.ltr,
+              ),
             ),
-            header: Text(
-              context.l10n.reward,
-              style: context.textThemeX.heading.bold.copyWith(fontSize: 20.sp),
-            ),
-            collapsed: const SizedBox(),
-            expanded: Text(
-              dua.reward ?? '',
-              style: context.textThemeX.medium.copyWith(fontSize: 18.sp),
-              textDirection: context.settingsBloc.state.settings.isArabic
-                  ? TextDirection.rtl
-                  : TextDirection.ltr,
-            ),
-          ),
-          const Spacer(),
-          _ShareAndCopyWidget(text: dua.text),
-          Gap(20.h)
-        ],
+            const Spacer(),
+            _ShareAndCopyWidget(text: dua.text),
+            Gap(20.h)
+          ],
+        ),
       ),
     );
   }

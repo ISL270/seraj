@@ -73,6 +73,10 @@ final class IsarService {
     return _isar.writeTxn(() => _isar.collection<T>().delete(object.cacheID));
   }
 
+  Future<bool> deleteByID<T extends CacheModel>(int cacheID) async {
+    return _isar.writeTxn(() => _isar.collection<T>().delete(cacheID));
+  }
+
   bool deleteSync<T extends CacheModel>(T object) {
     return _isar.writeTxnSync(() => _isar.collection<T>().deleteSync(object.cacheID));
   }
