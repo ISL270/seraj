@@ -28,10 +28,10 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
   }) async {
     try {
       await _remoteSource.addDua(
-        isFavourite: false,
-        uid: authRepository.user!.id,
         text: text,
         tags: tags,
+        isFavourite: false,
+        uid: authRepository.user!.id,
         reward: reward.isBlank ? null : reward,
         description: description.isBlank ? null : description,
       );
@@ -45,17 +45,13 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
     required int page,
     required int pageSize,
   }) async {
-    final cms = await _localSource.getDuas(
-      searchTerm,
-      page: page,
-      pageSize: pageSize,
-    );
+    final cms = await _localSource.getDuas(searchTerm, page: page, pageSize: pageSize);
     return cms.map((e) => e.toDomain()).toList();
   }
 
-  Future<void> toggleFavorite(Dua dua) async {
+  Future<void> toggleFavourite(Dua dua) async {
     try {
-      await _remoteSource.toggleFavorite(uid: authRepository.user!.id, dua: dua);
+      await _remoteSource.toggleFavourite(uid: authRepository.user!.id, dua: dua);
     } catch (e) {
       throw e as GenericException;
     }

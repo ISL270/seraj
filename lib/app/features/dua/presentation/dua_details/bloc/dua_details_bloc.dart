@@ -40,7 +40,7 @@ class DuaDetailsBloc extends Bloc<_DuaDetailsEvent, DuaDetailsState> {
     Emitter<DuaDetailsState> emit,
   ) async {
     try {
-      await repository.toggleFavorite(state.dua);
+      await repository.toggleFavourite(state.dua);
     } catch (e) {
       emit(state.failure(e as GenericException));
     }

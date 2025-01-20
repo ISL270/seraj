@@ -30,7 +30,7 @@ final class DuaFirestoreSource extends ReactiveFirestoreSource<DuaFM> with Fires
         });
       });
 
-  Future<void> toggleFavorite({required String uid, required Dua dua}) async =>
+  Future<void> toggleFavourite({required String uid, required Dua dua}) async =>
       firestoreOperationHandler(() async {
         await firestoreSvc.users.duaCollection(uid).doc(dua.id).update({
           firestoreSvc.dua.isFavourite: !dua.isFavourite,

@@ -27,31 +27,37 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
     _DuaSubscriptionRequested event,
     Emitter<DuaScreenState> emit,
   ) async {
-    await emit.forEach(
+    await emit.onEach(
       _repository.stream(),
-      onData: (status) {
-        if (status.isSuccess) {
-          add(DuaSearched(state.searchTerm));
-        }
-        return state;
+      onData: (status) => switch (status) {
+        Loading<void>() => state.paginatedResult.elements.isEmpty
+            // If no exercises are loaded yet emit loading state
+            ? emit(state._copyWith(status: state.status.toLoading()))
+            // If exercises already exist, do nothing
+            : {},
+        // If changes successfully happened in the repository, update the displayed result
+        Success<void>() => add(DuaSearched(state.searchTerm)),
+        Failure<void>(exception: final e) =>
+          emit(state._copyWith(status: state.status.toFailure(e))),
+        _ => {},
       },
     );
   }
 
   Future<void> _onSearched(DuaSearched event, Emitter<DuaScreenState> emit) async {
-    emit(state.copyWith(
-      status: const Loading(),
+    emit(state._copyWith(
       searchTerm: event.searchTerm,
+      status: state.status.toLoading(),
     ));
 
     final searchResult = await _repository.searchDua(
       page: 0,
       event.searchTerm,
-      pageSize: state.duas.pageSize,
+      pageSize: state.paginatedResult.pageSize,
     );
 
-    emit(state.copyWith(
-      status: const Success(null),
+    emit(state._copyWith(
+      status: state.status.toSuccess(null),
       duas: PaginatedResult.firstPage(searchResult),
     ));
   }
@@ -60,17 +66,17 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
     DuaNextPageFetched event,
     Emitter<DuaScreenState> emit,
   ) async {
-    if (state.duas.hasReachedMax) return;
+    if (state.paginatedResult.hasReachedMax) return;
 
     final searchResult = await _repository.searchDua(
       state.searchTerm,
-      page: state.duas.page + 1,
-      pageSize: state.duas.pageSize,
+      page: state.paginatedResult.page + 1,
+      pageSize: state.paginatedResult.pageSize,
     );
 
-    emit(state.copyWith(
-      status: const Success(null),
-      duas: state.duas.appendResult(searchResult),
+    emit(state._copyWith(
+      status: state.status.toSuccess(null),
+      duas: state.paginatedResult.appendResult(searchResult),
     ));
   }
 }

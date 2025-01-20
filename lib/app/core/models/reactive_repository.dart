@@ -142,10 +142,13 @@ abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheMo
   ///
   /// Parameters:
   /// - [docID] Unique identifier of the document to be deleted
-  Future<void> deleteDoc(String docID) => remoteSource.deleteDoc(
-        uid: authRepository.user!.id,
-        docID: docID,
-      );
+  Future<void> deleteDoc(String docID) async {
+    try {
+      await remoteSource.deleteDoc(uid: authRepository.user!.id, docID: docID);
+    } catch (e) {
+      throw e as GenericException;
+    }
+  }
 
   /// Watches a specific object in the local source
   ///
