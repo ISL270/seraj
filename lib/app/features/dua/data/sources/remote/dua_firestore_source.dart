@@ -6,7 +6,6 @@ import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 
-part 'dua_firestore_source.g.dart';
 part 'dua_fm.dart';
 
 @singleton
