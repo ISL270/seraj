@@ -8,25 +8,10 @@ final class DaleelState extends Equatable {
   bool filterDateActive;
   DaleelType selectedDaleelType;
   double selectedPriority;
-  // DateTime selectedDate;
-
   final PaginatedResult<Daleel> daleels;
   final DaleelFilters daleelFilters;
   final String searchTerm;
   VoidStatus status;
-
-  // DaleelState({
-  //   this.filterDaleelTypeActive = false,
-  //   this.filterPriorityActive = false,
-  //   this.filterDateActive = false,
-  //   this.selectedDaleelType = DaleelType.others,
-  //   this.selectedPriority = 0,
-  //   // this.selectedDate = DateTime.now(),
-  //   this.searchTerm = '',
-  //   this.daleels = const PaginatedResult(),
-  //   this.status = const Initial(),
-  //   this.daleelFilters = const DaleelFilters(),
-  // });
 
   DaleelState._({
     required this.filterDaleelTypeActive,
@@ -35,7 +20,6 @@ final class DaleelState extends Equatable {
     required this.selectedDaleelType,
     required this.selectedPriority,
     required this.daleelFilters,
-    // required this.selectedDate,
     required this.searchTerm,
     required this.daleels,
     required this.status,
@@ -49,8 +33,7 @@ final class DaleelState extends Equatable {
           selectedDaleelType: DaleelType.hadith,
           selectedPriority: 0,
           searchTerm: '',
-          daleels: const PaginatedResult(),
-          // selectedDate: DateTime.now(),
+          daleels: PaginatedResult.empty(),
           status: const Initial(),
           daleelFilters: DaleelFilters(),
         );
@@ -73,7 +56,6 @@ final class DaleelState extends Equatable {
         filterDateActive: filterDateActive ?? this.filterDateActive,
         selectedDaleelType: selectedDaleelType ?? this.selectedDaleelType,
         selectedPriority: selectedPriority ?? this.selectedPriority,
-        // selectedDate: selectedDate ?? this.selectedDate,
         searchTerm: searchTerm ?? this.searchTerm,
         daleels: daleels ?? this.daleels,
         status: status ?? this.status,
@@ -87,7 +69,6 @@ final class DaleelState extends Equatable {
         filterDateActive,
         selectedDaleelType,
         selectedPriority,
-        // selectedDate,
         searchTerm,
         daleels,
         status,

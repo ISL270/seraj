@@ -13,7 +13,7 @@ class _DuasListView extends StatelessWidget {
           BlocBuilder<DuaBloc, DuaScreenState>(
             builder: (context, state) => switch (state.status) {
               Loading() => const Center(child: CircularProgressIndicator()),
-              _ => state.duas.result.isEmpty
+              _ => state.duas.elements.isEmpty
                   ? Padding(
                       padding: EdgeInsets.only(top: 20.h),
                       child: Center(
@@ -26,7 +26,7 @@ class _DuasListView extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
                           child: Text(
                             '${context.l10n.dua.toUpperCase()} '
-                            '(${state.duas.result.length})',
+                            '(${state.duas.elements.length})',
                             style: context.textThemeX.small.bold.copyWith(
                               color: context.colorsX.onBackgroundTint.withValues(alpha: 0.5),
                             ),
@@ -38,7 +38,7 @@ class _DuasListView extends StatelessWidget {
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             return _DuaWithNumWidget(
-                              dua: state.duas.result[index],
+                              dua: state.duas.elements[index],
                             );
                           },
                           separatorBuilder: (BuildContext context, int index) {
@@ -51,7 +51,7 @@ class _DuasListView extends StatelessWidget {
                               ),
                             );
                           },
-                          itemCount: state.duas.result.length,
+                          itemCount: state.duas.elements.length,
                         ),
                       ],
                     ),

@@ -18,7 +18,7 @@ class _DaleelListViewBuilder extends StatelessWidget {
           },
           child: switch (state.status) {
             Loading() => const Center(child: CircularProgressIndicator()),
-            _ => state.daleels.result.isEmpty
+            _ => state.daleels.elements.isEmpty
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -34,7 +34,7 @@ class _DaleelListViewBuilder extends StatelessWidget {
                   )
                 : ListView.separated(
                     padding: EdgeInsets.zero,
-                    itemBuilder: (context, i) => _DaleelWidget(daleel: state.daleels.result[i]),
+                    itemBuilder: (context, i) => _DaleelWidget(daleel: state.daleels.elements[i]),
                     physics: const NeverScrollableScrollPhysics(),
                     separatorBuilder: (BuildContext context, int index) {
                       return Padding(
@@ -42,7 +42,7 @@ class _DaleelListViewBuilder extends StatelessWidget {
                         child: Divider(height: 1.h, color: context.colorsX.onBackground),
                       );
                     },
-                    itemCount: state.daleels.result.length,
+                    itemCount: state.daleels.elements.length,
                     shrinkWrap: true,
                   ),
           },

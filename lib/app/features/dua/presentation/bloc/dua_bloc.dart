@@ -14,7 +14,7 @@ part 'dua_state.dart';
 class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
   final DuaRepository _repository;
 
-  DuaBloc(this._repository) : super(const DuaScreenState()) {
+  DuaBloc(this._repository) : super(DuaScreenState._initial()) {
     on<_DuaSubscriptionRequested>(_onSubscriptionRequested);
 
     on<DuaSearched>(_onSearched);
@@ -54,7 +54,7 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
 
     emit(state.copyWith(
       status: const Success(null),
-      dua: PaginatedResult(result: searchResult),
+      duas: PaginatedResult.firstPage(searchResult),
     ));
   }
 
@@ -72,10 +72,7 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
 
     emit(state.copyWith(
       status: const Success(null),
-      dua: state.duas.appendResult(
-        searchResult,
-        hasReachedMax: searchResult.length < state.duas.pageSize,
-      ),
+      duas: state.duas.appendResult(searchResult),
     ));
   }
 

@@ -47,7 +47,7 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
     await emit.onEach(
       _repository.stream(),
       onData: (status) => switch (status) {
-        Loading<void>() => state.daleels.result.isEmpty
+        Loading<void>() => state.daleels.elements.isEmpty
             ? emit(state.copyWith(status: state.status.toLoading()))
             : {},
         Success<void>() => add(DaleelSearched(state.searchTerm)),
@@ -76,7 +76,7 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
 
     emit(state.copyWith(
       status: state.status.toSuccess(null),
-      daleels: PaginatedResult(result: searchResult),
+      daleels: PaginatedResult.firstPage(searchResult),
     ));
   }
 
@@ -95,10 +95,7 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
 
     emit(state.copyWith(
       status: state.status.toSuccess(null),
-      daleels: state.daleels.appendResult(
-        searchResult,
-        hasReachedMax: searchResult.length < state.daleels.pageSize,
-      ),
+      daleels: state.daleels.appendResult(searchResult),
     ));
   }
 

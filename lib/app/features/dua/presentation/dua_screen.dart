@@ -55,7 +55,7 @@ class _DuasScreenState extends State<DuasScreen> {
     );
     _scrollCntrlr.addListener(
       () {
-        if (_bloc.state.status.isSuccess && _bloc.state.duas.result.length > 5) {
+        if (_bloc.state.status.isSuccess && _bloc.state.duas.elements.length > 5) {
           return;
         }
         _scrollCntrlr.jumpTo(0);
