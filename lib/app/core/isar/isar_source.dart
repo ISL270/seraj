@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:athar/app/core/extension_methods/id_helper.dart';
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/core/isar/isar_service.dart';
 import 'package:flutter/foundation.dart';
@@ -42,7 +41,7 @@ abstract base class IsarSource<D, C extends CacheModel<D>> {
 
   Future<bool> delete(D dm) => isarService.delete<C>(fromDomain(dm));
 
-  Future<bool> deleteByID(String id) => isarService.deleteByID<C>(toIntID(id));
+  Future<bool> deleteByID(String id) => isarService.deleteByID<C>(id);
 
   Future<int> deleteAll(List<String> ids) => isarService.deleteAll<C>(ids);
 

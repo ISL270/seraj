@@ -1,3 +1,4 @@
+import 'package:athar/app/core/extension_types/string_id.dart';
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
@@ -10,7 +11,7 @@ part 'daleel_isar.g.dart';
 @collection
 final class DaleelIsar extends CacheModel<Daleel> {
   @override
-  String id;
+  StringID id;
   // used for full-text search feature
   @Index(type: IndexType.value, caseSensitive: false)
   String text;
@@ -48,54 +49,9 @@ final class DaleelIsar extends CacheModel<Daleel> {
     this.hadithAuthenticity,
   });
 
-  @override
-  Daleel toDomain() => switch (daleelType) {
-        DaleelType.aya => Aya(
-            id: id,
-            text: text,
-            tags: tags,
-            sayer: sayer,
-            surah: surah!,
-            lastAya: lastAya,
-            priority: priority,
-            firstAya: firstAya!,
-            description: description,
-            lastRevisedAt: lastRevisedAt,
-          ),
-        DaleelType.hadith => Hadith(
-            id: id,
-            text: text,
-            tags: tags,
-            sayer: sayer,
-            priority: priority,
-            description: description,
-            extraction: hadithExtraction,
-            lastRevisedAt: lastRevisedAt,
-            authenticity: hadithAuthenticity,
-          ),
-        DaleelType.athar => Athar(
-            id: id,
-            text: text,
-            tags: tags,
-            sayer: sayer,
-            priority: priority,
-            description: description,
-            lastRevisedAt: lastRevisedAt,
-          ),
-        DaleelType.other => Other(
-            id: id,
-            text: text,
-            tags: tags,
-            sayer: sayer,
-            priority: priority,
-            description: description,
-            lastRevisedAt: lastRevisedAt,
-          )
-      };
-
   factory DaleelIsar.fromDomain(Daleel daleel) => switch (daleel) {
         Hadith() => DaleelIsar(
-            id: daleel.id,
+            id: StringID(daleel.id),
             text: daleel.text,
             priority: daleel.priority,
             description: daleel.description,
@@ -107,7 +63,7 @@ final class DaleelIsar extends CacheModel<Daleel> {
             lastRevisedAt: daleel.lastRevisedAt,
           ),
         Aya() => DaleelIsar(
-            id: daleel.id,
+            id: StringID(daleel.id),
             text: daleel.text,
             priority: daleel.priority,
             description: daleel.description,
@@ -120,7 +76,7 @@ final class DaleelIsar extends CacheModel<Daleel> {
             lastRevisedAt: daleel.lastRevisedAt,
           ),
         Athar() => DaleelIsar(
-            id: daleel.id,
+            id: StringID(daleel.id),
             text: daleel.text,
             priority: daleel.priority,
             description: daleel.description,
@@ -130,7 +86,7 @@ final class DaleelIsar extends CacheModel<Daleel> {
             lastRevisedAt: daleel.lastRevisedAt,
           ),
         Other() => DaleelIsar(
-            id: daleel.id,
+            id: StringID(daleel.id),
             text: daleel.text,
             priority: daleel.priority,
             description: daleel.description,
@@ -139,5 +95,50 @@ final class DaleelIsar extends CacheModel<Daleel> {
             tags: daleel.tags,
             lastRevisedAt: daleel.lastRevisedAt,
           ),
+      };
+
+  @override
+  Daleel toDomain() => switch (daleelType) {
+        DaleelType.aya => Aya(
+            id: id.value,
+            text: text,
+            tags: tags,
+            sayer: sayer,
+            surah: surah ?? '',
+            lastAya: lastAya,
+            priority: priority,
+            firstAya: firstAya ?? 0,
+            description: description,
+            lastRevisedAt: lastRevisedAt,
+          ),
+        DaleelType.hadith => Hadith(
+            id: id.value,
+            text: text,
+            tags: tags,
+            sayer: sayer,
+            priority: priority,
+            description: description,
+            extraction: hadithExtraction,
+            lastRevisedAt: lastRevisedAt,
+            authenticity: hadithAuthenticity,
+          ),
+        DaleelType.athar => Athar(
+            id: id.value,
+            text: text,
+            tags: tags,
+            sayer: sayer,
+            priority: priority,
+            description: description,
+            lastRevisedAt: lastRevisedAt,
+          ),
+        DaleelType.other => Other(
+            id: id.value,
+            text: text,
+            tags: tags,
+            sayer: sayer,
+            priority: priority,
+            description: description,
+            lastRevisedAt: lastRevisedAt,
+          )
       };
 }

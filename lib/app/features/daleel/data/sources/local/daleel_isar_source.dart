@@ -11,16 +11,6 @@ import 'package:isar/isar.dart';
 final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
   const DaleelIsarSource(super.isarService);
 
-  Future<DaleelIsar?> getSavedDaleel() => isarService.getFirst<DaleelIsar>();
-
-  Future<DaleelIsar?> getDaleel(String id) => isarService.get<DaleelIsar>(id);
-
-  Future<void> saveDaleel(Daleel daleel) => isarService.put(DaleelIsar.fromDomain(daleel));
-
-  Future<void> deleteSavedDaleel() => isarService.clear<DaleelIsar>();
-
-  Future<void> getAllDaleels() => isarService.getAll<DaleelIsar>();
-
   Future<List<DaleelIsar>> getDaleels(
     String searchTerm, {
     required int page,
