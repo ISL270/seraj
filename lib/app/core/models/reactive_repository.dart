@@ -44,7 +44,7 @@ import 'package:rxdart/subjects.dart';
 ///     : super(auth, remoteSource: remote, localSource: local);
 /// }
 /// ```
-abstract class ReactiveRepository<D, R extends RemoteModel<D, C>, C extends CacheModel<D>> {
+abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheModel<D>> {
   @protected
   final AuthRepository authRepository;
   @protected
