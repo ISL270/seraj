@@ -20,6 +20,12 @@ enum Priority {
         _ => throw ArgumentError('Value must be 0.0, 1.0, or 2.0'),
       };
 
+  String toTranslate(BuildContext context) => switch (this) {
+        Priority.normal => context.l10n.normal,
+        Priority.high => context.l10n.high,
+        Priority.urgent => context.l10n.urgent,
+      };
+
   bool get isUrgent => this == Priority.urgent;
   bool get isHigh => this == Priority.high;
   bool get isNormal => this == Priority.normal;

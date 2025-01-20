@@ -1,6 +1,11 @@
+// ignore_for_file: deprecated_member_use_from_same_package, unused_element, deprecated_member_use, inference_failure_on_function_invocation
+
+import 'dart:developer';
+
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
+import 'package:athar/app/core/extension_methods/datetime_x.dart';
 import 'package:athar/app/core/extension_methods/english_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
@@ -11,10 +16,13 @@ import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/add_athar/presentation/add_athar_screen.dart';
 import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dart';
 import 'package:athar/app/features/add_other/presentation/add_other_screen.dart';
-import 'package:athar/app/features/aya/presentation/add_new_ayah.dart';
+import 'package:athar/app/features/daleel/domain/models/daleel.dart';
+import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
+import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
 import 'package:athar/app/features/daleel/presentation/widgets/priority_slider_w_label.dart';
+import 'package:athar/app/features/daleel_details/presentation/daleel_details_screen.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/button.dart';
@@ -26,25 +34,58 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:super_cupertino_navigation_bar/super_cupertino_navigation_bar.dart';
 
 part 'widgets/bottom_sheet.dart';
+part 'widgets/daleel_list_view_builder.dart';
 part 'widgets/filter_bottom_sheet.dart';
 
 class DaleelScreen extends StatefulWidget {
   const DaleelScreen({super.key});
 
-  static const String name = 'daleel';
+  static const String name = 'daleel-screen';
 
   @override
   State<DaleelScreen> createState() => _DaleelScreenState();
 }
 
 class _DaleelScreenState extends State<DaleelScreen> {
+  late final TextEditingController _searchCntrlr;
+  late final ScrollController _scrollCntrlr;
+  final isCollapsed = ValueNotifier<bool>(false);
+
+  late final DaleelBloc _bloc;
+  late final DaleelFilters filters;
   @override
   void initState() {
-    context.read<DaleelBloc>();
     super.initState();
+    filters = context.read<DaleelBloc>().state.daleelFilters;
+    _scrollCntrlr = ScrollController();
+    _bloc = context.read<DaleelBloc>();
+    _searchCntrlr = TextEditingController();
+    _searchCntrlr.addListener(
+      () {
+        if (_searchCntrlr.text.isEmpty) {
+          _bloc.add(const DaleelSearched(''));
+        }
+      },
+    );
+    _scrollCntrlr.addListener(
+      () {
+        if (_bloc.state.status.isSuccess && _bloc.state.daleels.result.length > 5) {
+          return;
+        }
+        _scrollCntrlr.jumpTo(0);
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _searchCntrlr.dispose();
+    _scrollCntrlr.dispose();
+    super.dispose();
   }
 
   @override
@@ -71,24 +112,20 @@ class _DaleelScreenState extends State<DaleelScreen> {
         ),
         backgroundColor: context.colorsX.background,
         searchBar: SuperSearchBar(
-          placeholderText: context.l10n.search.capitalizedDefinite,
-          animationDuration: const Duration(milliseconds: 300),
-          cancelButtonText: context.l10n.cancel,
-          cancelTextStyle: TextStyle(color: context.colorsX.primary, fontSize: 16.sp),
-          searchResult: const Center(child: Text('نتيجه البحث')),
-          actions: [
-            SuperAction(child: SizedBox(width: 12.w)),
-            SuperAction(
-              child: InkWell(
-                onTap: () {},
-                child: Icon(Icons.filter_list_outlined, color: context.colorsX.onBackground),
-              ),
-            ),
-            SuperAction(child: SizedBox(width: 12.w)),
-          ],
+          height: 45.h,
+          searchController: _searchCntrlr,
+          placeholderText: context.l10n.search,
+          cancelButtonText: context.l10n.cancel.capitalized,
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          resultBehavior: SearchBarResultBehavior.neverVisible,
+          cancelTextStyle: context.textThemeX.medium.bold.copyWith(color: context.colorsX.primary),
+          onChanged: (searchTerm) => _bloc.add(DaleelSearched(searchTerm)),
+          actions: [SuperAction(child: Gap(10.w))],
         ),
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.zero,
+        controller: _scrollCntrlr,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -101,22 +138,48 @@ class _DaleelScreenState extends State<DaleelScreen> {
                   spacing: 8.w,
                   children: [
                     Gap(12.w),
-                    _DaleelFilterTypeWidget(
-                      label: context.l10n.daleelType,
-                      onTap: () async {
-                        await _openFilterDaleelTypeSelectorBottomSheet(context);
+                    BlocBuilder<DaleelBloc, DaleelState>(
+                      builder: (context, state) {
+                        return _DaleelFilterTypeWidget(
+                          label: state.daleelFilters.daleelType.isEmpty
+                              ? context.l10n.daleelType
+                              : '${context.l10n.daleelType} : ${state.daleelFilters.daleelType.map((e) => e.toTranslate(context)).join(', ')}',
+                          isActive: state.daleelFilters.daleelType.isNotEmpty,
+                          onTap: () async {
+                            await _openFilterDaleelTypeSelectorBottomSheet(filters, context);
+                            _bloc.add(const DaleelSearched(''));
+                          },
+                          cancelFilterActive: state.daleelFilters.daleelType.isNotEmpty,
+                          cancelFilteronTap: () {
+                            state.daleelFilters.daleelType.clear();
+                            _bloc.add(const DaleelSearched(''));
+                          },
+                        );
                       },
                     ),
-                    _DaleelFilterTypeWidget(
-                      label: context.l10n.priority,
-                      onTap: () async {
-                        await _openFilterPrioritySelectorBottomSheet(context);
+                    BlocBuilder<DaleelBloc, DaleelState>(
+                      builder: (context, state) {
+                        return _DaleelFilterTypeWidget(
+                          label: state.daleelFilters.priority.isEmpty
+                              ? context.l10n.priority
+                              : '${context.l10n.priority} : ${state.daleelFilters.priority.map((e) => e.toTranslate(context)).join(', ')}',
+                          isActive: state.daleelFilters.priority.isNotEmpty,
+                          onTap: () async {
+                            await _openFilterPrioritySelectorBottomSheet(filters, context);
+                            _bloc.add(const DaleelSearched(''));
+                          },
+                          cancelFilterActive: state.daleelFilters.priority.isNotEmpty,
+                          cancelFilteronTap: () {
+                            state.daleelFilters.priority.clear();
+                            _bloc.add(const DaleelSearched(''));
+                          },
+                        );
                       },
                     ),
                     _DaleelFilterTypeWidget(
                       label: context.l10n.date,
                       onTap: () async {
-                        await _openFilterDateSelectorBottomSheet(context);
+                        await _openFilterDateSelectorBottomSheet(filters, context);
                       },
                     ),
                     Gap(12.w),
@@ -124,32 +187,7 @@ class _DaleelScreenState extends State<DaleelScreen> {
                 ),
               ),
             ),
-            Gap(2.h),
-            BlocBuilder<DaleelBloc, DaleelState>(
-              builder: (context, state) {
-                return switch (state.status) {
-                  Loading() => const Center(child: CircularProgressIndicator()),
-                  _ => state.daleels.result.isEmpty
-                      ? const Center(child: Text('لا يوجد نتائج'))
-                      : ListView.separated(
-                          itemBuilder: (context, i) =>
-                              _DaleelWidget(label: state.daleels.result[i].text),
-                          separatorBuilder: (_, __) => const Divider(),
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.daleels.result.length,
-                          shrinkWrap: true,
-                        ),
-                };
-              },
-            ),
-            // Column(
-            //   children: [
-            //     _DaleelWidget(label: context.l10n.propheticHadith),
-            //     _DaleelWidget(label: context.l10n.propheticHadith),
-            //     _DaleelWidget(label: context.l10n.propheticHadith),
-            //     _DaleelWidget(label: context.l10n.propheticHadith),
-            //   ],
-            // ),
+            const _DaleelListViewBuilder(),
           ],
         ),
       ),
@@ -158,11 +196,19 @@ class _DaleelScreenState extends State<DaleelScreen> {
 }
 
 class _DaleelFilterTypeWidget extends StatelessWidget {
-  const _DaleelFilterTypeWidget({this.label = 'تصنيف', this.isActive = false, this.onTap});
+  const _DaleelFilterTypeWidget({
+    this.label = 'تصنيف',
+    this.isActive = false,
+    this.onTap,
+    this.cancelFilteronTap,
+    this.cancelFilterActive = false,
+  });
 
   final String label;
   final bool isActive;
   final void Function()? onTap;
+  final void Function()? cancelFilteronTap;
+  final bool cancelFilterActive;
 
   @override
   Widget build(BuildContext context) {
@@ -182,8 +228,9 @@ class _DaleelFilterTypeWidget extends StatelessWidget {
           padding: EdgeInsets.all(4.sp),
           child: Center(
             child: Row(
+              spacing: 3.w,
               children: [
-                Gap(3.w),
+                Gap(4.w),
                 Text(
                   label,
                   style: context.textThemeX.medium.bold.copyWith(
@@ -191,136 +238,11 @@ class _DaleelFilterTypeWidget extends StatelessWidget {
                   ),
                 ),
                 Gap(3.w),
+                if (cancelFilterActive) CancelFilterButton(onTap: cancelFilteronTap),
+                Gap(1.w),
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _DaleelWidget extends StatelessWidget {
-  const _DaleelWidget({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Slidable(
-      endActionPane: ActionPane(
-        motion: const ScrollMotion(),
-        extentRatio: 0.3.w,
-        children: [
-          CircleAvatar(
-            backgroundColor: context.colorsX.primary,
-            radius: 24.r,
-            child: Icon(FontAwesomeIcons.edit, color: context.colorsX.onBackground, size: 24.r),
-          ),
-          Gap(8.w),
-          GestureDetector(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  contentPadding: EdgeInsets.all(16.sp),
-                  buttonPadding: EdgeInsets.all(16.sp),
-                  titlePadding: EdgeInsets.all(16.sp),
-                  actionsPadding: EdgeInsets.all(16.sp),
-                  actionsAlignment: MainAxisAlignment.spaceAround,
-                  backgroundColor: context.colorsX.background,
-                  title: Padding(
-                    padding: EdgeInsets.all(16.sp),
-                    child: Center(
-                      child: Text(
-                        context.l10n.areYouSure.capitalized,
-                        style: context.textThemeX.large.bold.copyWith(
-                          color: context.colorsX.primary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  actions: [
-                    TextButton(
-                      onPressed: () => context.pop(),
-                      child: Text(context.l10n.cancel.capitalized,
-                          style: context.textThemeX.large.bold),
-                    ),
-                    TextButton(
-                      onPressed: () => context.pop(),
-                      child: Text(context.l10n.ok.capitalized,
-                          style:
-                              context.textThemeX.large.bold.copyWith(color: context.colorsX.error)),
-                    ),
-                  ],
-                ),
-              );
-            },
-            child: CircleAvatar(
-              backgroundColor: context.colorsX.error,
-              radius: 24.r,
-              child: Icon(FontAwesomeIcons.trash, color: context.colorsX.onBackground, size: 24.r),
-            ),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 10.sp),
-        child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.all(4.sp),
-                height: 170.h,
-                decoration: BoxDecoration(
-                  color: context.colorsX.primary,
-                  borderRadius: BorderRadius.circular(12.w),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(6.sp),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        context.l10n.propheticHadith,
-                        style: context.textThemeX.large.bold,
-                      ),
-                      Gap(15.h),
-                      Row(
-                        children: [
-                          Gap(5.w),
-                          Expanded(
-                            child: Text(
-                              label,
-                              style: context.textThemeX.medium.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      Row(
-                        children: [
-                          Text('${context.l10n.priority}:', style: context.textThemeX.medium.bold),
-                          Gap(4.w),
-                          Text(context.l10n.high, style: context.textThemeX.medium.bold),
-                          const Spacer(),
-                          Text(
-                            '٥ يناير ٢٠٢٥',
-                            style: context.textThemeX.small.bold.copyWith(
-                              color: context.colorsX.onBackgroundTint35,
-                            ),
-                          ),
-                          Gap(6.w),
-                        ],
-                      ),
-                      Gap(6.h),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );

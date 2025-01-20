@@ -83,7 +83,7 @@ class _TextOfAtharTextField extends StatelessWidget {
               labelStyle: context.textThemeX.medium,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
               hintText: 'حدثنا مروان بن معاوية أن عمر فرض للهر مزان',
-              hintMaxLines: 1,
+              hintMaxLines: 2,
               hintStyle: context.textThemeX.medium.bold.copyWith(
                 height: 1.5.h,
                 color: context.colorsX.onBackgroundTint35,

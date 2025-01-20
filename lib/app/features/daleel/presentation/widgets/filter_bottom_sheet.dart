@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use, must_be_immutable
 
 part of '../daleel_screen.dart';
 
@@ -6,7 +6,8 @@ part of '../daleel_screen.dart';
 //----------------- Filter Daleel Type Bottom Sheet ----------------------------
 //------------------------------------------------------------------------------
 
-Future<void> _openFilterDaleelTypeSelectorBottomSheet(BuildContext context) async {
+Future<void> _openFilterDaleelTypeSelectorBottomSheet(
+    DaleelFilters filters, BuildContext context) async {
   // ignore: inference_failure_on_function_invocation
   await showModalBottomSheet(
     elevation: 0,
@@ -14,12 +15,12 @@ Future<void> _openFilterDaleelTypeSelectorBottomSheet(BuildContext context) asyn
     isScrollControlled: true,
     useRootNavigator: true,
     builder: (context) => Container(
-      height: 320.h,
+      height: 280.h,
       decoration: BoxDecoration(
         color: context.colorsX.background,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24.h),
-          topRight: Radius.circular(24.h),
+          topLeft: Radius.circular(24.r),
+          topRight: Radius.circular(24.r),
         ),
         boxShadow: [
           BoxShadow(
@@ -29,13 +30,15 @@ Future<void> _openFilterDaleelTypeSelectorBottomSheet(BuildContext context) asyn
           ),
         ],
       ),
-      child: const _FilterTypeSelectorBottomSheetBody(),
+      child: _FilterTypeSelectorBottomSheetBody(filters),
     ),
   );
 }
 
 class _FilterTypeSelectorBottomSheetBody extends StatelessWidget {
-  const _FilterTypeSelectorBottomSheetBody();
+  _FilterTypeSelectorBottomSheetBody(this.filters);
+
+  DaleelFilters filters;
 
   @override
   Widget build(BuildContext context) {
@@ -52,80 +55,83 @@ class _FilterTypeSelectorBottomSheetBody extends StatelessWidget {
             style: context.textThemeX.medium.bold.copyWith(fontSize: 16.w),
           ),
         ),
-        SizedBox(
-          width: double.infinity,
-          child: Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: _MultiSelectDaleelType(daleelFilter: [
-                    context.l10n.athars.capitalizedDefinite,
-                    context.l10n.hadiths,
-                    context.l10n.ayahs,
-                    context.l10n.atharsOfSahaba,
-                    context.l10n.others.capitalizedDefinite
-                  ]),
-                ),
-              ),
-            ],
-          ),
-        ),
-        ApplyFilterButton(onPressed: () {}),
+        SizedBox(width: double.infinity, child: _MultiSelectDaleelType(filters: filters)),
       ],
     );
   }
 }
 
 class _MultiSelectDaleelType extends StatefulWidget {
-  const _MultiSelectDaleelType({required this.daleelFilter});
+  const _MultiSelectDaleelType({required this.filters});
 
-  final List<String> daleelFilter;
+  final DaleelFilters filters;
 
   @override
   State<_MultiSelectDaleelType> createState() => _MultiSelectDaleelTypeState();
 }
 
 class _MultiSelectDaleelTypeState extends State<_MultiSelectDaleelType> {
-  final List<int> selectedIndices = [];
+  @override
+  void initState() {
+    context.read<DaleelBloc>().state.daleelFilters.clone();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(8.w),
-      child: Wrap(
-        spacing: 12.w,
-        runSpacing: 12.h,
-        children: List.generate(
-          widget.daleelFilter.length,
-          (index) {
-            final isSelected = selectedIndices.contains(index); // Check if selected
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  isSelected ? selectedIndices.remove(index) : selectedIndices.add(index);
-                });
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 400),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.w),
-                  color: isSelected ? context.colorsX.primary : context.colorsX.onBackgroundTint35,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(8.w),
-                  child: Text(
-                    widget.daleelFilter[index],
-                    style: context.textThemeX.medium.bold.copyWith(
-                      color: isSelected ? context.colorsX.background : context.colorsX.onBackground,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: EdgeInsets.all(20.sp),
+          child: Wrap(
+            spacing: 12.w,
+            runSpacing: 12.h,
+            children: List.generate(
+              DaleelType.values.length,
+              (index) {
+                final type = DaleelType.values[index];
+                final isSelected = widget.filters.daleelType.contains(type);
+                return GestureDetector(
+                  onTap: () {
+                    if (isSelected) {
+                      widget.filters.daleelType.remove(type);
+                    } else {
+                      widget.filters.daleelType.add(type);
+                    }
+                    setState(() {});
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 400),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.r),
+                      color:
+                          isSelected ? context.colorsX.primary : context.colorsX.onBackgroundTint35,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 12.h),
+                      child: Text(
+                        DaleelType.values[index].toTranslate(context),
+                        style: context.textThemeX.medium.bold.copyWith(
+                          color: isSelected
+                              ? context.colorsX.background
+                              : context.colorsX.onBackground,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            );
+                );
+              },
+            ),
+          ),
+        ),
+        ApplyFilterButton(
+          onPressed: () {
+            context.read<DaleelBloc>().add(DaleelFiltered(widget.filters));
+            context.pop();
           },
         ),
-      ),
+      ],
     );
   }
 }
@@ -134,7 +140,8 @@ class _MultiSelectDaleelTypeState extends State<_MultiSelectDaleelType> {
 //----------------- Filter Priority Bottom Sheet -------------------------------
 //------------------------------------------------------------------------------
 
-Future<void> _openFilterPrioritySelectorBottomSheet(BuildContext context) async {
+Future<void> _openFilterPrioritySelectorBottomSheet(
+    DaleelFilters filters, BuildContext context) async {
   // ignore: inference_failure_on_function_invocation
   await showModalBottomSheet(
     elevation: 0,
@@ -146,8 +153,8 @@ Future<void> _openFilterPrioritySelectorBottomSheet(BuildContext context) async 
       decoration: BoxDecoration(
         color: context.colorsX.background,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24.h),
-          topRight: Radius.circular(24.h),
+          topLeft: Radius.circular(24.r),
+          topRight: Radius.circular(24.r),
         ),
         boxShadow: [
           BoxShadow(
@@ -157,46 +164,97 @@ Future<void> _openFilterPrioritySelectorBottomSheet(BuildContext context) async 
           ),
         ],
       ),
-      child: const _FilterPrioritySelectorBottomSheetBody(),
+      child: _FilterPrioritySelectorBottomSheetBody(filters),
     ),
   );
 }
 
 class _FilterPrioritySelectorBottomSheetBody extends StatelessWidget {
-  const _FilterPrioritySelectorBottomSheetBody();
+  const _FilterPrioritySelectorBottomSheetBody(this.filters);
+
+  final DaleelFilters filters;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       spacing: 16.h,
       children: [
         Gap(2.h),
         const _DragIndicator(),
-        _PrioritySelector(),
-        ApplyFilterButton(onPressed: () {})
+        _PrioritySelector(filters: filters),
+        Gap(6.h),
       ],
     );
   }
 }
 
-class _PrioritySelector extends StatelessWidget {
+class _PrioritySelector extends StatefulWidget {
+  const _PrioritySelector({required this.filters});
+  final DaleelFilters filters;
+
+  @override
+  State<_PrioritySelector> createState() => _PrioritySelectorState();
+}
+
+class _PrioritySelectorState extends State<_PrioritySelector> {
+  late DaleelFilters updatedFilters;
+
+  @override
+  void initState() {
+    updatedFilters = widget.filters;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DaleelBloc, DaleelState>(
       builder: (context, state) {
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.w),
-          child: PrioritySliderWithLabel(
-            labelText: context.l10n.priority,
-            priorityTitle:
-                '${Priority.translate(context, state.selectedPriority)} ${context.l10n.saveIt}',
-            onPriorityChanged: (value) =>
-                context.read<DaleelBloc>().add(DaleelPriorityFilterChanged(value)),
-            priorityValue: state.selectedPriority,
-            sliderMaxValue: Priority.values.length - 1,
-            sliderDivisions: Priority.values.length - 1,
-            sliderLabel: Priority.translate(context, state.selectedPriority),
-          ),
+        return Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
+              child: PrioritySliderWithLabel(
+                labelText: context.l10n.priority,
+                priorityTitle:
+                    '${Priority.translate(context, state.selectedPriority)} ${context.l10n.saveIt}',
+                onPriorityChanged: (value) =>
+                    context.read<DaleelBloc>().add(DaleelPriorityFilterChanged(value)),
+                priorityValue: state.selectedPriority == 0 ? 0 : state.selectedPriority,
+                sliderMaxValue: Priority.values.length - 1,
+                sliderDivisions: Priority.values.length - 1,
+                sliderLabel: Priority.translate(context, state.selectedPriority),
+              ),
+            ),
+            ApplyFilterButton(
+              onPressed: () {
+                // Retrieve the new priority from the selected state
+                final selectedPriority = Priority.fromDouble(state.selectedPriority);
+
+                // Check if the selected priority is already in the list
+                if (updatedFilters.priority.length == 1 &&
+                    updatedFilters.priority.contains(selectedPriority)) {
+                  context.pop();
+                  return;
+                }
+
+                // Clear the list to ensure only the priority remains
+                updatedFilters.priority.clear();
+
+                // Add the selected priority
+                updatedFilters.priority.add(selectedPriority);
+
+                // Dispatch the event to update the Bloc state
+                context.read<DaleelBloc>().add(DaleelFiltered(updatedFilters));
+
+                // Log the updated priorities for debugging
+                log(updatedFilters.priority.toString());
+
+                // Close the current context (e.g., modal or navigation pop)
+                context.pop();
+              },
+            )
+          ],
         );
       },
     );
@@ -207,7 +265,7 @@ class _PrioritySelector extends StatelessWidget {
 //----------------- Filter Date Bottom Sheet -----------------------------------
 //------------------------------------------------------------------------------
 
-Future<void> _openFilterDateSelectorBottomSheet(BuildContext context) async {
+Future<void> _openFilterDateSelectorBottomSheet(DaleelFilters filters, BuildContext context) async {
   // ignore: inference_failure_on_function_invocation
   await showModalBottomSheet(
     elevation: 0,
@@ -219,8 +277,8 @@ Future<void> _openFilterDateSelectorBottomSheet(BuildContext context) async {
       decoration: BoxDecoration(
         color: context.colorsX.background,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24.h),
-          topRight: Radius.circular(24.h),
+          topLeft: Radius.circular(24.r),
+          topRight: Radius.circular(24.r),
         ),
         boxShadow: [
           BoxShadow(
@@ -272,7 +330,7 @@ class _EasyDateTimeLinePickerWidgetState extends State<_EasyDateTimeLinePickerWi
         decoration: context.settingsBloc.state.settings.isThemeLight
             ? null
             : BoxDecoration(
-                borderRadius: BorderRadius.circular(12.w),
+                borderRadius: BorderRadius.circular(12.r),
                 color: context.colorsX.onBackgroundTint35,
               ),
         child: EasyDateTimeLinePicker(
