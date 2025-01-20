@@ -8,35 +8,25 @@ import 'package:athar/app/core/firestore/remote_model.dart';
 ///
 /// The class supports three types of document changes:
 /// - [DocAdded]: Represents a new document being added to the collection
-/// - [DocModified]: Represents an existing document being modified
-/// - [DocRemoved]: Represents a document being removed from the collection
+/// - [DocUpdated]: Represents an existing document being updated
+/// - [DocDeleted]: Represents a document being deleted from the collection
 sealed class DocChange<R extends RemoteModel> {
-  const DocChange();
+  final R doc;
+  const DocChange(this.doc);
+
+  bool get isAdded => this is DocAdded;
+  bool get isUpdated => this is DocUpdated;
+  bool get isDeleted => this is DocDeleted;
 }
 
-/// Represents a new document being added to a collection.
-///
-/// Contains the newly added document of type [R] which extends [RemoteModel].
-/// This class is used to track document addition events in a data source.
 final class DocAdded<R extends RemoteModel> extends DocChange<R> {
-  final R newDoc;
-  const DocAdded(this.newDoc);
+  const DocAdded(super.doc);
 }
 
-/// Represents an existing document being modified in a collection.
-///
-/// Contains the modified document of type [R] which extends [RemoteModel].
-/// This class is used to track document modification events in a data source.
-final class DocModified<R extends RemoteModel> extends DocChange<R> {
-  final R modifiedDoc;
-  const DocModified(this.modifiedDoc);
+final class DocUpdated<R extends RemoteModel> extends DocChange<R> {
+  const DocUpdated(super.doc);
 }
 
-/// Represents a document being removed from a collection.
-///
-/// Contains the ID of the removed document.
-/// This class is used to track document deletion events in a data source.
-final class DocRemoved<R extends RemoteModel> extends DocChange<R> {
-  final String id;
-  const DocRemoved(this.id);
+final class DocDeleted<R extends RemoteModel> extends DocChange<R> {
+  const DocDeleted(super.doc);
 }

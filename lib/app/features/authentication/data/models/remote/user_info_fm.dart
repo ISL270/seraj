@@ -6,12 +6,14 @@ part 'user_info_fm.g.dart';
 
 @JsonSerializable()
 final class UserFM implements RemoteModel<User> {
-  final String uid;
+  @override
+  @JsonKey(name: 'uid')
+  final String id;
   final String name;
   final String email;
 
   const UserFM({
-    required this.uid,
+    required this.id,
     required this.name,
     required this.email,
   });
@@ -21,14 +23,14 @@ final class UserFM implements RemoteModel<User> {
   Map<String, dynamic> toJson() => _$UserFMToJson(this);
 
   factory UserFM.fromDomain(User user) => UserFM(
-        uid: user.id,
+        id: user.id,
         name: user.name,
         email: user.email,
       );
 
   @override
   User toDomain() => User(
-        id: uid,
+        id: id,
         name: name,
         email: email,
       );

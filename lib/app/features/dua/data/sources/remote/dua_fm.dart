@@ -1,6 +1,7 @@
 part of 'dua_firestore_source.dart';
 
 final class DuaFM implements RemoteModel<Dua> {
+  @override
   final String id;
   final String text;
   final String? reward;

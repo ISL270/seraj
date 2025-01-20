@@ -7,13 +7,13 @@ part of 'user_info_fm.dart';
 // **************************************************************************
 
 UserFM _$UserFMFromJson(Map<String, dynamic> json) => UserFM(
-      uid: json['uid'] as String,
+      id: json['uid'] as String,
       name: json['name'] as String,
       email: json['email'] as String,
     );
 
 Map<String, dynamic> _$UserFMToJson(UserFM instance) => <String, dynamic>{
-      'uid': instance.uid,
+      'uid': instance.id,
       'name': instance.name,
       'email': instance.email,
     };

@@ -6,12 +6,12 @@ import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/firestore/remote_model.dart';
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/core/isar/isar_source.dart';
-import 'package:athar/app/core/models/doc_change.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/core/models/reactive_firestore_source.dart';
 import 'package:athar/app/features/authentication/domain/models/auth_state.dart';
 import 'package:athar/app/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:rxdart/subjects.dart';
 
 /// An abstract reactive repository that manages synchronization between
@@ -44,7 +44,7 @@ import 'package:rxdart/subjects.dart';
 ///     : super(auth, remoteSource: remote, localSource: local);
 /// }
 /// ```
-abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheModel<D>> {
+abstract class ReactiveRepository<D, R extends RemoteModel<D, C>, C extends CacheModel<D>> {
   @protected
   final AuthRepository authRepository;
   @protected
@@ -110,16 +110,12 @@ abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheMo
       // Listen to remote updates and synchronize local data
       remoteSource.changes.listen(
         (remoteChanges) async {
-          for (final change in remoteChanges) {
-            switch (change) {
-              case DocAdded<R>():
-                unawaited(localSource.put(change.newDoc.toDomain()));
-              case DocModified<R>():
-                unawaited(localSource.put(change.modifiedDoc.toDomain()));
-              case DocRemoved<R>():
-                unawaited(localSource.deleteByID(change.id));
-            }
-          }
+          final (toBeSaved, toBeDeleted) = remoteChanges.partition((change) => change.isDeleted);
+
+          await Future.wait([
+            localSource.deleteAllByIDs(toBeDeleted.map((e) => e.doc.id)),
+            localSource.putAll(toBeSaved.map((e) => e.doc.toDomain()))
+          ]);
 
           // Mark synchronization as successful
           _subject.add(_subject.value.toSuccess(null));

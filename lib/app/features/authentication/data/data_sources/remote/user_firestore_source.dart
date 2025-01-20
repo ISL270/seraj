@@ -24,7 +24,7 @@ final class UserFirestoreSource with FirestoreHelper {
     required String email,
     required String name,
   }) async {
-    final userInfo = UserFM(uid: uid, email: email, name: name);
+    final userInfo = UserFM(id: uid, email: email, name: name);
     return firestoreOperationHandler(() async {
       late final DocumentReference<Map<String, dynamic>> userDoc;
       userDoc = _firestoreSvc.users.collection.doc(uid);

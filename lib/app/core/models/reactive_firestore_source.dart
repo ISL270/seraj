@@ -103,9 +103,9 @@ abstract base class ReactiveFirestoreSource<FM extends RemoteModel> with Firesto
               case DocumentChangeType.added:
                 changes.add(DocAdded(fromJson(change.doc.id, change.doc.data()!)));
               case DocumentChangeType.modified:
-                changes.add(DocModified(fromJson(change.doc.id, change.doc.data()!)));
+                changes.add(DocUpdated(fromJson(change.doc.id, change.doc.data()!)));
               case DocumentChangeType.removed:
-                changes.add(DocRemoved(change.doc.id));
+                changes.add(DocDeleted(fromJson(change.doc.id, change.doc.data()!)));
             }
           }
 

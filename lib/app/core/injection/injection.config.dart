@@ -39,8 +39,6 @@ import 'package:athar/app/features/dua/data/sources/local/dua_isar_source.dart'
 import 'package:athar/app/features/dua/data/sources/remote/dua_firestore_source.dart'
     as _i833;
 import 'package:athar/app/features/dua/domain/dua_repository.dart' as _i1008;
-import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart'
-    as _i554;
 import 'package:athar/app/features/settings/data/sources/local/settings_isar_source.dart'
     as _i387;
 import 'package:athar/app/features/settings/domain/settings_repository.dart'
@@ -130,7 +128,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i397.AddHadithCubit(gh<_i143.DaleelRepository>()));
     gh.singleton<_i910.AddDuaCubit>(
         () => _i910.AddDuaCubit(gh<_i1008.DuaRepository>()));
-    gh.factory<_i554.DuaBloc>(() => _i554.DuaBloc(gh<_i1008.DuaRepository>()));
     return this;
   }
 }

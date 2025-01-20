@@ -41,8 +41,8 @@ final class IsarService {
     return _isar.writeTxnSync(() => _isar.collection<T>().putSync(object));
   }
 
-  Future<List<int>> putAll<T extends CacheModel>(List<T> objects) async {
-    return _isar.writeTxn(() => _isar.collection<T>().putAll(objects));
+  Future<List<int>> putAll<T extends CacheModel>(Iterable<T> objects) async {
+    return _isar.writeTxn(() => _isar.collection<T>().putAll(objects.toList()));
   }
 
   Future<T?> get<T extends CacheModel>(String id) async {
@@ -81,14 +81,14 @@ final class IsarService {
     return _isar.writeTxnSync(() => _isar.collection<T>().deleteSync(object.cacheID));
   }
 
-  Future<int> deleteAll<T extends CacheModel>(List<String> ids) async {
+  Future<int> deleteAllByIDs<T extends CacheModel>(Iterable<String> ids) async {
     return _isar.writeTxn(
       () => _isar.collection<T>().deleteAll(ids.map(StringID.toIntID).toList()),
     );
   }
 
-  Future<int> deleteAllSync<T extends CacheModel>(List<int> ids) async {
-    return _isar.writeTxnSync(() => _isar.collection<T>().deleteAllSync(ids));
+  Future<int> deleteAllByIDsSync<T extends CacheModel>(Iterable<String> ids) async {
+    return _isar.writeTxnSync(() => _isar.collection<T>().deleteAllSync(ids.map(StringID.toIntID).toList()));
   }
 
   Future<void> clear<T extends CacheModel>() async {

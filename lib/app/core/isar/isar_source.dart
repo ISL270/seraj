@@ -29,7 +29,7 @@ abstract base class IsarSource<D, C extends CacheModel<D>> {
 
   Future<int> put(D dm) => isarService.put<C>(fromDomain(dm));
 
-  Future<List<int>> putAll(List<D> list) => isarService.putAll<C>(list.map(fromDomain).toList());
+  Future<List<int>> putAll(Iterable<D> list) => isarService.putAll<C>(list.map(fromDomain));
 
   Future<C?> get(String id) => isarService.get<C>(id);
 
@@ -43,7 +43,7 @@ abstract base class IsarSource<D, C extends CacheModel<D>> {
 
   Future<bool> deleteByID(String id) => isarService.deleteByID<C>(id);
 
-  Future<int> deleteAll(List<String> ids) => isarService.deleteAll<C>(ids);
+  Future<int> deleteAllByIDs(Iterable<String> ids) => isarService.deleteAllByIDs<C>(ids);
 
   Future<void> clear() => isarService.clear<C>();
 

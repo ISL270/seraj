@@ -30,7 +30,7 @@ class DuaDetailsScreen extends StatelessWidget {
     return BlocListener<DuaDetailsBloc, DuaDetailsState>(
       listenWhen: (previous, current) => previous.action != current.action,
       listener: (context, state) {
-        if (state.action.isRemoved) context.pop();
+        if (state.action.isDeleted) context.pop();
       },
       child: Screen(
         body: Column(

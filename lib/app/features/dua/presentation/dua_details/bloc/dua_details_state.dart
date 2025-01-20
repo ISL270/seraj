@@ -15,13 +15,13 @@ final class DuaDetailsState {
 
   DuaDetailsState duaUpdated(Dua dua) => DuaDetailsState._(
         dua,
-        ChangeType.modified,
+        ChangeType.updated,
         const Success(null),
       );
 
   DuaDetailsState duaDeleted() => DuaDetailsState._(
         dua,
-        ChangeType.removed,
+        ChangeType.deleted,
         const Success(null),
       );
 
