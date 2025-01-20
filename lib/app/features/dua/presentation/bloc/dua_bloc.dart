@@ -3,25 +3,23 @@ import 'package:athar/app/core/models/bloc_event_transformers.dart';
 import 'package:athar/app/core/models/domain/paginated_result.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
+import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:injectable/injectable.dart';
 
 part 'dua_event.dart';
 part 'dua_state.dart';
 
-@injectable
 class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
   final DuaRepository _repository;
 
-  DuaBloc(this._repository) : super(const DuaScreenState()) {
+  DuaBloc(this._repository) : super(DuaScreenState._initial()) {
     on<_DuaSubscriptionRequested>(_onSubscriptionRequested);
-
     on<DuaSearched>(_onSearched);
     on<DuaNextPageFetched>(
       _onNextPageFetched,
       transformer: EventTransformers.throttleDroppable(),
     );
+
     add(_DuaSubscriptionRequested());
   }
 
@@ -54,7 +52,7 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
 
     emit(state.copyWith(
       status: const Success(null),
-      dua: PaginatedResult(result: searchResult),
+      duas: PaginatedResult(result: searchResult),
     ));
   }
 
@@ -72,16 +70,10 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
 
     emit(state.copyWith(
       status: const Success(null),
-      dua: state.duas.appendResult(
+      duas: state.duas.appendResult(
         searchResult,
         hasReachedMax: searchResult.length < state.duas.pageSize,
       ),
     ));
-  }
-
-  @override
-  Future<void> close() {
-    _repository.dispMethod();
-    return super.close();
   }
 }

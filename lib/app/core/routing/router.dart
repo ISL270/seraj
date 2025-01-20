@@ -136,7 +136,7 @@ final appRouter = GoRouter(
               path: '/${DuasScreen.name}',
               pageBuilder: (context, state) => NoTransitionPage(
                 child: BlocProvider(
-                  create: (context) => getIt.get<DuaBloc>(),
+                  create: (context) => DuaBloc(getIt.get<DuaRepository>()),
                   child: const DuasScreen(),
                 ),
               ),

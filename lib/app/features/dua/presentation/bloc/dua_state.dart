@@ -5,24 +5,31 @@ final class DuaScreenState extends Equatable {
   final String searchTerm;
   final PaginatedResult<Dua> duas;
 
-  const DuaScreenState({
-    this.searchTerm = '',
-    this.status = const Initial(),
-    this.duas = const PaginatedResult(),
+  const DuaScreenState._({
+    required this.status,
+    required this.searchTerm,
+    required this.duas,
   });
+
+  const DuaScreenState._initial()
+      : this._(
+          status: const Initial(),
+          searchTerm: '',
+          duas: const PaginatedResult(),
+        );
 
   DuaScreenState copyWith({
     VoidStatus? status,
     String? searchTerm,
-    PaginatedResult<Dua>? dua,
+    PaginatedResult<Dua>? duas,
   }) {
-    return DuaScreenState(
+    return DuaScreenState._(
       status: status ?? this.status,
-      duas: dua ?? this.duas,
       searchTerm: searchTerm ?? this.searchTerm,
+      duas: duas ?? this.duas,
     );
   }
 
   @override
-  List<Object> get props => [status, searchTerm, Dua];
+  List<Object> get props => [status, searchTerm, duas];
 }
