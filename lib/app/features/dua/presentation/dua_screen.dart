@@ -66,59 +66,67 @@ class _DuasScreenState extends State<DuasScreen> {
   @override
   Widget build(BuildContext context) {
     return SuperScaffold(
-        scrollController: _scrollCntrlr,
-        onCollapsed: (value) => isCollapsed.value = value,
-        appBar: SuperAppBar(
-          largeTitle: SuperLargeTitle(
-            largeTitle: context.l10n.duas.capitalizedDefinite,
-            textStyle: context.textThemeX.large.bold.copyWith(fontSize: 32.w),
-            actions: [
-              GestureDetector(
-                onTap: () => context.pushNamed(AddDuaScreen.name),
-                child: Assets.icons.plusSquaredOutlined.svg(
-                  width: 34.w,
-                  height: 34.w,
-                  color: context.colorsX.primary,
-                ),
+      scrollController: _scrollCntrlr,
+      onCollapsed: (value) => isCollapsed.value = value,
+      appBar: SuperAppBar(
+        largeTitle: SuperLargeTitle(
+          largeTitle: context.l10n.duas.capitalizedDefinite,
+          textStyle: context.textThemeX.large.bold.copyWith(fontSize: 32.w),
+          actions: [
+            GestureDetector(
+              onTap: () => context.pushNamed(AddDuaScreen.name),
+              child: Assets.icons.plusSquaredOutlined.svg(
+                width: 34.w,
+                height: 34.w,
+                color: context.colorsX.primary,
               ),
-            ],
-          ),
-          title: Text(
-            context.l10n.duas.capitalizedDefinite,
-            style: context.textThemeX.large.bold.copyWith(color: context.colorsX.onBackground),
-          ),
-          backgroundColor: context.colorsX.background,
-          searchBar: SuperSearchBar(
-            height: 45.h,
-            searchController: _searchCntrlr,
-            placeholderText: context.l10n.search,
-            scrollBehavior: SearchBarScrollBehavior.pinned,
-            cancelButtonText: context.l10n.cancel.capitalized,
-            resultBehavior: SearchBarResultBehavior.neverVisible,
-            cancelTextStyle: TextStyle(color: context.colorsX.primary),
-            onChanged: (searchTerm) => _bloc.add(DuaSearched(searchTerm)),
-            actions: [
-              SuperAction(
-                behavior: SuperActionBehavior.alwaysVisible,
-                child: IconButton(
-                  iconSize: 30,
-                  icon: const Icon(Icons.tune),
-                  color: context.colorsX.primary,
-                  padding: const EdgeInsetsDirectional.only(start: 20, end: 5),
-                  onPressed: () => showModalBottomSheet<void>(
-                    context: context,
-                    useRootNavigator: true,
-                    scrollControlDisabledMaxHeightRatio: 0.75,
-                    builder: (context) => BlocProvider.value(
-                      value: _bloc,
-                      child: const DuaFilterBottomSheet(),
-                    ),
+            ),
+          ],
+        ),
+        title: Text(
+          context.l10n.duas.capitalizedDefinite,
+          style: context.textThemeX.large.bold.copyWith(color: context.colorsX.onBackground),
+        ),
+        backgroundColor: context.colorsX.background,
+        searchBar: SuperSearchBar(
+          height: 45.h,
+          searchController: _searchCntrlr,
+          placeholderText: context.l10n.search,
+          scrollBehavior: SearchBarScrollBehavior.pinned,
+          cancelButtonText: context.l10n.cancel.capitalized,
+          resultBehavior: SearchBarResultBehavior.neverVisible,
+          cancelTextStyle: TextStyle(color: context.colorsX.primary),
+          onChanged: (searchTerm) => _bloc.add(DuaSearched(searchTerm)),
+          actions: [
+            SuperAction(
+              behavior: SuperActionBehavior.alwaysVisible,
+              child: IconButton(
+                iconSize: 30,
+                icon: const Icon(Icons.tune),
+                color: context.colorsX.primary,
+                padding: const EdgeInsetsDirectional.only(start: 20, end: 5),
+                onPressed: () => showModalBottomSheet<void>(
+                  context: context,
+                  useRootNavigator: true,
+                  scrollControlDisabledMaxHeightRatio: 0.75,
+                  builder: (context) => BlocProvider.value(
+                    value: _bloc,
+                    child: const DuaFilterBottomSheet(),
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
-        body: const _DuasListView());
+      ),
+      body: const _DuasListView(),
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollCntrlr.dispose();
+    _searchCntrlr.dispose();
+    super.dispose();
   }
 }
