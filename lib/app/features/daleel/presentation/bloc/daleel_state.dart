@@ -8,9 +8,8 @@ final class DaleelState extends Equatable {
   bool filterDateActive;
   DaleelType selectedDaleelType;
   double selectedPriority;
-  DateTime selectedDate;
-
   final PaginatedResult<Daleel> daleels;
+  final DaleelFilters daleelFilters;
   final String searchTerm;
   VoidStatus status;
 
@@ -20,7 +19,7 @@ final class DaleelState extends Equatable {
     required this.filterDateActive,
     required this.selectedDaleelType,
     required this.selectedPriority,
-    required this.selectedDate,
+    required this.daleelFilters,
     required this.searchTerm,
     required this.daleels,
     required this.status,
@@ -34,9 +33,9 @@ final class DaleelState extends Equatable {
           selectedDaleelType: DaleelType.hadith,
           selectedPriority: 0,
           searchTerm: '',
-          daleels: const PaginatedResult(),
-          selectedDate: DateTime.now(),
+          daleels: PaginatedResult.empty(),
           status: const Initial(),
+          daleelFilters: DaleelFilters(),
         );
 
   DaleelState copyWith({
@@ -49,6 +48,7 @@ final class DaleelState extends Equatable {
     String? searchTerm,
     PaginatedResult<Daleel>? daleels,
     VoidStatus? status,
+    DaleelFilters? daleelFilters,
   }) =>
       DaleelState._(
         filterDaleelTypeActive: filterDaleelTypeActive ?? this.filterDaleelTypeActive,
@@ -56,10 +56,10 @@ final class DaleelState extends Equatable {
         filterDateActive: filterDateActive ?? this.filterDateActive,
         selectedDaleelType: selectedDaleelType ?? this.selectedDaleelType,
         selectedPriority: selectedPriority ?? this.selectedPriority,
-        selectedDate: selectedDate ?? this.selectedDate,
         searchTerm: searchTerm ?? this.searchTerm,
         daleels: daleels ?? this.daleels,
         status: status ?? this.status,
+        daleelFilters: daleelFilters ?? this.daleelFilters,
       );
 
   @override
@@ -69,9 +69,9 @@ final class DaleelState extends Equatable {
         filterDateActive,
         selectedDaleelType,
         selectedPriority,
-        selectedDate,
         searchTerm,
         daleels,
         status,
+        daleelFilters,
       ];
 }

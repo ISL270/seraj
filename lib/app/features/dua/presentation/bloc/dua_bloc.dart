@@ -52,7 +52,7 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
 
     emit(state.copyWith(
       status: const Success(null),
-      duas: PaginatedResult(result: searchResult),
+      duas: PaginatedResult.firstPage(searchResult),
     ));
   }
 
@@ -70,10 +70,7 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
 
     emit(state.copyWith(
       status: const Success(null),
-      duas: state.duas.appendResult(
-        searchResult,
-        hasReachedMax: searchResult.length < state.duas.pageSize,
-      ),
+      duas: state.duas.appendResult(searchResult),
     ));
   }
 }

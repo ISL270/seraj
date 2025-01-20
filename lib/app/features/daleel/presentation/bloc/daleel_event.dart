@@ -7,11 +7,11 @@ sealed class DaleelEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class DaleelFetchData extends DaleelEvent {}
+final class DaleelSubscriptionRequested extends DaleelEvent {}
 
-final class DaleelSearchFetched extends DaleelEvent {
+final class DaleelSearched extends DaleelEvent {
   final String searchTerm;
-  const DaleelSearchFetched(this.searchTerm);
+  const DaleelSearched(this.searchTerm);
 
   @override
   List<Object> get props => [searchTerm];
@@ -32,4 +32,9 @@ final class DaleelPriorityFilterChanged extends DaleelEvent {
 final class DaleelDateFilterChanged extends DaleelEvent {
   final DateTime date;
   const DaleelDateFilterChanged(this.date);
+}
+
+final class DaleelFiltered extends DaleelEvent {
+  final DaleelFilters filters;
+  const DaleelFiltered(this.filters);
 }

@@ -6,16 +6,16 @@ final class DuaScreenState extends Equatable {
   final PaginatedResult<Dua> duas;
 
   const DuaScreenState._({
+    required this.duas,
     required this.status,
     required this.searchTerm,
-    required this.duas,
   });
 
-  const DuaScreenState._initial()
+  DuaScreenState._initial()
       : this._(
-          status: const Initial(),
           searchTerm: '',
-          duas: const PaginatedResult(),
+          status: const Initial(),
+          duas: PaginatedResult.empty(),
         );
 
   DuaScreenState copyWith({
@@ -24,9 +24,9 @@ final class DuaScreenState extends Equatable {
     PaginatedResult<Dua>? duas,
   }) {
     return DuaScreenState._(
+      duas: duas ?? this.duas,
       status: status ?? this.status,
       searchTerm: searchTerm ?? this.searchTerm,
-      duas: duas ?? this.duas,
     );
   }
 

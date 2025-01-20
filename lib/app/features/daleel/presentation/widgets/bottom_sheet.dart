@@ -23,7 +23,7 @@ Future<void> _openBottomSheet(BuildContext context) async {
               context.l10n.propheticHadith,
               context.l10n.quranicVerse,
               context.l10n.athar,
-              context.l10n.others
+              context.l10n.others,
             ],
           ),
         ),
@@ -53,7 +53,7 @@ class _BottomSheetBody extends StatelessWidget {
             itemBuilder: (context, index) => GestureDetector(
               onTap: () => switch (index) {
                 0 => context.pushNamed(AddHadith.name),
-                1 => context.goNamed(AddNewAyah.name),
+                1 => context.goNamed(AddHadith.name),
                 2 => context.pushNamed(AddAtharScreen.name),
                 3 => context.pushNamed(AddOtherScreen.name),
                 _ => {}

@@ -16,7 +16,7 @@ class _DuasListView extends StatelessWidget {
           },
           child: switch (state.status) {
             Loading() => const Center(child: CircularProgressIndicator()),
-            _ => state.duas.result.isEmpty
+            _ => state.duas.elements.isEmpty
                 ? Padding(
                     padding: EdgeInsets.only(top: 20.h),
                     child: Center(
@@ -24,7 +24,7 @@ class _DuasListView extends StatelessWidget {
                   )
                 : ListView.separated(
                     shrinkWrap: true,
-                    itemCount: state.duas.result.length,
+                    itemCount: state.duas.elements.length,
                     separatorBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
@@ -37,7 +37,7 @@ class _DuasListView extends StatelessWidget {
                     },
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, i) => _DuaWithNumWidget(
-                      dua: state.duas.result[i],
+                      dua: state.duas.elements[i],
                     ),
                   ),
           },

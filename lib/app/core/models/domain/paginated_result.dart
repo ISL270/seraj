@@ -1,33 +1,36 @@
 final class PaginatedResult<T> {
-  final List<T> result;
   final int page;
   final int pageSize;
+  final List<T> elements;
   final bool hasReachedMax;
 
-  const PaginatedResult({
-    this.result = const [],
-    this.page = 0,
-    this.pageSize = 15,
-    this.hasReachedMax = false,
+  const PaginatedResult._({
+    required this.page,
+    required this.elements,
+    required this.pageSize,
+    required this.hasReachedMax,
   });
 
-  PaginatedResult<T> copyWith({
-    int? page,
-    bool? hasReachedMax,
-  }) {
-    return PaginatedResult<T>(
-      result: result,
-      page: page ?? this.page,
-      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-      pageSize: pageSize,
-    );
-  }
+  factory PaginatedResult.empty() => const PaginatedResult._(
+        page: 0,
+        elements: [],
+        pageSize: 15,
+        hasReachedMax: false,
+      );
 
-  PaginatedResult<T> appendResult(Iterable<T> result, {required bool hasReachedMax}) {
-    this.result.addAll(result);
-    return copyWith(
+  factory PaginatedResult.firstPage(List<T> elements) => PaginatedResult._(
+        page: 0,
+        pageSize: 15,
+        elements: elements,
+        hasReachedMax: elements.length < 15,
+      );
+
+  PaginatedResult<T> appendResult(Iterable<T> newElements) {
+    return PaginatedResult._(
       page: page + 1,
-      hasReachedMax: hasReachedMax,
+      pageSize: pageSize,
+      elements: elements..addAll(newElements),
+      hasReachedMax: newElements.length < pageSize,
     );
   }
 }
