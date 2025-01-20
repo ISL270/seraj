@@ -84,8 +84,6 @@ SettingsIsar _settingsIsarDeserialize(
         _SettingsIsarthemeModeValueEnumMap[reader.readByteOrNull(offsets[2])] ??
             ThemeMode.system,
   );
-  object.cacheID = id;
-  object.id = reader.readString(offsets[0]);
   return object;
 }
 
@@ -139,9 +137,7 @@ List<IsarLinkBase<dynamic>> _settingsIsarGetLinks(SettingsIsar object) {
 }
 
 void _settingsIsarAttach(
-    IsarCollection<dynamic> col, Id id, SettingsIsar object) {
-  object.cacheID = id;
-}
+    IsarCollection<dynamic> col, Id id, SettingsIsar object) {}
 
 extension SettingsIsarQueryWhereSort
     on QueryBuilder<SettingsIsar, SettingsIsar, QWhere> {

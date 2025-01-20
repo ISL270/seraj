@@ -4,8 +4,8 @@ import 'package:athar/app/core/extension_types/string_id.dart';
 import 'package:isar/isar.dart';
 
 abstract base class CacheModel<D> {
-  StringID get id;
-  Id get cacheID => id.fastHash;
+  String get id;
+  Id get cacheID => StringID.toIntID(id);
 
   const CacheModel();
 

@@ -1,4 +1,3 @@
-import 'package:athar/app/core/extension_types/string_id.dart';
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/core/l10n/language.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
@@ -10,9 +9,9 @@ part 'settings_isar.g.dart';
 @collection
 final class SettingsIsar extends CacheModel<Settings> {
   @override
-  StringID id = StringID('settings');
+  final String id = 'settings';
   @override
-  Id cacheID = Isar.autoIncrement;
+  final Id cacheID = Isar.autoIncrement;
   @enumerated
   final Language language;
   @enumerated

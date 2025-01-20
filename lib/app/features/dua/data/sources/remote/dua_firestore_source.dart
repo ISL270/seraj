@@ -5,7 +5,6 @@ import 'package:athar/app/features/authentication/domain/models/user.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'dua_firestore_source.g.dart';
 part 'dua_fm.dart';
