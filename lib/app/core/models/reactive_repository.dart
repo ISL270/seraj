@@ -112,6 +112,10 @@ abstract class ReactiveRepository<D, R extends RemoteModel<D>, C extends CacheMo
         (remoteChanges) async {
           final (toBeSaved, toBeDeleted) = remoteChanges.partition((change) => change.isDeleted);
 
+          //TODO: Make it faster
+          //Tips for better performance:
+          // 1. convert from RM to CM directly.
+          // 2. .map() is slow, a for loop might be better.
           await Future.wait([
             localSource.deleteAllByIDs(toBeDeleted.map((e) => e.doc.id)),
             localSource.putAll(toBeSaved.map((e) => e.doc.toDomain()))
