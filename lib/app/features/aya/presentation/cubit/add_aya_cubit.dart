@@ -4,6 +4,7 @@ import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:bloc/bloc.dart';
+import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quran/flutter_quran.dart';
@@ -61,7 +62,7 @@ class AddAyaCubit extends Cubit<AddAyaState> {
 
   void queryChanged(String value) {
     final ayahsList = FlutterQuran().search(value);
-    if (ayahsList.isNotEmpty || value.isEmpty) {
+    if (ayahsList.isNotEmpty || value.isBlank) {
       emit(state.copyWith(query: value, ayahs: ayahsList));
     }
   }
@@ -109,7 +110,7 @@ class AddAyaCubit extends Cubit<AddAyaState> {
   }
 
   void tagsChanged(List<String> newTags) {
-    final uniqueTags = newTags.toSet().toList()..removeWhere((tag) => tag.isEmpty);
+    final uniqueTags = newTags.toSet().toList()..removeWhere((tag) => tag.isBlank);
     if (uniqueTags.toString() != state.tags.toString()) {
       emit(state.copyWith(tags: uniqueTags));
     }

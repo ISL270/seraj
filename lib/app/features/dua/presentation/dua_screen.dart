@@ -13,6 +13,7 @@ import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
 import 'package:athar/app/features/dua/presentation/dua_details/dua_details_screen.dart';
 import 'package:athar/app/features/dua/presentation/widgets/filter_buttom_sheet.dart';
+import 'package:dartx/dartx_io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -48,7 +49,7 @@ class _DuasScreenState extends State<DuasScreen> {
     _searchCntrlr = TextEditingController();
     _searchCntrlr.addListener(
       () {
-        if (_searchCntrlr.text.isEmpty) {
+        if (_searchCntrlr.text.isBlank) {
           _bloc.add(const DuaSearched(''));
         }
       },

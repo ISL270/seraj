@@ -7,6 +7,7 @@ import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartx/dartx.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
@@ -103,8 +104,8 @@ final class DaleelFirestoreSource extends ReactiveFirestoreSource<DaleelFM> {
         firestoreSvc.other.priority: priority.name,
         firestoreSvc.other.lastRevisedAt: lastRevisedAt,
         firestoreSvc.other.daleelType: DaleelType.other.name,
-        firestoreSvc.other.sayer: sayer!.isEmpty ? null : sayer,
-        firestoreSvc.other.description: description!.isEmpty ? null : description,
+        firestoreSvc.other.sayer: sayer!.isBlank ? null : sayer,
+        firestoreSvc.other.description: description!.isBlank ? null : description,
       });
     });
   }

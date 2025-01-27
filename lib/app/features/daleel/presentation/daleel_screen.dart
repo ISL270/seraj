@@ -26,6 +26,7 @@ import 'package:athar/app/features/daleel_details/presentation/daleel_details_sc
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/button.dart';
+import 'package:dartx/dartx.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,7 +67,7 @@ class _DaleelScreenState extends State<DaleelScreen> {
     _searchCntrlr = TextEditingController();
     _searchCntrlr.addListener(
       () {
-        if (_searchCntrlr.text.isEmpty) {
+        if (_searchCntrlr.text.isBlank) {
           _bloc.add(const DaleelSearched(''));
         }
       },
