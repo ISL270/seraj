@@ -1,5 +1,5 @@
 import 'package:athar/app/core/isar/isar_source.dart';
-import 'package:athar/app/features/dua/data/sources/local/dua_isar.dart';
+import 'package:athar/app/features/dua/data/sources/dua_isar.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:dartx/dartx_io.dart';
 import 'package:injectable/injectable.dart';
@@ -23,5 +23,4 @@ final class DuaIsarSource extends IsarSource<Dua, DuaIsar> {
     };
     return query.offset(page * pageSize).limit(pageSize).findAll();
   }
-  
 }

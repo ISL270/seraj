@@ -3,7 +3,7 @@
 import 'package:athar/app/core/models/domain/generic_exception.dart';
 import 'package:athar/app/core/models/reactive_repository.dart';
 import 'package:athar/app/features/dua/data/sources/local/dua_isar.dart';
-import 'package:athar/app/features/dua/data/sources/local/dua_isar_source.dart';
+import 'package:athar/app/features/dua/data/sources/dua_isar_source.dart';
 import 'package:athar/app/features/dua/data/sources/remote/dua_firestore_source.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:dartx/dartx_io.dart';

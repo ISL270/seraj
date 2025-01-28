@@ -1,7 +1,7 @@
 import 'package:athar/app/core/extension_methods/getit_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/language.dart';
-import 'package:athar/app/core/routing/router.dart';
+import 'package:athar/app/core/router.dart';
 import 'package:athar/app/core/theming/app_theme.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
