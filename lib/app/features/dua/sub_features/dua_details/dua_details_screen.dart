@@ -4,7 +4,7 @@ import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
-import 'package:athar/app/features/dua/presentation/dua_details/bloc/dua_details_bloc.dart';
+import 'package:athar/app/features/dua/sub_features/dua_details/bloc/dua_details_bloc.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/screen.dart';

@@ -11,8 +11,9 @@ import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/add_dua/presentation/add_dua_screen.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
-import 'package:athar/app/features/dua/presentation/dua_details/dua_details_screen.dart';
-import 'package:athar/app/features/dua/presentation/widgets/filter_buttom_sheet.dart';
+import 'package:athar/app/core/models/favourite_filters.dart';
+import 'package:athar/app/widgets/filter_buttom_sheet.dart';
+import 'package:athar/app/features/dua/sub_features/dua_details/dua_details_screen.dart';
 import 'package:dartx/dartx_io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -106,15 +107,7 @@ class _DuasScreenState extends State<DuasScreen> {
                 icon: const Icon(Icons.tune),
                 color: context.colorsX.primary,
                 padding: const EdgeInsetsDirectional.only(start: 20, end: 5),
-                onPressed: () => showModalBottomSheet<void>(
-                  context: context,
-                  useRootNavigator: true,
-                  scrollControlDisabledMaxHeightRatio: 0.75,
-                  builder: (context) => BlocProvider.value(
-                    value: _bloc,
-                    child: const DuaFilterBottomSheet(),
-                  ),
-                ),
+                onPressed: () => _showFilterFilter(context),
               ),
             )
           ],
@@ -130,4 +123,16 @@ class _DuasScreenState extends State<DuasScreen> {
     _searchCntrlr.dispose();
     super.dispose();
   }
+}
+
+void _showFilterFilter(BuildContext context) {
+  final bloc = context.read<DuaBloc>();
+  showModalBottomSheet(
+    context: context,
+    builder: (_) => FavouriteFilterBottomSheet(
+      initialFilters: bloc.state.duaFilters,
+      onFilterApplied: (newFilters) => bloc.add(DuaFiltered(newFilters)),
+      onClearFilters: () => bloc.add(DuaFiltered(FavouriteFilters())),
+    ),
+  );
 }

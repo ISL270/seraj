@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/bloc_event_transformers.dart';
 import 'package:athar/app/core/models/domain/paginated_result.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
+import 'package:athar/app/core/models/favourite_filters.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -15,6 +18,8 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
   DuaBloc(this._repository) : super(DuaScreenState._initial()) {
     on<_DuaSubscriptionRequested>(_onSubscriptionRequested);
     on<DuaSearched>(_onSearched);
+    on<DuaFiltered>(_onFilterUpdate);
+
     on<DuaNextPageFetched>(
       _onNextPageFetched,
       transformer: EventTransformers.throttleDroppable(),
@@ -54,6 +59,7 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
       page: 0,
       event.searchTerm,
       pageSize: state.paginatedResult.pageSize,
+      filters: state.duaFilters,
     );
 
     emit(state._copyWith(
@@ -71,6 +77,7 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
     final searchResult = await _repository.searchDua(
       state.searchTerm,
       page: state.paginatedResult.page + 1,
+      filters: state.duaFilters,
       pageSize: state.paginatedResult.pageSize,
     );
 
@@ -78,5 +85,15 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
       status: state.status.toSuccess(null),
       duas: state.paginatedResult.appendResult(searchResult),
     ));
+  }
+
+  Future<void> _onFilterUpdate(
+    DuaFiltered event,
+    Emitter<DuaScreenState> emit,
+  ) async {
+    log('filter updated');
+    if (state.duaFilters == event.filters) return;
+    emit(state._copyWith(duaFilters: event.filters));
+    add(DuaSearched(state.searchTerm));
   }
 }

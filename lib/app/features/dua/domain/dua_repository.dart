@@ -6,6 +6,7 @@ import 'package:athar/app/features/dua/data/sources/local/dua_isar.dart';
 import 'package:athar/app/features/dua/data/sources/local/dua_isar_source.dart';
 import 'package:athar/app/features/dua/data/sources/remote/dua_firestore_source.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
+import 'package:athar/app/core/models/favourite_filters.dart';
 import 'package:dartx/dartx_io.dart';
 import 'package:injectable/injectable.dart';
 
@@ -44,8 +45,14 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
     String searchTerm, {
     required int page,
     required int pageSize,
+    required FavouriteFilters filters,
   }) async {
-    final cms = await _localSource.getDuas(searchTerm, page: page, pageSize: pageSize);
+    final cms = await _localSource.getDuas(
+      searchTerm,
+      page: page,
+      pageSize: pageSize,
+      filters: filters,
+    );
     return cms.map((e) => e.toDomain()).toList();
   }
 
