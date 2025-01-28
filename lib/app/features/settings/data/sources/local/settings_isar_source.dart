@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:athar/app/core/isar/isar_source.dart';
 import 'package:athar/app/features/settings/data/sources/local/settings_isar.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
@@ -12,11 +13,6 @@ final class SettingsIsarSource extends IsarSource<Settings, SettingsIsar> {
     await clear();
     final settingsIsar = SettingsIsar.fromDomain(settings);
     await isarService.put(settingsIsar);
-  }
-
-  Future<Settings> getSettings() async {
-    final settingsIsar = await isarService.getFirst<SettingsIsar>();
-    return settingsIsar?.toDomain() ?? const Settings();
   }
 
   @override

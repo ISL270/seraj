@@ -31,9 +31,9 @@ abstract base class IsarSource<D, C extends CacheModel<D>> {
 
   Future<List<int>> putAll(Iterable<D> list) => isarService.putAll<C>(list.map(fromDomain));
 
-  Future<C?> get(String id) => isarService.get<C>(id);
+  C? get(String id) => isarService.getSync<C>(id);
 
-  Future<C?> getFirst() => isarService.getFirst<C>();
+  C? get first => isarService.getFirstSync<C>();
 
   Future<List<C?>> getAll() => isarService.getAll<C>();
 

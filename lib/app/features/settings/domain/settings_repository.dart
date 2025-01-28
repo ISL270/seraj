@@ -10,5 +10,5 @@ final class SettingsRepository {
 
   Future<void> updateSettings(Settings settings) async => _localSource.updateSettings(settings);
 
-  Future<Settings> getSettings() async => _localSource.getSettings();
+  Settings getSettings() => _localSource.first?.toDomain() ?? const Settings();
 }

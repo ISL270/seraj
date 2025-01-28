@@ -12,14 +12,11 @@ final class UserRepository {
 
   UserRepository(this._localSource, this._remoteSource);
 
-  Future<User?> geUserLocal() async {
-    final userCM = await _localSource.getSavedUser();
-    return userCM?.toDomain();
-  }
+  User? get cachedUser => _localSource.first?.toDomain();
 
-  Future<void> saveUserLocally(User user) => _localSource.saveUser(user);
+  Future<void> saveUserLocally(User user) => _localSource.put(user);
 
-  Future<void> deleteLocalUser() => _localSource.deleteSavedUser();
+  Future<void> deleteLocalUser() => _localSource.clear();
 
   Future<Either<GenericException, User>> getUserRemote(String uid) async {
     try {

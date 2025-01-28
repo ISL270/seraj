@@ -7,12 +7,6 @@ import 'package:injectable/injectable.dart';
 final class UserIsarSource extends IsarSource<User, UserIsar> {
   const UserIsarSource(super.isarService);
 
-  Future<UserIsar?> getSavedUser() => getFirst();
-
-  Future<void> saveUser(User user) => isarService.put(UserIsar.fromDomain(user));
-
-  Future<void> deleteSavedUser() => isarService.clear<UserIsar>();
-
   @override
   UserIsar fromDomain(User dm) => UserIsar.fromDomain(dm);
 }

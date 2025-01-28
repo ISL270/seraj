@@ -92,16 +92,12 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i240.SettingsBloc>(
         () => _i240.SettingsBloc(gh<_i257.SettingsRepository>()));
-    await gh.singletonAsync<_i842.AuthRepository>(
-      () {
-        final i = _i842.AuthRepository(
-          gh<_i59.FirebaseAuth>(),
-          gh<_i116.GoogleSignIn>(),
-          gh<_i92.UserRepository>(),
-        );
-        return i.init().then((_) => i);
-      },
-      preResolve: true,
+    gh.singleton<_i842.AuthRepository>(
+      () => _i842.AuthRepository(
+        gh<_i59.FirebaseAuth>(),
+        gh<_i116.GoogleSignIn>(),
+        gh<_i92.UserRepository>(),
+      ),
       dispose: (i) => i.dispose(),
     );
     gh.singleton<_i1008.DuaRepository>(

@@ -23,4 +23,5 @@ final class DuaIsarSource extends IsarSource<Dua, DuaIsar> {
     };
     return query.offset(page * pageSize).limit(pageSize).findAll();
   }
+  
 }
