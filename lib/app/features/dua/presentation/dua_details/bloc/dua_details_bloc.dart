@@ -13,26 +13,10 @@ class DuaDetailsBloc extends Bloc<_DuaDetailsEvent, DuaDetailsState> {
   final DuaRepository repository;
 
   DuaDetailsBloc(this.repository, Dua dua) : super(DuaDetailsState.initialized(dua)) {
-    on<_SubscriptionRequested>(_onSubscriptionRequested);
     on<DuaFavouriteToggled>(_onDuaFavouriteToggled);
     on<DuaDeleted>(_onDuaDeleted);
 
     add(const _SubscriptionRequested());
-  }
-
-  Future<void> _onSubscriptionRequested(
-    _SubscriptionRequested event,
-    Emitter<DuaDetailsState> emit,
-  ) async {
-    await emit.forEach(
-      repository.watchLocalObject(state.dua.id),
-      onData: (dua) {
-        if (dua == null) {
-          return state.duaDeleted();
-        }
-        return state.duaUpdated(dua);
-      },
-    );
   }
 
   Future<void> _onDuaFavouriteToggled(
@@ -50,9 +34,7 @@ class DuaDetailsBloc extends Bloc<_DuaDetailsEvent, DuaDetailsState> {
     DuaDeleted event,
     Emitter<DuaDetailsState> emit,
   ) async {
-    try {
-      await repository.deleteDoc(state.dua.id);
-    } catch (e) {
+    try {} catch (e) {
       emit(state.failure(e as GenericException));
     }
   }

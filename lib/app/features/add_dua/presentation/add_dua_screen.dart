@@ -183,8 +183,9 @@ class _DuaAddButton extends StatelessWidget {
             maxWidth: true,
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
+            onPressed: () {},
             label: context.l10n.add,
-            onPressed: state.isValid ? () => context.read<AddDuaCubit>().saveDuaForm() : null,
+            // onPressed: state.isValid ? () => context.read<AddDuaCubit>().saveDuaForm() : null,
           ),
         );
       },

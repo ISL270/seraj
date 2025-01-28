@@ -1,9 +1,11 @@
 import 'package:athar/app/core/models/domain/islamic_text.dart';
+import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 
 sealed class Daleel extends IslamicText {
   final String? sayer;
+  final DaleelType daleelType;
   final Priority priority;
   final DateTime lastRevisedAt;
 
@@ -11,6 +13,7 @@ sealed class Daleel extends IslamicText {
     required super.id,
     required super.text,
     required this.lastRevisedAt,
+    required this.daleelType,
     this.sayer,
     super.tags,
     super.description,
@@ -35,6 +38,7 @@ final class Aya extends Daleel {
     required super.id,
     required super.text,
     required super.lastRevisedAt,
+    required super.daleelType,
     required this.surah,
     required this.firstAya,
     this.lastAya,
@@ -61,6 +65,7 @@ final class Hadith extends Daleel {
     required super.id,
     required super.text,
     required super.lastRevisedAt,
+    required super.daleelType,
     super.tags,
     super.sayer,
     super.priority,
@@ -82,6 +87,7 @@ final class Athar extends Daleel {
     required super.id,
     required super.text,
     required super.lastRevisedAt,
+    required super.daleelType,
     super.tags,
     super.sayer,
     super.priority,
@@ -94,6 +100,7 @@ final class Other extends Daleel {
     required super.id,
     required super.text,
     required super.lastRevisedAt,
+    required super.daleelType,
     super.tags,
     super.sayer,
     super.priority,

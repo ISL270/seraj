@@ -13,7 +13,6 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
   final DuaRepository _repository;
 
   DuaBloc(this._repository) : super(DuaScreenState._initial()) {
-    on<_DuaSubscriptionRequested>(_onSubscriptionRequested);
     on<DuaSearched>(_onSearched);
     on<DuaNextPageFetched>(
       _onNextPageFetched,
@@ -21,27 +20,6 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
     );
 
     add(_DuaSubscriptionRequested());
-  }
-
-  Future<void> _onSubscriptionRequested(
-    _DuaSubscriptionRequested event,
-    Emitter<DuaScreenState> emit,
-  ) async {
-    await emit.onEach(
-      _repository.stream(),
-      onData: (status) => switch (status) {
-        Loading<void>() => state.paginatedResult.elements.isEmpty
-            // If no exercises are loaded yet emit loading state
-            ? emit(state._copyWith(status: state.status.toLoading()))
-            // If exercises already exist, do nothing
-            : {},
-        // If changes successfully happened in the repository, update the displayed result
-        Success<void>() => add(DuaSearched(state.searchTerm)),
-        Failure<void>(exception: final e) =>
-          emit(state._copyWith(status: state.status.toFailure(e))),
-        _ => {},
-      },
-    );
   }
 
   Future<void> _onSearched(DuaSearched event, Emitter<DuaScreenState> emit) async {

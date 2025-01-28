@@ -4,7 +4,7 @@ import 'package:athar/app/core/extension_types/string_id.dart';
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/features/authentication/data/models/local/user_isar.dart';
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar.dart';
-import 'package:athar/app/features/dua/data/sources/local/dua_isar.dart';
+import 'package:athar/app/features/dua/data/sources/dua_isar.dart';
 import 'package:athar/app/features/settings/data/sources/local/settings_isar.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
@@ -88,7 +88,8 @@ final class IsarService {
   }
 
   Future<int> deleteAllByIDsSync<T extends CacheModel>(Iterable<String> ids) async {
-    return _isar.writeTxnSync(() => _isar.collection<T>().deleteAllSync(ids.map(StringID.toIntID).toList()));
+    return _isar.writeTxnSync(
+        () => _isar.collection<T>().deleteAllSync(ids.map(StringID.toIntID).toList()));
   }
 
   Future<void> clear<T extends CacheModel>() async {

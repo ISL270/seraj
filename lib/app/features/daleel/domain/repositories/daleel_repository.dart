@@ -3,28 +3,21 @@
 import 'dart:developer';
 
 import 'package:athar/app/core/models/domain/generic_exception.dart';
-import 'package:athar/app/core/models/reactive_repository.dart';
-import 'package:athar/app/features/daleel/data/sources/local/daleel_isar.dart';
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar_source.dart';
-import 'package:athar/app/features/daleel/data/sources/remote/daleel_firestore_source.dart';
-import 'package:athar/app/features/daleel/data/sources/remote/daleel_fm.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
-import 'package:dartx/dartx.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
-final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, DaleelIsar> {
+final class DaleelRepository {
   final DaleelIsarSource _localSource;
-  final DaleelFirestoreSource _remoteSource;
 
-  DaleelRepository(super.authRepository, this._remoteSource, this._localSource)
-      : super(localSource: _localSource, remoteSource: _remoteSource);
+  DaleelRepository(this._localSource);
 
-  Future<EitherException<void>> saveHadith({
+  Future<Either<Exception, void>> saveHadith({
     required String text,
     required String sayer,
     required Priority priority,
@@ -34,15 +27,14 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
     required HadithAuthenticity? authenticity,
   }) async {
     try {
-      await _remoteSource.saveHadith(
+      await _localSource.saveHadith(
         text: text,
         tags: tags,
         priority: priority,
         authenticity: authenticity,
-        userId: authRepository.user!.id,
-        sayer: sayer.isBlank ? null : sayer,
-        extraction: extraction.isBlank ? null : extraction,
-        description: description.isBlank ? null : description,
+        sayer: sayer.isEmpty ? null : sayer,
+        extraction: extraction.isEmpty ? null : extraction,
+        description: description.isEmpty ? null : description,
       );
       return right(null);
     } catch (e) {
@@ -59,13 +51,13 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
     required String description,
   }) async {
     try {
-      await _remoteSource.saveAthar(
+      await _localSource.saveAthar(
         text: text,
         tags: tags,
         priority: priority,
-        userId: authRepository.user!.id,
-        sayer: sayer.isBlank ? null : sayer,
-        description: description.isBlank ? null : description,
+        sayer: sayer.isEmpty ? null : sayer,
+        description: description.isEmpty ? null : description,
+        lastRevisedAt: DateTime.now(),
       );
       return right(null);
     } catch (e) {
@@ -86,9 +78,8 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
     String? sayer,
   }) async {
     try {
-      await _remoteSource.saveAya(
+      await _localSource.saveAya(
         text: text,
-        userId: authRepository.user!.id,
         sayer: sayer,
         priority: priority,
         tags: tags,
@@ -100,6 +91,7 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
       );
       return right(null);
     } catch (e) {
+      log(e.toString());
       return left(e as GenericException);
     }
   }
@@ -117,8 +109,7 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
     required List<String> tags,
   }) async {
     try {
-      await _remoteSource.saveOthers(
-        userId: authRepository.user!.id,
+      await _localSource.saveOthers(
         text: text,
         sayer: sayer,
         description: description,
@@ -148,7 +139,4 @@ final class DaleelRepository extends ReactiveRepository<Daleel, DaleelFM, Daleel
 
     return cms.map((e) => e.toDomain()).toList();
   }
-
-  @disposeMethod
-  void dispMethod() => dispose();
 }

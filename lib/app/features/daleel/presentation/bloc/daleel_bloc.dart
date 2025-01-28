@@ -21,7 +21,7 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
   final DaleelRepository _repository;
 
   DaleelBloc(this._repository) : super(DaleelState._initial()) {
-    on<DaleelSubscriptionRequested>(_onSubscriptionRequested);
+    _initializeDaleels();
     on<DaleelSearched>(_onSearched);
     on<DaleelFiltered>(_onFilterUpdate);
     on<DaleelNextPageFetched>(
@@ -36,26 +36,10 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
       ));
       add(DaleelSearched(state.searchTerm));
     });
-
-    add(DaleelSubscriptionRequested());
   }
 
-  Future<void> _onSubscriptionRequested(
-    DaleelSubscriptionRequested event,
-    Emitter<DaleelState> emit,
-  ) async {
-    await emit.onEach(
-      _repository.stream(),
-      onData: (status) => switch (status) {
-        Loading<void>() => state.daleels.elements.isEmpty
-            ? emit(state.copyWith(status: state.status.toLoading()))
-            : {},
-        Success<void>() => add(DaleelSearched(state.searchTerm)),
-        Failure<void>(exception: final e) =>
-          emit(state.copyWith(status: state.status.toFailure(e))),
-        _ => {},
-      },
-    );
+  Future<void> _initializeDaleels() async {
+    add(DaleelSearched(state.searchTerm)); // Trigger the DaleelSearched event
   }
 
   Future<void> _onSearched(
@@ -108,11 +92,5 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
     if (state.daleelFilters == event.filters) return;
     emit(state.copyWith(daleelFilters: event.filters));
     add(DaleelSearched(state.searchTerm));
-  }
-
-  @override
-  Future<void> close() {
-    _repository.dispMethod();
-    return super.close();
   }
 }

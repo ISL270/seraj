@@ -1,11 +1,11 @@
-// ignore_for_file: inference_failure_on_function_invocation
-
 import 'package:athar/app/core/isar/isar_source.dart';
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
+import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
+import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
-import 'package:dartx/dartx_io.dart';
+import 'package:dartx/dartx.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
@@ -14,16 +14,21 @@ import 'package:isar/isar.dart';
 final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
   const DaleelIsarSource(super.isarService);
 
+  /// Converts a domain model into its corresponding cache model
+  @override
+  DaleelIsar fromDomain(Daleel dm) => DaleelIsar.fromDomain(dm);
+
+  /// Fetches a list of Daleel items with optional filters
   Future<List<DaleelIsar>> getDaleels(
     String searchTerm, {
     required int page,
     required int pageSize,
     DaleelFilters? filters,
   }) async {
-    final query = switch (searchTerm.isNotBlank) {
-      true => isarService.instance.daleelIsars.where().textStartsWith(searchTerm).filter(),
-      false => isarService.instance.daleelIsars.where().anyText().filter(),
-    };
+    final query = searchTerm.isNotBlank
+        ? isarService.instance.daleelIsars.where().textStartsWith(searchTerm).filter()
+        : isarService.instance.daleelIsars.where().anyText().filter();
+
     return query
         .optional(
           filters?.daleelType.isNotEmpty ?? false,
@@ -51,9 +56,7 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
         .findAll();
   }
 
-  @override
-  DaleelIsar fromDomain(Daleel dm) => DaleelIsar.fromDomain(dm);
-
+  /// Fetches a single Ayah record by Surah name and Ayah number
   Future<Aya?> getAyaByText({required String surahName, required int ayahNumber}) async {
     try {
       final daleelIsars = await isarService.getAll<DaleelIsar>();
@@ -64,14 +67,117 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
             daleel.firstAya == ayahNumber,
       );
       if (matchingDaleels.isNotEmpty) {
-        final daleelIsar = matchingDaleels.first;
-        debugPrint('########### ${daleelIsar.toDomain() as Aya?} ###########');
-        return daleelIsar.toDomain() as Aya?;
+        return matchingDaleels.first.toDomain() as Aya?;
       }
       return null;
     } catch (e) {
-      debugPrint('########### Error: $e ###########');
-      return null; // Return null in case of an exception.
+      debugPrint('Error fetching Aya: $e');
+      return null;
     }
   }
+
+  /// Save Hadith to the local database
+  Future<int> saveHadith({
+    required String text,
+    required String? sayer,
+    required Priority priority,
+    required String? extraction,
+    required List<String> tags,
+    required String? description,
+    required HadithAuthenticity? authenticity,
+  }) {
+    final hadith = Hadith(
+        id: '',
+        text: text,
+        lastRevisedAt: DateTime.now(),
+        sayer: sayer,
+        priority: priority,
+        extraction: extraction,
+        tags: tags,
+        authenticity: authenticity,
+        daleelType: DaleelType.hadith);
+    return put(hadith);
+  }
+
+  /// Save Ayah to the local database
+  Future<int> saveAya({
+    required Priority priority,
+    required DateTime lastRevisedAt,
+    required List<String> tags,
+    required String text,
+    required String? sayer,
+    required String? ayaExplain,
+    required String surahOfAya,
+    required int firstAya,
+    int? lastAya,
+  }) {
+    final aya = Aya(
+      id: '',
+      text: text,
+      sayer: sayer,
+      description: ayaExplain,
+      lastRevisedAt: lastRevisedAt,
+      surah: surahOfAya,
+      firstAya: firstAya,
+      lastAya: lastAya,
+      priority: priority,
+      tags: tags,
+      daleelType: DaleelType.aya,
+    );
+    return put(aya);
+  }
+
+  Future<int> saveAthar({
+    required Priority priority,
+    required DateTime lastRevisedAt,
+    required List<String> tags,
+    required String text,
+    String? sayer,
+    String? description,
+    DaleelType type = DaleelType.other,
+  }) {
+    final otherDaleel = Athar(
+      id: '',
+      text: text,
+      daleelType: type,
+      lastRevisedAt: lastRevisedAt,
+      sayer: sayer,
+      priority: priority,
+      tags: tags,
+      description: description,
+    );
+    return put(otherDaleel);
+  }
+
+  /// Save other types of Daleel to the local database
+  Future<int> saveOthers({
+    required Priority priority,
+    required DateTime lastRevisedAt,
+    required List<String> tags,
+    required String text,
+    String? sayer,
+    String? description,
+    DaleelType type = DaleelType.other,
+  }) {
+    final otherDaleel = Other(
+      id: '',
+      text: text,
+      daleelType: type,
+      lastRevisedAt: lastRevisedAt,
+      sayer: sayer,
+      priority: priority,
+      tags: tags,
+      description: description,
+    );
+    return put(otherDaleel);
+  }
+
+  /// Deletes a Daleel by its domain model
+  Future<bool> deleteDaleel(Daleel daleel) => delete(daleel);
+
+  /// Deletes a Daleel by its ID
+  Future<bool> deleteByID(String id) => deleteByID(id);
+
+  /// Updates a Daleel in the local database
+  Future<int> updateDaleel(Daleel updatedDaleel) => put(updatedDaleel);
 }
