@@ -12,7 +12,7 @@ import 'package:athar/app/core/firestore/firestore_service.dart' as _i516;
 import 'package:athar/app/core/injection/auth_module.dart' as _i982;
 import 'package:athar/app/core/isar/isar_service.dart' as _i651;
 import 'package:athar/app/core/l10n/l10n_service.dart' as _i560;
-import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart'
+import 'package:athar/app/features/daleel/sub_features/add_hadith/presentation/cubit/add_hadith_cubit.dart'
     as _i397;
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar_source.dart'
     as _i53;
