@@ -4,7 +4,6 @@ final class AddDuaState extends Equatable with FormzMixin {
   const AddDuaState({
     this.dua = const Name.pure(),
     this.reward = const Name.pure(),
-    this.status = const Initial(),
     this.priority = Priority.normal,
     this.description = '',
     this.errorMessage,
@@ -14,7 +13,6 @@ final class AddDuaState extends Equatable with FormzMixin {
   final Name dua;
   final Name reward;
   final Priority priority;
-  final VoidStatus status;
   final String description;
   final String? errorMessage;
   final List<Tag> tags;
@@ -25,7 +23,6 @@ final class AddDuaState extends Equatable with FormzMixin {
         reward,
         description,
         priority,
-        status,
         errorMessage,
       ];
 
@@ -35,7 +32,6 @@ final class AddDuaState extends Equatable with FormzMixin {
     Priority? priority,
     String? description,
     double? sliderValue,
-    VoidStatus? status,
     String? errorMessage,
   }) {
     return AddDuaState(
@@ -43,7 +39,6 @@ final class AddDuaState extends Equatable with FormzMixin {
       description: description ?? this.description,
       dua: dua ?? this.dua,
       reward: reward ?? this.reward,
-      status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
