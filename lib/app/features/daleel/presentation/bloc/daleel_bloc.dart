@@ -21,14 +21,13 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
   final DaleelRepository _repository;
 
   DaleelBloc(this._repository) : super(DaleelState._initial()) {
-    _initializeDaleels();
-    on<DaleelSearched>(_onSearched);
     on<DaleelFiltered>(_onFilterUpdate);
+    on<DaleelSearched>(_onSearched);
+    on<DaleelSubscriptionRequested>(_onSubscriptionRequested);
     on<DaleelNextPageFetched>(
       _onNextPageFetched,
       transformer: EventTransformers.throttleDroppable(),
     );
-
     on<DaleelPriorityFilterChanged>((event, emit) {
       emit(state.copyWith(
         selectedPriority: event.priority,
@@ -36,10 +35,18 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
       ));
       add(DaleelSearched(state.searchTerm));
     });
+    add(DaleelSubscriptionRequested());
+    add(const DaleelSearched(''));
   }
 
-  Future<void> _initializeDaleels() async {
-    add(DaleelSearched(state.searchTerm)); // Trigger the DaleelSearched event
+  Future<void> _onSubscriptionRequested(
+    DaleelSubscriptionRequested event,
+    Emitter<DaleelState> emit,
+  ) async {
+    await emit.onEach(
+      _repository.watchCollection(),
+      onData: (status) => add(DaleelSearched(state.searchTerm)),
+    );
   }
 
   Future<void> _onSearched(

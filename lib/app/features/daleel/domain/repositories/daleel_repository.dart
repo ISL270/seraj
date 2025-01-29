@@ -3,8 +3,11 @@
 import 'dart:developer';
 
 import 'package:athar/app/core/models/generic_exception.dart';
+import 'package:athar/app/core/models/repository.dart';
+import 'package:athar/app/features/daleel/data/sources/local/daleel_isar.dart';
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar_source.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
+import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
@@ -12,10 +15,10 @@ import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
-final class DaleelRepository {
+final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
   final DaleelIsarSource _localSource;
 
-  DaleelRepository(this._localSource);
+  DaleelRepository(this._localSource) : super(_localSource);
 
   Future<Either<Exception, void>> saveHadith({
     required String text,
@@ -27,15 +30,18 @@ final class DaleelRepository {
     required HadithAuthenticity? authenticity,
   }) async {
     try {
-      await _localSource.saveHadith(
+      final daleelIsar = DaleelIsar(
         text: text,
-        tags: tags,
+        sayer: sayer,
         priority: priority,
-        authenticity: authenticity,
-        sayer: sayer.isEmpty ? null : sayer,
-        extraction: extraction.isEmpty ? null : extraction,
-        description: description.isEmpty ? null : description,
+        daleelType: DaleelType.hadith,
+        tags: tags,
+        description: description,
+        lastRevisedAt: DateTime.now(),
+        hadithExtraction: extraction,
+        hadithAuthenticity: authenticity,
       );
+      _localSource.put(daleelIsar);
       return right(null);
     } catch (e) {
       log(e.toString());
@@ -43,7 +49,7 @@ final class DaleelRepository {
     }
   }
 
-  Future<EitherException<void>> saveAthar({
+  Future<Either<Exception, void>> saveAthar({
     required String text,
     required String sayer,
     required Priority priority,
@@ -51,14 +57,16 @@ final class DaleelRepository {
     required String description,
   }) async {
     try {
-      await _localSource.saveAthar(
+      final daleelIsar = DaleelIsar(
         text: text,
-        tags: tags,
-        priority: priority,
         sayer: sayer.isEmpty ? null : sayer,
+        priority: priority,
+        daleelType: DaleelType.athar,
+        tags: tags,
         description: description.isEmpty ? null : description,
         lastRevisedAt: DateTime.now(),
       );
+      _localSource.put(daleelIsar);
       return right(null);
     } catch (e) {
       log(e.toString());
@@ -66,7 +74,7 @@ final class DaleelRepository {
     }
   }
 
-  Future<EitherException<void>> saveAya({
+  Future<Either<Exception, void>> saveAya({
     required String text,
     required String ayaExplain,
     required String surahOfAya,
@@ -78,17 +86,19 @@ final class DaleelRepository {
     String? sayer,
   }) async {
     try {
-      await _localSource.saveAya(
+      final daleelIsar = DaleelIsar(
         text: text,
         sayer: sayer,
         priority: priority,
+        daleelType: DaleelType.aya,
         tags: tags,
-        surahOfAya: surahOfAya,
+        description: ayaExplain,
+        lastRevisedAt: lastRevisedAt,
+        surah: surahOfAya,
         firstAya: firstAya,
         lastAya: lastAya,
-        ayaExplain: ayaExplain,
-        lastRevisedAt: lastRevisedAt,
       );
+      _localSource.put(daleelIsar);
       return right(null);
     } catch (e) {
       log(e.toString());
@@ -100,7 +110,7 @@ final class DaleelRepository {
     return await _localSource.getAyaByText(surahName: surahName, ayahNumber: ayahNumber) != null;
   }
 
-  Future<EitherException<void>> saveOthers({
+  Future<Either<Exception, void>> saveOthers({
     required String text,
     required String sayer,
     required String description,
@@ -109,14 +119,16 @@ final class DaleelRepository {
     required List<String> tags,
   }) async {
     try {
-      await _localSource.saveOthers(
+      final daleelIsar = DaleelIsar(
         text: text,
-        sayer: sayer,
-        description: description,
-        lastRevisedAt: lastRevisedAt,
+        sayer: sayer.isEmpty ? null : sayer,
         priority: priority,
+        daleelType: DaleelType.other,
         tags: tags,
+        description: description.isEmpty ? null : description,
+        lastRevisedAt: lastRevisedAt,
       );
+      _localSource.put(daleelIsar);
       return right(null);
     } catch (e) {
       log(e.toString());
@@ -130,13 +142,16 @@ final class DaleelRepository {
     required int pageSize,
     DaleelFilters? filters,
   }) async {
-    final cms = await _localSource.getDaleels(
+    final cms = _localSource.getDaleels(
       searchTerm,
       page: page,
-      filters: filters,
+      // filters: filters,
       pageSize: pageSize,
     );
 
     return cms.map((e) => e.toDomain()).toList();
   }
+
+  @override
+  DaleelIsar fromDomain(Daleel dm) => DaleelIsar.fromDomain(dm);
 }

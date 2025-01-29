@@ -99,6 +99,32 @@ const DaleelIsarSchema = CollectionSchema(
           caseSensitive: false,
         )
       ],
+    ),
+    r'surah': IndexSchema(
+      id: 2384701842067459490,
+      name: r'surah',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'surah',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
+    ),
+    r'firstAya': IndexSchema(
+      id: -3850645742394905871,
+      name: r'firstAya',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'firstAya',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
     )
   },
   links: {},
@@ -308,6 +334,22 @@ extension DaleelIsarQueryWhereSort
       );
     });
   }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhere> anySurah() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'surah'),
+      );
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhere> anyFirstAya() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'firstAya'),
+      );
+    });
+  }
 }
 
 extension DaleelIsarQueryWhere
@@ -510,6 +552,272 @@ extension DaleelIsarQueryWhere
               upper: [''],
             ));
       }
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> surahIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'surah',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> surahIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'surah',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> surahEqualTo(
+      String? surah) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'surah',
+        value: [surah],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> surahNotEqualTo(
+      String? surah) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'surah',
+              lower: [],
+              upper: [surah],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'surah',
+              lower: [surah],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'surah',
+              lower: [surah],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'surah',
+              lower: [],
+              upper: [surah],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> surahGreaterThan(
+    String? surah, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'surah',
+        lower: [surah],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> surahLessThan(
+    String? surah, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'surah',
+        lower: [],
+        upper: [surah],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> surahBetween(
+    String? lowerSurah,
+    String? upperSurah, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'surah',
+        lower: [lowerSurah],
+        includeLower: includeLower,
+        upper: [upperSurah],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> surahStartsWith(
+      String SurahPrefix) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'surah',
+        lower: [SurahPrefix],
+        upper: ['$SurahPrefix\u{FFFFF}'],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> surahIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'surah',
+        value: [''],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> surahIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'surah',
+              upper: [''],
+            ))
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'surah',
+              lower: [''],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'surah',
+              lower: [''],
+            ))
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'surah',
+              upper: [''],
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> firstAyaIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'firstAya',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> firstAyaIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'firstAya',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> firstAyaEqualTo(
+      int? firstAya) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'firstAya',
+        value: [firstAya],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> firstAyaNotEqualTo(
+      int? firstAya) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'firstAya',
+              lower: [],
+              upper: [firstAya],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'firstAya',
+              lower: [firstAya],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'firstAya',
+              lower: [firstAya],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'firstAya',
+              lower: [],
+              upper: [firstAya],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> firstAyaGreaterThan(
+    int? firstAya, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'firstAya',
+        lower: [firstAya],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> firstAyaLessThan(
+    int? firstAya, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'firstAya',
+        lower: [],
+        upper: [firstAya],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause> firstAyaBetween(
+    int? lowerFirstAya,
+    int? upperFirstAya, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'firstAya',
+        lower: [lowerFirstAya],
+        includeLower: includeLower,
+        upper: [upperFirstAya],
+        includeUpper: includeUpper,
+      ));
     });
   }
 }

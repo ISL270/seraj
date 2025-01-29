@@ -26,6 +26,10 @@ abstract base class IsarSource<D, C extends CacheModel<D>> {
     return isarService.db.txnSync(() => isarService.db.collection<C>().where().findFirstSync());
   }
 
+  Future<List<T>> getAll<T>() async {
+    return isarService.db.txn(() => isarService.db.collection<T>().where().findAll());
+  }
+
   List<C> get all {
     return isarService.db.txnSync(() => isarService.db.collection<C>().where().findAllSync());
   }

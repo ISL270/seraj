@@ -1,12 +1,9 @@
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/english_x.dart';
-import 'package:athar/app/core/extension_methods/getit_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
-import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/l10n/language.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
@@ -89,7 +86,7 @@ class SettingsScreen extends StatelessWidget {
                 Button.outlined(
                   maxWidth: true,
                   density: ButtonDensity.comfortable,
-                  onPressed: () => getIt.authBloc.add(AuthLogoutRequested()),
+                  onPressed: () {},
                   label: context.l10n.logout.capitalized,
                 ),
               ],

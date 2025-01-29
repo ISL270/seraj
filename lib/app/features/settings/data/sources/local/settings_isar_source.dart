@@ -9,9 +9,8 @@ final class SettingsIsarSource extends IsarSource<Settings, SettingsIsar> {
 
   void updateSettings(Settings settings) {
     clear();
-    put(settings);
+    put(SettingsIsar(language: settings.language, themeMode: settings.themeMode));
   }
 
-  @override
   SettingsIsar fromDomain(Settings dm) => SettingsIsar.fromDomain(dm);
 }
