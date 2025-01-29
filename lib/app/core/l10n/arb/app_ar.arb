@@ -146,5 +146,6 @@
         "daleelPriority":"أهمية الدليل",
         "daleelDate":"آخر تحديث",
         "daleelHadithAuth":"صحة الحديث",
-        "daleelDetails":"تفاصيل الدليل"
+        "daleelDetails":"تفاصيل الدليل",
+        "wentWrong":"حدث خطا ما"
       }

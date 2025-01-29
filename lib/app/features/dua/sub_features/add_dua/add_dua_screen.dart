@@ -1,3 +1,4 @@
+import 'package:athar/app/core/extension_methods/context_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
@@ -152,13 +153,35 @@ class _DuaAddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddDuaCubit, AddDuaState>(
+    return BlocConsumer<AddDuaCubit, AddDuaState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (innerContext, state) {
+        if (state.status.isSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              duration: const Duration(seconds: 2),
+              content: Text(
+                context.l10n.duaAdded,
+                style: context.textThemeX.medium.bold,
+              ),
+            ),
+          );
+          context.pop();
+        }
+
+        if (state.status.isFailure) {
+          context.scaffoldMessenger
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(content: Text(context.l10n.wentWrong)));
+        }
+      },
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 12.w),
           child: Button.filled(
             key: const Key('duaForm_saveDuaForm_button'),
             maxWidth: true,
+            isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
             label: context.l10n.add,
             onPressed: state.isValid ? () => context.read<AddDuaCubit>().saveDuaForm() : null,

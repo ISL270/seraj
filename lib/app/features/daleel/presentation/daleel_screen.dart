@@ -20,6 +20,7 @@ import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
 import 'package:athar/app/features/daleel/presentation/widgets/priority_slider_w_label.dart';
 import 'package:athar/app/features/daleel/sub_features/add_athar/presentation/add_athar_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/add_new_ayah.dart';
 import 'package:athar/app/features/daleel/sub_features/add_hadith/presentation/add_hadith_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_other/presentation/add_other_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/daleel_details/presentation/daleel_details_screen.dart';

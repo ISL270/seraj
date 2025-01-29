@@ -18,7 +18,7 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
       _onNextPageFetched,
       transformer: EventTransformers.throttleDroppable(),
     );
-
+    add(const DuaSearched(''));
     add(_DuaSubscriptionRequested());
   }
 

@@ -146,5 +146,7 @@
       "daleelPriority":"Daleel Priority",
       "daleelDate":"Last Revisited At",
       "daleelHadithAuth":"Daleel Hadith Authenticity",
-      "daleelDetails":"Daleel Details"
+      "daleelDetails":"Daleel Details",
+      "wentWrong":"Something went wrong"
+
 }
