@@ -3,7 +3,7 @@
 import 'dart:developer';
 
 import 'package:athar/app/core/enums/status.dart';
-import 'package:athar/app/core/models/domain/generic_exception.dart';
+import 'package:athar/app/core/models/generic_exception.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';

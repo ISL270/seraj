@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/core/isar/isar_service.dart';
 import 'package:flutter/foundation.dart';
+import 'package:isar/isar.dart';
 
 /// An abstract base class for managing local data persistence using Isar database
 ///
@@ -19,33 +20,44 @@ abstract base class IsarSource<D, C extends CacheModel<D>> {
 
   const IsarSource(this.isarService);
 
-  /// Converts a domain model to its corresponding cache model
-  ///
-  /// Must be implemented by subclasses to define specific conversion logic
-  ///
-  /// [dm] The domain model to be converted
-  /// Returns the converted cache model
-  C fromDomain(D dm);
+  C? get(int id) => isarService.db.txnSync(() => isarService.db.collection<C>().getSync(id));
 
-  Future<int> put(D dm) => isarService.put<C>(fromDomain(dm));
+  C? get first {
+    return isarService.db.txnSync(() => isarService.db.collection<C>().where().findFirstSync());
+  }
 
-  Future<List<int>> putAll(Iterable<D> list) => isarService.putAll<C>(list.map(fromDomain));
+  List<C> get all {
+    return isarService.db.txnSync(() => isarService.db.collection<C>().where().findAllSync());
+  }
 
-  C? get(String id) => isarService.getSync<C>(id);
+  List<C> getAllByIDs(List<int> ids) => isarService.db.txnSync(() {
+        final docs = isarService.db.collection<C>().getAllSync(ids);
+        return docs.whereType<C>().toList(); // Remove nulls.
+      });
 
-  C? get first => isarService.getFirstSync<C>();
+  int put(C cm) => isarService.db.writeTxnSync(() {
+        return isarService.db.collection<C>().putSync(cm);
+      });
 
-  Future<List<C?>> getAll() => isarService.getAll<C>();
+  List<int> putAll(List<C> objects) => isarService.db.writeTxnSync(() {
+        return isarService.db.collection<C>().putAllSync(objects);
+      });
 
-  Future<List<C>> getAllByIDs(List<String> ids) => isarService.getAllByIDs<C>(ids);
+  bool delete(int id) => isarService.db.writeTxnSync(() {
+        return isarService.db.collection<C>().deleteSync(id);
+      });
 
-  Future<bool> delete(D dm) => isarService.delete<C>(fromDomain(dm));
+  bool deleteByID(int id) => isarService.db.writeTxnSync(() {
+        return isarService.db.collection<C>().deleteSync(id);
+      });
 
-  Future<bool> deleteByID(String id) => isarService.deleteByID<C>(id);
+  int deleteAllByIDs(List<int> ids) => isarService.db.writeTxnSync(() {
+        return isarService.db.collection<C>().deleteAllSync(ids);
+      });
 
-  Future<int> deleteAllByIDs(Iterable<String> ids) => isarService.deleteAllByIDs<C>(ids);
+  void clear() => isarService.db.writeTxnSync(() => isarService.db.collection<C>().clearSync());
 
-  Future<void> clear() => isarService.clear<C>();
+  Stream<C?> watchObject(int id) => isarService.db.collection<C>().watchObject(id);
 
-  Stream<C?> watchObject(String id) => isarService.watchObject<C>(id);
+  Stream<void> watchCollection() => isarService.db.collection<C>().watchLazy();
 }

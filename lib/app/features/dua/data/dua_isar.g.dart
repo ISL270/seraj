@@ -22,28 +22,23 @@ const DuaIsarSchema = CollectionSchema(
       name: r'description',
       type: IsarType.string,
     ),
-    r'id': PropertySchema(
-      id: 1,
-      name: r'id',
-      type: IsarType.string,
-    ),
     r'isFavourite': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'isFavourite',
       type: IsarType.bool,
     ),
     r'reward': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'reward',
       type: IsarType.string,
     ),
     r'tags': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'tags',
       type: IsarType.stringList,
     ),
     r'text': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'text',
       type: IsarType.string,
     )
@@ -52,7 +47,7 @@ const DuaIsarSchema = CollectionSchema(
   serialize: _duaIsarSerialize,
   deserialize: _duaIsarDeserialize,
   deserializeProp: _duaIsarDeserializeProp,
-  idName: r'cacheID',
+  idName: r'id',
   indexes: {
     r'text': IndexSchema(
       id: 5145922347574273553,
@@ -88,7 +83,6 @@ int _duaIsarEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.id.length * 3;
   {
     final value = object.reward;
     if (value != null) {
@@ -113,11 +107,10 @@ void _duaIsarSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.description);
-  writer.writeString(offsets[1], object.id);
-  writer.writeBool(offsets[2], object.isFavourite);
-  writer.writeString(offsets[3], object.reward);
-  writer.writeStringList(offsets[4], object.tags);
-  writer.writeString(offsets[5], object.text);
+  writer.writeBool(offsets[1], object.isFavourite);
+  writer.writeString(offsets[2], object.reward);
+  writer.writeStringList(offsets[3], object.tags);
+  writer.writeString(offsets[4], object.text);
 }
 
 DuaIsar _duaIsarDeserialize(
@@ -128,11 +121,11 @@ DuaIsar _duaIsarDeserialize(
 ) {
   final object = DuaIsar(
     description: reader.readStringOrNull(offsets[0]),
-    id: reader.readString(offsets[1]),
-    isFavourite: reader.readBool(offsets[2]),
-    reward: reader.readStringOrNull(offsets[3]),
-    tags: reader.readStringList(offsets[4]) ?? [],
-    text: reader.readString(offsets[5]),
+    id: id,
+    isFavourite: reader.readBool(offsets[1]),
+    reward: reader.readStringOrNull(offsets[2]),
+    tags: reader.readStringList(offsets[3]) ?? [],
+    text: reader.readString(offsets[4]),
   );
   return object;
 }
@@ -147,14 +140,12 @@ P _duaIsarDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
-    case 2:
       return (reader.readBool(offset)) as P;
-    case 3:
+    case 2:
       return (reader.readStringOrNull(offset)) as P;
-    case 4:
+    case 3:
       return (reader.readStringList(offset) ?? []) as P;
-    case 5:
+    case 4:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -162,17 +153,19 @@ P _duaIsarDeserializeProp<P>(
 }
 
 Id _duaIsarGetId(DuaIsar object) {
-  return object.cacheID;
+  return object.id ?? Isar.autoIncrement;
 }
 
 List<IsarLinkBase<dynamic>> _duaIsarGetLinks(DuaIsar object) {
   return [];
 }
 
-void _duaIsarAttach(IsarCollection<dynamic> col, Id id, DuaIsar object) {}
+void _duaIsarAttach(IsarCollection<dynamic> col, Id id, DuaIsar object) {
+  object.id = id;
+}
 
 extension DuaIsarQueryWhereSort on QueryBuilder<DuaIsar, DuaIsar, QWhere> {
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhere> anyCacheID() {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
@@ -188,68 +181,66 @@ extension DuaIsarQueryWhereSort on QueryBuilder<DuaIsar, DuaIsar, QWhere> {
 }
 
 extension DuaIsarQueryWhere on QueryBuilder<DuaIsar, DuaIsar, QWhereClause> {
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> cacheIDEqualTo(Id cacheID) {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: cacheID,
-        upper: cacheID,
+        lower: id,
+        upper: id,
       ));
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> cacheIDNotEqualTo(
-      Id cacheID) {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(
-              IdWhereClause.lessThan(upper: cacheID, includeUpper: false),
+              IdWhereClause.lessThan(upper: id, includeUpper: false),
             )
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: cacheID, includeLower: false),
+              IdWhereClause.greaterThan(lower: id, includeLower: false),
             );
       } else {
         return query
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: cacheID, includeLower: false),
+              IdWhereClause.greaterThan(lower: id, includeLower: false),
             )
             .addWhereClause(
-              IdWhereClause.lessThan(upper: cacheID, includeUpper: false),
+              IdWhereClause.lessThan(upper: id, includeUpper: false),
             );
       }
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> cacheIDGreaterThan(
-      Id cacheID,
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> idGreaterThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.greaterThan(lower: cacheID, includeLower: include),
+        IdWhereClause.greaterThan(lower: id, includeLower: include),
       );
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> cacheIDLessThan(Id cacheID,
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> idLessThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.lessThan(upper: cacheID, includeUpper: include),
+        IdWhereClause.lessThan(upper: id, includeUpper: include),
       );
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> cacheIDBetween(
-    Id lowerCacheID,
-    Id upperCacheID, {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterWhereClause> idBetween(
+    Id lowerId,
+    Id upperId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: lowerCacheID,
+        lower: lowerId,
         includeLower: includeLower,
-        upper: upperCacheID,
+        upper: upperId,
         includeUpper: includeUpper,
       ));
     });
@@ -393,59 +384,6 @@ extension DuaIsarQueryWhere on QueryBuilder<DuaIsar, DuaIsar, QWhereClause> {
 
 extension DuaIsarQueryFilter
     on QueryBuilder<DuaIsar, DuaIsar, QFilterCondition> {
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> cacheIDEqualTo(
-      Id value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'cacheID',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> cacheIDGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'cacheID',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> cacheIDLessThan(
-    Id value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'cacheID',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> cacheIDBetween(
-    Id lower,
-    Id upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'cacheID',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> descriptionIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -593,55 +531,62 @@ extension DuaIsarQueryFilter
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> idEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> idIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> idIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> idEqualTo(Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> idGreaterThan(
-    String value, {
+    Id? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'id',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> idLessThan(
-    String value, {
+    Id? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'id',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> idBetween(
-    String lower,
-    String upper, {
+    Id? lower,
+    Id? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -650,74 +595,6 @@ extension DuaIsarQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> idStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'id',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> idEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'id',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> idContains(String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'id',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> idMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'id',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> idIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> idIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'id',
-        value: '',
       ));
     });
   }
@@ -1243,18 +1120,6 @@ extension DuaIsarQuerySortBy on QueryBuilder<DuaIsar, DuaIsar, QSortBy> {
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortById() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.desc);
-    });
-  }
-
   QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByIsFavourite() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isFavourite', Sort.asc);
@@ -1294,18 +1159,6 @@ extension DuaIsarQuerySortBy on QueryBuilder<DuaIsar, DuaIsar, QSortBy> {
 
 extension DuaIsarQuerySortThenBy
     on QueryBuilder<DuaIsar, DuaIsar, QSortThenBy> {
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByCacheID() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'cacheID', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByCacheIDDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'cacheID', Sort.desc);
-    });
-  }
-
   QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> thenByDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.asc);
@@ -1376,13 +1229,6 @@ extension DuaIsarQueryWhereDistinct
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QDistinct> distinctById(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'id', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<DuaIsar, DuaIsar, QDistinct> distinctByIsFavourite() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isFavourite');
@@ -1412,21 +1258,15 @@ extension DuaIsarQueryWhereDistinct
 
 extension DuaIsarQueryProperty
     on QueryBuilder<DuaIsar, DuaIsar, QQueryProperty> {
-  QueryBuilder<DuaIsar, int, QQueryOperations> cacheIDProperty() {
+  QueryBuilder<DuaIsar, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'cacheID');
+      return query.addPropertyName(r'id');
     });
   }
 
   QueryBuilder<DuaIsar, String?, QQueryOperations> descriptionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'description');
-    });
-  }
-
-  QueryBuilder<DuaIsar, String, QQueryOperations> idProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'id');
     });
   }
 

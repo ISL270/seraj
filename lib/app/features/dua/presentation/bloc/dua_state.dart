@@ -1,35 +1,30 @@
 part of 'dua_bloc.dart';
 
 final class DuaScreenState extends Equatable {
-  final VoidStatus status;
   final String searchTerm;
-  final PaginatedResult<Dua> paginatedResult;
+  final PaginatedResult<Dua> result;
 
   const DuaScreenState._({
-    required this.paginatedResult,
-    required this.status,
+    required this.result,
     required this.searchTerm,
   });
 
   DuaScreenState._initial()
       : this._(
           searchTerm: '',
-          status: const Initial(),
-          paginatedResult: PaginatedResult.empty(),
+          result: PaginatedResult.empty(),
         );
 
   DuaScreenState _copyWith({
-    VoidStatus? status,
     String? searchTerm,
-    PaginatedResult<Dua>? duas,
+    PaginatedResult<Dua>? result,
   }) {
     return DuaScreenState._(
-      paginatedResult: duas ?? this.paginatedResult,
-      status: status ?? this.status,
+      result: result ?? this.result,
       searchTerm: searchTerm ?? this.searchTerm,
     );
   }
 
   @override
-  List<Object> get props => [status, searchTerm, paginatedResult];
+  List<Object> get props => [searchTerm, result];
 }

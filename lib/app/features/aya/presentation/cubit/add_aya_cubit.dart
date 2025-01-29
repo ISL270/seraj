@@ -1,7 +1,7 @@
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/extension_methods/double_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
-import 'package:athar/app/core/models/domain/generic_exception.dart';
+import 'package:athar/app/core/models/generic_exception.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartx/dartx.dart';

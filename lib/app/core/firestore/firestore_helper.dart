@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:athar/app/core/models/domain/generic_exception.dart';
+import 'package:athar/app/core/models/generic_exception.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 mixin FirestoreHelper {

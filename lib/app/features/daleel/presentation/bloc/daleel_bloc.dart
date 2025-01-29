@@ -4,7 +4,7 @@ import 'dart:developer';
 
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/bloc_event_transformers.dart';
-import 'package:athar/app/core/models/domain/paginated_result.dart';
+import 'package:athar/app/core/models/paginated_result.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';

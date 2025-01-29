@@ -1,6 +1,5 @@
-import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/bloc_event_transformers.dart';
-import 'package:athar/app/core/models/domain/paginated_result.dart';
+import 'package:athar/app/core/models/paginated_result.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -14,6 +13,7 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
 
   DuaBloc(this._repository) : super(DuaScreenState._initial()) {
     on<DuaSearched>(_onSearched);
+    on<_DuaSubscriptionRequested>(_onSubscriptionRequested);
     on<DuaNextPageFetched>(
       _onNextPageFetched,
       transformer: EventTransformers.throttleDroppable(),
@@ -22,21 +22,28 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
     add(_DuaSubscriptionRequested());
   }
 
-  Future<void> _onSearched(DuaSearched event, Emitter<DuaScreenState> emit) async {
-    emit(state._copyWith(
-      searchTerm: event.searchTerm,
-      status: state.status.toLoading(),
-    ));
+  Future<void> _onSubscriptionRequested(
+    _DuaSubscriptionRequested event,
+    Emitter<DuaScreenState> emit,
+  ) async {
+    await emit.onEach(
+      _repository.watchCollection(),
+      onData: (status) => add(DuaSearched(state.searchTerm)),
+    );
+  }
 
-    final searchResult = await _repository.searchDua(
+  Future<void> _onSearched(DuaSearched event, Emitter<DuaScreenState> emit) async {
+    emit(state._copyWith(searchTerm: event.searchTerm));
+
+    final searchResult = _repository.searchDua(
       page: 0,
       event.searchTerm,
-      pageSize: state.paginatedResult.pageSize,
+      pageSize: state.result.pageSize,
     );
 
     emit(state._copyWith(
-      status: state.status.toSuccess(null),
-      duas: PaginatedResult.firstPage(searchResult),
+      searchTerm: event.searchTerm,
+      result: PaginatedResult.firstPage(searchResult),
     ));
   }
 
@@ -44,17 +51,14 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
     DuaNextPageFetched event,
     Emitter<DuaScreenState> emit,
   ) async {
-    if (state.paginatedResult.hasReachedMax) return;
+    if (state.result.hasReachedMax) return;
 
-    final searchResult = await _repository.searchDua(
+    final searchResult = _repository.searchDua(
       state.searchTerm,
-      page: state.paginatedResult.page + 1,
-      pageSize: state.paginatedResult.pageSize,
+      page: state.result.page + 1,
+      pageSize: state.result.pageSize,
     );
 
-    emit(state._copyWith(
-      status: state.status.toSuccess(null),
-      duas: state.paginatedResult.appendResult(searchResult),
-    ));
+    emit(state._copyWith(result: state.result.appendResult(searchResult)));
   }
 }

@@ -17,19 +17,14 @@ const SettingsIsarSchema = CollectionSchema(
   name: r'SettingsIsar',
   id: 5385768829924721998,
   properties: {
-    r'id': PropertySchema(
-      id: 0,
-      name: r'id',
-      type: IsarType.string,
-    ),
     r'language': PropertySchema(
-      id: 1,
+      id: 0,
       name: r'language',
       type: IsarType.byte,
       enumMap: _SettingsIsarlanguageEnumValueMap,
     ),
     r'themeMode': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'themeMode',
       type: IsarType.byte,
       enumMap: _SettingsIsarthemeModeEnumValueMap,
@@ -39,7 +34,7 @@ const SettingsIsarSchema = CollectionSchema(
   serialize: _settingsIsarSerialize,
   deserialize: _settingsIsarDeserialize,
   deserializeProp: _settingsIsarDeserializeProp,
-  idName: r'cacheID',
+  idName: r'id',
   indexes: {},
   links: {},
   embeddedSchemas: {},
@@ -55,7 +50,6 @@ int _settingsIsarEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.id.length * 3;
   return bytesCount;
 }
 
@@ -65,9 +59,8 @@ void _settingsIsarSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.id);
-  writer.writeByte(offsets[1], object.language.index);
-  writer.writeByte(offsets[2], object.themeMode.index);
+  writer.writeByte(offsets[0], object.language.index);
+  writer.writeByte(offsets[1], object.themeMode.index);
 }
 
 SettingsIsar _settingsIsarDeserialize(
@@ -78,12 +71,13 @@ SettingsIsar _settingsIsarDeserialize(
 ) {
   final object = SettingsIsar(
     language:
-        _SettingsIsarlanguageValueEnumMap[reader.readByteOrNull(offsets[1])] ??
+        _SettingsIsarlanguageValueEnumMap[reader.readByteOrNull(offsets[0])] ??
             Language.arabic,
     themeMode:
-        _SettingsIsarthemeModeValueEnumMap[reader.readByteOrNull(offsets[2])] ??
+        _SettingsIsarthemeModeValueEnumMap[reader.readByteOrNull(offsets[1])] ??
             ThemeMode.system,
   );
+  object.id = id;
   return object;
 }
 
@@ -95,12 +89,10 @@ P _settingsIsarDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
-    case 1:
       return (_SettingsIsarlanguageValueEnumMap[
               reader.readByteOrNull(offset)] ??
           Language.arabic) as P;
-    case 2:
+    case 1:
       return (_SettingsIsarthemeModeValueEnumMap[
               reader.readByteOrNull(offset)] ??
           ThemeMode.system) as P;
@@ -129,7 +121,7 @@ const _SettingsIsarthemeModeValueEnumMap = {
 };
 
 Id _settingsIsarGetId(SettingsIsar object) {
-  return object.cacheID;
+  return object.id ?? Isar.autoIncrement;
 }
 
 List<IsarLinkBase<dynamic>> _settingsIsarGetLinks(SettingsIsar object) {
@@ -137,11 +129,13 @@ List<IsarLinkBase<dynamic>> _settingsIsarGetLinks(SettingsIsar object) {
 }
 
 void _settingsIsarAttach(
-    IsarCollection<dynamic> col, Id id, SettingsIsar object) {}
+    IsarCollection<dynamic> col, Id id, SettingsIsar object) {
+  object.id = id;
+}
 
 extension SettingsIsarQueryWhereSort
     on QueryBuilder<SettingsIsar, SettingsIsar, QWhere> {
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterWhere> anyCacheID() {
+  QueryBuilder<SettingsIsar, SettingsIsar, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
@@ -150,69 +144,68 @@ extension SettingsIsarQueryWhereSort
 
 extension SettingsIsarQueryWhere
     on QueryBuilder<SettingsIsar, SettingsIsar, QWhereClause> {
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterWhereClause> cacheIDEqualTo(
-      Id cacheID) {
+  QueryBuilder<SettingsIsar, SettingsIsar, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: cacheID,
-        upper: cacheID,
+        lower: id,
+        upper: id,
       ));
     });
   }
 
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterWhereClause> cacheIDNotEqualTo(
-      Id cacheID) {
+  QueryBuilder<SettingsIsar, SettingsIsar, QAfterWhereClause> idNotEqualTo(
+      Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(
-              IdWhereClause.lessThan(upper: cacheID, includeUpper: false),
+              IdWhereClause.lessThan(upper: id, includeUpper: false),
             )
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: cacheID, includeLower: false),
+              IdWhereClause.greaterThan(lower: id, includeLower: false),
             );
       } else {
         return query
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: cacheID, includeLower: false),
+              IdWhereClause.greaterThan(lower: id, includeLower: false),
             )
             .addWhereClause(
-              IdWhereClause.lessThan(upper: cacheID, includeUpper: false),
+              IdWhereClause.lessThan(upper: id, includeUpper: false),
             );
       }
     });
   }
 
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterWhereClause>
-      cacheIDGreaterThan(Id cacheID, {bool include = false}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(
-        IdWhereClause.greaterThan(lower: cacheID, includeLower: include),
-      );
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterWhereClause> cacheIDLessThan(
-      Id cacheID,
+  QueryBuilder<SettingsIsar, SettingsIsar, QAfterWhereClause> idGreaterThan(
+      Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.lessThan(upper: cacheID, includeUpper: include),
+        IdWhereClause.greaterThan(lower: id, includeLower: include),
       );
     });
   }
 
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterWhereClause> cacheIDBetween(
-    Id lowerCacheID,
-    Id upperCacheID, {
+  QueryBuilder<SettingsIsar, SettingsIsar, QAfterWhereClause> idLessThan(Id id,
+      {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IdWhereClause.lessThan(upper: id, includeUpper: include),
+      );
+    });
+  }
+
+  QueryBuilder<SettingsIsar, SettingsIsar, QAfterWhereClause> idBetween(
+    Id lowerId,
+    Id upperId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: lowerCacheID,
+        lower: lowerId,
         includeLower: includeLower,
-        upper: upperCacheID,
+        upper: upperId,
         includeUpper: includeUpper,
       ));
     });
@@ -221,111 +214,64 @@ extension SettingsIsarQueryWhere
 
 extension SettingsIsarQueryFilter
     on QueryBuilder<SettingsIsar, SettingsIsar, QFilterCondition> {
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      cacheIDEqualTo(Id value) {
+  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition> idIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'cacheID',
-        value: value,
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'id',
       ));
     });
   }
 
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      cacheIDGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
+      idIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'cacheID',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      cacheIDLessThan(
-    Id value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'cacheID',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      cacheIDBetween(
-    Id lower,
-    Id upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'cacheID',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'id',
       ));
     });
   }
 
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition> idEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+      Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition> idGreaterThan(
-    String value, {
+    Id? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'id',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition> idLessThan(
-    String value, {
+    Id? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'id',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition> idBetween(
-    String lower,
-    String upper, {
+    Id? lower,
+    Id? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -334,76 +280,6 @@ extension SettingsIsarQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition> idStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'id',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition> idEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'id',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition> idContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'id',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition> idMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'id',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition> idIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterFilterCondition>
-      idIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'id',
-        value: '',
       ));
     });
   }
@@ -529,18 +405,6 @@ extension SettingsIsarQueryLinks
 
 extension SettingsIsarQuerySortBy
     on QueryBuilder<SettingsIsar, SettingsIsar, QSortBy> {
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterSortBy> sortById() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.asc);
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterSortBy> sortByIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.desc);
-    });
-  }
-
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterSortBy> sortByLanguage() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'language', Sort.asc);
@@ -568,18 +432,6 @@ extension SettingsIsarQuerySortBy
 
 extension SettingsIsarQuerySortThenBy
     on QueryBuilder<SettingsIsar, SettingsIsar, QSortThenBy> {
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterSortBy> thenByCacheID() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'cacheID', Sort.asc);
-    });
-  }
-
-  QueryBuilder<SettingsIsar, SettingsIsar, QAfterSortBy> thenByCacheIDDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'cacheID', Sort.desc);
-    });
-  }
-
   QueryBuilder<SettingsIsar, SettingsIsar, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -619,13 +471,6 @@ extension SettingsIsarQuerySortThenBy
 
 extension SettingsIsarQueryWhereDistinct
     on QueryBuilder<SettingsIsar, SettingsIsar, QDistinct> {
-  QueryBuilder<SettingsIsar, SettingsIsar, QDistinct> distinctById(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'id', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<SettingsIsar, SettingsIsar, QDistinct> distinctByLanguage() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'language');
@@ -641,13 +486,7 @@ extension SettingsIsarQueryWhereDistinct
 
 extension SettingsIsarQueryProperty
     on QueryBuilder<SettingsIsar, SettingsIsar, QQueryProperty> {
-  QueryBuilder<SettingsIsar, int, QQueryOperations> cacheIDProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'cacheID');
-    });
-  }
-
-  QueryBuilder<SettingsIsar, String, QQueryOperations> idProperty() {
+  QueryBuilder<SettingsIsar, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });

@@ -6,20 +6,18 @@ part 'dua_isar.g.dart';
 
 @collection
 final class DuaIsar extends CacheModel<Dua> {
-  @override
-  final String id;
   @Index(type: IndexType.value, caseSensitive: false)
-  final String text;
-  final String? reward;
-  final bool isFavourite;
-  final List<String> tags;
-  final String? description;
+  String text;
+  String? reward;
+  bool isFavourite;
+  List<String> tags;
+  String? description;
 
-  const DuaIsar({
-    required this.id,
+  DuaIsar({
     required this.text,
     required this.tags,
     required this.isFavourite,
+    super.id,
     this.reward,
     this.description,
   });

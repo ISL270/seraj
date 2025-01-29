@@ -9,38 +9,34 @@ part 'daleel_isar.g.dart';
 
 @collection
 final class DaleelIsar extends CacheModel<Daleel> {
-  @override
-  final String id;
-
-  // Full-text search index
   @Index(type: IndexType.value, caseSensitive: false)
-  final String text;
-  final String? description;
-  final String? sayer;
+  String text;
+  String? description;
+  String? sayer;
   @Enumerated(EnumType.name)
-  final Priority priority;
+  Priority priority;
   @Enumerated(EnumType.name)
-  final DaleelType daleelType;
-  final List<String> tags;
-  final DateTime lastRevisedAt;
+  DaleelType daleelType;
+  List<String> tags;
+  DateTime lastRevisedAt;
 
   // Hadith-specific fields
-  final String? hadithExtraction;
+  String? hadithExtraction;
   @Enumerated(EnumType.name)
-  final HadithAuthenticity? hadithAuthenticity;
+  HadithAuthenticity? hadithAuthenticity;
 
   // Aya-specific fields
-  final String? surah;
-  final int? firstAya;
-  final int? lastAya;
+  String? surah;
+  int? firstAya;
+  int? lastAya;
 
-  const DaleelIsar({
-    required this.id,
+  DaleelIsar({
     required this.text,
     required this.tags,
     required this.priority,
     required this.daleelType,
     required this.lastRevisedAt,
+    super.id,
     this.sayer,
     this.surah,
     this.firstAya,
@@ -50,116 +46,99 @@ final class DaleelIsar extends CacheModel<Daleel> {
     this.hadithAuthenticity,
   });
 
-  factory DaleelIsar.fromDomain(Daleel daleel) {
-    switch (daleel) {
-      case Hadith():
-        return DaleelIsar(
-          id: daleel.id,
-          text: daleel.text,
-          tags: daleel.tags,
-          sayer: daleel.sayer,
-          priority: daleel.priority,
-          daleelType: DaleelType.hadith,
-          description: daleel.description,
-          lastRevisedAt: daleel.lastRevisedAt,
-          hadithExtraction: daleel.extraction,
-          hadithAuthenticity: daleel.authenticity,
-        );
-      case Aya():
-        return DaleelIsar(
-          id: daleel.id,
-          text: daleel.text,
-          tags: daleel.tags,
-          surah: daleel.surah,
-          firstAya: daleel.firstAya,
-          lastAya: daleel.lastAya,
-          priority: daleel.priority,
-          daleelType: DaleelType.aya,
-          description: daleel.description,
-          lastRevisedAt: daleel.lastRevisedAt,
-        );
-      case Athar():
-        return DaleelIsar(
-          id: daleel.id,
-          text: daleel.text,
-          tags: daleel.tags,
-          sayer: daleel.sayer,
-          priority: daleel.priority,
-          daleelType: DaleelType.athar,
-          description: daleel.description,
-          lastRevisedAt: daleel.lastRevisedAt,
-        );
-      case Other():
-        return DaleelIsar(
-          id: daleel.id,
-          text: daleel.text,
-          tags: daleel.tags,
-          sayer: daleel.sayer,
-          priority: daleel.priority,
-          daleelType: DaleelType.other,
-          description: daleel.description,
-          lastRevisedAt: daleel.lastRevisedAt,
-        );
-      default:
-        throw Exception('Unsupported DaleelType');
-    }
-  }
+  factory DaleelIsar.fromDomain(Daleel daleel) => switch (daleel) {
+        Hadith() => DaleelIsar(
+            id: daleel.id,
+            text: daleel.text,
+            tags: daleel.tags,
+            sayer: daleel.sayer,
+            priority: daleel.priority,
+            daleelType: DaleelType.hadith,
+            description: daleel.description,
+            lastRevisedAt: daleel.lastRevisedAt,
+            hadithExtraction: daleel.extraction,
+            hadithAuthenticity: daleel.authenticity,
+          ),
+        Aya() => DaleelIsar(
+            id: daleel.id,
+            text: daleel.text,
+            tags: daleel.tags,
+            surah: daleel.surah,
+            firstAya: daleel.firstAya,
+            lastAya: daleel.lastAya,
+            priority: daleel.priority,
+            daleelType: DaleelType.aya,
+            description: daleel.description,
+            lastRevisedAt: daleel.lastRevisedAt,
+          ),
+        Athar() => DaleelIsar(
+            id: daleel.id,
+            text: daleel.text,
+            tags: daleel.tags,
+            sayer: daleel.sayer,
+            priority: daleel.priority,
+            daleelType: DaleelType.athar,
+            description: daleel.description,
+            lastRevisedAt: daleel.lastRevisedAt,
+          ),
+        Other() => DaleelIsar(
+            id: daleel.id,
+            text: daleel.text,
+            tags: daleel.tags,
+            sayer: daleel.sayer,
+            priority: daleel.priority,
+            daleelType: DaleelType.other,
+            description: daleel.description,
+            lastRevisedAt: daleel.lastRevisedAt,
+          ),
+      };
 
-  /// Map from database model (`DaleelIsar`) to domain model (`Daleel`)
   @override
-  Daleel toDomain() {
-    switch (daleelType) {
-      case DaleelType.hadith:
-        return Hadith(
-          id: id,
-          text: text,
-          tags: tags,
-          sayer: sayer,
-          priority: priority,
-          description: description,
-          extraction: hadithExtraction,
-          lastRevisedAt: lastRevisedAt,
-          authenticity: hadithAuthenticity,
-          daleelType: DaleelType.hadith,
-        );
-      case DaleelType.aya:
-        return Aya(
-          id: id,
-          text: text,
-          tags: tags,
-          sayer: sayer,
-          surah: surah ?? '',
-          firstAya: firstAya ?? 0,
-          lastAya: lastAya,
-          priority: priority,
-          description: description,
-          lastRevisedAt: lastRevisedAt,
-          daleelType: DaleelType.aya,
-        );
-      case DaleelType.athar:
-        return Athar(
-          id: id,
-          text: text,
-          tags: tags,
-          sayer: sayer,
-          priority: priority,
-          description: description,
-          lastRevisedAt: lastRevisedAt,
-          daleelType: DaleelType.athar,
-        );
-      case DaleelType.other:
-        return Other(
-          id: id,
-          text: text,
-          tags: tags,
-          sayer: sayer,
-          priority: priority,
-          description: description,
-          lastRevisedAt: lastRevisedAt,
-          daleelType: DaleelType.other,
-        );
-      default:
-        throw Exception('Unsupported DaleelType');
-    }
-  }
+  Daleel toDomain() => switch (daleelType) {
+        DaleelType.hadith => Hadith(
+            id: id,
+            text: text,
+            tags: tags,
+            sayer: sayer,
+            priority: priority,
+            description: description,
+            extraction: hadithExtraction,
+            lastRevisedAt: lastRevisedAt,
+            authenticity: hadithAuthenticity,
+            daleelType: DaleelType.hadith,
+          ),
+        DaleelType.aya => Aya(
+            id: id,
+            text: text,
+            tags: tags,
+            sayer: sayer,
+            surah: surah ?? '',
+            firstAya: firstAya ?? 0,
+            lastAya: lastAya,
+            priority: priority,
+            description: description,
+            lastRevisedAt: lastRevisedAt,
+            daleelType: DaleelType.aya,
+          ),
+        DaleelType.athar => Athar(
+            id: id,
+            text: text,
+            tags: tags,
+            sayer: sayer,
+            priority: priority,
+            description: description,
+            lastRevisedAt: lastRevisedAt,
+            daleelType: DaleelType.athar,
+          ),
+        DaleelType.other => Other(
+            id: id,
+            text: text,
+            tags: tags,
+            sayer: sayer,
+            priority: priority,
+            description: description,
+            lastRevisedAt: lastRevisedAt,
+            daleelType: DaleelType.other,
+          ),
+      };
 }

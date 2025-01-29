@@ -1,4 +1,4 @@
-import 'package:athar/app/core/models/domain/islamic_text.dart';
+import 'package:athar/app/core/models/islamic_text.dart';
 import 'package:equatable/equatable.dart';
 
 final class Dua extends IslamicText with EquatableMixin {
@@ -6,9 +6,9 @@ final class Dua extends IslamicText with EquatableMixin {
   final bool isFavourite;
 
   const Dua({
-    required super.id,
     required super.text,
-    required this.isFavourite,
+    this.isFavourite = false,
+    super.id,
     super.tags,
     this.reward,
     super.description,

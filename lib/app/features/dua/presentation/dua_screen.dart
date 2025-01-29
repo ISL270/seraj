@@ -1,17 +1,16 @@
 // ignore_for_file: deprecated_member_use_from_same_package, inference_failure_on_function_invocation, dead_code
 
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
-import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/extension_methods/english_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/add_dua/presentation/add_dua_screen.dart';
+import 'package:athar/app/features/dua/sub_features/add_dua/add_dua_screen.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
-import 'package:athar/app/features/dua/presentation/dua_details/dua_details_screen.dart';
+import 'package:athar/app/features/dua/sub_features/dua_details/dua_details_screen.dart';
 import 'package:athar/app/features/dua/presentation/widgets/filter_buttom_sheet.dart';
 import 'package:dartx/dartx_io.dart';
 import 'package:flutter/material.dart';
@@ -54,9 +53,10 @@ class _DuasScreenState extends State<DuasScreen> {
         }
       },
     );
+
     _scrollCntrlr.addListener(
       () {
-        if (_bloc.state.status.isSuccess && _bloc.state.paginatedResult.elements.length > 5) {
+        if (_bloc.state.result.elements.length > 5) {
           return;
         }
         _scrollCntrlr.jumpTo(0);

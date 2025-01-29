@@ -1,4 +1,3 @@
-import 'package:athar/app/core/extension_methods/getit_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/language.dart';
 import 'package:athar/app/core/router.dart';
@@ -25,7 +24,6 @@ class App extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (_) => SettingsBloc(getIt.get<SettingsRepository>())),
-            BlocProvider(create: (_) => getIt.authBloc),
             BlocProvider(create: (_) => DaleelBloc(getIt.get<DaleelRepository>())),
           ],
           child: BlocBuilder<SettingsBloc, SettingsState>(

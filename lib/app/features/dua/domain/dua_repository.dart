@@ -1,53 +1,45 @@
 // ignore_for_file: unused_field
 
-import 'package:athar/app/core/models/domain/generic_exception.dart';
-import 'package:athar/app/features/dua/data/sources/dua_isar_source.dart';
+import 'package:athar/app/core/models/repository.dart';
+import 'package:athar/app/features/dua/data/dua_isar.dart';
+import 'package:athar/app/features/dua/data/dua_isar_source.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
-import 'package:dartx/dartx_io.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
-final class DuaRepository {
+final class DuaRepository extends Repository<Dua, DuaIsar> {
   final DuaIsarSource _localSource;
+  DuaRepository(this._localSource) : super(_localSource);
 
-  DuaRepository(
-    this._localSource,
-  );
+  void addDua({
+    required String text,
+    required String reward,
+    required List<String> tags,
+    required String description,
+  }) =>
+      _localSource.put(DuaIsar(
+        text: text,
+        tags: tags,
+        reward: reward,
+        isFavourite: false,
+        description: description,
+      ));
 
-  // Future<void> addDua({
-  //   required String text,
-  //   required String reward,
-  //   required List<String> tags,
-  //   required String description,
-  // }) async {
-  //   try {
-  //     await _remoteSource.addDua(
-  //       text: text,
-  //       tags: tags,
-  //       isFavourite: false,
-  //       uid: authRepository.user!.id,
-  //       reward: reward.isBlank ? null : reward,
-  //       description: description.isBlank ? null : description,
-  //     );
-  //   } catch (e) {
-  //     throw e as GenericException;
-  //   }
-  // }
-
-  Future<List<Dua>> searchDua(
+  List<Dua> searchDua(
     String searchTerm, {
     required int page,
     required int pageSize,
-  }) async {
-    final cms = await _localSource.getDuas(searchTerm, page: page, pageSize: pageSize);
+  }) {
+    final cms = _localSource.getDuas(searchTerm, page: page, pageSize: pageSize);
     return cms.map((e) => e.toDomain()).toList();
   }
 
-  Future<void> toggleFavourite(Dua dua) async {
-    try {
-      // await _remoteSource.toggleFavourite(uid: authRepository.user!.id, dua: dua);
-    } catch (e) {
-      throw e as GenericException;
-    }
+  void toggleFavourite(Dua dua) {
+    final cm = _localSource.get(dua.id!)!;
+    cm.isFavourite = !cm.isFavourite;
+    _localSource.put(cm);
   }
+
+  @override
+  DuaIsar fromDomain(Dua dm) => DuaIsar.fromDomain(dm);
 }

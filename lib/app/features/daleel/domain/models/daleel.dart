@@ -1,4 +1,4 @@
-import 'package:athar/app/core/models/domain/islamic_text.dart';
+import 'package:athar/app/core/models/islamic_text.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';

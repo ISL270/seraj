@@ -6,7 +6,6 @@ final class AddDuaState extends Equatable with FormzMixin {
     this.reward = const Name.pure(),
     this.priority = Priority.normal,
     this.description = '',
-    this.status = const Initial(),
     this.errorMessage,
     this.tags = const [],
   });
@@ -16,7 +15,6 @@ final class AddDuaState extends Equatable with FormzMixin {
   final Priority priority;
   final String description;
   final String? errorMessage;
-  final VoidStatus status;
   final List<String> tags;
 
   @override
@@ -25,7 +23,6 @@ final class AddDuaState extends Equatable with FormzMixin {
         reward,
         description,
         priority,
-        status,
         errorMessage,
       ];
 
@@ -35,7 +32,6 @@ final class AddDuaState extends Equatable with FormzMixin {
     Priority? priority,
     String? description,
     double? sliderValue,
-    VoidStatus? status,
     String? errorMessage,
   }) {
     return AddDuaState(
@@ -43,7 +39,6 @@ final class AddDuaState extends Equatable with FormzMixin {
       description: description ?? this.description,
       dua: dua ?? this.dua,
       reward: reward ?? this.reward,
-      status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
@@ -51,9 +46,4 @@ final class AddDuaState extends Equatable with FormzMixin {
   @override
   // ignore: strict_raw_type
   List<FormzInput> get inputs => [dua];
-
-  String get errorMsg {
-    if (!status.isFailure) return '';
-    return (status as Failure).exception.message ?? 'unkown error';
-  }
 }

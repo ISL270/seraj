@@ -26,8 +26,8 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
     DaleelFilters? filters,
   }) async {
     final query = searchTerm.isNotBlank
-        ? isarService.instance.daleelIsars.where().textStartsWith(searchTerm).filter()
-        : isarService.instance.daleelIsars.where().anyText().filter();
+        ? isarService.db.daleelIsars.where().textStartsWith(searchTerm).filter()
+        : isarService.db.daleelIsars.where().anyText().filter();
 
     return query
         .optional(
@@ -176,6 +176,7 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
   Future<bool> deleteDaleel(Daleel daleel) => delete(daleel);
 
   /// Deletes a Daleel by its ID
+  @override
   Future<bool> deleteByID(String id) => deleteByID(id);
 
   /// Updates a Daleel in the local database

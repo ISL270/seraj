@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 
 abstract base class IslamicText extends Equatable {
-  final String id;
+  final int? id;
   final String text;
   final List<String> tags;
   final String? description;
 
   const IslamicText({
-    required this.id,
     required this.text,
+    this.id,
     this.description,
     this.tags = const [],
   });

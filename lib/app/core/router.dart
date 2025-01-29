@@ -1,7 +1,7 @@
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/features/add_athar/presentation/add_athar_screen.dart';
 import 'package:athar/app/features/add_athar/presentation/cubit/add_athar_cubit.dart';
-import 'package:athar/app/features/add_dua/presentation/add_dua_screen.dart';
+import 'package:athar/app/features/dua/sub_features/add_dua/add_dua_screen.dart';
 import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dart';
 import 'package:athar/app/features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
 import 'package:athar/app/features/add_other/presentation/add_other_screen.dart';
@@ -16,8 +16,8 @@ import 'package:athar/app/features/daleel_details/presentation/daleel_details_sc
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
 import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
-import 'package:athar/app/features/dua/presentation/dua_details/bloc/dua_details_bloc.dart';
-import 'package:athar/app/features/dua/presentation/dua_details/dua_details_screen.dart';
+import 'package:athar/app/features/dua/sub_features/dua_details/bloc/dua_details_bloc.dart';
+import 'package:athar/app/features/dua/sub_features/dua_details/dua_details_screen.dart';
 import 'package:athar/app/features/dua/presentation/dua_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/settings/settings_screen.dart';
