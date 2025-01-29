@@ -75,7 +75,7 @@ class _DaleelScreenState extends State<DaleelScreen> {
     );
     _scrollCntrlr.addListener(
       () {
-        if (_bloc.state.status.isSuccess && _bloc.state.daleels.elements.length > 5) {
+        if (_bloc.state.status.isSuccess && _bloc.state.daleels.elements.length > 2) {
           return;
         }
         _scrollCntrlr.jumpTo(0);

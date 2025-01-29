@@ -42,7 +42,6 @@ class _DuasScreenState extends State<DuasScreen> {
   @override
   void initState() {
     super.initState();
-
     _scrollCntrlr = ScrollController();
     _bloc = context.read<DuaBloc>();
     _searchCntrlr = TextEditingController();
@@ -53,10 +52,9 @@ class _DuasScreenState extends State<DuasScreen> {
         }
       },
     );
-
     _scrollCntrlr.addListener(
       () {
-        if (_bloc.state.result.elements.length > 5) {
+        if (_bloc.state.result.elements.length > 2) {
           return;
         }
         _scrollCntrlr.jumpTo(0);
