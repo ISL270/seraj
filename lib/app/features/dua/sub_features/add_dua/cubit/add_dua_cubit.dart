@@ -1,4 +1,4 @@
-import 'package:athar/app/core/models/tag.dart';
+import 'package:athar/app/core/extension_methods/list_x.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -36,7 +36,7 @@ class AddDuaCubit extends Cubit<AddDuaState> {
   }
 
   void saveDuaForm() => _duaRepository.addDua(
-        tags: state.tags.map((tagName) => Tag(0, tagName)).toList(),
+        tags: state.tags.toTagModels(),
         text: state.dua.value,
         reward: state.reward.value,
         description: state.description,
