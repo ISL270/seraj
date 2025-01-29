@@ -5,8 +5,8 @@ import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/cubit/add_aya_cubit.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
+import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/cubit/add_aya_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/number_picker_bs.dart';
 import 'package:athar/app/widgets/screen.dart';
@@ -26,7 +26,7 @@ part 'ayah_selection_widget.dart';
 class AddNewAyah extends StatefulWidget {
   const AddNewAyah({super.key});
 
-  static const String name = 'add-new-aya';
+  static const name = 'add-new-aya';
 
   @override
   State<AddNewAyah> createState() => _AddNewAyahState();

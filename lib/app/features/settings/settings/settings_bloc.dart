@@ -28,7 +28,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     Emitter<SettingsState> emit,
   ) async {
     emit(state.toLoading());
-    final savedSettings = await _repository.getSettings();
+    final savedSettings = _repository.getSettings();
     emit(state.toSuccess(savedSettings));
   }
 
