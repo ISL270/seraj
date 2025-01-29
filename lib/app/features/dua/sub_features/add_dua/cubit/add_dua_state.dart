@@ -17,7 +17,7 @@ final class AddDuaState extends Equatable with FormzMixin {
   final VoidStatus status;
   final String description;
   final String? errorMessage;
-  final List<String> tags;
+  final List<Tag> tags;
 
   @override
   List<Object?> get props => [

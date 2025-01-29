@@ -1,5 +1,4 @@
-import 'package:athar/app/core/enums/status.dart';
-import 'package:athar/app/core/models/generic_exception.dart';
+import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -28,18 +27,10 @@ class AddDuaCubit extends Cubit<AddDuaState> {
 
   void duaExplanationChanged(String value) => emit(state.copyWith(description: value));
 
-  void saveDuaForm() {
-    emit(state.copyWith(status: const Loading()));
-    try {
-      _duaRepository.addDua(
+  void saveDuaForm() => _duaRepository.addDua(
         tags: state.tags,
         text: state.dua.value,
-        description: state.description,
         reward: state.reward.value,
+        description: state.description,
       );
-      emit(state.copyWith(status: const Success(null)));
-    } catch (e) {
-      emit(state.copyWith(status: Failure(e as GenericException)));
-    }
-  }
 }

@@ -1,9 +1,10 @@
+import 'package:athar/app/core/models/tag.dart';
 import 'package:equatable/equatable.dart';
 
 abstract base class IslamicText extends Equatable {
   final int? id;
   final String text;
-  final List<String> tags;
+  final List<Tag> tags;
   final String? description;
 
   const IslamicText({

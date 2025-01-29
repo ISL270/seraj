@@ -32,13 +32,8 @@ const DuaIsarSchema = CollectionSchema(
       name: r'reward',
       type: IsarType.string,
     ),
-    r'tags': PropertySchema(
-      id: 3,
-      name: r'tags',
-      type: IsarType.stringList,
-    ),
     r'text': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'text',
       type: IsarType.string,
     )
@@ -63,7 +58,14 @@ const DuaIsarSchema = CollectionSchema(
       ],
     )
   },
-  links: {},
+  links: {
+    r'tags': LinkSchema(
+      id: -2413358065788105657,
+      name: r'tags',
+      target: r'DuaTagIsar',
+      single: false,
+    )
+  },
   embeddedSchemas: {},
   getId: _duaIsarGetId,
   getLinks: _duaIsarGetLinks,
@@ -89,13 +91,6 @@ int _duaIsarEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.tags.length * 3;
-  {
-    for (var i = 0; i < object.tags.length; i++) {
-      final value = object.tags[i];
-      bytesCount += value.length * 3;
-    }
-  }
   bytesCount += 3 + object.text.length * 3;
   return bytesCount;
 }
@@ -109,8 +104,7 @@ void _duaIsarSerialize(
   writer.writeString(offsets[0], object.description);
   writer.writeBool(offsets[1], object.isFavourite);
   writer.writeString(offsets[2], object.reward);
-  writer.writeStringList(offsets[3], object.tags);
-  writer.writeString(offsets[4], object.text);
+  writer.writeString(offsets[3], object.text);
 }
 
 DuaIsar _duaIsarDeserialize(
@@ -124,8 +118,7 @@ DuaIsar _duaIsarDeserialize(
     id: id,
     isFavourite: reader.readBool(offsets[1]),
     reward: reader.readStringOrNull(offsets[2]),
-    tags: reader.readStringList(offsets[3]) ?? [],
-    text: reader.readString(offsets[4]),
+    text: reader.readString(offsets[3]),
   );
   return object;
 }
@@ -144,8 +137,6 @@ P _duaIsarDeserializeProp<P>(
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readStringList(offset) ?? []) as P;
-    case 4:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -157,11 +148,12 @@ Id _duaIsarGetId(DuaIsar object) {
 }
 
 List<IsarLinkBase<dynamic>> _duaIsarGetLinks(DuaIsar object) {
-  return [];
+  return [object.tags];
 }
 
 void _duaIsarAttach(IsarCollection<dynamic> col, Id id, DuaIsar object) {
   object.id = id;
+  object.tags.attach(col, col.isar.collection<DuaTagIsar>(), r'tags', id);
 }
 
 extension DuaIsarQueryWhereSort on QueryBuilder<DuaIsar, DuaIsar, QWhere> {
@@ -755,221 +747,6 @@ extension DuaIsarQueryFilter
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'tags',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'tags',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'tags',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'tags',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'tags',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'tags',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'tags',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'tags',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsElementIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'tags',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition>
-      tagsElementIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'tags',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsLengthEqualTo(
-      int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'tags',
-        length,
-        true,
-        length,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'tags',
-        0,
-        true,
-        0,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'tags',
-        0,
-        false,
-        999999,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'tags',
-        0,
-        true,
-        length,
-        include,
-      );
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'tags',
-        length,
-        include,
-        999999,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsLengthBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'tags',
-        lower,
-        includeLower,
-        upper,
-        includeUpper,
-      );
-    });
-  }
-
   QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> textEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1105,7 +882,63 @@ extension DuaIsarQueryObject
     on QueryBuilder<DuaIsar, DuaIsar, QFilterCondition> {}
 
 extension DuaIsarQueryLinks
-    on QueryBuilder<DuaIsar, DuaIsar, QFilterCondition> {}
+    on QueryBuilder<DuaIsar, DuaIsar, QFilterCondition> {
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tags(
+      FilterQuery<DuaTagIsar> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'tags');
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<DuaIsar, DuaIsar, QAfterFilterCondition> tagsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'tags', lower, includeLower, upper, includeUpper);
+    });
+  }
+}
 
 extension DuaIsarQuerySortBy on QueryBuilder<DuaIsar, DuaIsar, QSortBy> {
   QueryBuilder<DuaIsar, DuaIsar, QAfterSortBy> sortByDescription() {
@@ -1242,12 +1075,6 @@ extension DuaIsarQueryWhereDistinct
     });
   }
 
-  QueryBuilder<DuaIsar, DuaIsar, QDistinct> distinctByTags() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'tags');
-    });
-  }
-
   QueryBuilder<DuaIsar, DuaIsar, QDistinct> distinctByText(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1279,12 +1106,6 @@ extension DuaIsarQueryProperty
   QueryBuilder<DuaIsar, String?, QQueryOperations> rewardProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'reward');
-    });
-  }
-
-  QueryBuilder<DuaIsar, List<String>, QQueryOperations> tagsProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'tags');
     });
   }
 
