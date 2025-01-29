@@ -2,6 +2,7 @@
 
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar.dart';
 import 'package:athar/app/features/dua/data/dua_isar.dart';
+import 'package:athar/app/features/dua/sub_features/dua_tag/data/dua_tag_isar.dart';
 import 'package:athar/app/features/settings/data/sources/local/settings_isar.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
@@ -20,6 +21,7 @@ final class IsarService {
         SettingsIsarSchema,
         DaleelIsarSchema,
         DuaIsarSchema,
+        DuaTagIsarSchema,
       ],
       directory: dir.path,
     );

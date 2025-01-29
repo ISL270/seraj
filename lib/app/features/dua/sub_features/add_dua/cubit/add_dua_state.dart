@@ -15,11 +15,12 @@ final class AddDuaState extends Equatable with FormzMixin {
   final Priority priority;
   final String description;
   final String? errorMessage;
-  final List<Tag> tags;
+  final List<String> tags;
 
   @override
   List<Object?> get props => [
         dua,
+        tags,
         reward,
         description,
         priority,
@@ -31,6 +32,7 @@ final class AddDuaState extends Equatable with FormzMixin {
     Name? reward,
     Priority? priority,
     String? description,
+    List<String>? tags,
     double? sliderValue,
     String? errorMessage,
   }) {
@@ -38,6 +40,7 @@ final class AddDuaState extends Equatable with FormzMixin {
       priority: priority ?? this.priority,
       description: description ?? this.description,
       dua: dua ?? this.dua,
+      tags: tags ?? this.tags,
       reward: reward ?? this.reward,
       errorMessage: errorMessage ?? this.errorMessage,
     );

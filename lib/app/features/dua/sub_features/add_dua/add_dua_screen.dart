@@ -1,4 +1,3 @@
-import 'package:athar/app/core/extension_methods/context_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
@@ -8,6 +7,7 @@ import 'package:athar/app/features/dua/domain/dua_repository.dart';
 import 'package:athar/app/features/dua/sub_features/add_dua/cubit/add_dua_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
+import 'package:athar/app/widgets/tag_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -49,6 +49,22 @@ class AddDuaScreen extends StatelessWidget {
                     const _DuaRewardTextField(),
                     _LabelTextFieldAlignWidget(label: context.l10n.explanation),
                     const _ExplanationOfDuaTextField(),
+                    Gap(10.h),
+                    BlocBuilder<AddDuaCubit, AddDuaState>(
+                      builder: (context, state) {
+                        final cubit = context.read<AddDuaCubit>();
+                        return TagSelectionWidget(
+                          tags: state.tags,
+                          onAddTag: (tag) => cubit.tagsChanged([...state.tags, tag]),
+                          onRemoveTag: (tag) {
+                            final updatedTags = state.tags.where((t) => t != tag).toList();
+                            cubit.tagsChanged(updatedTags);
+                          },
+                          onClearTags: () => cubit.tagsChanged([]),
+                          errorMessageBuilder: (tag) => '$tag ${context.l10n.alreadyExists}',
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -153,38 +169,23 @@ class _DuaAddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AddDuaCubit, AddDuaState>(
-      listenWhen: (previous, current) => previous.status != current.status,
-      listener: (innerContext, state) {
-        if (state.status.isSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              duration: const Duration(seconds: 2),
-              content: Text(
-                context.l10n.duaAdded,
-                style: context.textThemeX.medium.bold,
-              ),
-            ),
-          );
-          context.pop();
-        }
-
-        if (state.status.isFailure) {
-          context.scaffoldMessenger
-            ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(content: Text(context.l10n.wentWrong)));
-        }
-      },
+    return BlocBuilder<AddDuaCubit, AddDuaState>(
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 12.w),
           child: Button.filled(
             key: const Key('duaForm_saveDuaForm_button'),
             maxWidth: true,
-            isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
             label: context.l10n.add,
-            onPressed: state.isValid ? () => context.read<AddDuaCubit>().saveDuaForm() : null,
+            onPressed: state.isValid
+                ? () {
+                    context.read<AddDuaCubit>().saveDuaForm();
+                    if (context.mounted) {
+                      context.pop();
+                    }
+                  }
+                : null,
           ),
         );
       },

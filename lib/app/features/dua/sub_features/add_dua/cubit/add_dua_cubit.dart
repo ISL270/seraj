@@ -2,6 +2,7 @@ import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
 import 'package:bloc/bloc.dart';
+import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
@@ -27,8 +28,15 @@ class AddDuaCubit extends Cubit<AddDuaState> {
 
   void duaExplanationChanged(String value) => emit(state.copyWith(description: value));
 
+  void tagsChanged(List<String> newTags) {
+    final uniqueTags = newTags.toSet().toList()..removeWhere((tag) => tag.isBlank);
+    if (uniqueTags.toString() != state.tags.toString()) {
+      emit(state.copyWith(tags: uniqueTags));
+    }
+  }
+
   void saveDuaForm() => _duaRepository.addDua(
-        tags: state.tags,
+        tags: state.tags.map((tagName) => Tag(0, tagName)).toList(),
         text: state.dua.value,
         reward: state.reward.value,
         description: state.description,

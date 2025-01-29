@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:athar/app/core/models/generic_exception.dart';
 import 'package:athar/app/core/models/repository.dart';
+import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar.dart';
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar_source.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
@@ -25,7 +26,7 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     required String sayer,
     required Priority priority,
     required String extraction,
-    required List<String> tags,
+    required List<Tag> tags,
     required String description,
     required HadithAuthenticity? authenticity,
   }) async {
@@ -35,7 +36,6 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
         sayer: sayer,
         priority: priority,
         daleelType: DaleelType.hadith,
-        tags: tags,
         description: description,
         lastRevisedAt: DateTime.now(),
         hadithExtraction: extraction,
@@ -53,7 +53,7 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     required String text,
     required String sayer,
     required Priority priority,
-    required List<String> tags,
+    required List<Tag> tags,
     required String description,
   }) async {
     try {
@@ -62,7 +62,6 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
         sayer: sayer.isEmpty ? null : sayer,
         priority: priority,
         daleelType: DaleelType.athar,
-        tags: tags,
         description: description.isEmpty ? null : description,
         lastRevisedAt: DateTime.now(),
       );
@@ -82,7 +81,7 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     required int lastAya,
     required Priority priority,
     required DateTime lastRevisedAt,
-    required List<String> tags,
+    required List<Tag> tags,
     String? sayer,
   }) async {
     try {
@@ -91,7 +90,6 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
         sayer: sayer,
         priority: priority,
         daleelType: DaleelType.aya,
-        tags: tags,
         description: ayaExplain,
         lastRevisedAt: lastRevisedAt,
         surah: surahOfAya,
@@ -116,7 +114,7 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     required String description,
     required Priority priority,
     required DateTime lastRevisedAt,
-    required List<String> tags,
+    required List<Tag> tags,
   }) async {
     try {
       final daleelIsar = DaleelIsar(
@@ -124,7 +122,6 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
         sayer: sayer.isEmpty ? null : sayer,
         priority: priority,
         daleelType: DaleelType.other,
-        tags: tags,
         description: description.isEmpty ? null : description,
         lastRevisedAt: lastRevisedAt,
       );
