@@ -1,5 +1,6 @@
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
+import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,11 @@ class TagSelectionWidget extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
-  final List<String> tags;
-  final void Function(String tag) onAddTag;
-  final void Function(String tag) onRemoveTag;
+  final List<Tag> tags;
+  final void Function(Tag tag) onAddTag;
+  final void Function(Tag tag) onRemoveTag;
   final VoidCallback onClearTags;
-  final String Function(String tag)? errorMessageBuilder;
+  final String Function(Tag tag)? errorMessageBuilder;
 
   TagSelectionWidget({
     required this.tags,
@@ -24,15 +25,17 @@ class TagSelectionWidget extends StatelessWidget {
     this.errorMessageBuilder,
   });
 
-  void _addTag(BuildContext context, String tag) {
-    if (tag.isNotEmpty) {
-      if (!tags.contains(tag)) {
-        onAddTag(tag);
+  void _addTag(BuildContext context, String tagName) {
+    if (tagName.isNotEmpty) {
+      final newTag = Tag(null, tagName);
+      if (!tags.any((tag) => tag.name == tagName)) {
+        onAddTag(newTag);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content:
-                  Text(errorMessageBuilder?.call(tag) ?? '$tag ${context.l10n.alreadyExists}')),
+            content:
+                Text(errorMessageBuilder?.call(newTag) ?? '$tagName ${context.l10n.alreadyExists}'),
+          ),
         );
       }
     }
@@ -59,7 +62,7 @@ class TagSelectionWidget extends StatelessWidget {
         Wrap(
           runSpacing: 4.h,
           spacing: 4.h,
-          children: tags.map((String tag) {
+          children: tags.map((Tag tag) {
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20.sp)),
@@ -70,7 +73,7 @@ class TagSelectionWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    '#$tag',
+                    '#${tag.name}',
                     style: TextStyle(color: context.colorsX.background),
                   ),
                   SizedBox(width: 4.w),

@@ -26,7 +26,7 @@ final class AddAyaState extends Equatable with FormzMixin {
   final Name ayaExplain;
   final int firstAya;
   final int lastAya;
-  final List<String> tags;
+  final List<Tag> tags;
   final VoidStatus status;
   final String? query;
 
@@ -51,7 +51,7 @@ final class AddAyaState extends Equatable with FormzMixin {
     String? query,
     List<Ayah>? ayahs,
     List<Ayah>? selectedAyahs,
-    List<String>? tags,
+    List<Tag>? tags,
     VoidStatus? status,
   }) {
     return AddAyaState(

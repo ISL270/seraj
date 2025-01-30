@@ -2,6 +2,7 @@ import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/extension_methods/double_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/models/generic_exception.dart';
+import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartx/dartx.dart';
@@ -109,9 +110,10 @@ class AddAyaCubit extends Cubit<AddAyaState> {
     _updateControllers();
   }
 
-  void tagsChanged(List<String> newTags) {
-    final uniqueTags = newTags.toSet().toList()..removeWhere((tag) => tag.isBlank);
-    if (uniqueTags.toString() != state.tags.toString()) {
+  void tagsChanged(List<Tag> newTags) {
+    final uniqueTags = newTags.toSet().where((tag) => tag.name.isNotEmpty).toList();
+    if (uniqueTags.map((t) => t.name).toList().toString() !=
+        state.tags.map((t) => t.name).toList().toString()) {
       emit(state.copyWith(tags: uniqueTags));
     }
   }
