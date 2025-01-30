@@ -8,6 +8,7 @@ import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/sub_features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
+import 'package:athar/app/widgets/tag_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -53,6 +54,21 @@ class AddHadith extends StatelessWidget {
                   _LabelTextFieldAlignWidget(label: context.l10n.hadithExplain),
                   const _HadithExplanationTextField(),
                   const _PrioritySliderWithLabelWidget(),
+                  BlocBuilder<AddHadithCubit, AddHadithState>(
+                    builder: (context, state) {
+                      final cubit = context.read<AddHadithCubit>();
+                      return TagSelectionWidget(
+                        tags: state.tags,
+                        onAddTag: (tag) => cubit.tagsChanged([...state.tags, tag]),
+                        onRemoveTag: (tag) {
+                          final updatedTags = state.tags.where((t) => t != tag).toList();
+                          cubit.tagsChanged(updatedTags);
+                        },
+                        onClearTags: () => cubit.tagsChanged([]),
+                        errorMessageBuilder: (tag) => '$tag ${context.l10n.alreadyExists}',
+                      );
+                    },
+                  ),
                   Gap(30.h),
                 ],
               ),

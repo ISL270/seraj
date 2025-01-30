@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/generic_exception.dart';
+import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
@@ -33,6 +34,14 @@ class AddHadithCubit extends Cubit<AddHadithState> {
 
   void sliderPriorityChanged(double value) {
     emit(state.copyWith(sliderValue: value));
+  }
+
+  void tagsChanged(List<Tag> newTags) {
+    final uniqueTags = newTags.toSet().where((tag) => tag.name.isNotEmpty).toList();
+    if (uniqueTags.map((t) => t.name).toList().toString() !=
+        state.tags.map((t) => t.name).toList().toString()) {
+      emit(state.copyWith(tags: uniqueTags));
+    }
   }
 
   Future<void> saveHadithForm() async {

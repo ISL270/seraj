@@ -11,6 +11,7 @@ final class AddHadithState extends Equatable with FormzMixin {
     this.description = '',
     this.sliderValue = 0.0,
     this.status = const Initial(),
+    this.tags = const [],
   });
 
   final Name hadith;
@@ -20,11 +21,13 @@ final class AddHadithState extends Equatable with FormzMixin {
   final String description;
   final double sliderValue;
   final VoidStatus status;
+  final List<Tag> tags;
 
   @override
   List<Object?> get props => [
         hadith,
         authenticity,
+        tags,
         sayer,
         extraction,
         description,
@@ -39,6 +42,7 @@ final class AddHadithState extends Equatable with FormzMixin {
     String? extraction,
     String? description,
     double? sliderValue,
+    List<Tag>? tags,
     VoidStatus? status,
   }) {
     return AddHadithState(
@@ -49,6 +53,7 @@ final class AddHadithState extends Equatable with FormzMixin {
       description: description ?? this.description,
       sliderValue: sliderValue ?? this.sliderValue,
       status: status ?? this.status,
+      tags: tags ?? this.tags,
     );
   }
 

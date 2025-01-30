@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/generic_exception.dart';
+import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/sub_features/add_other/presentation/cubit/add_other_state.dart';
@@ -21,6 +22,14 @@ class AddOtherCubit extends Cubit<AddOtherState> {
   void explanationChanged(String value) => emit(state.copyWith(description: value));
 
   void sliderPriorityChanged(double value) => emit(state.copyWith(sliderValue: value));
+
+  void tagsChanged(List<Tag> newTags) {
+    final uniqueTags = newTags.toSet().where((tag) => tag.name.isNotEmpty).toList();
+    if (uniqueTags.map((t) => t.name).toList().toString() !=
+        state.tags.map((t) => t.name).toList().toString()) {
+      emit(state.copyWith(tags: uniqueTags));
+    }
+  }
 
   Future<void> saveOtherForm() async {
     emit(state.copyWith(status: const Loading()));

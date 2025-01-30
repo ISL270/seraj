@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable, strict_raw_type
 
 import 'package:athar/app/core/enums/status.dart';
+import 'package:athar/app/core/models/tag.dart';
 import 'package:equatable/equatable.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
@@ -12,6 +13,7 @@ final class AddAtharState extends Equatable with FormzMixin {
     this.sayer = '',
     this.description = '',
     this.status = const Initial(),
+    this.tags = const [],
   });
 
   final double sliderValue;
@@ -19,6 +21,7 @@ final class AddAtharState extends Equatable with FormzMixin {
   final String sayer;
   final String description;
   final VoidStatus status;
+  final List<Tag> tags;
 
   AddAtharState copyWith({
     double? sliderValue,
@@ -26,18 +29,26 @@ final class AddAtharState extends Equatable with FormzMixin {
     String? sayer,
     String? description,
     VoidStatus? status,
+    List<Tag>? tags,
   }) {
     return AddAtharState(
-      sliderValue: sliderValue ?? this.sliderValue,
-      athar: athar ?? this.athar,
-      sayer: sayer ?? this.sayer,
-      description: description ?? this.description,
-      status: status ?? this.status,
-    );
+        sliderValue: sliderValue ?? this.sliderValue,
+        athar: athar ?? this.athar,
+        sayer: sayer ?? this.sayer,
+        description: description ?? this.description,
+        status: status ?? this.status,
+        tags: tags ?? this.tags);
   }
 
   @override
-  List<Object> get props => [sliderValue, athar, sayer, description, status];
+  List<Object> get props => [
+        sliderValue,
+        tags,
+        athar,
+        sayer,
+        description,
+        status,
+      ];
 
   @override
   @override

@@ -9,6 +9,7 @@ import 'package:athar/app/features/daleel/sub_features/add_other/presentation/cu
 import 'package:athar/app/features/daleel/sub_features/add_other/presentation/cubit/add_other_state.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
+import 'package:athar/app/widgets/tag_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,6 +52,21 @@ class AddOtherScreen extends StatelessWidget {
                   _LabelTextFieldAlignWidget(label: context.l10n.explanation),
                   const _OtherExplainTextField(),
                   const _PrioritySliderWithLabelBlocBuilder(),
+                  BlocBuilder<AddOtherCubit, AddOtherState>(
+                    builder: (context, state) {
+                      final cubit = context.read<AddOtherCubit>();
+                      return TagSelectionWidget(
+                        tags: state.tags,
+                        onAddTag: (tag) => cubit.tagsChanged([...state.tags, tag]),
+                        onRemoveTag: (tag) {
+                          final updatedTags = state.tags.where((t) => t != tag).toList();
+                          cubit.tagsChanged(updatedTags);
+                        },
+                        onClearTags: () => cubit.tagsChanged([]),
+                        errorMessageBuilder: (tag) => '$tag ${context.l10n.alreadyExists}',
+                      );
+                    },
+                  ),
                   Gap(30.h),
                 ],
               ),

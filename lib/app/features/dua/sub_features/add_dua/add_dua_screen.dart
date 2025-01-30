@@ -49,7 +49,6 @@ class AddDuaScreen extends StatelessWidget {
                     const _DuaRewardTextField(),
                     _LabelTextFieldAlignWidget(label: context.l10n.explanation),
                     const _ExplanationOfDuaTextField(),
-                    Gap(10.h),
                     BlocBuilder<AddDuaCubit, AddDuaState>(
                       builder: (context, state) {
                         final cubit = context.read<AddDuaCubit>();
