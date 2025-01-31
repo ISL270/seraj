@@ -147,6 +147,15 @@
       "daleelDate":"Last Revisited At",
       "daleelHadithAuth":"Daleel Hadith Authenticity",
       "daleelDetails":"Daleel Details",
-      "wentWrong":"Something went wrong"
+      "wentWrong":"Something went wrong",
+      "addAzkar":"Add Azkar",
+      "azkarAdded":"Azkar added successfully",
+      "azkarText":"Azkar Text",
+      "azkarExplain":"Azkar Explain",
+      "azkarRepeat":"Repeat Number Of Azkar",
+      "enterTextOfAzkar":"Enter Text Of Azkar",
+      "noAzkars":"No Azkars Added yet!",
+      "noDescription":"No Description",
+      "repetition":"Repetition"
 
 }

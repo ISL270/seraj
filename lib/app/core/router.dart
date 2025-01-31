@@ -1,5 +1,12 @@
 import 'package:athar/app/core/injection/injection.dart';
+import 'package:athar/app/features/azkar/domain/azkar.dart';
+import 'package:athar/app/features/azkar/domain/azkar_repository.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
+import 'package:athar/app/features/azkar/presentation/bloc/azkar_bloc.dart';
+import 'package:athar/app/features/azkar/sub_features/add_azkar/presentation/add_azkar_screen.dart';
+import 'package:athar/app/features/azkar/sub_features/add_azkar/presentation/cubit/add_azkar_cubit.dart';
+import 'package:athar/app/features/azkar/sub_features/azkar_details/bloc/azkar_details_bloc.dart';
+import 'package:athar/app/features/azkar/sub_features/azkar_details/presentation/azkar_details_screen.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
@@ -151,7 +158,36 @@ final appRouter = GoRouter(
             GoRoute(
               name: AzkarScreen.name,
               path: '/${AzkarScreen.name}',
-              pageBuilder: (context, state) => const NoTransitionPage(child: AzkarScreen()),
+              pageBuilder: (context, state) => NoTransitionPage(
+                  child: BlocProvider(
+                create: (context) => getIt.get<AzkarBloc>(),
+                child: const AzkarScreen(),
+              )),
+              routes: [
+                GoRoute(
+                  name: AddAzkarScreen.name,
+                  path: AddAzkarScreen.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  pageBuilder: (context, state) => CupertinoPage(
+                    fullscreenDialog: true,
+                    child: BlocProvider(
+                      create: (context) => AddAzkarCubit(getIt.get<AzkarRepository>()),
+                      child: const AddAzkarScreen(),
+                    ),
+                  ),
+                ),
+                GoRoute(
+                    name: AzkarDetailsScreen.name,
+                    path: AzkarDetailsScreen.name,
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (context, state) {
+                      final azkar = state.extra! as Azkar;
+                      return BlocProvider(
+                        create: (context) => AzkarDetailsBloc(getIt.get<AzkarRepository>(), azkar),
+                        child: AzkarDetailsScreen(azkar),
+                      );
+                    }),
+              ],
             ),
           ],
         ),

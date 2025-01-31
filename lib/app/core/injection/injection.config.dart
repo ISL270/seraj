@@ -12,6 +12,10 @@ import 'package:athar/app/core/firestore/firestore_service.dart' as _i516;
 import 'package:athar/app/core/injection/auth_module.dart' as _i982;
 import 'package:athar/app/core/isar/isar_service.dart' as _i651;
 import 'package:athar/app/core/l10n/l10n_service.dart' as _i560;
+import 'package:athar/app/features/azkar/data/azkar_isar_source.dart' as _i31;
+import 'package:athar/app/features/azkar/domain/azkar_repository.dart' as _i196;
+import 'package:athar/app/features/azkar/presentation/bloc/azkar_bloc.dart'
+    as _i1069;
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar_source.dart'
     as _i53;
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart'
@@ -57,18 +61,24 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i560.L10nService>(() => _i560.L10nService());
+    gh.singleton<_i31.AzkarIsarSource>(
+        () => _i31.AzkarIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i53.DaleelIsarSource>(
         () => _i53.DaleelIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i500.DuaIsarSource>(
         () => _i500.DuaIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i387.SettingsIsarSource>(
-        () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i183.DuaTagIsarSource>(
         () => _i183.DuaTagIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i387.SettingsIsarSource>(
+        () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i196.AzkarRepository>(
+        () => _i196.AzkarRepository(gh<_i31.AzkarIsarSource>()));
     gh.singleton<_i1008.DuaRepository>(
         () => _i1008.DuaRepository(gh<_i500.DuaIsarSource>()));
     gh.singleton<_i143.DaleelRepository>(
         () => _i143.DaleelRepository(gh<_i53.DaleelIsarSource>()));
+    gh.factory<_i1069.AzkarBloc>(
+        () => _i1069.AzkarBloc(gh<_i196.AzkarRepository>()));
     gh.factory<_i825.AddHadithCubit>(
         () => _i825.AddHadithCubit(gh<_i143.DaleelRepository>()));
     gh.singleton<_i257.SettingsRepository>(

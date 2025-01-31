@@ -84,7 +84,7 @@
   "explainationOfAthar":"شرح الاثر",
   "enterTextOfAthar": "ادخل نص الاثر",
   "ok":"موافق",
-  "cancel":"الغاء",
+  "cancel":"إلغاء",
   "areYouSure":"هل انت متاكد من حذف هذا الأثر؟",
   "daleelType":"نوع الدليل",
   "date":"التاريخ",
@@ -147,5 +147,14 @@
         "daleelDate":"آخر تحديث",
         "daleelHadithAuth":"صحة الحديث",
         "daleelDetails":"تفاصيل الدليل",
-        "wentWrong":"حدث خطا ما"
+        "wentWrong":"حدث خطا ما",
+        "addAzkar":"إضافة اذكار",
+        "azkarAdded":"تم إضافة الذكر",
+        "azkarText":"الذكر",
+        "azkarExplain":"الشرح",
+        "azkarRepeat":"عدد التكرار",
+        "enterTextOfAzkar":"ادخل نص الذكر",
+        "noAzkars":"لا يوجد أذكار",
+        "noDescription":"لا يوجد شرح",
+        "repetition":"التكرار"
       }
