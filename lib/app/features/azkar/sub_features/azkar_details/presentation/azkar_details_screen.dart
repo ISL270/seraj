@@ -61,9 +61,6 @@ class AzkarDetailsScreen extends StatelessWidget {
                     ),
                     Gap(20.h),
                     Container(
-                      height: azkar.text.length >= 200
-                          ? 300.h + (1.1 * azkar.text.length)
-                          : 300.h + (0.3 * azkar.text.length),
                       decoration: BoxDecoration(
                         color: context.colorsX.primary.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(16.r),
@@ -75,54 +72,58 @@ class AzkarDetailsScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Spacer(flex: 4),
-                          Padding(
-                            padding: EdgeInsets.all(12.sp),
-                            child: Text(
-                              azkar.text,
-                              style: context.textThemeX.heading.copyWith(
-                                fontSize: 24.sp,
-                                fontFamily: GoogleFonts.amiri().fontFamily,
+                      child: IntrinsicHeight(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Gap(25.h),
+                            const Spacer(flex: 4),
+                            Padding(
+                              padding: EdgeInsets.all(12.sp),
+                              child: Text(
+                                azkar.text,
+                                style: context.textThemeX.heading.copyWith(
+                                  fontSize: 24.sp,
+                                  fontFamily: GoogleFonts.amiri().fontFamily,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
-                          ),
-                          const Spacer(flex: 2),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              BlocSelector<AzkarDetailsBloc, AzkarDetailsState, bool>(
-                                selector: (state) => state.azkar.isFavourite,
-                                builder: (context, isFavourite) {
-                                  return IconButton(
-                                    onPressed: () => context
-                                        .read<AzkarDetailsBloc>()
-                                        .add(const AzkarFavouriteToggled()),
-                                    icon: Icon(
-                                      isFavourite
-                                          ? FontAwesomeIcons.solidHeart
-                                          : FontAwesomeIcons.heart,
-                                      color: isFavourite
-                                          ? context.colorsX.error
-                                          : context.colorsX.onBackground,
-                                      size: 20.r,
-                                    ),
-                                  );
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(FontAwesomeIcons.trash, size: 18.r),
-                                onPressed: () =>
-                                    context.read<AzkarDetailsBloc>().add(const AzkarDeleted()),
-                              ),
-                              Gap(10.w),
-                            ],
-                          ),
-                          const Spacer(),
-                        ],
+                            const Spacer(flex: 2),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                BlocSelector<AzkarDetailsBloc, AzkarDetailsState, bool>(
+                                  selector: (state) => state.azkar.isFavourite,
+                                  builder: (context, isFavourite) {
+                                    return IconButton(
+                                      onPressed: () => context
+                                          .read<AzkarDetailsBloc>()
+                                          .add(const AzkarFavouriteToggled()),
+                                      icon: Icon(
+                                        isFavourite
+                                            ? FontAwesomeIcons.solidHeart
+                                            : FontAwesomeIcons.heart,
+                                        color: isFavourite
+                                            ? context.colorsX.error
+                                            : context.colorsX.onBackground,
+                                        size: 20.r,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(FontAwesomeIcons.trash, size: 18.r),
+                                  onPressed: () =>
+                                      context.read<AzkarDetailsBloc>().add(const AzkarDeleted()),
+                                ),
+                                Gap(10.w),
+                              ],
+                            ),
+                            const Spacer(),
+                            Gap(25.h),
+                          ],
+                        ),
                       ),
                     ),
                     Gap(25.h),
