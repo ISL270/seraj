@@ -10,12 +10,12 @@ import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
+import 'package:athar/app/widgets/details_text_widget.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class DaleelDetailsScreen extends StatelessWidget {
   const DaleelDetailsScreen({
@@ -50,65 +50,20 @@ class DaleelDetailsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Gap(10.h),
-              Container(
-                height: 300.h,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: context.settingsBloc.state.settings.isThemeDark
-                      ? context.colorsX.secondary.withValues(alpha: 0.2)
-                      : context.colorsX.primary.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(16.sp),
-                  boxShadow: [
-                    BoxShadow(
-                      color: context.colorsX.primary.withValues(alpha: 0.2),
-                      spreadRadius: 2.r,
-                      blurRadius: 3.r,
-                      offset: const Offset(0, 1),
+              DetailsTextWidget(
+                text: daleel.text,
+                actions: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      FontAwesomeIcons.heart,
+                      color: context.colorsX.onBackground,
+                      size: 20.r,
                     ),
-                  ],
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(32.sp),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Align(
-                        child: Text(
-                          daleel.text,
-                          style: context.textThemeX.large.copyWith(
-                            fontFamily: GoogleFonts.amiri().fontFamily,
-                            fontSize: 20.sp,
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          CircleAvatar(
-                            radius: 18.r,
-                            backgroundColor: context.colorsX.primary,
-                            child: Icon(
-                              FontAwesomeIcons.heart,
-                              color: context.colorsX.background,
-                              size: 18.r,
-                            ),
-                          ),
-                          Gap(8.w),
-                          CircleAvatar(
-                            backgroundColor: context.colorsX.primary,
-                            radius: 18.r,
-                            child: Icon(
-                              FontAwesomeIcons.shareNodes,
-                              color: context.colorsX.background,
-                              size: 18.r,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
                   ),
-                ),
+                  IconButton(icon: Icon(FontAwesomeIcons.trash, size: 18.r), onPressed: () {}),
+                  Gap(10.w),
+                ],
               ),
               Gap(15.h),
               _DaleelDetailsWidget(

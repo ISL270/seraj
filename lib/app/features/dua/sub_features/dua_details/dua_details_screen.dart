@@ -7,15 +7,16 @@ import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/sub_features/dua_details/bloc/dua_details_bloc.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
+import 'package:athar/app/widgets/details_text_widget.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 
 class DuaDetailsScreen extends StatelessWidget {
@@ -53,52 +54,27 @@ class DuaDetailsScreen extends StatelessWidget {
               ],
             ),
             Gap(20.h),
-            Container(
-              height: 300.h,
-              decoration: BoxDecoration(
-                color: context.colorsX.primary.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(16.sp),
-                boxShadow: [
-                  BoxShadow(
-                    color: context.colorsX.primary.withValues(alpha: 0.2),
-                    spreadRadius: 2,
-                    blurRadius: 3,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(flex: 4),
-                  Text(
-                    dua.text,
-                    style: context.textThemeX.heading.copyWith(
-                      fontSize: 28.sp,
-                      fontFamily: GoogleFonts.amiriQuran().fontFamily,
+            DetailsTextWidget(
+              text: dua.text,
+              actions: [
+                BlocSelector<DuaDetailsBloc, DuaDetailsState, bool>(
+                  selector: (state) => state.dua.isFavourite,
+                  builder: (context, isFavourite) => IconButton(
+                    onPressed: () =>
+                        context.read<DuaDetailsBloc>().add(const DuaFavouriteToggled()),
+                    icon: Icon(
+                      isFavourite ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
+                      color: isFavourite ? context.colorsX.error : context.colorsX.onBackground,
+                      size: 20.r,
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                  const Spacer(flex: 2),
-                  Row(
-                    children: [
-                      BlocSelector<DuaDetailsBloc, DuaDetailsState, bool>(
-                        selector: (state) => state.dua.isFavourite,
-                        builder: (context, isFavourite) => IconButton(
-                          onPressed: () =>
-                              context.read<DuaDetailsBloc>().add(const DuaFavouriteToggled()),
-                          icon: Icon(isFavourite ? Icons.favorite : Icons.favorite_border),
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () => context.read<DuaDetailsBloc>().add(const DuaDeleted()),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                ],
-              ),
+                ),
+                IconButton(
+                  icon: Icon(FontAwesomeIcons.trash, size: 18.r),
+                  onPressed: () => context.read<DuaDetailsBloc>().add(const DuaDeleted()),
+                ),
+                Gap(10.w),
+              ],
             ),
             Gap(25.h),
             ExpandablePanel(
