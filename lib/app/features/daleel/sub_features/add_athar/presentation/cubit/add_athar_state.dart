@@ -13,7 +13,7 @@ final class AddAtharState extends Equatable with FormzMixin {
     this.sayer = '',
     this.description = '',
     this.status = const Initial(),
-    this.tags = const [],
+    this.tags = const {},
   });
 
   final double sliderValue;
@@ -21,7 +21,7 @@ final class AddAtharState extends Equatable with FormzMixin {
   final String sayer;
   final String description;
   final VoidStatus status;
-  final List<Tag> tags;
+  final Set<Tag> tags;
 
   AddAtharState copyWith({
     double? sliderValue,
@@ -29,7 +29,7 @@ final class AddAtharState extends Equatable with FormzMixin {
     String? sayer,
     String? description,
     VoidStatus? status,
-    List<Tag>? tags,
+    Set<Tag>? tags,
   }) {
     return AddAtharState(
         sliderValue: sliderValue ?? this.sliderValue,

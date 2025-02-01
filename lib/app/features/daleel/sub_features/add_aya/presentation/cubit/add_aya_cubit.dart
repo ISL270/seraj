@@ -110,12 +110,8 @@ class AddAyaCubit extends Cubit<AddAyaState> {
     _updateControllers();
   }
 
-  void tagsChanged(List<Tag> newTags) {
-    final uniqueTags = newTags.toSet().where((tag) => tag.name.isNotEmpty).toList();
-    if (uniqueTags.map((t) => t.name).toList().toString() !=
-        state.tags.map((t) => t.name).toList().toString()) {
-      emit(state.copyWith(tags: uniqueTags));
-    }
+  void tagsChanged(Set<Tag> newTags) {
+    emit(state.copyWith(tags: newTags));
   }
 
   Future<void> saveAyaForm() async {
@@ -129,7 +125,7 @@ class AddAyaCubit extends Cubit<AddAyaState> {
         lastAya: state.lastAya,
         lastRevisedAt: DateTime.now(),
         priority: 1.0.getPriority(),
-        tags: [],
+        tags: state.tags,
       );
       emit(state.copyWith(status: const Success('Saved Aya Successfully')));
     } catch (e) {

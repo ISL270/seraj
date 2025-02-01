@@ -57,13 +57,16 @@ class AddOtherScreen extends StatelessWidget {
                       final cubit = context.read<AddOtherCubit>();
                       return TagSelectionWidget(
                         tags: state.tags,
-                        onAddTag: (tag) => cubit.tagsChanged([...state.tags, tag]),
-                        onRemoveTag: (tag) {
-                          final updatedTags = state.tags.where((t) => t != tag).toList();
-                          cubit.tagsChanged(updatedTags);
+                        onAddTag: (tag) {
+                          final updatedTags = {...state.tags}; // Create a new modifiable set
+                          if (updatedTags.add(tag)) {
+                            // Modify the copy, not the original
+                            cubit.tagsChanged(updatedTags);
+                          }
                         },
-                        onClearTags: () => cubit.tagsChanged([]),
-                        errorMessageBuilder: (tag) => '$tag ${context.l10n.alreadyExists}',
+                        onRemoveTag: (tag) => cubit.tagsChanged({...state.tags}..remove(tag)),
+                        onClearTags: () => cubit.tagsChanged({}),
+                        errorMessageBuilder: (tag) => '${tag.name} ${context.l10n.alreadyExists}',
                       );
                     },
                   ),

@@ -13,6 +13,7 @@ import 'package:form_inputs/form_inputs.dart';
 
 class AddOtherCubit extends Cubit<AddOtherState> {
   final DaleelRepository _repository;
+
   AddOtherCubit(this._repository) : super(const AddOtherState());
 
   void otherTextChanged(String value) => emit(state.copyWith(other: Name.dirty(value)));
@@ -23,12 +24,8 @@ class AddOtherCubit extends Cubit<AddOtherState> {
 
   void sliderPriorityChanged(double value) => emit(state.copyWith(sliderValue: value));
 
-  void tagsChanged(List<Tag> newTags) {
-    final uniqueTags = newTags.toSet().where((tag) => tag.name.isNotEmpty).toList();
-    if (uniqueTags.map((t) => t.name).toList().toString() !=
-        state.tags.map((t) => t.name).toList().toString()) {
-      emit(state.copyWith(tags: uniqueTags));
-    }
+  void tagsChanged(Set<Tag> newTags) {
+    emit(state.copyWith(tags: newTags));
   }
 
   Future<void> saveOtherForm() async {
@@ -40,7 +37,7 @@ class AddOtherCubit extends Cubit<AddOtherState> {
         description: state.description,
         priority: Priority.fromDouble(state.sliderValue),
         lastRevisedAt: DateTime.now(),
-        tags: [], // not used for now
+        tags: state.tags,
       );
       emit(state.copyWith(status: const Success('Saved Other Successfully')));
     } catch (e) {

@@ -16,7 +16,7 @@ final class DuaRepository extends Repository<Dua, DuaIsar> {
   void addDua({
     required String text,
     required String reward,
-    required List<Tag> tags,
+    required Set<Tag> tags,
     required String description,
   }) {
     _localSource.addDuaWithTags(

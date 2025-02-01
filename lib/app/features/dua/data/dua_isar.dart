@@ -36,7 +36,7 @@ final class DuaIsar extends CacheModel<Dua> {
     return Dua(
       id: id,
       text: text,
-      tags: tags.map((e) => e.toDomain()).toList(),
+      tags: tags.map((e) => e.toDomain()).toSet(),
       reward: reward,
       isFavourite: isFavourite,
       description: description,

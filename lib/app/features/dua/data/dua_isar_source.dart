@@ -26,7 +26,7 @@ final class DuaIsarSource extends IsarSource<Dua, DuaIsar> {
   void addDuaWithTags({
     required String text,
     required String reward,
-    required List<Tag> tags,
+    required Set<Tag> tags,
     required String description,
   }) {
     final duaIsar = DuaIsar(

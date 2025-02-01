@@ -36,12 +36,8 @@ class AddHadithCubit extends Cubit<AddHadithState> {
     emit(state.copyWith(sliderValue: value));
   }
 
-  void tagsChanged(List<Tag> newTags) {
-    final uniqueTags = newTags.toSet().where((tag) => tag.name.isNotEmpty).toList();
-    if (uniqueTags.map((t) => t.name).toList().toString() !=
-        state.tags.map((t) => t.name).toList().toString()) {
-      emit(state.copyWith(tags: uniqueTags));
-    }
+  void tagsChanged(Set<Tag> newTags) {
+    emit(state.copyWith(tags: newTags));
   }
 
   Future<void> saveHadithForm() async {
@@ -54,7 +50,7 @@ class AddHadithCubit extends Cubit<AddHadithState> {
         extraction: state.extraction,
         authenticity: state.authenticity,
         priority: Priority.fromDouble(state.sliderValue),
-        tags: [], // not used for now
+        tags: state.tags,
       );
       emit(state.copyWith(status: const Success('Saved Hadith Successfully')));
     } catch (e) {

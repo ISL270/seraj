@@ -26,7 +26,7 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     required String sayer,
     required Priority priority,
     required String extraction,
-    required List<Tag> tags,
+    required Set<Tag> tags,
     required String description,
     required HadithAuthenticity? authenticity,
   }) async {
@@ -53,7 +53,7 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     required String text,
     required String sayer,
     required Priority priority,
-    required List<Tag> tags,
+    required Set<Tag> tags,
     required String description,
   }) async {
     try {
@@ -81,7 +81,7 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     required int lastAya,
     required Priority priority,
     required DateTime lastRevisedAt,
-    required List<Tag> tags,
+    required Set<Tag> tags,
     String? sayer,
   }) async {
     try {
@@ -114,7 +114,7 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     required String description,
     required Priority priority,
     required DateTime lastRevisedAt,
-    required List<Tag> tags,
+    required Set<Tag> tags,
   }) async {
     try {
       final daleelIsar = DaleelIsar(

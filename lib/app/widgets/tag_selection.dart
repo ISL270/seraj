@@ -10,7 +10,7 @@ class TagSelectionWidget extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
-  final List<Tag> tags;
+  final Set<Tag> tags;
   final void Function(Tag tag) onAddTag;
   final void Function(Tag tag) onRemoveTag;
   final VoidCallback onClearTags;
@@ -28,13 +28,15 @@ class TagSelectionWidget extends StatelessWidget {
   void _addTag(BuildContext context, String tagName) {
     if (tagName.isNotEmpty) {
       final newTag = Tag(null, tagName);
-      if (!tags.any((tag) => tag.name == tagName)) {
+      final updatedTags = {...tags}; // Create a new modifiable set
+
+      if (updatedTags.add(newTag)) { // Now we modify a copy, not the original set
         onAddTag(newTag);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content:
-                Text(errorMessageBuilder?.call(newTag) ?? '$tagName ${context.l10n.alreadyExists}'),
+            Text(errorMessageBuilder?.call(newTag) ?? '$tagName ${context.l10n.alreadyExists}'),
           ),
         );
       }
