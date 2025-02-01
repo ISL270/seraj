@@ -28,15 +28,14 @@ class TagSelectionWidget extends StatelessWidget {
   void _addTag(BuildContext context, String tagName) {
     if (tagName.isNotEmpty) {
       final newTag = Tag(null, tagName);
-      final updatedTags = {...tags}; // Create a new modifiable set
-
-      if (updatedTags.add(newTag)) { // Now we modify a copy, not the original set
+      final updatedTags = {...tags};
+      if (updatedTags.add(newTag)) {
         onAddTag(newTag);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content:
-            Text(errorMessageBuilder?.call(newTag) ?? '$tagName ${context.l10n.alreadyExists}'),
+                Text(errorMessageBuilder?.call(newTag) ?? '$tagName ${context.l10n.alreadyExists}'),
           ),
         );
       }

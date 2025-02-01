@@ -68,7 +68,6 @@ class AddHadith extends StatelessWidget {
                         },
                         onRemoveTag: (tag) => cubit.tagsChanged({...state.tags}..remove(tag)),
                         onClearTags: () => cubit.tagsChanged({}),
-                        errorMessageBuilder: (tag) => '${tag.name} ${context.l10n.alreadyExists}',
                       );
                     },
                   ),
