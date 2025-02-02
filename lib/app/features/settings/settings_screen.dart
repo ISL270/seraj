@@ -3,6 +3,7 @@ import 'package:athar/app/core/extension_methods/english_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/l10n/language.dart';
+import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/features/settings/sub_features/tags_details/presentation/tags_screen.dart';
@@ -10,6 +11,7 @@ import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,13 +26,26 @@ class SettingsScreen extends StatelessWidget {
       body: BlocBuilder<SettingsBloc, SettingsState>(
         builder: (context, settings) {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: EdgeInsets.symmetric(vertical: 20.h),
             child: Column(
               children: [
-                ListTile(
-                  onTap: () => context.pushNamed(TagsScreen.name),
-                  title: const Text('tags'),
+                Card(
+                  surfaceTintColor: context.colorsX.background,
+                  color: context.colorsX.background,
+                  elevation: 3, // Adjust elevation for shadow intensity
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12), // Optional: Rounded corners
+                  ),
+                  child: ListTile(
+                    onTap: () => context.pushNamed(TagsScreen.name),
+                    title: Text(
+                      "# ${context.l10n.tags}",
+                      style: context.textThemeX.medium,
+                    ),
+                    subtitle: Text(context.l10n.editTags),
+                  ),
                 ),
+                Gap(20.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

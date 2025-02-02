@@ -1,8 +1,10 @@
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
+import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
+import 'package:athar/app/features/settings/sub_features/tags_details/domain/tags_repository.dart';
 import 'package:athar/app/features/settings/sub_features/tags_details/presentation/cubit/tags_cubit.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
@@ -18,20 +20,23 @@ class TagsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Screen(
-      padding: EdgeInsets.zero,
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'التبويبات',
-          style: context.textThemeX.heading.bold,
+    return BlocProvider(
+      create: (context) => TagsCubit(getIt.get<TagsRepository>()),
+      child: Screen(
+        padding: EdgeInsets.zero,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            'التبويبات',
+            style: context.textThemeX.heading.bold,
+          ),
         ),
-      ),
-      body: const Column(
-        children: [
-          _SearchBarWidget(),
-          Expanded(child: _TagListWidget()),
-        ],
+        body: const Column(
+          children: [
+            _SearchBarWidget(),
+            Expanded(child: _TagListWidget()),
+          ],
+        ),
       ),
     );
   }

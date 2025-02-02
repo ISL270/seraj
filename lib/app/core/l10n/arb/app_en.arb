@@ -158,6 +158,8 @@
       "noDescription":"No Description",
       "repetition":"Repetition",
       "tags": "Tags",
-      "update": "Update"
+      "update": "Update",
+      "editTags": "Edit Tags"
+
 
 }
