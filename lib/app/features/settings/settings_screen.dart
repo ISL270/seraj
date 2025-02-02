@@ -39,7 +39,7 @@ class SettingsScreen extends StatelessWidget {
                   child: ListTile(
                     onTap: () => context.pushNamed(TagsScreen.name),
                     title: Text(
-                      "# ${context.l10n.tags}",
+                      '# ${context.l10n.tags}',
                       style: context.textThemeX.medium,
                     ),
                     subtitle: Text(context.l10n.editTags),
