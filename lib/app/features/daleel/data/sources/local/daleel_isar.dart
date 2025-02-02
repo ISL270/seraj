@@ -3,7 +3,7 @@ import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
-import 'package:athar/app/features/dua/sub_features/dua_tag/data/dua_tag_isar.dart';
+import 'package:athar/app/features/daleel/sub_features/tags/data/daleel_tag_isar.dart';
 import 'package:isar/isar.dart';
 
 part 'daleel_isar.g.dart';
@@ -18,7 +18,7 @@ final class DaleelIsar extends CacheModel<Daleel> {
   Priority priority;
   @Enumerated(EnumType.name)
   DaleelType daleelType;
-  final tags = IsarLinks<DuaTagIsar>();
+  final tags = IsarLinks<DaleelTagIsar>();
   DateTime lastRevisedAt;
 
   // Hadith-specific fields

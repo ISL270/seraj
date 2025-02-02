@@ -29,6 +29,8 @@ import 'package:athar/app/features/dua/sub_features/dua_details/bloc/dua_details
 import 'package:athar/app/features/dua/sub_features/dua_details/dua_details_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
 import 'package:athar/app/features/settings/settings_screen.dart';
+import 'package:athar/app/features/settings/sub_features/tags_details/presentation/cubit/tags_cubit.dart';
+import 'package:athar/app/features/settings/sub_features/tags_details/presentation/tags_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -97,6 +99,18 @@ final appRouter = GoRouter(
                     child: BlocProvider(
                       create: (context) => AddOtherCubit(getIt.get<DaleelRepository>()),
                       child: const AddOtherScreen(),
+                    ),
+                  ),
+                ),
+                GoRoute(
+                  name: TagsScreen.name,
+                  path: TagsScreen.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  pageBuilder: (context, state) => CupertinoPage(
+                    fullscreenDialog: true,
+                    child: BlocProvider(
+                      create: (context) => TagsCubit(),
+                      child: const TagsScreen(),
                     ),
                   ),
                 ),

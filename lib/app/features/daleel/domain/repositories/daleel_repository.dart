@@ -41,7 +41,7 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
         hadithExtraction: extraction,
         hadithAuthenticity: authenticity,
       );
-      _localSource.put(daleelIsar);
+      _localSource.addDaleelWithTags(daleelIsar: daleelIsar, tags: tags);
       return right(null);
     } catch (e) {
       log(e.toString());
@@ -65,7 +65,7 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
         description: description.isEmpty ? null : description,
         lastRevisedAt: DateTime.now(),
       );
-      _localSource.put(daleelIsar);
+      _localSource.addDaleelWithTags(daleelIsar: daleelIsar, tags: tags);
       return right(null);
     } catch (e) {
       log(e.toString());
@@ -96,7 +96,7 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
         firstAya: firstAya,
         lastAya: lastAya,
       );
-      _localSource.put(daleelIsar);
+      _localSource.addDaleelWithTags(daleelIsar: daleelIsar, tags: tags);
       return right(null);
     } catch (e) {
       log(e.toString());
@@ -125,7 +125,7 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
         description: description.isEmpty ? null : description,
         lastRevisedAt: lastRevisedAt,
       );
-      _localSource.put(daleelIsar);
+      _localSource.addDaleelWithTags(daleelIsar: daleelIsar, tags: tags);
       return right(null);
     } catch (e) {
       log(e.toString());

@@ -24,6 +24,8 @@ import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart'
     as _i722;
 import 'package:athar/app/features/daleel/sub_features/add_hadith/presentation/cubit/add_hadith_cubit.dart'
     as _i825;
+import 'package:athar/app/features/daleel/sub_features/tags/data/daleel_tag_isar_source.dart'
+    as _i663;
 import 'package:athar/app/features/dua/data/dua_isar_source.dart' as _i500;
 import 'package:athar/app/features/dua/domain/dua_repository.dart' as _i1008;
 import 'package:athar/app/features/dua/sub_features/add_dua/cubit/add_dua_cubit.dart'
@@ -61,16 +63,18 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i560.L10nService>(() => _i560.L10nService());
-    gh.singleton<_i31.AzkarIsarSource>(
-        () => _i31.AzkarIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i53.DaleelIsarSource>(
         () => _i53.DaleelIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i500.DuaIsarSource>(
         () => _i500.DuaIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i183.DuaTagIsarSource>(
-        () => _i183.DuaTagIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i387.SettingsIsarSource>(
         () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i183.DuaTagIsarSource>(
+        () => _i183.DuaTagIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i31.AzkarIsarSource>(
+        () => _i31.AzkarIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i663.DaleelTagIsarSource>(
+        () => _i663.DaleelTagIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i196.AzkarRepository>(
         () => _i196.AzkarRepository(gh<_i31.AzkarIsarSource>()));
     gh.singleton<_i1008.DuaRepository>(

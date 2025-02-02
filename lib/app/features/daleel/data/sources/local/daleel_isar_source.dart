@@ -1,10 +1,12 @@
 // ignore_for_file: inference_failure_on_function_invocation
 
 import 'package:athar/app/core/isar/isar_source.dart';
+import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
+import 'package:athar/app/features/daleel/sub_features/tags/data/daleel_tag_isar.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -77,6 +79,19 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
       debugPrint('########### Error: $e ###########');
       return null; // Return null in case of an exception.
     }
+  }
+
+  void addDaleelWithTags({
+    required DaleelIsar daleelIsar,
+    required Set<Tag> tags,
+  }) {
+    final isar = isarService.db;
+    final daleelTags = tags.map(DaleelTagIsar.fromDomain).toList();
+    isar.writeTxnSync(() {
+      isar.daleelTagIsars.putAllSync(daleelTags);
+      daleelIsar.tags.addAll(daleelTags);
+      isar.daleelIsars.putSync(daleelIsar);
+    });
   }
 
   void deleteDoc(int id) => isarService.db.writeTxn(() => isarService.db.daleelIsars.delete(id));

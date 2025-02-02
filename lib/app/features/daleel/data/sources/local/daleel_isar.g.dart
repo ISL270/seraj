@@ -113,7 +113,7 @@ const DaleelIsarSchema = CollectionSchema(
     r'tags': LinkSchema(
       id: -1761779107899401057,
       name: r'tags',
-      target: r'DuaTagIsar',
+      target: r'DaleelTagIsar',
       single: false,
     )
   },
@@ -295,7 +295,7 @@ List<IsarLinkBase<dynamic>> _daleelIsarGetLinks(DaleelIsar object) {
 
 void _daleelIsarAttach(IsarCollection<dynamic> col, Id id, DaleelIsar object) {
   object.id = id;
-  object.tags.attach(col, col.isar.collection<DuaTagIsar>(), r'tags', id);
+  object.tags.attach(col, col.isar.collection<DaleelTagIsar>(), r'tags', id);
 }
 
 extension DaleelIsarQueryWhereSort
@@ -2114,7 +2114,7 @@ extension DaleelIsarQueryObject
 extension DaleelIsarQueryLinks
     on QueryBuilder<DaleelIsar, DaleelIsar, QFilterCondition> {
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> tags(
-      FilterQuery<DuaTagIsar> q) {
+      FilterQuery<DaleelTagIsar> q) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'tags');
     });

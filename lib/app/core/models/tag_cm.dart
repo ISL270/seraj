@@ -7,5 +7,5 @@ abstract base class TagCM extends CacheModel<Tag> {
   TagCM({required this.name, super.id});
 
   @override
-  Tag toDomain() => Tag(id!, name);
+  Tag toDomain() => Tag(id, name);
 }
