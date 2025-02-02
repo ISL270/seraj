@@ -89,6 +89,7 @@ class _TagListWidget extends StatelessWidget {
 
 class _TagWidget extends StatelessWidget {
   final Tag tag;
+
   const _TagWidget({required this.tag});
 
   @override

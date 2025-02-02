@@ -38,6 +38,10 @@ import 'package:athar/app/features/settings/domain/settings_repository.dart'
     as _i257;
 import 'package:athar/app/features/settings/settings/settings_bloc.dart'
     as _i240;
+import 'package:athar/app/features/settings/sub_features/tags_details/domain/tags_repository.dart'
+    as _i317;
+import 'package:athar/app/features/settings/sub_features/tags_details/presentation/cubit/tags_cubit.dart'
+    as _i1070;
 import 'package:firebase_auth/firebase_auth.dart' as _i59;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:google_sign_in/google_sign_in.dart' as _i116;
@@ -81,6 +85,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i1008.DuaRepository(gh<_i500.DuaIsarSource>()));
     gh.singleton<_i143.DaleelRepository>(
         () => _i143.DaleelRepository(gh<_i53.DaleelIsarSource>()));
+    gh.singleton<_i317.TagsRepository>(() => _i317.TagsRepository(
+          gh<_i183.DuaTagIsarSource>(),
+          gh<_i663.DaleelTagIsarSource>(),
+        ));
     gh.factory<_i1069.AzkarBloc>(
         () => _i1069.AzkarBloc(gh<_i196.AzkarRepository>()));
     gh.factory<_i825.AddHadithCubit>(
@@ -93,6 +101,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i240.SettingsBloc(gh<_i257.SettingsRepository>()));
     gh.factory<_i722.DaleelBloc>(
         () => _i722.DaleelBloc(gh<_i143.DaleelRepository>()));
+    gh.singleton<_i1070.TagsCubit>(
+        () => _i1070.TagsCubit(gh<_i317.TagsRepository>()));
     return this;
   }
 }

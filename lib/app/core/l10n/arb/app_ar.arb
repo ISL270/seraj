@@ -156,5 +156,7 @@
         "enterTextOfAzkar":"ادخل نص الذكر",
         "noAzkars":"لا يوجد أذكار",
         "noDescription":"لا يوجد شرح",
-        "repetition":"التكرار"
+        "repetition":"التكرار",
+          "tag": "التبويبات",
+          "update": "تحديث"
       }

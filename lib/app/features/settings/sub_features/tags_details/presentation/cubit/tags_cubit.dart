@@ -1,27 +1,31 @@
+import 'dart:developer';
+
 import 'package:athar/app/core/models/tag.dart';
+import 'package:athar/app/features/settings/sub_features/tags_details/domain/tags_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:injectable/injectable.dart';
 
 part 'tags_state.dart';
 
+@singleton
 class TagsCubit extends Cubit<TagsState> {
-  TagsCubit() : super(const TagsState()) {
-    loadTags();
-    searchCntrlr = TextEditingController();
-  }
-
+  final TagsRepository _repository;
   late final TextEditingController searchCntrlr;
 
-  void loadTags() {
-    final tags = [
-      const Tag(null, 'تبويبات السنة'),
-      const Tag(null, 'تبويبات الفقه'),
-      const Tag(null, 'تبويبات السيرة'),
-    ];
+  TagsCubit(this._repository) : super(const TagsState()) {
+    searchCntrlr = TextEditingController();
+    loadTags();
+  }
 
-    print('Loaded Tags: $tags'); // Debugging
-    emit(state.copyWith(allTags: tags, filteredTags: tags));
+  void loadTags() {
+    try {
+      final tags = _repository.getAllTags(); // Fetch tags from the repository
+      emit(state.copyWith(allTags: tags, filteredTags: tags));
+    } catch (e) {
+      log('Error loading tags: $e');
+    }
   }
 
   void searchTags(String query) {

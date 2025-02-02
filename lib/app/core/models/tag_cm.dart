@@ -8,4 +8,8 @@ abstract base class TagCM extends CacheModel<Tag> {
 
   @override
   Tag toDomain() => Tag(id, name);
+
+  static TagCM fromDomain(Tag tag) {
+    throw UnimplementedError('fromDomain must be implemented in a subclass');
+  }
 }

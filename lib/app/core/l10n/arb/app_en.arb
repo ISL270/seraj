@@ -156,6 +156,8 @@
       "enterTextOfAzkar":"Enter Text Of Azkar",
       "noAzkars":"No Azkars Added yet!",
       "noDescription":"No Description",
-      "repetition":"Repetition"
+      "repetition":"Repetition",
+      "tags": "Tags",
+      "update": "Update"
 
 }

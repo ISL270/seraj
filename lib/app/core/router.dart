@@ -109,7 +109,7 @@ final appRouter = GoRouter(
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (context) => TagsCubit(),
+                      create: (context) => getIt.get<TagsCubit>(),
                       child: const TagsScreen(),
                     ),
                   ),
