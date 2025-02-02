@@ -142,12 +142,14 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     final cms = _localSource.getDaleels(
       searchTerm,
       page: page,
-      // filters: filters,
+      filters: filters,
       pageSize: pageSize,
     );
 
     return cms.map((e) => e.toDomain()).toList();
   }
+
+  void deleteDoc(int id) => _localSource.deleteDoc(id);
 
   @override
   DaleelIsar fromDomain(Daleel dm) => DaleelIsar.fromDomain(dm);

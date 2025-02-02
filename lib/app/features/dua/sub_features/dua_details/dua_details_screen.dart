@@ -9,15 +9,14 @@ import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/details_text_widget.dart';
 import 'package:athar/app/widgets/screen.dart';
+import 'package:athar/app/widgets/share_and_copy_widget.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:share_plus/share_plus.dart';
 
 class DuaDetailsScreen extends StatelessWidget {
   const DuaDetailsScreen(this.dua, {super.key});
@@ -98,55 +97,11 @@ class DuaDetailsScreen extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            _ShareAndCopyWidget(text: dua.text),
+            ShareAndCopyWidget(text: dua.text),
             Gap(20.h)
           ],
         ),
       ),
-    );
-  }
-}
-
-class _ShareAndCopyWidget extends StatelessWidget {
-  final String text;
-
-  const _ShareAndCopyWidget({required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            elevation: 0,
-            backgroundColor: context.colorsX.primary.withValues(alpha: 0.5),
-          ),
-          onPressed: () => Share.share(text),
-          icon: Icon(Icons.share, color: context.colorsX.onBackground),
-          label: Text(
-            context.l10n.share,
-            style: context.textThemeX.medium.copyWith(color: context.colorsX.onBackground),
-          ),
-        ),
-        ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            elevation: 0,
-            backgroundColor: context.colorsX.primary.withValues(alpha: 0.5),
-          ),
-          onPressed: () {
-            Clipboard.setData(ClipboardData(text: text));
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(context.l10n.copied)),
-            );
-          },
-          icon: Icon(Icons.copy, color: context.colorsX.onBackground),
-          label: Text(
-            context.l10n.copy,
-            style: context.textThemeX.medium.copyWith(color: context.colorsX.onBackground),
-          ),
-        ),
-      ],
     );
   }
 }

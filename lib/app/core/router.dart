@@ -18,6 +18,7 @@ import 'package:athar/app/features/daleel/sub_features/add_hadith/presentation/a
 import 'package:athar/app/features/daleel/sub_features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/add_other/presentation/add_other_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_other/presentation/cubit/add_other_cubit.dart';
+import 'package:athar/app/features/daleel/sub_features/daleel_details/bloc/daleel_details_bloc.dart';
 import 'package:athar/app/features/daleel/sub_features/daleel_details/presentation/daleel_details_screen.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
@@ -105,8 +106,12 @@ final appRouter = GoRouter(
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
-                    child: DaleelDetailsScreen(
-                      daleel: state.extra! as Daleel,
+                    child: BlocProvider(
+                      create: (context) =>
+                          DaleelDetailsBloc(getIt.get<DaleelRepository>(), state.extra! as Daleel),
+                      child: DaleelDetailsScreen(
+                        state.extra! as Daleel,
+                      ),
                     ),
                   ),
                 ),
