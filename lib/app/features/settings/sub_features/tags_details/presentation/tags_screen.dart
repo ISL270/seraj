@@ -21,38 +21,103 @@ class TagsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TagsCubit(getIt.get<TagsRepository>()),
-      child: Screen(
-        padding: EdgeInsets.zero,
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            'التبويبات',
-            style: context.textThemeX.heading.bold,
+      create: (_) => TagsCubit(getIt.get<TagsRepository>()),
+      child: DefaultTabController(
+        length: 2,
+        child: Screen(
+          padding: EdgeInsets.zero,
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text(
+              'التبويبات',
+              style: context.textThemeX.heading.bold,
+            ),
+            bottom: TabBar(
+              physics: const NeverScrollableScrollPhysics(),
+              indicatorColor: context.colorsX.primary,
+              labelColor: context.colorsX.primary,
+              unselectedLabelColor: Colors.grey,
+              tabs: const [
+                Tab(text: 'تبويبات الدليل'),
+                Tab(text: 'تبويبات الدعاء'),
+              ],
+            ),
           ),
-        ),
-        body: const Column(
-          children: [
-            _SearchBarWidget(),
-            Expanded(child: _TagListWidget()),
-          ],
+          body: const TabBarView(
+            children: [
+              _DaleelTagsWidget(),
+              _DuaTagsWidget(),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
+class _DaleelTagsWidget extends StatefulWidget {
+  const _DaleelTagsWidget();
+
+  @override
+  State<_DaleelTagsWidget> createState() => _DaleelTagsWidgetState();
+}
+
+class _DaleelTagsWidgetState extends State<_DaleelTagsWidget> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<TagsCubit>().loadTags(isDaleel: true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        _SearchBarWidget(isDaleel: true),
+        Expanded(child: _TagListWidget(isDaleel: true)),
+      ],
+    );
+  }
+}
+
+class _DuaTagsWidget extends StatefulWidget {
+  const _DuaTagsWidget();
+
+  @override
+  State<_DuaTagsWidget> createState() => _DuaTagsWidgetState();
+}
+
+class _DuaTagsWidgetState extends State<_DuaTagsWidget> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<TagsCubit>().loadTags(isDaleel: false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        _SearchBarWidget(isDaleel: false),
+        Expanded(child: _TagListWidget(isDaleel: false)),
+      ],
+    );
+  }
+}
+
 class _SearchBarWidget extends StatelessWidget {
-  const _SearchBarWidget();
+  final bool isDaleel;
+
+  const _SearchBarWidget({required this.isDaleel});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       child: BlocBuilder<TagsCubit, TagsState>(
         builder: (context, state) {
           return TextField(
-            controller: context.read<TagsCubit>().searchCntrlr,
+            controller: context.read<TagsCubit>().searchController,
             decoration: InputDecoration(
               isDense: true,
               hintText: context.l10n.search,
@@ -60,11 +125,11 @@ class _SearchBarWidget extends StatelessWidget {
               suffixIcon: state.searchQuery.isNotEmpty
                   ? IconButton(
                       icon: Icon(Icons.cancel, color: context.colorsX.error),
-                      onPressed: () => context.read<TagsCubit>().clearSearch(),
+                      onPressed: () => context.read<TagsCubit>().clearSearch(isDaleel: isDaleel),
                     )
                   : null,
             ),
-            onChanged: (value) => context.read<TagsCubit>().searchTags(value),
+            onChanged: (value) => context.read<TagsCubit>().searchTags(value, isDaleel: isDaleel),
           );
         },
       ),
@@ -73,7 +138,9 @@ class _SearchBarWidget extends StatelessWidget {
 }
 
 class _TagListWidget extends StatelessWidget {
-  const _TagListWidget();
+  final bool isDaleel;
+
+  const _TagListWidget({required this.isDaleel});
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +149,7 @@ class _TagListWidget extends StatelessWidget {
         return ListView.separated(
           separatorBuilder: (_, __) => Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
-            child: Divider(height: 1.h, color: context.colorsX.onBackground),
+            child: Divider(height: 1.h, color: context.colorsX.onBackgroundTint35),
           ),
           itemCount: state.filteredTags.length,
           itemBuilder: (context, index) => _TagWidget(tag: state.filteredTags[index]),
@@ -110,7 +177,6 @@ class _TagWidget extends StatelessWidget {
           ),
         ),
       ),
-      subtitle: Text('التصنيف : ${tag.name}', style: context.textThemeX.small),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -131,6 +197,8 @@ class _TagWidget extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
+          surfaceTintColor: context.colorsX.background,
+          backgroundColor: context.colorsX.background,
           title: const Text('تعديل التبويب'),
           content: TextField(controller: controller),
           actions: [

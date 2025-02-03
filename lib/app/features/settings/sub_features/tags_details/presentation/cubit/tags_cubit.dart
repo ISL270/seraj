@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/settings/sub_features/tags_details/domain/tags_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -12,37 +11,47 @@ part 'tags_state.dart';
 @singleton
 class TagsCubit extends Cubit<TagsState> {
   final TagsRepository _repository;
-  late final TextEditingController searchCntrlr;
+  late final TextEditingController searchController;
 
   TagsCubit(this._repository) : super(const TagsState()) {
-    searchCntrlr = TextEditingController();
-    loadTags();
+    searchController = TextEditingController();
+    loadTags(isDaleel: true);
   }
 
-  void loadTags() {
+  void loadTags({required bool isDaleel}) {
     try {
-      final tags = _repository.getAllTags(); // Fetch tags from the repository
-      emit(state.copyWith(allTags: tags, filteredTags: tags));
+      final tags = isDaleel ? _repository.getDaleelTags() : _repository.getDuaTags();
+      emit(state.copyWith(
+        daleelTags: isDaleel ? tags : state.daleelTags,
+        duaTags: isDaleel ? state.duaTags : tags,
+        filteredTags: tags,
+        searchQuery: '',
+      ));
     } catch (e) {
-      log('Error loading tags: $e');
+      log('Error fetching ${isDaleel ? 'Daleel' : 'Dua'} tags: $e');
     }
   }
 
-  void searchTags(String query) {
+  void searchTags(String query, {required bool isDaleel}) {
     final normalizedQuery = query.trim().toLowerCase();
+    final sourceTags = isDaleel ? state.daleelTags : state.duaTags;
     final filteredTags =
-        state.allTags.where((tag) => tag.name.toLowerCase().contains(normalizedQuery)).toList();
+        sourceTags.where((tag) => tag.name.toLowerCase().contains(normalizedQuery)).toList();
+
     emit(state.copyWith(filteredTags: filteredTags, searchQuery: query));
   }
 
-  void clearSearch() {
-    searchCntrlr.clear();
-    emit(state.copyWith(searchQuery: '', filteredTags: state.allTags));
+  void clearSearch({required bool isDaleel}) {
+    searchController.clear();
+    emit(state.copyWith(
+      searchQuery: '',
+      filteredTags: isDaleel ? state.daleelTags : state.duaTags,
+    ));
   }
 
   @override
   Future<void> close() {
-    searchCntrlr.dispose();
+    searchController.dispose();
     return super.close();
   }
 }

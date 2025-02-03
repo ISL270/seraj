@@ -10,10 +10,14 @@ final class TagsRepository {
 
   TagsRepository(this._duaTagIsarSource, this._daleelTagIsarSource);
 
-  List<Tag> getAllTags() {
-    final duaTags = _duaTagIsarSource.getAllTags();
+  List<Tag> getDaleelTags() {
     final daleelTags = _daleelTagIsarSource.getAllTags();
 
-    return [...duaTags, ...daleelTags];
+    return daleelTags;
+  }
+  List<Tag> getDuaTags() {
+    final duaTags = _duaTagIsarSource.getAllTags();
+
+    return duaTags;
   }
 }
