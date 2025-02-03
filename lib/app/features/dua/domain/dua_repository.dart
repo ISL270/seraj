@@ -5,13 +5,14 @@ import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/dua/data/dua_isar.dart';
 import 'package:athar/app/features/dua/data/dua_isar_source.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
+import 'package:athar/app/features/dua/sub_features/dua_tag/data/dua_tag_isar_source.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
 final class DuaRepository extends Repository<Dua, DuaIsar> {
   final DuaIsarSource _localSource;
-
-  DuaRepository(this._localSource) : super(_localSource);
+  final DuaTagIsarSource _tagIsarSource;
+  DuaRepository(this._localSource, this._tagIsarSource) : super(_localSource);
 
   void addDua({
     required String text,
@@ -40,6 +41,10 @@ final class DuaRepository extends Repository<Dua, DuaIsar> {
     final cm = _localSource.get(dua.id!)!;
     cm.isFavourite = !cm.isFavourite;
     _localSource.put(cm);
+  }
+
+  List<Tag> getTags() {
+    return _tagIsarSource.getAllTags();
   }
 
   @override

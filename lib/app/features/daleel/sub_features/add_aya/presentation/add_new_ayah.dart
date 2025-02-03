@@ -124,6 +124,7 @@ class _AddNewAyahState extends State<AddNewAyah> {
                                               onRemoveTag: (tag) =>
                                                   cubit.tagsChanged({...state.tags}..remove(tag)),
                                               onClearTags: () => cubit.tagsChanged({}),
+                                              availableTags: [],
                                             )
                                           ],
                                         )

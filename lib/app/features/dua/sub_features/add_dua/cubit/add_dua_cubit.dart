@@ -31,6 +31,10 @@ class AddDuaCubit extends Cubit<AddDuaState> {
     emit(state.copyWith(tags: newTags));
   }
 
+  List<Tag> getTags() {
+    return _duaRepository.getTags();
+  }
+
   void saveDuaForm() => _duaRepository.addDua(
         tags: state.tags,
         text: state.dua.value,

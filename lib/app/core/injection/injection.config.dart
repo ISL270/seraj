@@ -81,13 +81,15 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i663.DaleelTagIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i196.AzkarRepository>(
         () => _i196.AzkarRepository(gh<_i31.AzkarIsarSource>()));
-    gh.singleton<_i1008.DuaRepository>(
-        () => _i1008.DuaRepository(gh<_i500.DuaIsarSource>()));
     gh.singleton<_i143.DaleelRepository>(
         () => _i143.DaleelRepository(gh<_i53.DaleelIsarSource>()));
     gh.singleton<_i317.TagsRepository>(() => _i317.TagsRepository(
           gh<_i183.DuaTagIsarSource>(),
           gh<_i663.DaleelTagIsarSource>(),
+        ));
+    gh.singleton<_i1008.DuaRepository>(() => _i1008.DuaRepository(
+          gh<_i500.DuaIsarSource>(),
+          gh<_i183.DuaTagIsarSource>(),
         ));
     gh.factory<_i1069.AzkarBloc>(
         () => _i1069.AzkarBloc(gh<_i196.AzkarRepository>()));
