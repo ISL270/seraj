@@ -10,8 +10,7 @@ final class DaleelTagIsarSource extends IsarSource<Tag, DaleelTagIsar> {
 
   List<Tag> getAllTags() {
     final daleelTags = isarService.db.daleelTagIsars.where().findAllSync().map((e) => e.toDomain());
-    final allTags = [...daleelTags]; // Combine both lists
-    return allTags;
+    return daleelTags.toList();
   }
 
   void updateDaleelTag({required int id, required String newTag}) {

@@ -10,9 +10,7 @@ final class DuaTagIsarSource extends IsarSource<Tag, DuaTagIsar> {
 
   List<Tag> getAllTags() {
     final duaTags = isarService.db.duaTagIsars.where().findAllSync().map((e) => e.toDomain());
-
-    final allTags = [...duaTags]; // Combine both lists
-    return allTags;
+    return duaTags.toList();
   }
 
   void updateDuaTag({required int id, required String newTag}) {
