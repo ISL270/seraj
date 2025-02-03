@@ -12,12 +12,19 @@ final class TagsRepository {
 
   List<Tag> getDaleelTags() {
     final daleelTags = _daleelTagIsarSource.getAllTags();
-
     return daleelTags;
   }
+
   List<Tag> getDuaTags() {
     final duaTags = _duaTagIsarSource.getAllTags();
-
     return duaTags;
+  }
+
+  void updateDaleelTags({required int id, required String newTag}) {
+    _daleelTagIsarSource.updateDaleelTag(id: id, newTag: newTag);
+  }
+
+  void updateDuaTags({required int id, required String newTag}) {
+    _duaTagIsarSource.updateDuaTag(id: id, newTag: newTag);
   }
 }

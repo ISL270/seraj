@@ -159,7 +159,11 @@
       "repetition":"Repetition",
       "tags": "Tags",
       "update": "Update",
-      "editTags": "Edit Tags"
-
+      "editTags": "Edit Tags",
+      "save": "Save",
+      "editTag": "Edit Tag",
+      "enterNewTabName": "Enter the new tag name",
+      "daleelTabs": "Daleel Tags",
+      "duaTags": "Dua Tags"
 
 }

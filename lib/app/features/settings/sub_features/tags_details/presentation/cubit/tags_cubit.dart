@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/settings/sub_features/tags_details/domain/tags_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -12,13 +13,14 @@ part 'tags_state.dart';
 class TagsCubit extends Cubit<TagsState> {
   final TagsRepository _repository;
   late final TextEditingController searchController;
+  bool isDaleel = true; // Default to true (Daleel tags initially)
 
   TagsCubit(this._repository) : super(const TagsState()) {
     searchController = TextEditingController();
-    loadTags(isDaleel: true);
+    loadTags(); // Load initial tags (Daleel by default)
   }
 
-  void loadTags({required bool isDaleel}) {
+  void loadTags() {
     try {
       final tags = isDaleel ? _repository.getDaleelTags() : _repository.getDuaTags();
       emit(state.copyWith(
@@ -28,25 +30,39 @@ class TagsCubit extends Cubit<TagsState> {
         searchQuery: '',
       ));
     } catch (e) {
-      log('Error fetching ${isDaleel ? 'Daleel' : 'Dua'} tags: $e');
+      log('Error fetching tags: $e');
     }
   }
 
-  void searchTags(String query, {required bool isDaleel}) {
+  void switchTab(bool isDaleelTab) {
+    isDaleel = isDaleelTab;
+    loadTags(); // Reload tags based on the selected tab
+  }
+
+  void searchTags(String query) {
     final normalizedQuery = query.trim().toLowerCase();
     final sourceTags = isDaleel ? state.daleelTags : state.duaTags;
     final filteredTags =
         sourceTags.where((tag) => tag.name.toLowerCase().contains(normalizedQuery)).toList();
-
     emit(state.copyWith(filteredTags: filteredTags, searchQuery: query));
   }
 
-  void clearSearch({required bool isDaleel}) {
+  void clearSearch() {
     searchController.clear();
-    emit(state.copyWith(
-      searchQuery: '',
-      filteredTags: isDaleel ? state.daleelTags : state.duaTags,
-    ));
+    loadTags();
+  }
+
+  void updateTags({required int id, required String newTag}) {
+    try {
+      if (isDaleel) {
+        _repository.updateDaleelTags(id: id, newTag: newTag);
+      } else {
+        _repository.updateDuaTags(id: id, newTag: newTag);
+      }
+      loadTags(); // Reload the tags after update
+    } catch (e) {
+      log('Error updating tag: $e');
+    }
   }
 
   @override

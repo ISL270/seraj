@@ -1,16 +1,15 @@
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
-import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/settings/sub_features/tags_details/domain/tags_repository.dart';
 import 'package:athar/app/features/settings/sub_features/tags_details/presentation/cubit/tags_cubit.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TagsScreen extends StatelessWidget {
@@ -20,35 +19,37 @@ class TagsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => TagsCubit(getIt.get<TagsRepository>()),
-      child: DefaultTabController(
-        length: 2,
-        child: Screen(
-          padding: EdgeInsets.zero,
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text(
-              context.l10n.tags,
-              style: context.textThemeX.heading.bold,
-            ),
-            bottom: TabBar(
-              physics: const NeverScrollableScrollPhysics(),
-              indicatorColor: context.colorsX.primary,
-              labelColor: context.colorsX.primary,
-              unselectedLabelColor: Colors.grey,
-              tabs: const [
-                Tab(text: 'تبويبات الدليل'),
-                Tab(text: 'تبويبات الدعاء'),
-              ],
-            ),
+    return DefaultTabController(
+      length: 2,
+      child: Screen(
+        padding: EdgeInsets.zero,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            context.l10n.tags,
+            style: context.textThemeX.heading.bold,
           ),
-          body: const TabBarView(
-            children: [
-              _DaleelTagsWidget(),
-              _DuaTagsWidget(),
+          bottom: TabBar(
+            physics: const NeverScrollableScrollPhysics(),
+            // Disable TabBar scrolling
+            indicatorColor: context.colorsX.primary,
+            labelColor: context.colorsX.primary,
+            unselectedLabelColor: Colors.grey,
+            onTap: (index) {
+              context.read<TagsCubit>().switchTab(index == 0);
+            },
+            tabs: [
+              Tab(text: context.l10n.daleelTags),
+              Tab(text: context.l10n.duaTags),
             ],
           ),
+        ),
+        body: const TabBarView(
+          physics: NeverScrollableScrollPhysics(), // Disable TabBarView scrolling
+          children: [
+            _DaleelTagsWidget(),
+            _DuaTagsWidget(),
+          ],
         ),
       ),
     );
@@ -66,7 +67,7 @@ class _DaleelTagsWidgetState extends State<_DaleelTagsWidget> {
   @override
   void initState() {
     super.initState();
-    context.read<TagsCubit>().loadTags(isDaleel: true);
+    context.read<TagsCubit>().loadTags();
   }
 
   @override
@@ -91,7 +92,7 @@ class _DuaTagsWidgetState extends State<_DuaTagsWidget> {
   @override
   void initState() {
     super.initState();
-    context.read<TagsCubit>().loadTags(isDaleel: false);
+    context.read<TagsCubit>().loadTags();
   }
 
   @override
@@ -125,11 +126,11 @@ class _SearchBarWidget extends StatelessWidget {
               suffixIcon: state.searchQuery.isNotEmpty
                   ? IconButton(
                       icon: Icon(Icons.cancel, color: context.colorsX.error),
-                      onPressed: () => context.read<TagsCubit>().clearSearch(isDaleel: isDaleel),
+                      onPressed: () => context.read<TagsCubit>().clearSearch(),
                     )
                   : null,
             ),
-            onChanged: (value) => context.read<TagsCubit>().searchTags(value, isDaleel: isDaleel),
+            onChanged: (value) => context.read<TagsCubit>().searchTags(value),
           );
         },
       ),
@@ -190,34 +191,6 @@ class _TagWidget extends StatelessWidget {
       ),
     );
   }
-
-  void _showEditDialog(BuildContext context, Tag tag) {
-    final controller = TextEditingController(text: tag.name);
-    showDialog<void>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          surfaceTintColor: context.colorsX.background,
-          backgroundColor: context.colorsX.background,
-          title: const Text('تعديل التبويب'),
-          content: TextField(controller: controller),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('إلغاء'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Handle updating the tag
-                Navigator.pop(context);
-              },
-              child: const Text('حفظ'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
 
 class _CircularIconWidget extends StatelessWidget {
@@ -243,4 +216,63 @@ class _CircularIconWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+void _showEditDialog(BuildContext context, Tag tag) {
+  final controller = TextEditingController(text: tag.name);
+  final tagsCubit = context.read<TagsCubit>();
+
+  showDialog<void>(
+    context: context,
+    barrierDismissible: false, // Prevents closing the dialog by tapping outside
+    builder: (dialogContext) {
+      return AlertDialog(
+        backgroundColor: context.colorsX.background,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        title: Text(
+          context.l10n.editTags,
+          style: context.textThemeX.heading.bold,
+        ),
+        content: Padding(
+          padding: EdgeInsets.only(bottom: 16.h), // Adjust content padding for comfort
+          child: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              hintText: context.l10n.enterNewTagName,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          // Cancel Button
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(context.l10n.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (controller.text.trim().isNotEmpty) {
+                tagsCubit.updateTags(
+                  id: tag.id ?? 0,
+                  newTag: controller.text.trim(),
+                );
+              }
+              context.pop();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: context.colorsX.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+            ),
+            child: Text(context.l10n.saveIt),
+          ),
+        ],
+      );
+    },
+  );
 }
