@@ -137,6 +137,10 @@ class AddAyaCubit extends Cubit<AddAyaState> {
     emit(state.copyWith(status: const Initial()));
   }
 
+  List<Tag> getTags() {
+    return _daleelRepository.getTags();
+  }
+
   @override
   Future<void> close() {
     // Dispose controllers

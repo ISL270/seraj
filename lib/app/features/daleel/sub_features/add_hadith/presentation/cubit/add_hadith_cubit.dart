@@ -58,4 +58,8 @@ class AddHadithCubit extends Cubit<AddHadithState> {
       emit(state.copyWith(status: Failure(e as GenericException)));
     }
   }
+
+  List<Tag> getTags() {
+    return _daleelRepository.getTags();
+  }
 }

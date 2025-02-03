@@ -43,4 +43,8 @@ class AddAtharCubit extends Cubit<AddAtharState> {
       emit(state.copyWith(status: Failure(e as GenericException)));
     }
   }
+
+  List<Tag> getTags() {
+    return _repository.getTags();
+  }
 }

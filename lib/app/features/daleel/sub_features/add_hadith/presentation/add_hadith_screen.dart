@@ -62,13 +62,12 @@ class AddHadith extends StatelessWidget {
                         onAddTag: (tag) {
                           final updatedTags = {...state.tags}; // Create a new modifiable set
                           if (updatedTags.add(tag)) {
-                            // Modify the copy, not the original
                             cubit.tagsChanged(updatedTags);
                           }
                         },
                         onRemoveTag: (tag) => cubit.tagsChanged({...state.tags}..remove(tag)),
                         onClearTags: () => cubit.tagsChanged({}),
-                        availableTags: [],
+                        availableTags: cubit.getTags(),
                       );
                     },
                   ),

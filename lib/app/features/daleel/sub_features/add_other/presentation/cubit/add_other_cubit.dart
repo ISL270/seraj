@@ -45,4 +45,8 @@ class AddOtherCubit extends Cubit<AddOtherState> {
       emit(state.copyWith(status: Failure(e as GenericException)));
     }
   }
+
+  List<Tag> getTags() {
+    return _repository.getTags();
+  }
 }
