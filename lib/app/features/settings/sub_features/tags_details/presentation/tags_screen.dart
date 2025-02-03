@@ -29,7 +29,7 @@ class TagsScreen extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              'التبويبات',
+              context.l10n.tags,
               style: context.textThemeX.heading.bold,
             ),
             bottom: TabBar(
