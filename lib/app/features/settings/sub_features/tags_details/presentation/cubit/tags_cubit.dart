@@ -13,7 +13,7 @@ part 'tags_state.dart';
 class TagsCubit extends Cubit<TagsState> {
   final TagsRepository _repository;
   late final TextEditingController searchController;
-  bool isDaleel = true; // Default to true (Daleel tags initially)
+  bool isDaleel = true;
 
   TagsCubit(this._repository) : super(const TagsState()) {
     searchController = TextEditingController();
@@ -62,6 +62,19 @@ class TagsCubit extends Cubit<TagsState> {
       loadTags(); // Reload the tags after update
     } catch (e) {
       log('Error updating tag: $e');
+    }
+  }
+
+  void deleteTag({required int id}) {
+    try {
+      if (isDaleel) {
+        _repository.deleteDaleelTag(id: id);
+      } else {
+        _repository.deleteDuaTag(id: id);
+      }
+      loadTags();
+    } catch (e) {
+      log('Error deleting tag: $e');
     }
   }
 

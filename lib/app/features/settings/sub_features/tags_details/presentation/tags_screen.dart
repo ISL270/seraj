@@ -4,6 +4,7 @@ import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/settings/sub_features/tags_details/presentation/cubit/tags_cubit.dart';
+import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -181,12 +182,17 @@ class _TagWidget extends StatelessWidget {
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          GestureDetector(
-            onTap: () => _showEditDialog(context, tag),
-            child: _CircularIconWidget(Icons.edit, context.colorsX.primary),
+          _CircularIconWidget(
+            Icons.edit,
+            context.colorsX.primary,
+            () => _showEditDialog(context, tag),
           ),
           Gap(10.w),
-          _CircularIconWidget(Icons.delete, context.colorsX.error),
+          _CircularIconWidget(
+            Icons.delete,
+            context.colorsX.error,
+            () => context.read<TagsCubit>().deleteTag(id: tag.id ?? 0),
+          ),
         ],
       ),
     );
@@ -196,22 +202,26 @@ class _TagWidget extends StatelessWidget {
 class _CircularIconWidget extends StatelessWidget {
   final IconData iconData;
   final Color color;
+  final void Function()? onTap;
 
-  const _CircularIconWidget(this.iconData, this.color);
+  const _CircularIconWidget(this.iconData, this.color, this.onTap);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(7.r),
-        child: Icon(
-          iconData,
-          size: 20.sp,
-          color: context.colorsX.background,
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color,
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(7.r),
+          child: Icon(
+            iconData,
+            size: 20.sp,
+            color: context.colorsX.background,
+          ),
         ),
       ),
     );
@@ -224,7 +234,7 @@ void _showEditDialog(BuildContext context, Tag tag) {
 
   showDialog<void>(
     context: context,
-    barrierDismissible: false, // Prevents closing the dialog by tapping outside
+    barrierDismissible: false,
     builder: (dialogContext) {
       return AlertDialog(
         backgroundColor: context.colorsX.background,
@@ -236,7 +246,7 @@ void _showEditDialog(BuildContext context, Tag tag) {
           style: context.textThemeX.heading.bold,
         ),
         content: Padding(
-          padding: EdgeInsets.only(bottom: 16.h), // Adjust content padding for comfort
+          padding: EdgeInsets.only(bottom: 16.h),
           child: TextField(
             controller: controller,
             decoration: InputDecoration(
@@ -250,10 +260,11 @@ void _showEditDialog(BuildContext context, Tag tag) {
         actions: [
           // Cancel Button
           TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
+            onPressed: () => context.pop(dialogContext),
             child: Text(context.l10n.cancel),
           ),
-          ElevatedButton(
+          Button.filled(
+            height: 20,
             onPressed: () {
               if (controller.text.trim().isNotEmpty) {
                 tagsCubit.updateTags(
@@ -263,13 +274,7 @@ void _showEditDialog(BuildContext context, Tag tag) {
               }
               context.pop();
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: context.colorsX.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-            ),
-            child: Text(context.l10n.saveIt),
+            label: context.l10n.save,
           ),
         ],
       );

@@ -27,4 +27,12 @@ final class TagsRepository {
   void updateDuaTags({required int id, required String newTag}) {
     _duaTagIsarSource.updateDuaTag(id: id, newTag: newTag);
   }
+
+  void deleteDuaTag({required int id}) {
+    _duaTagIsarSource.deleteByID(id);
+  }
+
+  void deleteDaleelTag({required int id}) {
+    _daleelTagIsarSource.deleteByID(id);
+  }
 }
