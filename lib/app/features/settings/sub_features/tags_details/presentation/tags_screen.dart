@@ -264,7 +264,7 @@ void _showEditDialog(BuildContext context, Tag tag) {
             child: Text(context.l10n.cancel),
           ),
           Button.filled(
-            height: 20,
+            height: 20.h,
             onPressed: () {
               if (controller.text.trim().isNotEmpty) {
                 tagsCubit.updateTags(
