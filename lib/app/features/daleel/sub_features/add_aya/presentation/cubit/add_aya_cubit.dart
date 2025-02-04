@@ -127,7 +127,7 @@ class AddAyaCubit extends Cubit<AddAyaState> {
         priority: 1.0.getPriority(),
         tags: state.tags,
       );
-      emit(state.copyWith(status: const Success('Saved Aya Successfully')));
+      emit(state.copyWith(status: const Success(null)));
     } catch (e) {
       emit(state.copyWith(status: Failure(e as GenericException)));
     }

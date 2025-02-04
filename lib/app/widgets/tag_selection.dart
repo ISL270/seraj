@@ -3,6 +3,7 @@ import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
+import 'package:athar/app/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -33,6 +34,17 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
   final FocusNode _focusNode = FocusNode();
 
   String searchQuery = '';
+  bool showInitialTags = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(() {
+      setState(() {
+        showInitialTags = _focusNode.hasFocus && searchQuery.isEmpty;
+      });
+    });
+  }
 
   void _addTag(BuildContext context, String tagName) {
     if (tagName.isNotEmpty) {
@@ -57,60 +69,60 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
         .where((tag) => tag.name.toLowerCase().contains(searchQuery.toLowerCase()))
         .toList();
 
+    final initialTags = widget.availableTags.take(5).toList();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Search input
-        TextField(
-          controller: _controller,
-          focusNode: _focusNode,
-          decoration: InputDecoration(
-            isDense: true,
-            hintText: context.l10n.tags,
-          ),
-          onChanged: (value) {
-            setState(() {
-              searchQuery = value.trim();
-            });
-          },
-          onSubmitted: (value) {
-            _addTag(context, value.trim());
-            _controller.clear();
-          },
-        ),
-        SizedBox(height: 8.h),
-
-        // Suggestions (above the list of selected tags)
-        if (searchQuery.isNotEmpty) ...[
-          Wrap(
-            spacing: 8.w,
-            runSpacing: 4.h,
-            children: filteredTags.map((tag) {
-              return Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20.sp)),
-                  color: context.colorsX.secondary, // Light background for suggestions
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _controller,
+                focusNode: _focusNode,
+                decoration: InputDecoration(
+                  isDense: true,
+                  hintText: context.l10n.tags,
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                child: GestureDetector(
-                  onTap: () {
-                    _addTag(context, tag.name);
-                    _controller.clear();
-                    setState(() {
-                      searchQuery = '';
-                    });
-                  },
-                  child: Text(
-                    '#${tag.name}',
-                    style: TextStyle(
-                      color: context.colorsX.background, // Text color
-                    ),
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value.trim();
+                    showInitialTags = searchQuery.isEmpty && _focusNode.hasFocus;
+                  });
+                },
+                onSubmitted: (value) {
+                  _addTag(context, value.trim());
+                  _controller.clear();
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.w),
+              child: Button.filled(
+                shape: ButtonShape.roundedCorners,
+                height: 10.h,
+                onPressed: () {
+                  _addTag(context, _controller.text.trim());
+                  _controller.clear();
+                },
+                label: context.l10n.add,
+              ),
+            ),
+            InkWell(
+              onTap: widget.onClearTags,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: Text(
+                  context.l10n.clear,
+                  style: context.textThemeX.medium.bold.copyWith(
+                    color: context.colorsX.primary,
                   ),
                 ),
-              );
-            }).toList(),
-          ),
-        ],
+              ),
+            ),
+          ],
+        ),
 
         SizedBox(height: 8.h),
 
@@ -146,20 +158,32 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
             );
           }).toList(),
         ),
-
-        // Clear Tags button
-        InkWell(
-          onTap: widget.onClearTags,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.w),
-            child: Text(
-              context.l10n.clear,
-              style: context.textThemeX.medium.bold.copyWith(
-                color: context.colorsX.primary,
-              ),
+        SizedBox(height: 8.h),
+        if (showInitialTags || searchQuery.isEmpty)
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: 5.h,
+              maxHeight: 160.h,
+            ),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: showInitialTags ? initialTags.length : filteredTags.length,
+              itemBuilder: (context, index) {
+                final tag = showInitialTags ? initialTags[index] : filteredTags[index];
+                return ListTile(
+                  title: Text('#${tag.name}', style: TextStyle(color: context.colorsX.primary)),
+                  onTap: () {
+                    _addTag(context, tag.name);
+                    _controller.clear();
+                    setState(() {
+                      searchQuery = '';
+                      showInitialTags = false;
+                    });
+                  },
+                );
+              },
             ),
           ),
-        ),
       ],
     );
   }
