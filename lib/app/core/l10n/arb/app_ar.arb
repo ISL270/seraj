@@ -156,5 +156,13 @@
         "enterTextOfAzkar":"ادخل نص الذكر",
         "noAzkars":"لا يوجد أذكار",
         "noDescription":"لا يوجد شرح",
-        "repetition":"التكرار"
+        "repetition":"التكرار",
+        "editOfDaleel":"تعديل الدليل",
+        "textOfDaleel":"نص الدليل",
+        "sayerOfDaleel":"قائل الدليل",
+        "explainOfDaleel":"شرح الدليل",
+        "tagsOfDaleel":"الكلمات المرجعية للدليل",
+        "priorityOfDaleel":"أهمية الدليل",
+        "extractOfHadith":"تخريج الحديث",
+        "ruleOfHadith":"حكم الحديث"
       }

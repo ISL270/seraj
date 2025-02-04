@@ -123,9 +123,7 @@ final appRouter = GoRouter(
                     child: BlocProvider(
                       create: (context) =>
                           DaleelDetailsBloc(getIt.get<DaleelRepository>(), state.extra! as Daleel),
-                      child: DaleelDetailsScreen(
-                        state.extra! as Daleel,
-                      ),
+                      child: DaleelDetailsScreen(state.extra! as Daleel),
                     ),
                   ),
                 ),

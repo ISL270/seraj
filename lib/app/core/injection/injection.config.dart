@@ -63,16 +63,16 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i560.L10nService>(() => _i560.L10nService());
+    gh.singleton<_i31.AzkarIsarSource>(
+        () => _i31.AzkarIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i53.DaleelIsarSource>(
         () => _i53.DaleelIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i500.DuaIsarSource>(
         () => _i500.DuaIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i387.SettingsIsarSource>(
-        () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i183.DuaTagIsarSource>(
         () => _i183.DuaTagIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i31.AzkarIsarSource>(
-        () => _i31.AzkarIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i387.SettingsIsarSource>(
+        () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i663.DaleelTagIsarSource>(
         () => _i663.DaleelTagIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i196.AzkarRepository>(

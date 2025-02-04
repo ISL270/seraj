@@ -156,6 +156,13 @@
       "enterTextOfAzkar":"Enter Text Of Azkar",
       "noAzkars":"No Azkars Added yet!",
       "noDescription":"No Description",
-      "repetition":"Repetition"
-
-}
+      "repetition":"Repetition",
+      "editOfDaleel":"Edit Daleel",
+      "textOfDaleel":"Daleel Text",
+      "sayerOfDaleel":"Daleel Sayer",
+      "explainOfDaleel":"Daleel Explain",
+      "tagsOfDaleel":"Daleel Tags",
+      "priorityOfDaleel":"Daleel Priority",
+      "extractOfHadith":"Hadith Extraction",
+      "ruleOfHadith":"Hadith Rule"
+    }
