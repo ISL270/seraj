@@ -169,5 +169,7 @@
       "hadithEditedSuccessf":"Hadith Edited Successfully",
       "atharAddedSuccessf":"Athar Added Successfully",
       "atharUpdatedSuccessf":"Athar Updated Successfully",
-      "hadithUpdatedSuccessf":"Hadith Updated Successfully"
-}
+      "hadithUpdatedSuccessf":"Hadith Updated Successfully",
+      "otherUpdatedSuccessf":"Other Updated Successfully",
+      "otherAddedSuccessf":"Other Added Successfully"
+}   

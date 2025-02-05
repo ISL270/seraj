@@ -144,24 +144,41 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     return await _localSource.getAyaByText(surahName: surahName, ayahNumber: ayahNumber) != null;
   }
 
-  Future<Either<Exception, void>> saveOthers({
+  Future<Either<Exception, void>> saveOrUpdateOthers({
     required String text,
     required String sayer,
     required String description,
     required Priority priority,
     required DateTime lastRevisedAt,
     required Set<Tag> tags,
+    int? id,
   }) async {
     try {
-      final daleelIsar = DaleelIsar(
-        text: text,
-        sayer: sayer.isEmpty ? null : sayer,
-        priority: priority,
-        daleelType: DaleelType.other,
-        description: description.isEmpty ? null : description,
-        lastRevisedAt: lastRevisedAt,
-      );
-      _localSource.addDaleelWithTags(daleelIsar: daleelIsar, tags: tags);
+      if (id == null) {
+        log('$id is not exist');
+        final daleelIsar = DaleelIsar(
+          text: text,
+          sayer: sayer.isEmpty ? null : sayer,
+          priority: priority,
+          daleelType: DaleelType.other,
+          description: description.isEmpty ? null : description,
+          lastRevisedAt: lastRevisedAt,
+        );
+        _localSource.addDaleelWithTags(daleelIsar: daleelIsar, tags: tags);
+      } else {
+        log('$id is exist');
+        final daleelIsar = DaleelIsar(
+          id: id,
+          text: text,
+          sayer: sayer.isEmpty ? null : sayer,
+          priority: priority,
+          daleelType: DaleelType.other,
+          description: description.isEmpty ? null : description,
+          lastRevisedAt: lastRevisedAt,
+        );
+        _localSource.updateDaleelWithTags(daleelIsar: daleelIsar, tags: tags);
+      }
+
       return right(null);
     } catch (e) {
       log(e.toString());

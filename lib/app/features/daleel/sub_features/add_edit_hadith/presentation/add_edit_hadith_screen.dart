@@ -321,7 +321,7 @@ class _HadithAddButton extends StatelessWidget {
               ),
             ),
           );
-          if (state.hadithId == null) innerContext.pop();
+          if (state.hadithId == null) innerContext.pop(); // in the add case
           context.pop();
         }
 
@@ -340,8 +340,9 @@ class _HadithAddButton extends StatelessWidget {
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
             label: state.hadithId == null ? context.l10n.add : context.l10n.update,
-            onPressed:
-                state.isValid ? () => context.read<AddOrEditHadithCubit>().saveHadithForm() : null,
+            onPressed: state.isValid
+                ? () => context.read<AddOrEditHadithCubit>().saveOrUpdateHadithForm()
+                : null,
           ),
         );
       },

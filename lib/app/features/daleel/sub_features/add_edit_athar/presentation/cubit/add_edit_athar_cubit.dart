@@ -65,7 +65,7 @@ class AddOrEditAtharCubit extends Cubit<AddOrEditAtharState> {
     }
   }
 
-  Future<void> saveAtharForm() async {
+  Future<void> saveOrUpdateAtharForm() async {
     emit(state.copyWith(status: const Loading()));
     try {
       await _repository.saveOrUpdateAthar(

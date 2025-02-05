@@ -68,7 +68,7 @@ class _DaleelWidget extends StatelessWidget {
             onTap: () => switch (daleel) {
               Hadith() => context.pushNamed(AddOrEditHadith.name, extra: daleel.id),
               Athar() => context.pushNamed(AddOrEditAtharScreen.name, extra: daleel.id),
-              Other() => log('edit other screen'),
+              Other() => context.pushNamed(AddOrEditOther.name, extra: daleel.id),
               Aya() => log('edit aya screen'),
             },
             // onTap: () {

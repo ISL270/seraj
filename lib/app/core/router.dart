@@ -95,14 +95,15 @@ final appRouter = GoRouter(
                   },
                 ),
                 GoRoute(
-                  name: AddOtherScreen.name,
-                  path: AddOtherScreen.name,
+                  name: AddOrEditOther.name,
+                  path: AddOrEditOther.name,
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (context) => AddOtherCubit(getIt.get<DaleelRepository>()),
-                      child: const AddOtherScreen(),
+                      create: (context) => AddOrEditOtherCubit(getIt.get<DaleelRepository>())
+                        ..initializeOther(state.extra as int?),
+                      child: const AddOrEditOther(),
                     ),
                   ),
                 ),

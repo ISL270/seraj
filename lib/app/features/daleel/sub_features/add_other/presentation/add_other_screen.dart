@@ -1,4 +1,5 @@
 import 'package:athar/app/core/extension_methods/context_x.dart';
+import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
@@ -17,8 +18,8 @@ import 'package:form_inputs/form_inputs.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class AddOtherScreen extends StatelessWidget {
-  const AddOtherScreen({super.key});
+class AddOrEditOther extends StatelessWidget {
+  const AddOrEditOther({super.key});
 
   static const name = 'add-other';
 
@@ -32,7 +33,9 @@ class AddOtherScreen extends StatelessWidget {
           child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.r),
         ),
         title: Text(
-          '${context.l10n.add} ${context.l10n.others}',
+          context.read<AddOrEditOtherCubit>().state.otherId == null
+              ? '${context.l10n.add} ${context.l10n.others}' // in the add case
+              : '${context.l10n.edit} ${context.l10n.others.capitalizedDefinite}', // in the edit case
           style: context.textThemeX.heading.bold,
           textAlign: TextAlign.center,
         ),
@@ -52,9 +55,9 @@ class AddOtherScreen extends StatelessWidget {
                   _LabelTextFieldAlignWidget(label: context.l10n.explanation),
                   const _OtherExplainTextField(),
                   const _PrioritySliderWithLabelBlocBuilder(),
-                  BlocBuilder<AddOtherCubit, AddOtherState>(
+                  BlocBuilder<AddOrEditOtherCubit, AddOtherState>(
                     builder: (context, state) {
-                      final cubit = context.read<AddOtherCubit>();
+                      final cubit = context.read<AddOrEditOtherCubit>();
                       return TagSelectionWidget(
                         tags: state.tags,
                         onAddTag: (tag) {
@@ -100,14 +103,15 @@ class _OtherTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AddOtherCubit, AddOtherState, Name>(
+    return BlocSelector<AddOrEditOtherCubit, AddOtherState, Name>(
       selector: (state) => state.other,
       builder: (context, other) {
         return TextField(
           key: const Key('otherForm_otherText_textField'),
           maxLines: 3,
           minLines: 1,
-          onChanged: (other) => context.read<AddOtherCubit>().otherTextChanged(other),
+          onChanged: (other) => context.read<AddOrEditOtherCubit>().otherTextChanged(other),
+          controller: context.read<AddOrEditOtherCubit>().otherTextCtrlr,
           textInputAction: TextInputAction.next,
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
@@ -131,13 +135,14 @@ class _OtherSayerTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddOtherCubit, AddOtherState>(
+    return BlocBuilder<AddOrEditOtherCubit, AddOtherState>(
       builder: (context, state) {
         return TextField(
           key: const Key('otherForm_otherSayer_textField'),
           minLines: 1,
           textInputAction: TextInputAction.next,
-          onChanged: (sayer) => context.read<AddOtherCubit>().sayerChanged(sayer),
+          onChanged: (sayer) => context.read<AddOrEditOtherCubit>().sayerChanged(sayer),
+          controller: context.read<AddOrEditOtherCubit>().otherSayerCtrlr,
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,
@@ -159,14 +164,15 @@ class _OtherExplainTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddOtherCubit, AddOtherState>(
+    return BlocBuilder<AddOrEditOtherCubit, AddOtherState>(
       builder: (context, state) {
         return TextField(
           key: const Key('otherForm_otherExplanation_textField'),
           minLines: 2,
           maxLines: 4,
           textInputAction: TextInputAction.done,
-          onChanged: (explain) => context.read<AddOtherCubit>().explanationChanged(explain),
+          onChanged: (explain) => context.read<AddOrEditOtherCubit>().explanationChanged(explain),
+          controller: context.read<AddOrEditOtherCubit>().otherExplainCtrlr,
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,
@@ -188,12 +194,13 @@ class _PrioritySliderWithLabelBlocBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddOtherCubit, AddOtherState>(
+    return BlocBuilder<AddOrEditOtherCubit, AddOtherState>(
       builder: (context, state) {
         return PrioritySliderWithLabel(
           labelText: context.l10n.priority,
           priorityTitle: '${Priority.translate(context, state.sliderValue)} ${context.l10n.saveIt}',
-          onPriorityChanged: (value) => context.read<AddOtherCubit>().sliderPriorityChanged(value),
+          onPriorityChanged: (value) =>
+              context.read<AddOrEditOtherCubit>().sliderPriorityChanged(value),
           priorityValue: state.sliderValue,
           sliderMaxValue: Priority.values.length - 1,
           sliderDivisions: Priority.values.length - 1,
@@ -209,7 +216,7 @@ class _AddOtherButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AddOtherCubit, AddOtherState>(
+    return BlocConsumer<AddOrEditOtherCubit, AddOtherState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (innerContext, state) {
         if (state.status.isSuccess) {
@@ -217,12 +224,14 @@ class _AddOtherButton extends StatelessWidget {
             SnackBar(
               duration: const Duration(seconds: 2),
               content: Text(
-                context.l10n.hadithAddedSuccessf,
+                state.otherId == null
+                    ? context.l10n.otherAddedSuccessf // in the add case
+                    : context.l10n.otherUpdatedSuccessf, // in the update case
                 style: context.textThemeX.medium.bold,
               ),
             ),
           );
-          innerContext.pop();
+          if (state.otherId == null) innerContext.pop(); // in the add case
           context.pop();
         }
 
@@ -240,8 +249,12 @@ class _AddOtherButton extends StatelessWidget {
             maxWidth: true,
             density: ButtonDensity.comfortable,
             isLoading: state.status.isLoading,
-            label: context.l10n.add,
-            onPressed: state.isValid ? () => context.read<AddOtherCubit>().saveOtherForm() : null,
+            label: context.read<AddOrEditOtherCubit>().state.otherId == null
+                ? context.l10n.add // in the add case
+                : context.l10n.update, // in the update case
+            onPressed: state.isValid
+                ? () => context.read<AddOrEditOtherCubit>().saveOrUpdateOtherForm()
+                : null,
           ),
         );
       },

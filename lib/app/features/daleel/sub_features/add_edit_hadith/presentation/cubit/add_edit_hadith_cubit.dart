@@ -81,7 +81,7 @@ class AddOrEditHadithCubit extends Cubit<AddOrEditHadithState> {
     }
   }
 
-  Future<void> saveHadithForm() async {
+  Future<void> saveOrUpdateHadithForm() async {
     emit(state.copyWith(status: const Loading()));
     try {
       await _daleelRepository.saveOrUpdateHadith(

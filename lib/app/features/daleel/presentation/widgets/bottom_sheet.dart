@@ -55,7 +55,7 @@ class _BottomSheetBody extends StatelessWidget {
                 0 => context.pushNamed(AddOrEditHadith.name),
                 1 => context.goNamed(AddNewAyah.name),
                 2 => context.pushNamed(AddOrEditAtharScreen.name),
-                3 => context.pushNamed(AddOtherScreen.name),
+                3 => context.pushNamed(AddOrEditOther.name),
                 _ => {}
               },
               child: _BottomSheetWidget(items[index]),

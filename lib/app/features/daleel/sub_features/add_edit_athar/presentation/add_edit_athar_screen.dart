@@ -244,7 +244,7 @@ class _AtharAddButton extends StatelessWidget {
               ),
             ),
           );
-          if (state.atharId == null) innerContext.pop();
+          if (state.atharId == null) innerContext.pop(); // in the add case
           context.pop();
         }
         if (state.status.isFailure) {
@@ -262,8 +262,9 @@ class _AtharAddButton extends StatelessWidget {
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
             label: state.atharId == null ? context.l10n.add : context.l10n.update,
-            onPressed:
-                state.isValid ? () => context.read<AddOrEditAtharCubit>().saveAtharForm() : null,
+            onPressed: state.isValid
+                ? () => context.read<AddOrEditAtharCubit>().saveOrUpdateAtharForm()
+                : null,
           ),
         );
       },

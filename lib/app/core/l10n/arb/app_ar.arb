@@ -169,5 +169,7 @@
         "hadithEditedSuccessf":"تم تحديث الحديث بنجاح",
         "atharAddedSuccessf":"تم اضافة الاثر بنجاح",
         "atharUpdatedSuccessf":"تم تحديث الاثر بنجاح",
-        "hadithUpdatedSuccessf":"تم تحديث الحديث بنجاح"
+        "hadithUpdatedSuccessf":"تم تحديث الحديث بنجاح",
+        "otherUpdatedSuccessf":"تم تحديث الأخرى بنجاح",
+        "otherAddedSuccessf":"تم اضافة الأخرى بنجاح"
       }
