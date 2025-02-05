@@ -65,9 +65,15 @@ class _DaleelWidget extends StatelessWidget {
         extentRatio: 0.3.w,
         children: [
           GestureDetector(
-            onTap: () {
-              context.pushNamed(AddOrEditHadith.name, extra: daleel.id);
+            onTap: () => switch (daleel) {
+              Hadith() => context.pushNamed(AddOrEditHadith.name, extra: daleel.id),
+              Athar() => context.pushNamed(AddOrEditAtharScreen.name, extra: daleel.id),
+              Other() => log('edit other screen'),
+              Aya() => log('edit aya screen'),
             },
+            // onTap: () {
+            //   context.pushNamed(AddOrEditHadith.name, extra: daleel.id);
+            // },
             child: CircleAvatar(
               backgroundColor: context.colorsX.primary,
               radius: 24.r,

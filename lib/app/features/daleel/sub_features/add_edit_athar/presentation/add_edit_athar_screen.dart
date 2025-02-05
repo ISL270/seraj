@@ -1,11 +1,12 @@
 import 'package:athar/app/core/extension_methods/context_x.dart';
+import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
-import 'package:athar/app/features/daleel/sub_features/add_athar/presentation/cubit/add_athar_cubit.dart';
-import 'package:athar/app/features/daleel/sub_features/add_athar/presentation/cubit/add_athar_state.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/cubit/add_edit_athar_cubit.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/cubit/add_edit_athar_state.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +16,10 @@ import 'package:form_inputs/form_inputs.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class AddAtharScreen extends StatelessWidget {
-  const AddAtharScreen({super.key});
+class AddOrEditAtharScreen extends StatelessWidget {
+  const AddOrEditAtharScreen({super.key});
 
-  static const name = 'add-athar';
+  static const name = 'add-edit-athar';
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,9 @@ class AddAtharScreen extends StatelessWidget {
           child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.r),
         ),
         title: Text(
-          '${context.l10n.add} ${context.l10n.athar}',
+          context.read<AddOrEditAtharCubit>().state.atharId == null
+              ? '${context.l10n.add} ${context.l10n.athar}' // in add case
+              : '${context.l10n.edit} ${context.l10n.athar.capitalizedDefinite}', // in edit case
           style: context.textThemeX.heading.bold,
           textAlign: TextAlign.center,
         ),
@@ -70,7 +73,7 @@ class _TextOfAtharTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AddAtharCubit, AddAtharState, Name>(
+    return BlocSelector<AddOrEditAtharCubit, AddOrEditAtharState, Name>(
       selector: (state) => state.athar,
       builder: (context, athar) {
         return Padding(
@@ -78,7 +81,8 @@ class _TextOfAtharTextField extends StatelessWidget {
           child: TextField(
             maxLines: 3,
             minLines: 2,
-            onChanged: (value) => context.read<AddAtharCubit>().atharChanged(value),
+            onChanged: (value) => context.read<AddOrEditAtharCubit>().atharChanged(value),
+            controller: context.read<AddOrEditAtharCubit>().textOfAtharCtrlr,
             decoration: InputDecoration(
               labelStyle: context.textThemeX.medium,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
@@ -103,12 +107,13 @@ class _SayerOfAtharTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddAtharCubit, AddAtharState>(
+    return BlocBuilder<AddOrEditAtharCubit, AddOrEditAtharState>(
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: TextField(
-            onChanged: (value) => context.read<AddAtharCubit>().sayerChanged(value),
+            onChanged: (value) => context.read<AddOrEditAtharCubit>().sayerChanged(value),
+            controller: context.read<AddOrEditAtharCubit>().sayerOfAtharCtrlr,
             decoration: InputDecoration(
               labelStyle: context.textThemeX.medium,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
@@ -131,14 +136,15 @@ class _ExplainationOfAtharTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddAtharCubit, AddAtharState>(
+    return BlocBuilder<AddOrEditAtharCubit, AddOrEditAtharState>(
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: TextField(
             maxLines: 3,
             minLines: 3,
-            onChanged: (value) => context.read<AddAtharCubit>().explainationChanged(value),
+            onChanged: (value) => context.read<AddOrEditAtharCubit>().explainationChanged(value),
+            controller: context.read<AddOrEditAtharCubit>().descOfAtharCtrlr,
             decoration: InputDecoration(
               labelStyle: context.textThemeX.medium,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
@@ -163,7 +169,7 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: BlocBuilder<AddAtharCubit, AddAtharState>(
+      child: BlocBuilder<AddOrEditAtharCubit, AddOrEditAtharState>(
         builder: (context, state) {
           return Column(
             spacing: 15.h,
@@ -184,7 +190,8 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
                 ],
               ),
               Slider.adaptive(
-                onChanged: (value) => context.read<AddAtharCubit>().sliderPriorityChanged(value),
+                onChanged: (value) =>
+                    context.read<AddOrEditAtharCubit>().sliderPriorityChanged(value),
                 value: state.sliderValue,
                 activeColor: context.colorsX.primary,
                 inactiveColor: context.colorsX.onBackgroundTint35,
@@ -222,7 +229,7 @@ class _AtharAddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AddAtharCubit, AddAtharState>(
+    return BlocConsumer<AddOrEditAtharCubit, AddOrEditAtharState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (innerContext, state) {
         if (state.status.isSuccess) {
@@ -230,15 +237,16 @@ class _AtharAddButton extends StatelessWidget {
             SnackBar(
               duration: const Duration(seconds: 2),
               content: Text(
-                context.l10n.hadithAddedSuccessf,
+                state.atharId == null
+                    ? context.l10n.atharAddedSuccessf // in the add case
+                    : context.l10n.atharUpdatedSuccessf, // in the update case
                 style: context.textThemeX.medium.bold,
               ),
             ),
           );
-          innerContext.pop();
+          if (state.atharId == null) innerContext.pop();
           context.pop();
         }
-
         if (state.status.isFailure) {
           context.scaffoldMessenger
             ..hideCurrentSnackBar()
@@ -253,8 +261,9 @@ class _AtharAddButton extends StatelessWidget {
             maxWidth: true,
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
-            label: context.l10n.add,
-            onPressed: state.isValid ? () => context.read<AddAtharCubit>().saveAtharForm() : null,
+            label: state.atharId == null ? context.l10n.add : context.l10n.update,
+            onPressed:
+                state.isValid ? () => context.read<AddOrEditAtharCubit>().saveAtharForm() : null,
           ),
         );
       },

@@ -13,8 +13,8 @@ import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
-import 'package:athar/app/features/daleel/sub_features/add_athar/presentation/add_athar_screen.dart';
-import 'package:athar/app/features/daleel/sub_features/add_athar/presentation/cubit/add_athar_cubit.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/add_edit_athar_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/cubit/add_edit_athar_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/add_new_ayah.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/add_edit_hadith_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/cubit/add_edit_hadith_cubit.dart';
@@ -71,14 +71,15 @@ final appRouter = GoRouter(
                   ),
                 ),
                 GoRoute(
-                  name: AddAtharScreen.name,
-                  path: AddAtharScreen.name,
+                  name: AddOrEditAtharScreen.name,
+                  path: AddOrEditAtharScreen.name,
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (context) => AddAtharCubit(getIt.get<DaleelRepository>()),
-                      child: const AddAtharScreen(),
+                      create: (context) => AddOrEditAtharCubit(getIt.get<DaleelRepository>())
+                        ..initializeAthar(state.extra as int?),
+                      child: const AddOrEditAtharScreen(),
                     ),
                   ),
                 ),

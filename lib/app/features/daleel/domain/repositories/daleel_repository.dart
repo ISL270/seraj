@@ -68,23 +68,40 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     }
   }
 
-  Future<Either<Exception, void>> saveAthar({
+  Future<Either<Exception, void>> saveOrUpdateAthar({
     required String text,
     required String sayer,
     required Priority priority,
     required Set<Tag> tags,
     required String description,
+    int? id,
   }) async {
     try {
-      final daleelIsar = DaleelIsar(
-        text: text,
-        sayer: sayer.isEmpty ? null : sayer,
-        priority: priority,
-        daleelType: DaleelType.athar,
-        description: description.isEmpty ? null : description,
-        lastRevisedAt: DateTime.now(),
-      );
-      _localSource.addDaleelWithTags(daleelIsar: daleelIsar, tags: tags);
+      if (id == null) {
+        log('$id is not exist');
+        final daleelIsar = DaleelIsar(
+          text: text,
+          sayer: sayer.isEmpty ? null : sayer,
+          priority: priority,
+          daleelType: DaleelType.athar,
+          description: description.isEmpty ? null : description,
+          lastRevisedAt: DateTime.now(),
+        );
+        _localSource.addDaleelWithTags(daleelIsar: daleelIsar, tags: tags);
+      } else {
+        log('$id is exist');
+        final daleelIsar = DaleelIsar(
+          id: id,
+          text: text,
+          sayer: sayer.isEmpty ? null : sayer,
+          priority: priority,
+          daleelType: DaleelType.athar,
+          description: description.isEmpty ? null : description,
+          lastRevisedAt: DateTime.now(),
+        );
+        _localSource.updateDaleelWithTags(daleelIsar: daleelIsar, tags: tags);
+      }
+
       return right(null);
     } catch (e) {
       log(e.toString());

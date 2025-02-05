@@ -31,24 +31,6 @@ class AddOrEditHadithCubit extends Cubit<AddOrEditHadithState> {
     rawiOfHadith = TextEditingController();
     extractionOfHadith = TextEditingController();
     descOfHadith = TextEditingController();
-
-    if (state.hadithId != null) {
-      final daleel = _daleelRepository.get(state.hadithId!);
-      textOfHadith.text = daleel?.text ?? '';
-      rawiOfHadith.text = daleel?.sayer ?? '';
-      extractionOfHadith.text = (daleel! as Hadith).extraction ?? '';
-      descOfHadith.text = daleel.description ?? '';
-
-      emit(state.copyWith(
-        hadith: Name.dirty(textOfHadith.text),
-        sayer: rawiOfHadith.text,
-        extraction: extractionOfHadith.text,
-        description: descOfHadith.text,
-        authenticity: (daleel as Hadith).authenticity,
-      ));
-
-      log(daleel.toString());
-    }
   }
 
   void textOfHadithChanged(String value) => emit(state.copyWith(hadith: Name.dirty(value)));

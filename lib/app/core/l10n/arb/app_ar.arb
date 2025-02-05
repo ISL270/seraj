@@ -165,5 +165,9 @@
         "priorityOfDaleel":"أهمية الدليل",
         "extractOfHadith":"تخريج الحديث",
         "ruleOfHadith":"حكم الحديث",
-        "update":"تحديث"
+        "update":"تحديث",
+        "hadithEditedSuccessf":"تم تحديث الحديث بنجاح",
+        "atharAddedSuccessf":"تم اضافة الاثر بنجاح",
+        "atharUpdatedSuccessf":"تم تحديث الاثر بنجاح",
+        "hadithUpdatedSuccessf":"تم تحديث الحديث بنجاح"
       }

@@ -54,7 +54,7 @@ class _BottomSheetBody extends StatelessWidget {
               onTap: () => switch (index) {
                 0 => context.pushNamed(AddOrEditHadith.name),
                 1 => context.goNamed(AddNewAyah.name),
-                2 => context.pushNamed(AddAtharScreen.name),
+                2 => context.pushNamed(AddOrEditAtharScreen.name),
                 3 => context.pushNamed(AddOtherScreen.name),
                 _ => {}
               },

@@ -165,5 +165,9 @@
       "priorityOfDaleel":"Daleel Priority",
       "extractOfHadith":"Hadith Extraction",
       "ruleOfHadith":"Hadith Rule",
-      "update":"Update"
-    }
+      "update":"Update",
+      "hadithEditedSuccessf":"Hadith Edited Successfully",
+      "atharAddedSuccessf":"Athar Added Successfully",
+      "atharUpdatedSuccessf":"Athar Updated Successfully",
+      "hadithUpdatedSuccessf":"Hadith Updated Successfully"
+}

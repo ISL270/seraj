@@ -314,12 +314,14 @@ class _HadithAddButton extends StatelessWidget {
             SnackBar(
               duration: const Duration(seconds: 2),
               content: Text(
-                context.l10n.hadithAddedSuccessf,
+                state.hadithId == null
+                    ? context.l10n.hadithAddedSuccessf // in the add case
+                    : context.l10n.hadithUpdatedSuccessf, // in the update case
                 style: context.textThemeX.medium.bold,
               ),
             ),
           );
-          // innerContext.pop();
+          if (state.hadithId == null) innerContext.pop();
           context.pop();
         }
 
