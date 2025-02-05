@@ -64,10 +64,15 @@ class _DaleelWidget extends StatelessWidget {
         motion: const ScrollMotion(),
         extentRatio: 0.3.w,
         children: [
-          CircleAvatar(
-            backgroundColor: context.colorsX.primary,
-            radius: 24.r,
-            child: Icon(FontAwesomeIcons.edit, color: context.colorsX.background, size: 24.r),
+          GestureDetector(
+            onTap: () {
+              context.pushNamed(AddOrEditHadith.name, extra: daleel.id);
+            },
+            child: CircleAvatar(
+              backgroundColor: context.colorsX.primary,
+              radius: 24.r,
+              child: Icon(FontAwesomeIcons.edit, color: context.colorsX.background, size: 24.r),
+            ),
           ),
           Gap(8.w),
           GestureDetector(
@@ -101,9 +106,10 @@ class _DaleelWidget extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () => context.pop(),
-                      child: Text(context.l10n.ok.capitalized,
-                          style:
-                              context.textThemeX.large.bold.copyWith(color: context.colorsX.error)),
+                      child: Text(
+                        context.l10n.ok.capitalized,
+                        style: context.textThemeX.large.bold.copyWith(color: context.colorsX.error),
+                      ),
                     ),
                   ],
                 ),

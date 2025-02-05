@@ -164,5 +164,6 @@
       "tagsOfDaleel":"Daleel Tags",
       "priorityOfDaleel":"Daleel Priority",
       "extractOfHadith":"Hadith Extraction",
-      "ruleOfHadith":"Hadith Rule"
+      "ruleOfHadith":"Hadith Rule",
+      "update":"Update"
     }

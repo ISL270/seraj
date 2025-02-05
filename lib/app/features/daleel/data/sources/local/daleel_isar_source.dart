@@ -1,4 +1,4 @@
-// ignore_for_file: inference_failure_on_function_invocation
+// ignore_for_file: inference_failure_on_function_invocation, cascade_invocations
 
 import 'package:athar/app/core/isar/isar_source.dart';
 import 'package:athar/app/core/models/tag.dart';
@@ -91,6 +91,55 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
       isar.daleelTagIsars.putAllSync(daleelTags);
       daleelIsar.tags.addAll(daleelTags);
       isar.daleelIsars.putSync(daleelIsar);
+    });
+  }
+
+  void updateDaleelWithTags({
+    required DaleelIsar daleelIsar,
+    required Set<Tag> tags,
+  }) {
+    final isar = isarService.db;
+
+    isar.writeTxnSync(() {
+      //Fetch existing Hadith by ID
+      final existingDaleel = isar.daleelIsars.getSync(daleelIsar.id!);
+
+      if (existingDaleel != null) {
+        // to update last revised date
+        existingDaleel.lastRevisedAt = daleelIsar.lastRevisedAt;
+
+        // Update the main fields of existing daleel
+        existingDaleel.text = daleelIsar.text;
+        existingDaleel.description = daleelIsar.description;
+        existingDaleel.sayer = daleelIsar.sayer;
+        existingDaleel.priority = daleelIsar.priority;
+
+        if (existingDaleel.daleelType == DaleelType.hadith) {
+          // Update the fields of the existing Hadith
+          existingDaleel.hadithExtraction = daleelIsar.hadithExtraction;
+          existingDaleel.hadithAuthenticity = daleelIsar.hadithAuthenticity;
+        } else if (existingDaleel.daleelType == DaleelType.aya) {
+          // Update the fields of the existing aya
+          existingDaleel.surah = daleelIsar.surah;
+          existingDaleel.firstAya = daleelIsar.firstAya;
+          existingDaleel.lastAya = daleelIsar.lastAya;
+        }
+
+        // athar and others is the same main fields.
+
+        //Convert and add new tags
+        final daleelTags = tags.map(DaleelTagIsar.fromDomain).toList();
+
+        // Ensure only new tags are added
+        isar.daleelTagIsars.putAllSync(daleelTags);
+
+        // Clear old tags and update with the correct ones
+        existingDaleel.tags.clear();
+        existingDaleel.tags.addAll(daleelTags);
+
+        //Save the updated Hadith back to the database
+        isar.daleelIsars.putSync(existingDaleel);
+      }
     });
   }
 

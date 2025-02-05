@@ -21,7 +21,7 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
 
   DaleelRepository(this._localSource) : super(_localSource);
 
-  Future<Either<Exception, void>> saveHadith({
+  Future<Either<Exception, void>> saveOrUpdateHadith({
     required String text,
     required String sayer,
     required Priority priority,
@@ -29,19 +29,38 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     required Set<Tag> tags,
     required String description,
     required HadithAuthenticity? authenticity,
+    int? id,
   }) async {
     try {
-      final daleelIsar = DaleelIsar(
-        text: text,
-        sayer: sayer,
-        priority: priority,
-        daleelType: DaleelType.hadith,
-        description: description,
-        lastRevisedAt: DateTime.now(),
-        hadithExtraction: extraction,
-        hadithAuthenticity: authenticity,
-      );
-      _localSource.addDaleelWithTags(daleelIsar: daleelIsar, tags: tags);
+      if (id == null) {
+        log('$id is not exist');
+        final daleelIsar = DaleelIsar(
+          text: text,
+          sayer: sayer.isEmpty ? null : sayer,
+          priority: priority,
+          daleelType: DaleelType.hadith,
+          description: description.isEmpty ? null : description,
+          lastRevisedAt: DateTime.now(),
+          hadithExtraction: extraction.isEmpty ? null : extraction,
+          hadithAuthenticity: authenticity,
+        );
+        _localSource.addDaleelWithTags(daleelIsar: daleelIsar, tags: tags);
+      } else {
+        log('$id is exist');
+        final daleelIsar = DaleelIsar(
+          id: id,
+          text: text,
+          sayer: sayer.isEmpty ? null : sayer,
+          priority: priority,
+          daleelType: DaleelType.hadith,
+          description: description.isEmpty ? null : description,
+          lastRevisedAt: DateTime.now(),
+          hadithExtraction: extraction.isEmpty ? null : extraction,
+          hadithAuthenticity: authenticity,
+        );
+        _localSource.updateDaleelWithTags(daleelIsar: daleelIsar, tags: tags);
+      }
+
       return right(null);
     } catch (e) {
       log(e.toString());

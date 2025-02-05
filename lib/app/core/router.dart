@@ -1,3 +1,5 @@
+// ignore_for_file: cast_nullable_to_non_nullable
+
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/features/azkar/domain/azkar.dart';
 import 'package:athar/app/features/azkar/domain/azkar_repository.dart';
@@ -14,8 +16,8 @@ import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_athar/presentation/add_athar_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_athar/presentation/cubit/add_athar_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/add_new_ayah.dart';
-import 'package:athar/app/features/daleel/sub_features/add_hadith/presentation/add_hadith_screen.dart';
-import 'package:athar/app/features/daleel/sub_features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/add_edit_hadith_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/cubit/add_edit_hadith_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/add_other/presentation/add_other_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_other/presentation/cubit/add_other_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/daleel_details/bloc/daleel_details_bloc.dart';
@@ -56,14 +58,15 @@ final appRouter = GoRouter(
               ),
               routes: [
                 GoRoute(
-                  name: AddHadith.name,
-                  path: AddHadith.name,
+                  name: AddOrEditHadith.name,
+                  path: AddOrEditHadith.name,
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (_) => AddHadithCubit(getIt.get<DaleelRepository>()),
-                      child: const AddHadith(),
+                      create: (_) => AddOrEditHadithCubit(getIt.get<DaleelRepository>())
+                        ..initializeHadith(state.extra as int?),
+                      child: const AddOrEditHadith(),
                     ),
                   ),
                 ),
