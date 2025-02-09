@@ -3,9 +3,9 @@ import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 
 class TagSelectionWidget extends StatefulWidget {
   final Set<Tag> tags;
@@ -30,160 +30,163 @@ class TagSelectionWidget extends StatefulWidget {
 }
 
 class _TagSelectionWidgetState extends State<TagSelectionWidget> {
-  final TextEditingController _controller = TextEditingController();
-  final FocusNode _focusNode = FocusNode();
-
-  String searchQuery = '';
-  bool showInitialTags = false;
+  late TextfieldTagsController<Tag> _tagController;
 
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(() {
-      setState(() {
-        showInitialTags = _focusNode.hasFocus && searchQuery.isEmpty;
-      });
-    });
+    _tagController = TextfieldTagsController<Tag>();
   }
 
-  void _addTag(BuildContext context, String tagName) {
-    if (tagName.isNotEmpty) {
-      final newTag = Tag(null, tagName);
-
-      if (widget.tags.any((tag) => tag.name.toLowerCase() == tagName.toLowerCase())) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(widget.errorMessageBuilder?.call(newTag) ??
-                '$tagName ${context.l10n.alreadyExists}'),
-          ),
-        );
-      } else {
-        widget.onAddTag(newTag);
-      }
-    }
+  @override
+  void dispose() {
+    _tagController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final filteredTags = widget.availableTags
-        .where((tag) => tag.name.toLowerCase().contains(searchQuery.toLowerCase()))
-        .toList();
-
-    final initialTags = widget.availableTags.take(5).toList();
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Search input
-        Row(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: _controller,
-                focusNode: _focusNode,
-                decoration: InputDecoration(
-                  isDense: true,
-                  hintText: context.l10n.tags,
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    searchQuery = value.trim();
-                    showInitialTags = searchQuery.isEmpty && _focusNode.hasFocus;
-                  });
-                },
-                onSubmitted: (value) {
-                  _addTag(context, value.trim());
-                  _controller.clear();
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5.w),
-              child: Button.filled(
-                shape: ButtonShape.roundedCorners,
-                height: 10.h,
-                onPressed: () {
-                  _addTag(context, _controller.text.trim());
-                  _controller.clear();
-                },
-                label: context.l10n.add,
-              ),
-            ),
-            InkWell(
-              onTap: widget.onClearTags,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: Text(
-                  context.l10n.clear,
-                  style: context.textThemeX.medium.bold.copyWith(
-                    color: context.colorsX.primary,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-
-        SizedBox(height: 8.h),
-
-        // Selected tags list
-        Wrap(
-          runSpacing: 4.h,
-          spacing: 4.h,
-          children: widget.tags.map((Tag tag) {
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20.sp)),
-                color: context.colorsX.primary,
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    '#${tag.name}',
-                    style: TextStyle(color: context.colorsX.background),
-                  ),
-                  SizedBox(width: 4.w),
-                  InkWell(
-                    child: Icon(
-                      Icons.cancel,
-                      size: 14.sp,
-                      color: context.colorsX.background,
+        // Tag Input with AutoComplete
+        Autocomplete<Tag>(
+          optionsBuilder: (TextEditingValue textEditingValue) {
+            if (textEditingValue.text.isEmpty) {
+              return const Iterable<Tag>.empty();
+            }
+            return widget.availableTags.where(
+                (tag) => tag.name.toLowerCase().contains(textEditingValue.text.toLowerCase()));
+          },
+          fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
+            return TextFieldTags<Tag>(
+              textfieldTagsController: _tagController,
+              textEditingController: textEditingController,
+              focusNode: focusNode,
+              textSeparators: const [' ', ','],
+              validator: (Tag tag) {
+                if (widget.tags.any((t) => t.name.toLowerCase() == tag.name.toLowerCase())) {
+                  return widget.errorMessageBuilder?.call(tag) ??
+                      '${tag.name} ${context.l10n.alreadyExists}';
+                }
+                return null;
+              },
+              inputFieldBuilder: (context, inputFieldValues) {
+                return TextField(
+                  controller: inputFieldValues.textEditingController,
+                  focusNode: inputFieldValues.focusNode,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    hintText: context.l10n.tags,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: context.colorsX.primary,
+                        width: 2.w,
+                      ),
                     ),
-                    onTap: () => widget.onRemoveTag(tag),
+                    errorText: inputFieldValues.error,
                   ),
-                ],
-              ),
-            );
-          }).toList(),
-        ),
-        SizedBox(height: 8.h),
-        if (showInitialTags || searchQuery.isEmpty)
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: 5.h,
-              maxHeight: 160.h,
-            ),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: showInitialTags ? initialTags.length : filteredTags.length,
-              itemBuilder: (context, index) {
-                final tag = showInitialTags ? initialTags[index] : filteredTags[index];
-                return ListTile(
-                  title: Text('#${tag.name}', style: TextStyle(color: context.colorsX.primary)),
-                  onTap: () {
-                    _addTag(context, tag.name);
-                    _controller.clear();
-                    setState(() {
-                      searchQuery = '';
-                      showInitialTags = false;
-                    });
+                  onChanged: (value) {
+                    final tag = Tag(null, value);
+                    inputFieldValues.onTagChanged(tag);
+                  },
+                  onSubmitted: (value) {
+                    final trimmedValue = value.trim();
+                    if (trimmedValue.isEmpty) return;
+                    if (widget.tags
+                        .any((t) => t.name.toLowerCase() == trimmedValue.toLowerCase())) {
+                      return;
+                    }
+                    final existingTag = widget.availableTags.firstWhere(
+                      (tag) => tag.name.toLowerCase() == trimmedValue.toLowerCase(),
+                      orElse: () => Tag(null, trimmedValue),
+                    );
+                    if (!_tagController.getTags!.contains(existingTag)) {
+                      _tagController.onTagSubmitted(existingTag);
+                      widget.onAddTag(existingTag);
+                    }
+                    textEditingController.clear();
                   },
                 );
               },
+            );
+          },
+          optionsViewBuilder: (context, onSelected, options) {
+            return Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: context.colorsX.background,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: context.colorsX.onBackgroundTint
+                          .withValues(alpha: 0.1), // Light shadow color
+                      blurRadius: 8, // Blur intensity
+                      spreadRadius: 2, // Spread size
+                      offset: const Offset(0, 4), // Vertical shadow position
+                    ),
+                  ],
+                ),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: options.length,
+                  itemBuilder: (context, index) {
+                    final tag = options.elementAt(index);
+                    return ListTile(
+                      leading: Icon(Icons.tag, color: context.colorsX.primary),
+                      title: Text(tag.name, style: TextStyle(color: context.colorsX.primary)),
+                      onTap: () => onSelected(tag),
+                    );
+                  },
+                ),
+              ),
+            );
+          },
+          onSelected: (Tag tag) {
+            _tagController.onTagSubmitted(tag);
+            widget.onAddTag(tag);
+          },
+        ),
+
+        SizedBox(height: 8.h),
+
+        // Selected Tags Display
+        Wrap(
+          runSpacing: 4.h,
+          spacing: 4.h,
+          children: _tagController.getTags?.map((Tag tag) {
+                return Chip(
+                  label: Text('#${tag.name}'),
+                  backgroundColor: context.colorsX.primary,
+                  labelStyle: TextStyle(color: context.colorsX.background),
+                  onDeleted: () {
+                    _tagController.onTagRemoved(tag);
+                    widget.onRemoveTag(tag);
+                  },
+                );
+              }).toList() ??
+              [],
+        ),
+
+        SizedBox(height: 8.h),
+
+        // Clear Tags Button
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: () {
+              _tagController.clearTags();
+              widget.onClearTags();
+            },
+            child: Text(
+              context.l10n.clear,
+              style: context.textThemeX.medium.bold.copyWith(
+                color: context.colorsX.primary,
+              ),
             ),
           ),
+        ),
       ],
     );
   }
