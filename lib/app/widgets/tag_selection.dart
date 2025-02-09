@@ -49,7 +49,6 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Tag Input with AutoComplete
         Autocomplete<Tag>(
           optionsBuilder: (TextEditingValue textEditingValue) {
             if (textEditingValue.text.isEmpty) {
@@ -93,7 +92,7 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
                   onSubmitted: (value) {
                     final trimmedValue = value.trim();
                     if (trimmedValue.isEmpty) return;
-                    if (widget.tags
+                    if ((_tagController.getTags ?? [])
                         .any((t) => t.name.toLowerCase() == trimmedValue.toLowerCase())) {
                       return;
                     }
@@ -101,11 +100,11 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
                       (tag) => tag.name.toLowerCase() == trimmedValue.toLowerCase(),
                       orElse: () => Tag(null, trimmedValue),
                     );
-                    if (!_tagController.getTags!.contains(existingTag)) {
-                      _tagController.onTagSubmitted(existingTag);
-                      widget.onAddTag(existingTag);
-                    }
-                    textEditingController.clear();
+                    _tagController.onTagSubmitted(existingTag);
+                    widget.onAddTag(existingTag);
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      textEditingController.clear();
+                    });
                   },
                 );
               },
@@ -117,16 +116,7 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
               child: Container(
                 decoration: BoxDecoration(
                   color: context.colorsX.background,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: context.colorsX.onBackgroundTint
-                          .withValues(alpha: 0.1), // Light shadow color
-                      blurRadius: 8, // Blur intensity
-                      spreadRadius: 2, // Spread size
-                      offset: const Offset(0, 4), // Vertical shadow position
-                    ),
-                  ],
+                  borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: ListView.builder(
                   shrinkWrap: true,
@@ -144,14 +134,18 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
             );
           },
           onSelected: (Tag tag) {
+            if ((_tagController.getTags ?? [])
+                .any((t) => t.name.toLowerCase() == tag.name.toLowerCase())) {
+              return;
+            }
             _tagController.onTagSubmitted(tag);
             widget.onAddTag(tag);
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _tagController.clearTags();
+            });
           },
         ),
-
         SizedBox(height: 8.h),
-
-        // Selected Tags Display
         Wrap(
           runSpacing: 4.h,
           spacing: 4.h,
@@ -168,7 +162,6 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
               }).toList() ??
               [],
         ),
-        // Clear Tags Button
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
