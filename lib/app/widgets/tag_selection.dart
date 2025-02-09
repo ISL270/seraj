@@ -168,9 +168,6 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
               }).toList() ??
               [],
         ),
-
-        SizedBox(height: 8.h),
-
         // Clear Tags Button
         Align(
           alignment: Alignment.centerRight,
