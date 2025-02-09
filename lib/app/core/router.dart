@@ -28,6 +28,7 @@ import 'package:athar/app/features/dua/domain/dua_repository.dart';
 import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
 import 'package:athar/app/features/dua/presentation/dua_screen.dart';
 import 'package:athar/app/features/dua/sub_features/add_dua/add_dua_screen.dart';
+import 'package:athar/app/features/dua/sub_features/add_dua/cubit/add_dua_cubit.dart';
 import 'package:athar/app/features/dua/sub_features/dua_details/bloc/dua_details_bloc.dart';
 import 'package:athar/app/features/dua/sub_features/dua_details/dua_details_screen.dart';
 import 'package:athar/app/features/home/presentaion/home.dart';
@@ -158,9 +159,13 @@ final appRouter = GoRouter(
                   name: AddDuaScreen.name,
                   path: AddDuaScreen.name,
                   parentNavigatorKey: _rootNavigatorKey,
-                  pageBuilder: (context, state) => const CupertinoPage(
+                  pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
-                    child: AddDuaScreen(),
+                    child: BlocProvider(
+                      create: (_) => AddDuaCubit(getIt.get<DuaRepository>())
+                        ..initializeDua(state.extra as int?),
+                      child: const AddDuaScreen(),
+                    ),
                   ),
                 ),
                 GoRoute(
