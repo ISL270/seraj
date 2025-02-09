@@ -12,6 +12,7 @@ final class AddAyaState extends Equatable with FormzMixin {
     this.status = const Initial(),
     this.tags = const {},
     this.query = '',
+    this.ayaId,
     this.hintTexts = const [],
     this.ayahs = const [],
     this.selectedAyahs = const [],
@@ -20,7 +21,7 @@ final class AddAyaState extends Equatable with FormzMixin {
   final List<Ayah> ayahs;
   final List<Ayah> selectedAyahs;
   final List<String> hintTexts;
-
+  final int? ayaId;
   final Name textOfAya;
   final Name surahOfAya;
   final Name ayaExplain;
@@ -31,7 +32,8 @@ final class AddAyaState extends Equatable with FormzMixin {
   final String? query;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
+        ayaId,
         textOfAya,
         ayaExplain,
         tags,
@@ -43,6 +45,7 @@ final class AddAyaState extends Equatable with FormzMixin {
       ];
 
   AddAyaState copyWith({
+    int? ayaId,
     Name? textOfAya,
     Name? ayaExplain,
     Name? surahOfAya,
@@ -55,6 +58,7 @@ final class AddAyaState extends Equatable with FormzMixin {
     VoidStatus? status,
   }) {
     return AddAyaState(
+      ayaId: ayaId ?? this.ayaId,
       textOfAya: textOfAya ?? this.textOfAya,
       ayaExplain: ayaExplain ?? this.ayaExplain,
       surahOfAya: surahOfAya ?? this.surahOfAya,

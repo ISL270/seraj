@@ -90,6 +90,13 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
     ));
   }
 
+  void delete({required int? id}) {
+    if (id != null) {
+      _repository.deleteByID(id);
+      add(const DaleelSearched(''));
+    }
+  }
+
   void _onFilterUpdate(
     DaleelFiltered event,
     Emitter<DaleelState> emit,

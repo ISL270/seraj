@@ -16,6 +16,7 @@ class _AyaSearch extends StatelessWidget {
               context: context,
               title: context.l10n.warning,
               content: context.l10n.ayaExist,
+              id: state.ayaId,
             ).then((_) {
               context.mounted ? context.read<AddAyaCubit>().resetStatus() : null;
             });
@@ -114,6 +115,7 @@ class _AyaSearch extends StatelessWidget {
   Future<void> _showErrorDialog({
     required BuildContext context,
     required String title,
+    required int? id,
     required String content,
   }) {
     return showDialog(
@@ -125,7 +127,7 @@ class _AyaSearch extends StatelessWidget {
         content: Text(content, style: context.textThemeX.large),
         actions: [
           TextButton(
-            onPressed: () => context.pop(),
+            onPressed: () => context.pushNamed(AddNewAyah.name, extra: id),
             child: Text(context.l10n.edit),
           ),
           TextButton(

@@ -1,11 +1,9 @@
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
-import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/cubit/add_aya_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/number_picker_bs.dart';
@@ -41,109 +39,104 @@ class _AddNewAyahState extends State<AddNewAyah> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AddAyaCubit(
-        ayaRepository: getIt.get<DaleelRepository>(),
-      ),
-      child: Screen(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Column(
-                      spacing: 20.h,
-                      children: [
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () => context.pop(),
-                              child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
+    return Screen(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Column(
+                    spacing: 20.h,
+                    children: [
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () => context.pop(),
+                            child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
+                          ),
+                          const Spacer(flex: 2),
+                          Text(
+                            context.l10n.addAyahs,
+                            style: context.textThemeX.heading.bold,
+                            textAlign: TextAlign.center,
+                          ),
+                          const Spacer(flex: 3),
+                        ],
+                      ),
+                      Stack(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 80.h),
+                            child: BlocBuilder<AddAyaCubit, AddAyaState>(
+                              builder: (context, state) {
+                                final cubit = context.read<AddAyaCubit>();
+                                return state.selectedAyahs.isNotEmpty || state.ayaId != null
+                                    ? Column(
+                                        spacing: 10.h,
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Text(
+                                              context.l10n.surahandnoayah,
+                                              style: context.textThemeX.medium.bold,
+                                            ),
+                                          ),
+                                          _SurahAndVerseNumTextField(
+                                            surahController: cubit.surahController,
+                                            firstAyahController: cubit.firstAyahController,
+                                            lastAyahController: cubit.lastAyahController,
+                                          ),
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Text(
+                                              context.l10n.ayahs,
+                                              style: context.textThemeX.medium.bold,
+                                            ),
+                                          ),
+                                          _QuranicVerseTextField(
+                                            controller: cubit.quranicVerseController,
+                                          ),
+                                          Gap(5.h),
+                                          _QuranicVerseExplanationTextField(
+                                            controller: cubit.explanationController,
+                                          ),
+                                          Gap(5.h),
+                                          TagSelectionWidget(
+                                            tags: state.tags,
+                                            onAddTag: (tag) {
+                                              final updatedTags = {
+                                                ...state.tags
+                                              }; // Create a new modifiable set
+                                              if (updatedTags.add(tag)) {
+                                                // Modify the copy, not the original
+                                                cubit.tagsChanged(updatedTags);
+                                              }
+                                            },
+                                            onRemoveTag: (tag) =>
+                                                cubit.tagsChanged({...state.tags}..remove(tag)),
+                                            onClearTags: () => cubit.tagsChanged({}),
+                                          )
+                                        ],
+                                      )
+                                    : const SizedBox();
+                              },
                             ),
-                            const Spacer(flex: 2),
-                            Text(
-                              context.l10n.addAyahs,
-                              style: context.textThemeX.heading.bold,
-                              textAlign: TextAlign.center,
-                            ),
-                            const Spacer(flex: 3),
-                          ],
-                        ),
-                        Stack(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 80.h),
-                              child: BlocBuilder<AddAyaCubit, AddAyaState>(
-                                builder: (context, state) {
-                                  final cubit = context.read<AddAyaCubit>();
-                                  return state.selectedAyahs.isNotEmpty
-                                      ? Column(
-                                          spacing: 10.h,
-                                          children: [
-                                            Align(
-                                              alignment: Alignment.centerRight,
-                                              child: Text(
-                                                context.l10n.surahandnoayah,
-                                                style: context.textThemeX.medium.bold,
-                                              ),
-                                            ),
-                                            _SurahAndVerseNumTextField(
-                                              surahController: cubit.surahController,
-                                              firstAyahController: cubit.firstAyahController,
-                                              lastAyahController: cubit.lastAyahController,
-                                            ),
-                                            Align(
-                                              alignment: Alignment.centerRight,
-                                              child: Text(
-                                                context.l10n.ayahs,
-                                                style: context.textThemeX.medium.bold,
-                                              ),
-                                            ),
-                                            _QuranicVerseTextField(
-                                              controller: cubit.quranicVerseController,
-                                            ),
-                                            Gap(5.h),
-                                            _QuranicVerseExplanationTextField(
-                                              controller: cubit.explanationController,
-                                            ),
-                                            Gap(5.h),
-                                            TagSelectionWidget(
-                                              tags: state.tags,
-                                              onAddTag: (tag) {
-                                                final updatedTags = {
-                                                  ...state.tags
-                                                }; // Create a new modifiable set
-                                                if (updatedTags.add(tag)) {
-                                                  // Modify the copy, not the original
-                                                  cubit.tagsChanged(updatedTags);
-                                                }
-                                              },
-                                              onRemoveTag: (tag) =>
-                                                  cubit.tagsChanged({...state.tags}..remove(tag)),
-                                              onClearTags: () => cubit.tagsChanged({}),
-                                            )
-                                          ],
-                                        )
-                                      : const SizedBox();
-                                },
-                              ),
-                            ),
-                            const _AyaSearch(),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                          ),
+                          const _AyaSearch(),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            const _AyahAddButton(),
-            Gap(5.h)
-          ],
-        ),
+          ),
+          const _AyahAddButton(),
+          Gap(5.h)
+        ],
       ),
     );
   }
@@ -273,7 +266,6 @@ class _AyahAddButton extends StatelessWidget {
             ),
           );
           innerContext.pop();
-          context.pop();
         }
       },
       builder: (context, state) {
@@ -283,7 +275,7 @@ class _AyahAddButton extends StatelessWidget {
             maxWidth: true,
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
-            label: context.l10n.add,
+            label: state.ayaId == null ? context.l10n.add : context.l10n.update,
             onPressed: state.isValid ? () => context.read<AddAyaCubit>().saveAyaForm() : null,
           ),
         );
