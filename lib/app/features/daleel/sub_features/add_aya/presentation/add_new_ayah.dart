@@ -59,7 +59,9 @@ class _AddNewAyahState extends State<AddNewAyah> {
                           ),
                           const Spacer(flex: 2),
                           Text(
-                            context.l10n.addAyahs,
+                            context.read<AddAyaCubit>().state.selectedAyahs.isEmpty
+                                ? '${context.l10n.edit} ${context.l10n.ayah.capitalizedDefinite}'
+                                : context.l10n.addAyahs,
                             style: context.textThemeX.heading.bold,
                             textAlign: TextAlign.center,
                           ),

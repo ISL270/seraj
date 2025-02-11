@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 part of 'add_new_ayah.dart';
 
 class _AyahSelectionWidget extends StatelessWidget {
@@ -9,7 +11,7 @@ class _AyahSelectionWidget extends StatelessWidget {
     return Expanded(
       child: TextField(
         readOnly: true,
-        onTap: () => _onLastAyahTapped(context),
+        onTap: () => cubit.state.selectedAyahs.isNotEmpty ? _onLastAyahTapped(context) : {},
         controller: cubit.lastAyahController,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         textAlign: TextAlign.center,

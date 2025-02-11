@@ -30,15 +30,11 @@ class _AyaSearch extends StatelessWidget {
               backgroundColor:
                   WidgetStateProperty.all(context.colorsX.background.withValues(alpha: 0.9)),
               shape: WidgetStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16.r),
-                ),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
               ),
               controller: textController,
               hintText: context.l10n.search,
-              onChanged: (query) {
-                context.read<AddAyaCubit>().queryChanged(query);
-              },
+              onChanged: (query) => context.read<AddAyaCubit>().queryChanged(query),
               trailing: [
                 IconButton(
                   onPressed: () {
