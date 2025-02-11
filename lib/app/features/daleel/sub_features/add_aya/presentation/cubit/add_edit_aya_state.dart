@@ -1,9 +1,9 @@
 // ignore_for_file: strict_raw_type
 
-part of 'add_aya_cubit.dart';
+part of 'add_edit_aya_cubit.dart';
 
-final class AddAyaState extends Equatable with FormzMixin {
-  const AddAyaState({
+final class AddEditAyahState extends Equatable with FormzMixin {
+  const AddEditAyahState({
     this.textOfAya = const Name.pure(),
     this.surahOfAya = const Name.pure(),
     this.ayaExplain = const Name.pure(),
@@ -44,7 +44,7 @@ final class AddAyaState extends Equatable with FormzMixin {
         selectedAyahs,
       ];
 
-  AddAyaState copyWith({
+  AddEditAyahState copyWith({
     int? ayaId,
     Name? textOfAya,
     Name? ayaExplain,
@@ -57,7 +57,7 @@ final class AddAyaState extends Equatable with FormzMixin {
     Set<Tag>? tags,
     VoidStatus? status,
   }) {
-    return AddAyaState(
+    return AddEditAyahState(
       ayaId: ayaId ?? this.ayaId,
       textOfAya: textOfAya ?? this.textOfAya,
       ayaExplain: ayaExplain ?? this.ayaExplain,

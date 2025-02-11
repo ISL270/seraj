@@ -1,13 +1,13 @@
 // ignore_for_file: unnecessary_null_comparison
 
-part of 'add_new_ayah.dart';
+part of 'add_edit_ayah.dart';
 
 class _AyahSelectionWidget extends StatelessWidget {
   const _AyahSelectionWidget();
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AddAyaCubit>();
+    final cubit = context.read<AddEditAyahCubit>();
     return Expanded(
       child: TextField(
         readOnly: true,
@@ -25,8 +25,8 @@ class _AyahSelectionWidget extends StatelessWidget {
   }
 
   Future<void> _onLastAyahTapped(BuildContext context) async {
-    final currentState = context.read<AddAyaCubit>().state;
-    final cubit = context.read<AddAyaCubit>();
+    final currentState = context.read<AddEditAyahCubit>().state;
+    final cubit = context.read<AddEditAyahCubit>();
 
     final surahNumber = currentState.selectedAyahs.first.surahNumber;
     final surahAyahs = FlutterQuran().getSurah(surahNumber).ayahs;
@@ -58,7 +58,7 @@ class _AyahSelectionWidget extends StatelessWidget {
     int firstAyah,
     BuildContext context,
   ) {
-    final cubit = context.read<AddAyaCubit>();
+    final cubit = context.read<AddEditAyahCubit>();
 
     final adjustedFirstAyah = lastAyahNumber < firstAyah ? lastAyahNumber : firstAyah;
     cubit.lastAyahController.text = lastAyahNumber.toString();
@@ -67,6 +67,6 @@ class _AyahSelectionWidget extends StatelessWidget {
         FlutterQuran().getSurah(surahNumber).ayahs.getRange(adjustedFirstAyah - 1, lastAyahNumber);
 
     final updatedAyahs = surahAyahs.toList();
-    context.read<AddAyaCubit>().ayahsChanged(updatedAyahs);
+    context.read<AddEditAyahCubit>().ayahsChanged(updatedAyahs);
   }
 }

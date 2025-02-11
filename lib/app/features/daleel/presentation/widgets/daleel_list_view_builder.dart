@@ -89,7 +89,7 @@ class _DaleelWidget extends StatelessWidget {
       Hadith() => AddOrEditHadith.name,
       Athar() => AddOrEditAtharScreen.name,
       Other() => AddOrEditOther.name,
-      Aya() => AddNewAyah.name,
+      Aya() => AddEditAyah.name,
     };
 
     context.pushNamed(routeName, extra: daleel.id);

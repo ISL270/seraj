@@ -15,9 +15,9 @@ import 'package:flutter_quran/flutter_quran.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
 
-part 'add_aya_state.dart';
+part 'add_edit_aya_state.dart';
 
-class AddAyaCubit extends Cubit<AddAyaState> {
+class AddEditAyahCubit extends Cubit<AddEditAyahState> {
   final DaleelRepository _daleelRepository;
   late TextEditingController surahController;
   late TextEditingController quranicVerseController;
@@ -25,10 +25,10 @@ class AddAyaCubit extends Cubit<AddAyaState> {
   late TextEditingController lastAyahController;
   late TextEditingController explanationController;
 
-  AddAyaCubit({
+  AddEditAyahCubit({
     required DaleelRepository ayaRepository,
   })  : _daleelRepository = ayaRepository,
-        super(const AddAyaState()) {
+        super(const AddEditAyahState()) {
     surahController = TextEditingController();
     quranicVerseController = TextEditingController();
     firstAyahController = TextEditingController();

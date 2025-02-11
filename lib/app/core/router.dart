@@ -13,8 +13,8 @@ import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
-import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/add_new_ayah.dart';
-import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/cubit/add_aya_cubit.dart';
+import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/add_edit_ayah.dart';
+import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/cubit/add_edit_aya_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/add_edit_athar_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/cubit/add_edit_athar_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/add_edit_hadith_screen.dart';
@@ -85,16 +85,16 @@ final appRouter = GoRouter(
                   ),
                 ),
                 GoRoute(
-                  name: AddNewAyah.name,
-                  path: AddNewAyah.name,
+                  name: AddEditAyah.name,
+                  path: AddEditAyah.name,
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) {
                     return CupertinoPage(
                       child: BlocProvider(
-                        create: (_) => AddAyaCubit(
+                        create: (_) => AddEditAyahCubit(
                           ayaRepository: getIt.get<DaleelRepository>(),
                         )..initializeAya(state.extra as int?),
-                        child: const AddNewAyah(),
+                        child: const AddEditAyah(),
                       ),
                     );
                   },

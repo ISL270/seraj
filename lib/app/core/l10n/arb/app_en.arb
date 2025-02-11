@@ -171,5 +171,6 @@
       "atharUpdatedSuccessf":"Athar Updated Successfully",
       "hadithUpdatedSuccessf":"Hadith Updated Successfully",
       "otherUpdatedSuccessf":"Other Updated Successfully",
-      "otherAddedSuccessf":"Other Added Successfully"
+      "otherAddedSuccessf":"Other Added Successfully",
+      "ayahUpdatedSuccessf":"Ayah Updated Successfully"
 }   

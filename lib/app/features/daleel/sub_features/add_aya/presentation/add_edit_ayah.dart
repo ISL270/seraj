@@ -4,7 +4,7 @@ import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/cubit/add_aya_cubit.dart';
+import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/cubit/add_edit_aya_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/number_picker_bs.dart';
 import 'package:athar/app/widgets/screen.dart';
@@ -18,19 +18,19 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-part 'aya_search.dart';
+part 'ayah_search.dart';
 part 'ayah_selection_widget.dart';
 
-class AddNewAyah extends StatefulWidget {
-  const AddNewAyah({super.key});
+class AddEditAyah extends StatefulWidget {
+  const AddEditAyah({super.key});
 
   static const name = 'add-new-aya';
 
   @override
-  State<AddNewAyah> createState() => _AddNewAyahState();
+  State<AddEditAyah> createState() => _AddEditAyahState();
 }
 
-class _AddNewAyahState extends State<AddNewAyah> {
+class _AddEditAyahState extends State<AddEditAyah> {
   @override
   void initState() {
     super.initState();
@@ -59,7 +59,7 @@ class _AddNewAyahState extends State<AddNewAyah> {
                           ),
                           const Spacer(flex: 2),
                           Text(
-                            context.read<AddAyaCubit>().state.selectedAyahs.isEmpty
+                            context.read<AddEditAyahCubit>().state.selectedAyahs.isEmpty
                                 ? '${context.l10n.edit} ${context.l10n.ayah.capitalizedDefinite}'
                                 : context.l10n.addAyahs,
                             style: context.textThemeX.heading.bold,
@@ -72,9 +72,9 @@ class _AddNewAyahState extends State<AddNewAyah> {
                         children: [
                           Padding(
                             padding: EdgeInsets.only(top: 80.h),
-                            child: BlocBuilder<AddAyaCubit, AddAyaState>(
+                            child: BlocBuilder<AddEditAyahCubit, AddEditAyahState>(
                               builder: (context, state) {
-                                final cubit = context.read<AddAyaCubit>();
+                                final cubit = context.read<AddEditAyahCubit>();
                                 return state.selectedAyahs.isNotEmpty || state.ayaId != null
                                     ? Column(
                                         spacing: 10.h,
@@ -239,7 +239,7 @@ class _QuranicVerseExplanationTextField extends StatelessWidget {
       controller: controller,
       maxLines: 5,
       minLines: 4,
-      onChanged: (value) => context.read<AddAyaCubit>().ayaExplainChanged(value),
+      onChanged: (value) => context.read<AddEditAyahCubit>().ayaExplainChanged(value),
       decoration: InputDecoration(
         alignLabelWithHint: true,
         hintText: context.l10n.quranicayahexp,
@@ -254,7 +254,7 @@ class _AyahAddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AddAyaCubit, AddAyaState>(
+    return BlocConsumer<AddEditAyahCubit, AddEditAyahState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (innerContext, state) {
         if (state.status.isSuccess) {
@@ -262,7 +262,9 @@ class _AyahAddButton extends StatelessWidget {
             SnackBar(
               duration: const Duration(seconds: 2),
               content: Text(
-                context.l10n.ayahAdded,
+                state.selectedAyahs.isEmpty
+                    ? context.l10n.ayahUpdatedSuccessf
+                    : context.l10n.ayahAdded,
                 style: context.textThemeX.medium.bold,
               ),
             ),
@@ -278,7 +280,7 @@ class _AyahAddButton extends StatelessWidget {
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
             label: state.ayaId == null ? context.l10n.add : context.l10n.update,
-            onPressed: state.isValid ? () => context.read<AddAyaCubit>().saveAyaForm() : null,
+            onPressed: state.isValid ? () => context.read<AddEditAyahCubit>().saveAyaForm() : null,
           ),
         );
       },
