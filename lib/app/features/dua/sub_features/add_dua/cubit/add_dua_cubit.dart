@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
@@ -53,6 +55,7 @@ class AddDuaCubit extends Cubit<AddDuaState> {
         description: dua.description,
         tags: dua.tags,
       ));
+      log(state.tags.toString());
     }
   }
 

@@ -143,10 +143,5 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
     });
   }
 
-  List<Tag> getAllTags() {
-    final daleelTags = isarService.db.daleelTagIsars.where().findAllSync().map((e) => e.toDomain());
-    return daleelTags.toList();
-  }
-
   void deleteDoc(int id) => isarService.db.writeTxn(() => isarService.db.daleelIsars.delete(id));
 }

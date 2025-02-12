@@ -147,21 +147,19 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
         ),
         SizedBox(height: 8.h),
         Wrap(
-          runSpacing: 4.h,
-          spacing: 4.h,
-          children: _tagController.getTags?.map((Tag tag) {
-                return Chip(
-                  label: Text('#${tag.name}'),
-                  backgroundColor: context.colorsX.primary,
-                  labelStyle: TextStyle(color: context.colorsX.background),
-                  onDeleted: () {
-                    _tagController.onTagRemoved(tag);
-                    widget.onRemoveTag(tag);
-                  },
-                );
-              }).toList() ??
-              [],
-        ),
+            runSpacing: 4.h,
+            spacing: 4.h,
+            children: widget.tags.map((Tag tag) {
+              return Chip(
+                label: Text('#${tag.name}'),
+                backgroundColor: context.colorsX.primary,
+                labelStyle: TextStyle(color: context.colorsX.background),
+                onDeleted: () {
+                  _tagController.onTagRemoved(tag);
+                  widget.onRemoveTag(tag);
+                },
+              );
+            }).toList()),
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(

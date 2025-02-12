@@ -61,7 +61,7 @@ class AddOrEditOther extends StatelessWidget {
                       return TagSelectionWidget(
                         tags: state.tags,
                         onAddTag: (tag) {
-                          final updatedTags = {...state.tags};
+                          final updatedTags = {...state.tags}; // Create a new modifiable set
                           if (updatedTags.add(tag)) {
                             cubit.tagsChanged(updatedTags);
                           }

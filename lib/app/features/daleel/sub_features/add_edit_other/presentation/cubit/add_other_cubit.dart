@@ -43,13 +43,10 @@ class AddOrEditOtherCubit extends Cubit<AddOtherState> {
     if (otherId == null) {
     } else {
       emit(state.copyWith(status: const Loading()));
-
       final other = _repository.get(otherId);
-
       otherTextCtrlr.text = other!.text;
       otherSayerCtrlr.text = other.sayer ?? '';
       otherExplainCtrlr.text = other.description ?? '';
-
       emit(state.copyWith(
         otherId: otherId,
         other: Name.dirty(otherTextCtrlr.text),
@@ -58,6 +55,7 @@ class AddOrEditOtherCubit extends Cubit<AddOtherState> {
         sliderValue: other.priority.index.toDouble(),
         tags: other.tags,
       ));
+      log("${state.tags.toString()}");
 
       emit(state.copyWith(status: const Success('Initialized Other Successfully')));
     }

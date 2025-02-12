@@ -12,6 +12,7 @@ import 'package:injectable/injectable.dart';
 final class DuaRepository extends Repository<Dua, DuaIsar> {
   final DuaIsarSource _localSource;
   final DuaTagIsarSource _tagIsarSource;
+
   DuaRepository(this._localSource, this._tagIsarSource) : super(_localSource);
 
   void addDuaOrUpdate({
@@ -54,6 +55,10 @@ final class DuaRepository extends Repository<Dua, DuaIsar> {
 
   List<Tag> getTags() {
     return _tagIsarSource.getAllTags();
+  }
+
+  List<Tag> getDuaTagsById({required int id}) {
+    return _localSource.get(id)?.toDomain().tags.map((tag) => tag).toList() ?? [];
   }
 
   @override

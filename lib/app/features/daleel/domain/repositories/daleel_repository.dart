@@ -12,14 +12,16 @@ import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
+import 'package:athar/app/features/daleel/sub_features/tags/data/daleel_tag_isar_source.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
 final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
   final DaleelIsarSource _localSource;
+  final DaleelTagIsarSource _tagIsarSource;
 
-  DaleelRepository(this._localSource) : super(_localSource);
+  DaleelRepository(this._localSource, this._tagIsarSource) : super(_localSource);
 
   /// Saves or updates a Daleel entry in the database
   Future<Either<Exception, void>> _saveOrUpdateDaleel({
@@ -163,7 +165,7 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
   }
 
   List<Tag> getTags() {
-    return _localSource.getAllTags();
+    return _tagIsarSource.getAllTags();
   }
 
   Future<void> deleteDoc(int id) async => _localSource.deleteDoc(id);
