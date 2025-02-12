@@ -101,6 +101,10 @@ class AddOrEditHadithCubit extends Cubit<AddOrEditHadithState> {
     }
   }
 
+  List<Tag> getTags() {
+    return _daleelRepository.getTags();
+  }
+
   void dispose() {
     textOfHadith.dispose();
     rawiOfHadith.dispose();

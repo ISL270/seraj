@@ -18,8 +18,12 @@ import 'package:athar/app/features/azkar/presentation/bloc/azkar_bloc.dart' as _
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar_source.dart' as _i53;
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart' as _i143;
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart' as _i722;
+import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/cubit/add_edit_athar_cubit.dart'
+    as _i887;
 import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/cubit/add_edit_hadith_cubit.dart'
-    as _i825;
+    as _i24;
+import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/cubit/add_other_cubit.dart'
+    as _i183;
 import 'package:athar/app/features/daleel/sub_features/tags/data/daleel_tag_isar_source.dart'
     as _i663;
 import 'package:athar/app/features/dua/data/dua_isar_source.dart' as _i500;
@@ -29,6 +33,10 @@ import 'package:athar/app/features/dua/sub_features/dua_tag/data/dua_tag_isar_so
 import 'package:athar/app/features/settings/data/sources/local/settings_isar_source.dart' as _i387;
 import 'package:athar/app/features/settings/domain/settings_repository.dart' as _i257;
 import 'package:athar/app/features/settings/settings/settings_bloc.dart' as _i240;
+import 'package:athar/app/features/settings/sub_features/tags_details/domain/tags_repository.dart'
+    as _i317;
+import 'package:athar/app/features/settings/sub_features/tags_details/presentation/cubit/tags_cubit.dart'
+    as _i1070;
 import 'package:firebase_auth/firebase_auth.dart' as _i59;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:google_sign_in/google_sign_in.dart' as _i116;
@@ -62,16 +70,28 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i663.DaleelTagIsarSource>(
         () => _i663.DaleelTagIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i196.AzkarRepository>(() => _i196.AzkarRepository(gh<_i31.AzkarIsarSource>()));
-    gh.singleton<_i1008.DuaRepository>(() => _i1008.DuaRepository(gh<_i500.DuaIsarSource>()));
     gh.singleton<_i143.DaleelRepository>(() => _i143.DaleelRepository(gh<_i53.DaleelIsarSource>()));
+    gh.singleton<_i317.TagsRepository>(() => _i317.TagsRepository(
+          gh<_i183.DuaTagIsarSource>(),
+          gh<_i663.DaleelTagIsarSource>(),
+        ));
+    gh.singleton<_i1008.DuaRepository>(() => _i1008.DuaRepository(
+          gh<_i500.DuaIsarSource>(),
+          gh<_i183.DuaTagIsarSource>(),
+        ));
     gh.factory<_i1069.AzkarBloc>(() => _i1069.AzkarBloc(gh<_i196.AzkarRepository>()));
-    gh.factory<_i825.AddOrEditHadithCubit>(
-        () => _i825.AddOrEditHadithCubit(gh<_i143.DaleelRepository>()));
+    gh.factory<_i24.AddOrEditHadithCubit>(
+        () => _i24.AddOrEditHadithCubit(gh<_i143.DaleelRepository>()));
     gh.singleton<_i257.SettingsRepository>(
         () => _i257.SettingsRepository(gh<_i387.SettingsIsarSource>()));
     gh.singleton<_i737.AddDuaCubit>(() => _i737.AddDuaCubit(gh<_i1008.DuaRepository>()));
     gh.factory<_i240.SettingsBloc>(() => _i240.SettingsBloc(gh<_i257.SettingsRepository>()));
     gh.factory<_i722.DaleelBloc>(() => _i722.DaleelBloc(gh<_i143.DaleelRepository>()));
+    gh.factory<_i183.AddOrEditOtherCubit>(
+        () => _i183.AddOrEditOtherCubit(gh<_i143.DaleelRepository>()));
+    gh.factory<_i887.AddOrEditAtharCubit>(
+        () => _i887.AddOrEditAtharCubit(gh<_i143.DaleelRepository>()));
+    gh.singleton<_i1070.TagsCubit>(() => _i1070.TagsCubit(gh<_i317.TagsRepository>()));
     return this;
   }
 }

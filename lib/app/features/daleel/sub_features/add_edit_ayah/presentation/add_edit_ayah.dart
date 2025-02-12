@@ -4,7 +4,7 @@ import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/cubit/add_edit_aya_cubit.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/cubit/add_edit_aya_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/number_picker_bs.dart';
 import 'package:athar/app/widgets/screen.dart';
@@ -108,6 +108,7 @@ class _AddEditAyahState extends State<AddEditAyah> {
                                           Gap(5.h),
                                           TagSelectionWidget(
                                             tags: state.tags,
+                                            availableTags: cubit.getTags(),
                                             onAddTag: (tag) {
                                               final updatedTags = {
                                                 ...state.tags

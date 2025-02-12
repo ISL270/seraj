@@ -162,6 +162,10 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     return results.map((e) => e.toDomain()).toList();
   }
 
+  List<Tag> getTags() {
+    return _localSource.getAllTags();
+  }
+
   Future<void> deleteDoc(int id) async => _localSource.deleteDoc(id);
 
   @override
