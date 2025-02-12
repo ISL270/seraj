@@ -64,13 +64,13 @@ class _DaleelWidget extends StatelessWidget {
         motion: const ScrollMotion(),
         extentRatio: 0.3.w,
         children: [
-          _ActionButton(
+          ActionButton(
             icon: FontAwesomeIcons.edit,
             color: context.colorsX.primary,
             onTap: () => _navigateToEditScreen(context),
           ),
           Gap(8.w),
-          _ActionButton(
+          ActionButton(
             icon: FontAwesomeIcons.trash,
             color: context.colorsX.error,
             onTap: () => _showDeleteDialog(context),
@@ -122,30 +122,6 @@ class _DaleelWidget extends StatelessWidget {
             color: context.colorsX.error,
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _ActionButton extends StatelessWidget {
-  const _ActionButton({
-    required this.icon,
-    required this.color,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final Color color;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: CircleAvatar(
-        backgroundColor: color,
-        radius: 20.r,
-        child: Icon(icon, color: context.colorsX.background, size: 18.r),
       ),
     );
   }

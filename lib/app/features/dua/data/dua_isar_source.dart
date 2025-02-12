@@ -42,4 +42,32 @@ final class DuaIsarSource extends IsarSource<Dua, DuaIsar> {
       isarService.db.duaIsars.putSync(duaIsar);
     });
   }
+
+  void updateDua({
+    required int id,
+    String? text,
+    String? reward,
+    String? description,
+    Set<Tag>? tags,
+    bool? isFavourite,
+  }) {
+    isarService.db.writeTxnSync(() {
+      final duaIsar = isarService.db.duaIsars.getSync(id);
+      if (duaIsar == null) return;
+      if (text != null) duaIsar.text = text;
+      if (reward != null) duaIsar.reward = reward;
+      if (description != null) duaIsar.description = description;
+      if (isFavourite != null) duaIsar.isFavourite = isFavourite;
+
+      if (tags != null) {
+        final duaTagIsars = tags.map(DuaTagIsar.fromDomain).toList();
+        isarService.db.duaTagIsars.putAllSync(duaTagIsars);
+        duaIsar.tags
+          ..clear()
+          ..addAll(duaTagIsars);
+      }
+
+      isarService.db.duaIsars.putSync(duaIsar);
+    });
+  }
 }

@@ -14,18 +14,27 @@ final class DuaRepository extends Repository<Dua, DuaIsar> {
   final DuaTagIsarSource _tagIsarSource;
   DuaRepository(this._localSource, this._tagIsarSource) : super(_localSource);
 
-  void addDua({
+  void addDuaOrUpdate({
     required String text,
+    required int? id,
     required String reward,
     required Set<Tag> tags,
     required String description,
   }) {
-    _localSource.addDuaWithTags(
-      text: text,
-      reward: reward,
-      description: description,
-      tags: tags,
-    );
+    id == null
+        ? _localSource.addDuaWithTags(
+            text: text,
+            reward: reward,
+            description: description,
+            tags: tags,
+          )
+        : _localSource.updateDua(
+            text: text,
+            reward: reward,
+            description: description,
+            tags: tags,
+            id: id,
+          );
   }
 
   List<Dua> searchDua(

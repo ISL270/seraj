@@ -26,6 +26,7 @@ import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentati
 import 'package:athar/app/features/daleel/sub_features/daleel_details/presentation/daleel_details_screen.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
+import 'package:athar/app/widgets/action_buttoms.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:dartx/dartx.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';

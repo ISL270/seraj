@@ -61,4 +61,11 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
 
     emit(state._copyWith(result: state.result.appendResult(searchResult)));
   }
+
+  void deleteDua(int? id) {
+    if (id != null) {
+      _repository.delete(id);
+      add(const DuaSearched(''));
+    }
+  }
 }
