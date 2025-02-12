@@ -56,10 +56,7 @@ class AddOrEditHadithCubit extends Cubit<AddOrEditHadithState> {
     if (hadithId == null) {
     } else {
       emit(state.copyWith(status: const Loading()));
-
       final daleel = _daleelRepository.get(hadithId);
-      log(daleel?.tags.toString() ?? '{}');
-
       textOfHadith.text = daleel!.text;
       rawiOfHadith.text = daleel.sayer ?? '';
       extractionOfHadith.text = (daleel as Hadith).extraction ?? '';
@@ -75,7 +72,7 @@ class AddOrEditHadithCubit extends Cubit<AddOrEditHadithState> {
         sliderValue: daleel.priority.index.toDouble(),
         tags: daleel.tags,
       ));
-      log(state.tags.toString());
+
       emit(state.copyWith(status: const Success('Initialized Hadith Successfully')));
     }
   }
