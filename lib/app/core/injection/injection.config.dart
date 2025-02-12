@@ -14,34 +14,21 @@ import 'package:athar/app/core/isar/isar_service.dart' as _i651;
 import 'package:athar/app/core/l10n/l10n_service.dart' as _i560;
 import 'package:athar/app/features/azkar/data/azkar_isar_source.dart' as _i31;
 import 'package:athar/app/features/azkar/domain/azkar_repository.dart' as _i196;
-import 'package:athar/app/features/azkar/presentation/bloc/azkar_bloc.dart'
-    as _i1069;
-import 'package:athar/app/features/daleel/data/sources/local/daleel_isar_source.dart'
-    as _i53;
-import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart'
-    as _i143;
-import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart'
-    as _i722;
-import 'package:athar/app/features/daleel/sub_features/add_hadith/presentation/cubit/add_hadith_cubit.dart'
+import 'package:athar/app/features/azkar/presentation/bloc/azkar_bloc.dart' as _i1069;
+import 'package:athar/app/features/daleel/data/sources/local/daleel_isar_source.dart' as _i53;
+import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart' as _i143;
+import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart' as _i722;
+import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/cubit/add_edit_hadith_cubit.dart'
     as _i825;
 import 'package:athar/app/features/daleel/sub_features/tags/data/daleel_tag_isar_source.dart'
     as _i663;
 import 'package:athar/app/features/dua/data/dua_isar_source.dart' as _i500;
 import 'package:athar/app/features/dua/domain/dua_repository.dart' as _i1008;
-import 'package:athar/app/features/dua/sub_features/add_dua/cubit/add_dua_cubit.dart'
-    as _i737;
-import 'package:athar/app/features/dua/sub_features/dua_tag/data/dua_tag_isar_source.dart'
-    as _i183;
-import 'package:athar/app/features/settings/data/sources/local/settings_isar_source.dart'
-    as _i387;
-import 'package:athar/app/features/settings/domain/settings_repository.dart'
-    as _i257;
-import 'package:athar/app/features/settings/settings/settings_bloc.dart'
-    as _i240;
-import 'package:athar/app/features/settings/sub_features/tags_details/domain/tags_repository.dart'
-    as _i317;
-import 'package:athar/app/features/settings/sub_features/tags_details/presentation/cubit/tags_cubit.dart'
-    as _i1070;
+import 'package:athar/app/features/dua/sub_features/add_dua/cubit/add_dua_cubit.dart' as _i737;
+import 'package:athar/app/features/dua/sub_features/dua_tag/data/dua_tag_isar_source.dart' as _i183;
+import 'package:athar/app/features/settings/data/sources/local/settings_isar_source.dart' as _i387;
+import 'package:athar/app/features/settings/domain/settings_repository.dart' as _i257;
+import 'package:athar/app/features/settings/settings/settings_bloc.dart' as _i240;
 import 'package:firebase_auth/firebase_auth.dart' as _i59;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:google_sign_in/google_sign_in.dart' as _i116;
@@ -67,44 +54,24 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i560.L10nService>(() => _i560.L10nService());
-    gh.singleton<_i53.DaleelIsarSource>(
-        () => _i53.DaleelIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i500.DuaIsarSource>(
-        () => _i500.DuaIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i387.SettingsIsarSource>(
-        () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i183.DuaTagIsarSource>(
-        () => _i183.DuaTagIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i31.AzkarIsarSource>(
-        () => _i31.AzkarIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i31.AzkarIsarSource>(() => _i31.AzkarIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i53.DaleelIsarSource>(() => _i53.DaleelIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i500.DuaIsarSource>(() => _i500.DuaIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i183.DuaTagIsarSource>(() => _i183.DuaTagIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i387.SettingsIsarSource>(() => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i663.DaleelTagIsarSource>(
         () => _i663.DaleelTagIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i196.AzkarRepository>(
-        () => _i196.AzkarRepository(gh<_i31.AzkarIsarSource>()));
-    gh.singleton<_i143.DaleelRepository>(
-        () => _i143.DaleelRepository(gh<_i53.DaleelIsarSource>()));
-    gh.singleton<_i317.TagsRepository>(() => _i317.TagsRepository(
-          gh<_i183.DuaTagIsarSource>(),
-          gh<_i663.DaleelTagIsarSource>(),
-        ));
-    gh.singleton<_i1008.DuaRepository>(() => _i1008.DuaRepository(
-          gh<_i500.DuaIsarSource>(),
-          gh<_i183.DuaTagIsarSource>(),
-        ));
-    gh.factory<_i1069.AzkarBloc>(
-        () => _i1069.AzkarBloc(gh<_i196.AzkarRepository>()));
-    gh.factory<_i825.AddHadithCubit>(
-        () => _i825.AddHadithCubit(gh<_i143.DaleelRepository>()));
+    gh.singleton<_i196.AzkarRepository>(() => _i196.AzkarRepository(gh<_i31.AzkarIsarSource>()));
+    gh.singleton<_i1008.DuaRepository>(() => _i1008.DuaRepository(gh<_i500.DuaIsarSource>()));
+    gh.singleton<_i143.DaleelRepository>(() => _i143.DaleelRepository(gh<_i53.DaleelIsarSource>()));
+    gh.factory<_i1069.AzkarBloc>(() => _i1069.AzkarBloc(gh<_i196.AzkarRepository>()));
+    gh.factory<_i825.AddOrEditHadithCubit>(
+        () => _i825.AddOrEditHadithCubit(gh<_i143.DaleelRepository>()));
     gh.singleton<_i257.SettingsRepository>(
         () => _i257.SettingsRepository(gh<_i387.SettingsIsarSource>()));
-    gh.singleton<_i737.AddDuaCubit>(
-        () => _i737.AddDuaCubit(gh<_i1008.DuaRepository>()));
-    gh.factory<_i240.SettingsBloc>(
-        () => _i240.SettingsBloc(gh<_i257.SettingsRepository>()));
-    gh.factory<_i722.DaleelBloc>(
-        () => _i722.DaleelBloc(gh<_i143.DaleelRepository>()));
-    gh.singleton<_i1070.TagsCubit>(
-        () => _i1070.TagsCubit(gh<_i317.TagsRepository>()));
+    gh.singleton<_i737.AddDuaCubit>(() => _i737.AddDuaCubit(gh<_i1008.DuaRepository>()));
+    gh.factory<_i240.SettingsBloc>(() => _i240.SettingsBloc(gh<_i257.SettingsRepository>()));
+    gh.factory<_i722.DaleelBloc>(() => _i722.DaleelBloc(gh<_i143.DaleelRepository>()));
     return this;
   }
 }

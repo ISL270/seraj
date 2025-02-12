@@ -29,18 +29,21 @@ class DaleelDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<DaleelDetailsBloc, DaleelDetailsState>(
+    return BlocConsumer<DaleelDetailsBloc, DaleelDetailsState>(
       listenWhen: (previous, current) => previous.action != current.action,
       listener: (context, state) {
         if (state.action.isDeleted) context.pop();
       },
-      child: Screen(
+      builder: (context, state) => Screen(
         appBar: AppBar(
           leading: BackButton(
             style: ButtonStyle(iconSize: WidgetStatePropertyAll(24.r)),
           ),
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(FontAwesomeIcons.edit, size: 22.r)),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(FontAwesomeIcons.edit, size: 22.r),
+            ),
           ],
           centerTitle: true,
           title: Text(
@@ -57,12 +60,12 @@ class DaleelDetailsScreen extends StatelessWidget {
                   children: [
                     Gap(10.h),
                     DetailsTextWidget(
-                      text: daleel.text,
+                      text: state.daleel.text,
                       actions: [
                         IconButton(
-                            icon: Icon(FontAwesomeIcons.trash, size: 18.r),
-                            onPressed: () =>
-                                context.read<DaleelDetailsBloc>().add(DaleelDeleted())),
+                          icon: Icon(FontAwesomeIcons.trash, size: 18.r),
+                          onPressed: () => context.read<DaleelDetailsBloc>().add(DaleelDeleted()),
+                        ),
                         Gap(10.w),
                       ],
                     ),
@@ -77,10 +80,12 @@ class DaleelDetailsScreen extends StatelessWidget {
                       },
                     ),
                     Gap(15.h),
-                    if (daleel.sayer != null)
+                    if (state.daleel.sayer != null && state.daleel.sayer!.isNotEmpty)
                       _DaleelDetailsWidget(
-                          label: context.l10n.daleelSayer, labelValue: daleel.sayer.toString()),
-                    if (daleel.sayer != null) Gap(15.h),
+                        label: context.l10n.daleelSayer,
+                        labelValue: daleel.sayer.toString(),
+                      ),
+                    if (state.daleel.sayer != null && state.daleel.sayer!.isNotEmpty) Gap(15.h),
                     Text(
                       context.l10n.daleelTags,
                       style: context.textThemeX.large.bold.copyWith(
@@ -120,23 +125,30 @@ class DaleelDetailsScreen extends StatelessWidget {
                       labelValue: '${daleel.priority.toTranslate(context)} ${context.l10n.saveIt}',
                     ),
                     Gap(15.h),
-                    if (daleel.description != null)
+                    if (state.daleel.description != null && state.daleel.description!.isNotEmpty)
                       _DaleelDetailsWidget(
                           label: context.l10n.daleelExplain,
                           labelValue: daleel.description.toString()),
-                    if (daleel.description != null) Gap(15.h),
-                    if (daleel is Hadith && (daleel as Hadith).authenticity != null)
+                    if (state.daleel.description != null && state.daleel.description!.isNotEmpty)
+                      Gap(15.h),
+                    if (state.daleel is Hadith && (daleel as Hadith).authenticity != null)
                       _DaleelDetailsWidget(
                         label: context.l10n.daleelHadithAuth,
                         labelValue: HadithAuthenticity.hasan.name.gethadithTypeString(context),
                       ),
-                    if (daleel is Hadith && (daleel as Hadith).authenticity != null) Gap(15.h),
-                    if (daleel is Hadith && (daleel as Hadith).extraction != null)
+                    if (state.daleel is Hadith && (state.daleel as Hadith).authenticity != null)
+                      Gap(15.h),
+                    if (state.daleel is Hadith &&
+                        (state.daleel as Hadith).extraction != null &&
+                        (state.daleel as Hadith).extraction!.isNotEmpty)
                       _DaleelDetailsWidget(
                         label: context.l10n.extractionOfHadith,
-                        labelValue: (daleel as Hadith).extraction.toString(),
+                        labelValue: (state.daleel as Hadith).extraction.toString(),
                       ),
-                    if (daleel is Hadith && (daleel as Hadith).extraction != null) Gap(15.h),
+                    if (state.daleel is Hadith &&
+                        (state.daleel as Hadith).extraction != null &&
+                        (state.daleel as Hadith).extraction!.isNotEmpty)
+                      Gap(15.h),
                     _DaleelDetailsWidget(
                       label: context.l10n.daleelDate,
                       labelValue: daleel.lastRevisedAt.formatted,
@@ -146,7 +158,7 @@ class DaleelDetailsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            ShareAndCopyWidget(text: daleel.text),
+            ShareAndCopyWidget(text: state.daleel.text),
             Gap(15.h)
           ],
         ),

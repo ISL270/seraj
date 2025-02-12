@@ -1,4 +1,4 @@
-part of 'add_new_ayah.dart';
+part of 'add_edit_ayah.dart';
 
 class _AyaSearch extends StatelessWidget {
   const _AyaSearch();
@@ -7,7 +7,7 @@ class _AyaSearch extends StatelessWidget {
   Widget build(BuildContext context) {
     final textController = TextEditingController();
 
-    return BlocConsumer<AddAyaCubit, AddAyaState>(
+    return BlocConsumer<AddEditAyahCubit, AddEditAyahState>(
       listener: (context, state) {
         if (state.status is Failure && context.mounted) {
           final failure = state.status as Failure;
@@ -16,8 +16,9 @@ class _AyaSearch extends StatelessWidget {
               context: context,
               title: context.l10n.warning,
               content: context.l10n.ayaExist,
+              id: state.ayaId,
             ).then((_) {
-              context.mounted ? context.read<AddAyaCubit>().resetStatus() : null;
+              context.mounted ? context.read<AddEditAyahCubit>().resetStatus() : null;
             });
           }
         }
@@ -29,20 +30,16 @@ class _AyaSearch extends StatelessWidget {
               backgroundColor:
                   WidgetStateProperty.all(context.colorsX.background.withValues(alpha: 0.9)),
               shape: WidgetStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16.r),
-                ),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
               ),
               controller: textController,
               hintText: context.l10n.search,
-              onChanged: (query) {
-                context.read<AddAyaCubit>().queryChanged(query);
-              },
+              onChanged: (query) => context.read<AddEditAyahCubit>().queryChanged(query),
               trailing: [
                 IconButton(
                   onPressed: () {
                     textController.clear();
-                    context.read<AddAyaCubit>().queryChanged('');
+                    context.read<AddEditAyahCubit>().queryChanged('');
                   },
                   icon: const Icon(Icons.clear),
                 ),
@@ -90,8 +87,8 @@ class _AyaSearch extends StatelessWidget {
                               onTap: () {
                                 FocusScope.of(context).unfocus();
                                 textController.clear();
-                                context.read<AddAyaCubit>().ayahsChanged([ayah]);
-                                context.read<AddAyaCubit>().queryChanged(''); // Reset query
+                                context.read<AddEditAyahCubit>().ayahsChanged([ayah]);
+                                context.read<AddEditAyahCubit>().queryChanged(''); // Reset query
                               },
                             ),
                             Divider(
@@ -114,6 +111,7 @@ class _AyaSearch extends StatelessWidget {
   Future<void> _showErrorDialog({
     required BuildContext context,
     required String title,
+    required int? id,
     required String content,
   }) {
     return showDialog(
@@ -125,7 +123,7 @@ class _AyaSearch extends StatelessWidget {
         content: Text(content, style: context.textThemeX.large),
         actions: [
           TextButton(
-            onPressed: () => context.pop(),
+            onPressed: () => context.pushNamed(AddEditAyah.name, extra: id),
             child: Text(context.l10n.edit),
           ),
           TextButton(

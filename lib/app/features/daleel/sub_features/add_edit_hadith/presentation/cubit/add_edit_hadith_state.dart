@@ -1,9 +1,10 @@
 // ignore_for_file: strict_raw_type
 
-part of 'add_hadith_cubit.dart';
+part of 'add_edit_hadith_cubit.dart';
 
-final class AddHadithState extends Equatable with FormzMixin {
-  const AddHadithState({
+final class AddOrEditHadithState extends Equatable with FormzMixin {
+  const AddOrEditHadithState({
+    this.hadithId,
     this.authenticity,
     this.hadith = const Name.pure(),
     this.sayer = '',
@@ -14,6 +15,7 @@ final class AddHadithState extends Equatable with FormzMixin {
     this.tags = const {},
   });
 
+  final int? hadithId;
   final Name hadith;
   final HadithAuthenticity? authenticity;
   final String sayer;
@@ -25,6 +27,7 @@ final class AddHadithState extends Equatable with FormzMixin {
 
   @override
   List<Object?> get props => [
+        hadithId,
         hadith,
         authenticity,
         tags,
@@ -35,7 +38,8 @@ final class AddHadithState extends Equatable with FormzMixin {
         status,
       ];
 
-  AddHadithState copyWith({
+  AddOrEditHadithState copyWith({
+    int? hadithId,
     Name? hadith,
     HadithAuthenticity? authenticity,
     String? sayer,
@@ -45,7 +49,8 @@ final class AddHadithState extends Equatable with FormzMixin {
     Set<Tag>? tags,
     VoidStatus? status,
   }) {
-    return AddHadithState(
+    return AddOrEditHadithState(
+      hadithId: hadithId ?? this.hadithId,
       hadith: hadith ?? this.hadith,
       authenticity: authenticity ?? this.authenticity,
       sayer: sayer ?? this.sayer,

@@ -8,6 +8,7 @@ import 'package:formz/formz.dart';
 
 final class AddOtherState extends Equatable with FormzMixin {
   const AddOtherState({
+    this.otherId,
     this.other = const Name.pure(),
     this.sayer = '',
     this.description = '',
@@ -16,6 +17,7 @@ final class AddOtherState extends Equatable with FormzMixin {
     this.tags = const {},
   });
 
+  final int? otherId;
   final Name other;
   final String sayer;
   final String description;
@@ -24,6 +26,7 @@ final class AddOtherState extends Equatable with FormzMixin {
   final Set<Tag> tags;
 
   AddOtherState copyWith({
+    int? otherId,
     Name? other,
     String? sayer,
     String? description,
@@ -32,6 +35,7 @@ final class AddOtherState extends Equatable with FormzMixin {
     Set<Tag>? tags,
   }) {
     return AddOtherState(
+        otherId: otherId ?? this.otherId,
         other: other ?? this.other,
         sayer: sayer ?? this.sayer,
         description: description ?? this.description,
@@ -41,7 +45,8 @@ final class AddOtherState extends Equatable with FormzMixin {
   }
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
+        otherId,
         other,
         tags,
         sayer,

@@ -9,12 +9,23 @@ import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/sub_features/add_other/presentation/cubit/add_other_state.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:form_inputs/form_inputs.dart';
+import 'package:injectable/injectable.dart';
 
-class AddOtherCubit extends Cubit<AddOtherState> {
+@injectable
+class AddOrEditOtherCubit extends Cubit<AddOtherState> {
   final DaleelRepository _repository;
 
-  AddOtherCubit(this._repository) : super(const AddOtherState());
+  late TextEditingController otherTextCtrlr;
+  late TextEditingController otherSayerCtrlr;
+  late TextEditingController otherExplainCtrlr;
+
+  AddOrEditOtherCubit(this._repository) : super(const AddOtherState()) {
+    otherTextCtrlr = TextEditingController();
+    otherSayerCtrlr = TextEditingController();
+    otherExplainCtrlr = TextEditingController();
+  }
 
   void otherTextChanged(String value) => emit(state.copyWith(other: Name.dirty(value)));
 
@@ -28,10 +39,35 @@ class AddOtherCubit extends Cubit<AddOtherState> {
     emit(state.copyWith(tags: newTags));
   }
 
-  Future<void> saveOtherForm() async {
+  void initializeOther(int? otherId) {
+    if (otherId == null) {
+    } else {
+      emit(state.copyWith(status: const Loading()));
+
+      final other = _repository.get(otherId);
+
+      otherTextCtrlr.text = other!.text;
+      otherSayerCtrlr.text = other.sayer ?? '';
+      otherExplainCtrlr.text = other.description ?? '';
+
+      emit(state.copyWith(
+        otherId: otherId,
+        other: Name.dirty(otherTextCtrlr.text),
+        sayer: otherSayerCtrlr.text,
+        description: otherExplainCtrlr.text,
+        sliderValue: other.priority.index.toDouble(),
+        tags: other.tags,
+      ));
+
+      emit(state.copyWith(status: const Success('Initialized Other Successfully')));
+    }
+  }
+
+  Future<void> saveOrUpdateOtherForm() async {
     emit(state.copyWith(status: const Loading()));
     try {
-      await _repository.saveOthers(
+      await _repository.saveOrUpdateOthers(
+        id: state.otherId,
         text: state.other.value,
         sayer: state.sayer,
         description: state.description,

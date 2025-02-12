@@ -1,9 +1,9 @@
 // ignore_for_file: strict_raw_type
 
-part of 'add_aya_cubit.dart';
+part of 'add_edit_aya_cubit.dart';
 
-final class AddAyaState extends Equatable with FormzMixin {
-  const AddAyaState({
+final class AddEditAyahState extends Equatable with FormzMixin {
+  const AddEditAyahState({
     this.textOfAya = const Name.pure(),
     this.surahOfAya = const Name.pure(),
     this.ayaExplain = const Name.pure(),
@@ -12,6 +12,7 @@ final class AddAyaState extends Equatable with FormzMixin {
     this.status = const Initial(),
     this.tags = const {},
     this.query = '',
+    this.ayaId,
     this.hintTexts = const [],
     this.ayahs = const [],
     this.selectedAyahs = const [],
@@ -20,7 +21,7 @@ final class AddAyaState extends Equatable with FormzMixin {
   final List<Ayah> ayahs;
   final List<Ayah> selectedAyahs;
   final List<String> hintTexts;
-
+  final int? ayaId;
   final Name textOfAya;
   final Name surahOfAya;
   final Name ayaExplain;
@@ -31,7 +32,8 @@ final class AddAyaState extends Equatable with FormzMixin {
   final String? query;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
+        ayaId,
         textOfAya,
         ayaExplain,
         tags,
@@ -42,7 +44,8 @@ final class AddAyaState extends Equatable with FormzMixin {
         selectedAyahs,
       ];
 
-  AddAyaState copyWith({
+  AddEditAyahState copyWith({
+    int? ayaId,
     Name? textOfAya,
     Name? ayaExplain,
     Name? surahOfAya,
@@ -54,7 +57,8 @@ final class AddAyaState extends Equatable with FormzMixin {
     Set<Tag>? tags,
     VoidStatus? status,
   }) {
-    return AddAyaState(
+    return AddEditAyahState(
+      ayaId: ayaId ?? this.ayaId,
       textOfAya: textOfAya ?? this.textOfAya,
       ayaExplain: ayaExplain ?? this.ayaExplain,
       surahOfAya: surahOfAya ?? this.surahOfAya,

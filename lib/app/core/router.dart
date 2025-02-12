@@ -1,3 +1,5 @@
+// ignore_for_file: cast_nullable_to_non_nullable
+
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/features/azkar/domain/azkar.dart';
 import 'package:athar/app/features/azkar/domain/azkar_repository.dart';
@@ -11,11 +13,12 @@ import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
-import 'package:athar/app/features/daleel/sub_features/add_athar/presentation/add_athar_screen.dart';
-import 'package:athar/app/features/daleel/sub_features/add_athar/presentation/cubit/add_athar_cubit.dart';
-import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/add_new_ayah.dart';
-import 'package:athar/app/features/daleel/sub_features/add_hadith/presentation/add_hadith_screen.dart';
-import 'package:athar/app/features/daleel/sub_features/add_hadith/presentation/cubit/add_hadith_cubit.dart';
+import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/add_edit_ayah.dart';
+import 'package:athar/app/features/daleel/sub_features/add_aya/presentation/cubit/add_edit_aya_cubit.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/add_edit_athar_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/cubit/add_edit_athar_cubit.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/add_edit_hadith_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/cubit/add_edit_hadith_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/add_other/presentation/add_other_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_other/presentation/cubit/add_other_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/daleel_details/bloc/daleel_details_bloc.dart';
@@ -57,49 +60,56 @@ final appRouter = GoRouter(
               ),
               routes: [
                 GoRoute(
-                  name: AddHadith.name,
-                  path: AddHadith.name,
+                  name: AddOrEditHadith.name,
+                  path: AddOrEditHadith.name,
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (_) => AddHadithCubit(getIt.get<DaleelRepository>()),
-                      child: const AddHadith(),
+                      create: (_) => AddOrEditHadithCubit(getIt.get<DaleelRepository>())
+                        ..initializeHadith(state.extra as int?),
+                      child: const AddOrEditHadith(),
                     ),
                   ),
                 ),
                 GoRoute(
-                  name: AddAtharScreen.name,
-                  path: AddAtharScreen.name,
+                  name: AddOrEditAtharScreen.name,
+                  path: AddOrEditAtharScreen.name,
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (context) => AddAtharCubit(getIt.get<DaleelRepository>()),
-                      child: const AddAtharScreen(),
+                      create: (context) => AddOrEditAtharCubit(getIt.get<DaleelRepository>())
+                        ..initializeAthar(state.extra as int?),
+                      child: const AddOrEditAtharScreen(),
                     ),
                   ),
                 ),
                 GoRoute(
-                  name: AddNewAyah.name,
-                  path: AddNewAyah.name,
+                  name: AddEditAyah.name,
+                  path: AddEditAyah.name,
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) {
-                    // Pass the Aya model using the `extra` parameter
-                    return const CupertinoPage(
-                      child: AddNewAyah(),
+                    return CupertinoPage(
+                      child: BlocProvider(
+                        create: (_) => AddEditAyahCubit(
+                          ayaRepository: getIt.get<DaleelRepository>(),
+                        )..initializeAya(state.extra as int?),
+                        child: const AddEditAyah(),
+                      ),
                     );
                   },
                 ),
                 GoRoute(
-                  name: AddOtherScreen.name,
-                  path: AddOtherScreen.name,
+                  name: AddOrEditOther.name,
+                  path: AddOrEditOther.name,
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (context) => AddOtherCubit(getIt.get<DaleelRepository>()),
-                      child: const AddOtherScreen(),
+                      create: (context) => AddOrEditOtherCubit(getIt.get<DaleelRepository>())
+                        ..initializeOther(state.extra as int?),
+                      child: const AddOrEditOther(),
                     ),
                   ),
                 ),
@@ -124,9 +134,7 @@ final appRouter = GoRouter(
                     child: BlocProvider(
                       create: (context) =>
                           DaleelDetailsBloc(getIt.get<DaleelRepository>(), state.extra! as Daleel),
-                      child: DaleelDetailsScreen(
-                        state.extra! as Daleel,
-                      ),
+                      child: DaleelDetailsScreen(state.extra! as Daleel),
                     ),
                   ),
                 ),
