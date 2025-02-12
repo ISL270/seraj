@@ -63,4 +63,8 @@ class AddDuaCubit extends Cubit<AddDuaState> {
         description: state.description,
         id: state.duaId,
       );
+
+  List<Tag> getTags() {
+    return _duaRepository.getTags();
+  }
 }

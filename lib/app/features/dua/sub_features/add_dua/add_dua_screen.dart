@@ -56,6 +56,7 @@ class AddDuaScreen extends StatelessWidget {
                             cubit.tagsChanged(updatedTags);
                           }
                         },
+                        availableTags: cubit.getTags(),
                         onRemoveTag: (tag) => cubit.tagsChanged({...state.tags}..remove(tag)),
                         onClearTags: () => cubit.tagsChanged({}),
                       );
