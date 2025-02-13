@@ -8,6 +8,10 @@ import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/add_edit_athar_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/add_edit_ayah.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/add_edit_hadith_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/add_other_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/daleel_details/bloc/daleel_details_bloc.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
@@ -27,6 +31,17 @@ class DaleelDetailsScreen extends StatelessWidget {
   static const name = 'daleel-details';
   final Daleel daleel;
 
+  void _navigateToEditScreen(BuildContext context) {
+    final routeName = switch (daleel) {
+      Hadith() => AddOrEditHadith.name,
+      Athar() => AddOrEditAtharScreen.name,
+      Other() => AddOrEditOther.name,
+      Aya() => AddEditAyah.name,
+    };
+
+    context.pushNamed(routeName, extra: daleel.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<DaleelDetailsBloc, DaleelDetailsState>(
@@ -41,7 +56,7 @@ class DaleelDetailsScreen extends StatelessWidget {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () => _navigateToEditScreen(context),
               icon: Icon(FontAwesomeIcons.edit, size: 22.r),
             ),
           ],
@@ -97,7 +112,7 @@ class DaleelDetailsScreen extends StatelessWidget {
                       spacing: 3.w,
                       runSpacing: 10.h,
                       children: List.generate(
-                        9,
+                        daleel.tags.length,
                         (index) => Padding(
                           padding: EdgeInsets.only(right: 6.w),
                           child: Container(
@@ -109,7 +124,7 @@ class DaleelDetailsScreen extends StatelessWidget {
                             ),
                             child: Center(
                               child: Text(
-                                'كلمة ${index + 1}',
+                                daleel.tags.elementAt(index).name,
                                 style: context.textThemeX.medium.bold.copyWith(
                                   color: context.colorsX.onBackground,
                                 ),

@@ -34,7 +34,7 @@ class SettingsScreen extends StatelessWidget {
                   color: context.colorsX.background,
                   elevation: 3, // Adjust elevation for shadow intensity
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12), // Optional: Rounded corners
+                    borderRadius: BorderRadius.circular(12.r), // Optional: Rounded corners
                   ),
                   child: ListTile(
                     onTap: () => context.pushNamed(TagsScreen.name),
