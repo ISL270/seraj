@@ -2,8 +2,8 @@
 
 part of '../dua_screen.dart';
 
-class _DuaWithNumWidget extends StatelessWidget {
-  const _DuaWithNumWidget({required this.dua});
+class _DuaWidget extends StatelessWidget {
+  const _DuaWidget({required this.dua});
 
   final Dua dua;
 
@@ -78,7 +78,7 @@ class _DuaWithNumWidget extends StatelessWidget {
                   ),
                   Gap(5.w),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => context.read<DuaBloc>().add(DuaFavouriteToggled(dua)),
                     icon: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 400),
                       transitionBuilder: (child, animation) {

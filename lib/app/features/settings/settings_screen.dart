@@ -56,9 +56,8 @@ class SettingsScreen extends StatelessWidget {
                     SegmentedButton(
                       showSelectedIcon: false,
                       selected: {settings.settings.themeMode},
-                      onSelectionChanged: (selection) {
-                        context.read<SettingsBloc>().add(SettingsThemeChanged(selection.first));
-                      },
+                      onSelectionChanged: (selection) =>
+                          context.read<SettingsBloc>().add(SettingsThemeChanged(selection.first)),
                       segments: [
                         ButtonSegment(
                           value: ThemeMode.light,

@@ -34,7 +34,7 @@ class _DuasListView extends StatelessWidget {
                     );
                   },
                   physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, i) => _DuaWithNumWidget(
+                  itemBuilder: (context, i) => _DuaWidget(
                     dua: state.result.elements[i],
                   ),
                 ),
