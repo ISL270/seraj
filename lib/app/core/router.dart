@@ -13,10 +13,10 @@ import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
-import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/add_edit_ayah.dart';
-import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/cubit/add_edit_aya_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/add_edit_athar_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/cubit/add_edit_athar_cubit.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/add_edit_ayah.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/cubit/add_edit_aya_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/add_edit_hadith_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/cubit/add_edit_hadith_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/add_other_screen.dart';
@@ -204,7 +204,8 @@ final appRouter = GoRouter(
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (context) => AddAzkarCubit(getIt.get<AzkarRepository>()),
+                      create: (context) => AddAzkarCubit(getIt.get<AzkarRepository>())
+                        ..initializeAzkar(state.extra as int?),
                       child: const AddAzkarScreen(),
                     ),
                   ),

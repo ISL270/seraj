@@ -16,6 +16,8 @@ import 'package:athar/app/features/azkar/data/azkar_isar_source.dart' as _i31;
 import 'package:athar/app/features/azkar/domain/azkar_repository.dart' as _i196;
 import 'package:athar/app/features/azkar/presentation/bloc/azkar_bloc.dart'
     as _i1069;
+import 'package:athar/app/features/azkar/sub_features/azkar_tag/data/azkar_tag_isar_source.dart'
+    as _i89;
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar_source.dart'
     as _i53;
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart'
@@ -73,6 +75,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i560.L10nService>(() => _i560.L10nService());
     gh.singleton<_i31.AzkarIsarSource>(
         () => _i31.AzkarIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i89.AzkarTagIsarSource>(
+        () => _i89.AzkarTagIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i53.DaleelIsarSource>(
         () => _i53.DaleelIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i663.DaleelTagIsarSource>(
@@ -83,8 +87,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i183.DuaTagIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i387.SettingsIsarSource>(
         () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
-    gh.singleton<_i196.AzkarRepository>(
-        () => _i196.AzkarRepository(gh<_i31.AzkarIsarSource>()));
     gh.singleton<_i143.DaleelRepository>(() => _i143.DaleelRepository(
           gh<_i53.DaleelIsarSource>(),
           gh<_i663.DaleelTagIsarSource>(),
@@ -95,6 +97,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i887.AddOrEditAtharCubit(gh<_i143.DaleelRepository>()));
     gh.factory<_i966.AddOrEditOtherCubit>(
         () => _i966.AddOrEditOtherCubit(gh<_i143.DaleelRepository>()));
+    gh.singleton<_i196.AzkarRepository>(() => _i196.AzkarRepository(
+          gh<_i31.AzkarIsarSource>(),
+          gh<_i89.AzkarTagIsarSource>(),
+        ));
     gh.singleton<_i317.TagsRepository>(() => _i317.TagsRepository(
           gh<_i183.DuaTagIsarSource>(),
           gh<_i663.DaleelTagIsarSource>(),

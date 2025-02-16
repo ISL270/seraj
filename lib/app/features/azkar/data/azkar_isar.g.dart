@@ -58,7 +58,14 @@ const AzkarIsarSchema = CollectionSchema(
       ],
     )
   },
-  links: {},
+  links: {
+    r'tags': LinkSchema(
+      id: -4567345415482434185,
+      name: r'tags',
+      target: r'AzkarTagIsar',
+      single: false,
+    )
+  },
   embeddedSchemas: {},
   getId: _azkarIsarGetId,
   getLinks: _azkarIsarGetLinks,
@@ -135,11 +142,12 @@ Id _azkarIsarGetId(AzkarIsar object) {
 }
 
 List<IsarLinkBase<dynamic>> _azkarIsarGetLinks(AzkarIsar object) {
-  return [];
+  return [object.tags];
 }
 
 void _azkarIsarAttach(IsarCollection<dynamic> col, Id id, AzkarIsar object) {
   object.id = id;
+  object.tags.attach(col, col.isar.collection<AzkarTagIsar>(), r'tags', id);
 }
 
 extension AzkarIsarQueryWhereSort
@@ -787,7 +795,64 @@ extension AzkarIsarQueryObject
     on QueryBuilder<AzkarIsar, AzkarIsar, QFilterCondition> {}
 
 extension AzkarIsarQueryLinks
-    on QueryBuilder<AzkarIsar, AzkarIsar, QFilterCondition> {}
+    on QueryBuilder<AzkarIsar, AzkarIsar, QFilterCondition> {
+  QueryBuilder<AzkarIsar, AzkarIsar, QAfterFilterCondition> tags(
+      FilterQuery<AzkarTagIsar> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'tags');
+    });
+  }
+
+  QueryBuilder<AzkarIsar, AzkarIsar, QAfterFilterCondition> tagsLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<AzkarIsar, AzkarIsar, QAfterFilterCondition> tagsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<AzkarIsar, AzkarIsar, QAfterFilterCondition> tagsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<AzkarIsar, AzkarIsar, QAfterFilterCondition> tagsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<AzkarIsar, AzkarIsar, QAfterFilterCondition>
+      tagsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<AzkarIsar, AzkarIsar, QAfterFilterCondition> tagsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'tags', lower, includeLower, upper, includeUpper);
+    });
+  }
+}
 
 extension AzkarIsarQuerySortBy on QueryBuilder<AzkarIsar, AzkarIsar, QSortBy> {
   QueryBuilder<AzkarIsar, AzkarIsar, QAfterSortBy> sortByDescription() {

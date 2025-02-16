@@ -4,11 +4,16 @@ part of 'add_azkar_cubit.dart';
 
 final class AddAzkarState extends Equatable with FormzMixin {
   const AddAzkarState({
+    this.azkarId,
+    this.tags = const {},
     this.text = const Name.pure(),
     this.explanation = '',
     this.noOfRepeats = 1,
     this.status = const Initial(),
   });
+
+  final int? azkarId;
+  final Set<Tag> tags;
 
   final Name text;
   final String explanation;
@@ -17,18 +22,22 @@ final class AddAzkarState extends Equatable with FormzMixin {
   final VoidStatus status;
 
   @override
-  List<Object> get props => [text, explanation, noOfRepeats, status];
+  List<Object> get props => [text, explanation, noOfRepeats, tags, status];
 
   AddAzkarState copyWith({
+    int? azkarId,
     Name? text,
     String? explanation,
     int? noOfRepeats,
+    Set<Tag>? tags,
     VoidStatus? status,
   }) {
     return AddAzkarState(
+      azkarId: azkarId ?? this.azkarId,
       text: text ?? this.text,
       explanation: explanation ?? this.explanation,
       noOfRepeats: noOfRepeats ?? this.noOfRepeats,
+      tags: tags ?? this.tags,
       status: status ?? this.status,
     );
   }

@@ -9,6 +9,7 @@ import 'package:athar/app/features/azkar/sub_features/add_azkar/presentation/cub
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/number_picker_bs.dart';
 import 'package:athar/app/widgets/screen.dart';
+import 'package:athar/app/widgets/tag_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +33,9 @@ class AddAzkarScreen extends StatelessWidget {
           child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
         ),
         title: Text(
-          context.l10n.addAzkar,
+          context.read<AddAzkarCubit>().state.azkarId == null
+              ? context.l10n.addAzkar
+              : context.l10n.editAzkar,
           style: context.textThemeX.heading.bold,
           textAlign: TextAlign.center,
         ),
@@ -56,6 +59,24 @@ class AddAzkarScreen extends StatelessWidget {
                       ),
                       const Expanded(child: _RepeatNumberOfAzkarTextField()),
                     ],
+                  ),
+                  _LabelTextFieldAlignWidget(label: context.l10n.tagsOfAzkar),
+                  BlocBuilder<AddAzkarCubit, AddAzkarState>(
+                    builder: (context, state) {
+                      final cubit = context.read<AddAzkarCubit>();
+                      return TagSelectionWidget(
+                        tags: state.tags,
+                        onAddTag: (tag) {
+                          final updatedTags = {...state.tags};
+                          if (updatedTags.add(tag)) {
+                            cubit.tagsChanged(updatedTags);
+                          }
+                        },
+                        onRemoveTag: (tag) => cubit.tagsChanged(state.tags..remove(tag)),
+                        onClearTags: () => cubit.tagsChanged({}),
+                        availableTags: cubit.getTags(),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -81,6 +102,7 @@ class _TextOfAzkarTextField extends StatelessWidget {
           key: const Key('AzkarForm_TextOfAzkar_textField'),
           maxLines: 3,
           minLines: 1,
+          controller: context.read<AddAzkarCubit>().textOfAzkar,
           onChanged: (text) => context.read<AddAzkarCubit>().textOfAzkarChanged(text),
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
@@ -110,6 +132,7 @@ class _ExplanationOfAzkarTextField extends StatelessWidget {
           maxLines: 3,
           minLines: 2,
           onChanged: (text) => context.read<AddAzkarCubit>().explanationChanged(text),
+          controller: context.read<AddAzkarCubit>().explanation,
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             hintText:
@@ -219,8 +242,13 @@ class _AddAzkarButton extends StatelessWidget {
             maxWidth: true,
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
-            label: context.l10n.add,
-            onPressed: state.isValid ? () => context.read<AddAzkarCubit>().saveAzkarForm() : null,
+            label: state.azkarId == null ? context.l10n.add : context.l10n.update,
+            onPressed: state.isValid
+                ? () {
+                    context.read<AddAzkarCubit>().addOrUpdateAzkarForm();
+                    if (context.mounted) context.pop();
+                  }
+                : null,
           ),
         );
       },
