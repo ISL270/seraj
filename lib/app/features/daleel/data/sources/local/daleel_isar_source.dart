@@ -16,132 +16,143 @@ import 'package:isar/isar.dart';
 final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
   DaleelIsarSource(super.isarService);
 
+  /// Fetches a paginated list of DaleelIsar objects with optional filtering.
   List<DaleelIsar> getDaleels(
     String searchTerm, {
     required int page,
     required int pageSize,
     DaleelFilters? filters,
   }) {
-    final query = switch (searchTerm.isNotBlank) {
-      true => isarService.db.daleelIsars.where().textStartsWith(searchTerm).filter(),
-      false => isarService.db.daleelIsars.where().anyText().filter(),
-    };
+    final query = searchTerm.isNotBlank
+        ? isarService.db.daleelIsars.where().textStartsWith(searchTerm).filter()
+        : isarService.db.daleelIsars.where().anyText().filter();
+
+    return _applyFilters(query, filters).offset(page * pageSize).limit(pageSize).findAllSync();
+  }
+
+  /// Filters the query based on the provided filters.
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> _applyFilters(
+    QueryBuilder<DaleelIsar, DaleelIsar, QFilterCondition> query,
+    DaleelFilters? filters,
+  ) {
+    if (filters == null) {
+      return query as QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>;
+    }
+
     return query
         .optional(
-          filters?.daleelType.isNotEmpty ?? false,
-          (dl) => dl.anyOf(
-            filters!.daleelType,
-            (q, type) => q.daleelTypeEqualTo(type),
-          ),
+          filters.daleelType.isNotEmpty,
+          (q) => q.anyOf(filters.daleelType, (q, type) => q.daleelTypeEqualTo(type)),
         )
         .optional(
-          filters?.priority.isNotEmpty ?? false,
-          (dl) => dl.anyOf(
-            filters!.priority,
-            (q, priority) => q.priorityEqualTo(priority),
-          ),
+          filters.priority.isNotEmpty,
+          (q) => q.anyOf(filters.priority, (q, priority) => q.priorityEqualTo(priority)),
         )
         .optional(
-          filters?.date.isNotEmpty ?? false,
-          (dl) => dl.anyOf(
-            filters!.date,
-            (q, date) => q.lastRevisedAtEqualTo(date),
-          ),
-        )
-        .offset(page * pageSize)
-        .limit(pageSize)
-        .findAllSync();
+          filters.date.isNotEmpty,
+          (q) => q.anyOf(filters.date, (q, date) => q.lastRevisedAtEqualTo(date)),
+        );
   }
 
-  // New getByText function
+  /// Fetches a list of DaleelIsar objects with a specific text match.
   List<DaleelIsar> getByText(String text) {
-    final query = isarService.db.daleelIsars.where().textEqualTo(text);
-    return query.findAllSync();
+    return isarService.db.daleelIsars.where().textEqualTo(text).findAllSync();
   }
 
-  // Updated getAyaByText function
+  /// Retrieves an Aya based on the Surah name and Ayah number.
   Future<Aya?> getAyaByText({required String surahName, required int ayahNumber}) async {
     try {
-      final daleelIsars = await getAll<DaleelIsar>();
-      final matchingDaleels = daleelIsars.where(
-        (DaleelIsar daleel) =>
+      final matchingDaleels = await getAll<DaleelIsar>().then(
+        (list) => list.where((daleel) =>
             daleel.daleelType == DaleelType.aya &&
             daleel.surah == surahName &&
-            daleel.firstAya == ayahNumber,
+            daleel.firstAya == ayahNumber),
       );
-      if (matchingDaleels.isNotEmpty) {
-        final daleelIsar = matchingDaleels.first;
-        debugPrint('########### ${daleelIsar.toDomain() as Aya?} ###########');
-        return daleelIsar.toDomain() as Aya?;
-      }
-      return null;
+
+      return matchingDaleels.isNotEmpty ? matchingDaleels.first.toDomain() as Aya? : null;
     } catch (e) {
-      debugPrint('########### Error: $e ###########');
-      return null; // Return null in case of an exception.
+      debugPrint('Error fetching Aya: $e');
+      return null;
     }
   }
 
-  void addDaleelWithTags({
-    required DaleelIsar daleelIsar,
-    required Set<Tag> tags,
-  }) {
+  /// Adds a Daleel along with its tags.
+  void addDaleelWithTags({required DaleelIsar daleelIsar, required Set<Tag> tags}) {
     final isar = isarService.db;
     final daleelTags = tags.map(DaleelTagIsar.fromDomain).toList();
+
     isar.writeTxnSync(() {
-      isar.daleelTagIsars.putAllSync(daleelTags);
+      _storeTags(daleelTags);
       daleelIsar.tags.addAll(daleelTags);
       isar.daleelIsars.putSync(daleelIsar);
     });
   }
 
-  void updateDaleelWithTags({
-    required DaleelIsar daleelIsar,
-    required Set<Tag> tags,
-  }) {
+  /// Updates a Daleel along with its associated tags.
+  void updateDaleelWithTags({required DaleelIsar daleelIsar, required Set<Tag> tags}) {
     final isar = isarService.db;
 
     isar.writeTxnSync(() {
-      //Fetch existing Hadith by ID
       final existingDaleel = isar.daleelIsars.getSync(daleelIsar.id!);
+      if (existingDaleel == null) return;
 
-      if (existingDaleel != null) {
-        // to update last revised date
-        existingDaleel.lastRevisedAt = daleelIsar.lastRevisedAt;
+      _updateDaleelFields(existingDaleel, daleelIsar);
+      _updateTags(existingDaleel, tags);
 
-        // Update the main fields of existing daleel
-        existingDaleel.text = daleelIsar.text;
-        existingDaleel.description = daleelIsar.description;
-        existingDaleel.sayer = daleelIsar.sayer;
-        existingDaleel.priority = daleelIsar.priority;
-
-        if (existingDaleel.daleelType == DaleelType.hadith) {
-          // Update the fields of the existing Hadith
-          existingDaleel.hadithExtraction = daleelIsar.hadithExtraction;
-          existingDaleel.hadithAuthenticity = daleelIsar.hadithAuthenticity;
-        } else if (existingDaleel.daleelType == DaleelType.aya) {
-          // Update the fields of the existing aya
-          existingDaleel.surah = daleelIsar.surah;
-          existingDaleel.firstAya = daleelIsar.firstAya;
-          existingDaleel.lastAya = daleelIsar.lastAya;
-        }
-
-        // athar and others is the same main fields.
-
-        //Convert and add new tags
-        final daleelTags = tags.map(DaleelTagIsar.fromDomain).toList();
-
-        // Ensure only new tags are added
-        isar.daleelTagIsars.putAllSync(daleelTags);
-
-        // Clear old tags and update with the correct ones
-        existingDaleel.tags.clear();
-        existingDaleel.tags.addAll(daleelTags);
-
-        //Save the updated Hadith back to the database
-        isar.daleelIsars.putSync(existingDaleel);
-      }
+      isar.daleelIsars.putSync(existingDaleel);
     });
   }
 
-  void deleteDoc(int id) => isarService.db.writeTxn(() => isarService.db.daleelIsars.delete(id));
+  /// Deletes a Daleel entry.
+  void deleteDoc(int id) {
+    isarService.db.writeTxn(() => isarService.db.daleelIsars.delete(id));
+  }
+
+  // --------------------------------
+  // Private Helper Methods
+  // --------------------------------
+
+  /// Stores tags in the database to ensure they exist before linking.
+  void _storeTags(List<DaleelTagIsar> daleelTags) {
+    if (daleelTags.isNotEmpty) {
+      isarService.db.daleelTagIsars.putAllSync(daleelTags);
+    }
+  }
+
+  /// Updates the fields of an existing Daleel with new data.
+  void _updateDaleelFields(DaleelIsar existing, DaleelIsar updated) {
+    existing
+      ..lastRevisedAt = updated.lastRevisedAt
+      ..text = updated.text
+      ..description = updated.description
+      ..sayer = updated.sayer
+      ..priority = updated.priority;
+
+    if (existing.daleelType == DaleelType.hadith) {
+      existing
+        ..hadithExtraction = updated.hadithExtraction
+        ..hadithAuthenticity = updated.hadithAuthenticity;
+    } else if (existing.daleelType == DaleelType.aya) {
+      existing
+        ..surah = updated.surah
+        ..firstAya = updated.firstAya
+        ..lastAya = updated.lastAya;
+    }
+  }
+
+  /// Updates the tags associated with a Daleel, ensuring efficient removal and addition.
+  void _updateTags(DaleelIsar daleelIsar, Set<Tag> tags) {
+    final newDaleelTags = tags.map(DaleelTagIsar.fromDomain).toList();
+    final oldTags = daleelIsar.tags.toList();
+
+    final tagsToRemove =
+        oldTags.where((oldTag) => !newDaleelTags.any((newTag) => newTag.id == oldTag.id)).toList();
+    final tagsToAdd =
+        newDaleelTags.where((newTag) => !oldTags.any((oldTag) => oldTag.id == newTag.id)).toList();
+
+    daleelIsar.tags.removeWhere((tag) => tagsToRemove.any((t) => t.id == tag.id));
+    daleelIsar.tags.addAll(tagsToAdd);
+
+    _storeTags(tagsToAdd);
+  }
 }
