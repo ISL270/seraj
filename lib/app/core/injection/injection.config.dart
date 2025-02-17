@@ -48,6 +48,9 @@ import 'package:athar/app/features/settings/sub_features/tags_details/domain/tag
     as _i317;
 import 'package:athar/app/features/settings/sub_features/tags_details/presentation/cubit/tags_cubit.dart'
     as _i1070;
+import 'package:athar/app/features/splash/bloc/splash_bloc.dart' as _i169;
+import 'package:athar/app/features/splash/domain/repository/auth_repository.dart'
+    as _i452;
 import 'package:firebase_auth/firebase_auth.dart' as _i59;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:google_sign_in/google_sign_in.dart' as _i116;
@@ -108,6 +111,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i31.AzkarIsarSource>(),
           gh<_i89.AzkarTagIsarSource>(),
         ));
+    gh.singleton<_i452.AuthRepository>(
+      () => _i452.AuthRepository(gh<_i59.FirebaseAuth>()),
+      dispose: (i) => i.dispose(),
+    );
     gh.singleton<_i1008.DuaRepository>(() => _i1008.DuaRepository(
           gh<_i500.DuaIsarSource>(),
           gh<_i183.DuaTagIsarSource>(),
@@ -120,6 +127,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i257.SettingsRepository(gh<_i387.SettingsIsarSource>()));
     gh.singleton<_i737.AddDuaCubit>(
         () => _i737.AddDuaCubit(gh<_i1008.DuaRepository>()));
+    gh.factory<_i169.SplashBloc>(
+        () => _i169.SplashBloc(gh<_i452.AuthRepository>()));
     gh.factory<_i240.SettingsBloc>(
         () => _i240.SettingsBloc(gh<_i257.SettingsRepository>()));
     return this;

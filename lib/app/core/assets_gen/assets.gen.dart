@@ -60,21 +60,21 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<dynamic> get values => [
-    addSquare,
-    appLogo,
-    arrowback,
-    bookmark,
-    duas,
-    menu,
-    notifications,
-    play,
-    plusSquaredOutlined,
-    plusSquaredSolid,
-    praying,
-    quran,
-    search,
-    share,
-  ];
+        addSquare,
+        appLogo,
+        arrowback,
+        bookmark,
+        duas,
+        menu,
+        notifications,
+        play,
+        plusSquaredOutlined,
+        plusSquaredSolid,
+        praying,
+        quran,
+        search,
+        share
+      ];
 }
 
 class Assets {
@@ -84,7 +84,11 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
+  const AssetGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  });
 
   final String _assetName;
 
@@ -144,8 +148,15 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({AssetBundle? bundle, String? package}) {
-    return AssetImage(_assetName, bundle: bundle, package: package);
+  ImageProvider provider({
+    AssetBundle? bundle,
+    String? package,
+  }) {
+    return AssetImage(
+      _assetName,
+      bundle: bundle,
+      package: package,
+    );
   }
 
   String get path => _assetName;
@@ -154,10 +165,17 @@ class AssetGenImage {
 }
 
 class SvgGenImage {
-  const SvgGenImage(this._assetName, {this.size, this.flavors = const {}}) : _isVecFormat = false;
+  const SvgGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  }) : _isVecFormat = false;
 
-  const SvgGenImage.vec(this._assetName, {this.size, this.flavors = const {}})
-    : _isVecFormat = true;
+  const SvgGenImage.vec(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  }) : _isVecFormat = true;
 
   final String _assetName;
   final Size? size;
@@ -186,7 +204,11 @@ class SvgGenImage {
   }) {
     final _svg.BytesLoader loader;
     if (_isVecFormat) {
-      loader = _vg.AssetBytesLoader(_assetName, assetBundle: bundle, packageName: package);
+      loader = _vg.AssetBytesLoader(
+        _assetName,
+        assetBundle: bundle,
+        packageName: package,
+      );
     } else {
       loader = _svg.SvgAssetLoader(
         _assetName,
