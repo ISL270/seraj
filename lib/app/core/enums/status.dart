@@ -1,4 +1,4 @@
-import 'package:athar/app/core/models/domain/generic_exception.dart';
+import 'package:athar/app/core/models/generic_exception.dart';
 import 'package:equatable/equatable.dart';
 
 /// Represents a type-safe state management mechanism for handling data loading states.

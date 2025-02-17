@@ -1,6 +1,6 @@
 import 'package:athar/app/core/enums/change_type.dart';
 import 'package:athar/app/core/enums/status.dart';
-import 'package:athar/app/core/models/domain/generic_exception.dart';
+import 'package:athar/app/core/models/generic_exception.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -25,7 +25,7 @@ class DuaDetailsBloc extends Bloc<_DuaDetailsEvent, DuaDetailsState> {
     Emitter<DuaDetailsState> emit,
   ) async {
     await emit.forEach(
-      repository.watchLocalObject(state.dua.id),
+      repository.watchObject(state.dua.id!),
       onData: (dua) {
         if (dua == null) {
           return state.duaDeleted();
@@ -35,25 +35,17 @@ class DuaDetailsBloc extends Bloc<_DuaDetailsEvent, DuaDetailsState> {
     );
   }
 
-  Future<void> _onDuaFavouriteToggled(
+  void _onDuaFavouriteToggled(
     DuaFavouriteToggled event,
     Emitter<DuaDetailsState> emit,
-  ) async {
-    try {
-      await repository.toggleFavourite(state.dua);
-    } catch (e) {
-      emit(state.failure(e as GenericException));
-    }
+  ) {
+    repository.toggleFavourite(state.dua);
   }
 
-  Future<void> _onDuaDeleted(
+  void _onDuaDeleted(
     DuaDeleted event,
     Emitter<DuaDetailsState> emit,
-  ) async {
-    try {
-      await repository.deleteDoc(state.dua.id);
-    } catch (e) {
-      emit(state.failure(e as GenericException));
-    }
+  ) {
+    repository.delete(state.dua.id!);
   }
 }

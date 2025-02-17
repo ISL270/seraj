@@ -1,7 +1,6 @@
-import 'package:athar/app/core/extension_methods/getit_x.dart';
 import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/language.dart';
-import 'package:athar/app/core/routing/router.dart';
+import 'package:athar/app/core/router.dart';
 import 'package:athar/app/core/theming/app_theme.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
@@ -25,7 +24,6 @@ class App extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (_) => SettingsBloc(getIt.get<SettingsRepository>())),
-            BlocProvider(create: (_) => getIt.authBloc),
             BlocProvider(create: (_) => DaleelBloc(getIt.get<DaleelRepository>())),
           ],
           child: BlocBuilder<SettingsBloc, SettingsState>(
@@ -34,7 +32,6 @@ class App extends StatelessWidget {
                 theme: AppTheme.light,
                 darkTheme: AppTheme.dark,
                 themeMode: settingsState.settings.themeMode,
-                // locale: settingsState.language.locale,
                 locale: Language.arabic.locale,
                 supportedLocales: AppLocalizations.supportedLocales,
                 localizationsDelegates: AppLocalizations.localizationsDelegates,

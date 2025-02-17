@@ -1,44 +1,42 @@
 // ignore_for_file: unused_field
 
-import 'package:athar/app/core/models/domain/generic_exception.dart';
-import 'package:athar/app/core/models/reactive_repository.dart';
-import 'package:athar/app/features/dua/data/sources/local/dua_isar.dart';
-import 'package:athar/app/features/dua/data/sources/local/dua_isar_source.dart';
-import 'package:athar/app/features/dua/data/sources/remote/dua_firestore_source.dart';
-import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/core/models/favourite_filters.dart';
-import 'package:dartx/dartx_io.dart';
+import 'package:athar/app/core/models/repository.dart';
+import 'package:athar/app/core/models/tag.dart';
+import 'package:athar/app/features/dua/data/dua_isar.dart';
+import 'package:athar/app/features/dua/data/dua_isar_source.dart';
+import 'package:athar/app/features/dua/domain/dua.dart';
+import 'package:athar/app/features/dua/sub_features/dua_tag/data/dua_tag_isar_source.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
-final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
+final class DuaRepository extends Repository<Dua, DuaIsar> {
   final DuaIsarSource _localSource;
-  final DuaFirestoreSource _remoteSource;
+  final DuaTagIsarSource _tagIsarSource;
 
-  DuaRepository(
-    super.authRepository,
-    this._remoteSource,
-    this._localSource,
-  ) : super(localSource: _localSource, remoteSource: _remoteSource);
+  DuaRepository(this._localSource, this._tagIsarSource) : super(_localSource);
 
-  Future<void> addDua({
+  void addDuaOrUpdate({
     required String text,
+    required int? id,
     required String reward,
-    required List<String> tags,
+    required Set<Tag> tags,
     required String description,
-  }) async {
-    try {
-      await _remoteSource.addDua(
-        text: text,
-        tags: tags,
-        isFavourite: false,
-        uid: authRepository.user!.id,
-        reward: reward.isBlank ? null : reward,
-        description: description.isBlank ? null : description,
-      );
-    } catch (e) {
-      throw e as GenericException;
-    }
+  }) {
+    id == null
+        ? _localSource.addDuaWithTags(
+            text: text,
+            reward: reward,
+            description: description,
+            tags: tags,
+          )
+        : _localSource.updateDua(
+            text: text,
+            reward: reward,
+            description: description,
+            tags: tags,
+            id: id,
+          );
   }
 
   Future<List<Dua>> searchDua(
@@ -47,7 +45,7 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
     required int pageSize,
     required FavouriteFilters filters,
   }) async {
-    final cms = await _localSource.getDuas(
+    final cms = _localSource.getDuas(
       searchTerm,
       page: page,
       pageSize: pageSize,
@@ -56,14 +54,20 @@ final class DuaRepository extends ReactiveRepository<Dua, DuaFM, DuaIsar> {
     return cms.map((e) => e.toDomain()).toList();
   }
 
-  Future<void> toggleFavourite(Dua dua) async {
-    try {
-      await _remoteSource.toggleFavourite(uid: authRepository.user!.id, dua: dua);
-    } catch (e) {
-      throw e as GenericException;
-    }
+  void toggleFavourite(Dua dua) {
+    final cm = _localSource.get(dua.id!)!;
+    cm.isFavourite = !cm.isFavourite;
+    _localSource.put(cm);
   }
 
-  @disposeMethod
-  void dispMethod() => dispose();
+  List<Tag> getTags() {
+    return _tagIsarSource.getAllTags();
+  }
+
+  List<Tag> getDuaTagsById({required int id}) {
+    return _localSource.get(id)?.toDomain().tags.map((tag) => tag).toList() ?? [];
+  }
+
+  @override
+  DuaIsar fromDomain(Dua dm) => DuaIsar.fromDomain(dm);
 }

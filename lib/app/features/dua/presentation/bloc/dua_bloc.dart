@@ -1,11 +1,8 @@
-import 'dart:developer';
-
-import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/bloc_event_transformers.dart';
-import 'package:athar/app/core/models/domain/paginated_result.dart';
+import 'package:athar/app/core/models/favourite_filters.dart';
+import 'package:athar/app/core/models/paginated_result.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
-import 'package:athar/app/core/models/favourite_filters.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -16,15 +13,16 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
   final DuaRepository _repository;
 
   DuaBloc(this._repository) : super(DuaScreenState._initial()) {
-    on<_DuaSubscriptionRequested>(_onSubscriptionRequested);
     on<DuaSearched>(_onSearched);
+    on<_DuaSubscriptionRequested>(_onSubscriptionRequested);
+    on<DuaFavouriteToggled>(toggleFavouriteDua);
     on<DuaFiltered>(_onFilterUpdate);
 
     on<DuaNextPageFetched>(
       _onNextPageFetched,
       transformer: EventTransformers.throttleDroppable(),
     );
-
+    add(const DuaSearched(''));
     add(_DuaSubscriptionRequested());
   }
 
@@ -33,37 +31,23 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
     Emitter<DuaScreenState> emit,
   ) async {
     await emit.onEach(
-      _repository.stream(),
-      onData: (status) => switch (status) {
-        Loading<void>() => state.paginatedResult.elements.isEmpty
-            // If no exercises are loaded yet emit loading state
-            ? emit(state._copyWith(status: state.status.toLoading()))
-            // If exercises already exist, do nothing
-            : {},
-        // If changes successfully happened in the repository, update the displayed result
-        Success<void>() => add(DuaSearched(state.searchTerm)),
-        Failure<void>(exception: final e) =>
-          emit(state._copyWith(status: state.status.toFailure(e))),
-        _ => {},
-      },
+      _repository.watchCollection(),
+      onData: (status) => add(DuaSearched(state.searchTerm)),
     );
   }
 
   Future<void> _onSearched(DuaSearched event, Emitter<DuaScreenState> emit) async {
-    emit(state._copyWith(
-      searchTerm: event.searchTerm,
-      status: state.status.toLoading(),
-    ));
+    emit(state._copyWith(searchTerm: event.searchTerm));
 
     final searchResult = await _repository.searchDua(
       page: 0,
       event.searchTerm,
-      pageSize: state.paginatedResult.pageSize,
+      pageSize: state.result.pageSize,
       filters: state.duaFilters,
     );
 
     emit(state._copyWith(
-      status: state.status.toSuccess(null),
+      searchTerm: event.searchTerm,
       duas: PaginatedResult.firstPage(searchResult),
     ));
   }
@@ -72,26 +56,36 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
     DuaNextPageFetched event,
     Emitter<DuaScreenState> emit,
   ) async {
-    if (state.paginatedResult.hasReachedMax) return;
+    if (state.result.hasReachedMax) return;
 
     final searchResult = await _repository.searchDua(
       state.searchTerm,
-      page: state.paginatedResult.page + 1,
+      page: state.result.page + 1,
       filters: state.duaFilters,
-      pageSize: state.paginatedResult.pageSize,
+      pageSize: state.result.pageSize,
     );
 
-    emit(state._copyWith(
-      status: state.status.toSuccess(null),
-      duas: state.paginatedResult.appendResult(searchResult),
-    ));
+    emit(state._copyWith(duas: state.result.appendResult(searchResult)));
+  }
+
+  void toggleFavouriteDua(
+    DuaFavouriteToggled event,
+    Emitter<DuaScreenState> emit,
+  ) {
+    _repository.toggleFavourite(event.dua);
+  }
+
+  void deleteDua(int? id) {
+    if (id != null) {
+      _repository.delete(id);
+      add(const DuaSearched(''));
+    }
   }
 
   Future<void> _onFilterUpdate(
     DuaFiltered event,
     Emitter<DuaScreenState> emit,
   ) async {
-    log('filter updated');
     if (state.duaFilters == event.filters) return;
     emit(state._copyWith(duaFilters: event.filters));
     add(DuaSearched(state.searchTerm));

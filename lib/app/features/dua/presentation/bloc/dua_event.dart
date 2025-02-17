@@ -25,3 +25,12 @@ final class DuaFiltered extends DuaEvent {
 
   const DuaFiltered(this.filters);
 }
+
+final class DuaFavouriteToggled extends DuaEvent {
+  final Dua dua;
+
+  const DuaFavouriteToggled(this.dua);
+
+  @override
+  List<Object> get props => [dua];
+}

@@ -4,7 +4,7 @@ import 'dart:developer';
 
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/bloc_event_transformers.dart';
-import 'package:athar/app/core/models/domain/paginated_result.dart';
+import 'package:athar/app/core/models/paginated_result.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
@@ -21,14 +21,13 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
   final DaleelRepository _repository;
 
   DaleelBloc(this._repository) : super(DaleelState._initial()) {
-    on<DaleelSubscriptionRequested>(_onSubscriptionRequested);
-    on<DaleelSearched>(_onSearched);
     on<DaleelFiltered>(_onFilterUpdate);
+    on<DaleelSearched>(_onSearched);
+    on<DaleelSubscriptionRequested>(_onSubscriptionRequested);
     on<DaleelNextPageFetched>(
       _onNextPageFetched,
       transformer: EventTransformers.throttleDroppable(),
     );
-
     on<DaleelPriorityFilterChanged>((event, emit) {
       emit(state.copyWith(
         selectedPriority: event.priority,
@@ -36,8 +35,8 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
       ));
       add(DaleelSearched(state.searchTerm));
     });
-
     add(DaleelSubscriptionRequested());
+    add(const DaleelSearched(''));
   }
 
   Future<void> _onSubscriptionRequested(
@@ -45,16 +44,8 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
     Emitter<DaleelState> emit,
   ) async {
     await emit.onEach(
-      _repository.stream(),
-      onData: (status) => switch (status) {
-        Loading<void>() => state.daleels.elements.isEmpty
-            ? emit(state.copyWith(status: state.status.toLoading()))
-            : {},
-        Success<void>() => add(DaleelSearched(state.searchTerm)),
-        Failure<void>(exception: final e) =>
-          emit(state.copyWith(status: state.status.toFailure(e))),
-        _ => {},
-      },
+      _repository.watchCollection(),
+      onData: (status) => add(DaleelSearched(state.searchTerm)),
     );
   }
 
@@ -99,6 +90,13 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
     ));
   }
 
+  void delete({required int? id}) {
+    if (id != null) {
+      _repository.deleteByID(id);
+      add(const DaleelSearched(''));
+    }
+  }
+
   void _onFilterUpdate(
     DaleelFiltered event,
     Emitter<DaleelState> emit,
@@ -108,11 +106,5 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
     if (state.daleelFilters == event.filters) return;
     emit(state.copyWith(daleelFilters: event.filters));
     add(DaleelSearched(state.searchTerm));
-  }
-
-  @override
-  Future<void> close() {
-    _repository.dispMethod();
-    return super.close();
   }
 }

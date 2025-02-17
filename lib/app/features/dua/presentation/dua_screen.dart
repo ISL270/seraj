@@ -1,23 +1,25 @@
 // ignore_for_file: deprecated_member_use_from_same_package, inference_failure_on_function_invocation, dead_code
 
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
-import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/extension_methods/english_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
+import 'package:athar/app/core/models/favourite_filters.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/add_dua/presentation/add_dua_screen.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
-import 'package:athar/app/core/models/favourite_filters.dart';
-import 'package:athar/app/widgets/filter_buttom_sheet.dart';
+import 'package:athar/app/features/dua/sub_features/add_dua/add_dua_screen.dart';
 import 'package:athar/app/features/dua/sub_features/dua_details/dua_details_screen.dart';
+import 'package:athar/app/widgets/action_buttoms.dart';
+import 'package:athar/app/widgets/filter_buttom_sheet.dart';
 import 'package:dartx/dartx_io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:super_cupertino_navigation_bar/super_cupertino_navigation_bar.dart';
@@ -28,7 +30,7 @@ part 'widgets/duas_listview.dart';
 class DuasScreen extends StatefulWidget {
   const DuasScreen({super.key});
 
-  static const String name = 'duas';
+  static const name = 'duas';
 
   @override
   State<DuasScreen> createState() => _DuasScreenState();
@@ -44,7 +46,6 @@ class _DuasScreenState extends State<DuasScreen> {
   @override
   void initState() {
     super.initState();
-
     _scrollCntrlr = ScrollController();
     _bloc = context.read<DuaBloc>();
     _searchCntrlr = TextEditingController();
@@ -57,7 +58,7 @@ class _DuasScreenState extends State<DuasScreen> {
     );
     _scrollCntrlr.addListener(
       () {
-        if (_bloc.state.status.isSuccess && _bloc.state.paginatedResult.elements.length > 5) {
+        if (_bloc.state.result.elements.length > 2) {
           return;
         }
         _scrollCntrlr.jumpTo(0);

@@ -13,18 +13,20 @@ import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/l10n/language.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/add_athar/presentation/add_athar_screen.dart';
-import 'package:athar/app/features/add_hadith/presentation/add_hadith_screen.dart';
-import 'package:athar/app/features/add_other/presentation/add_other_screen.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
 import 'package:athar/app/features/daleel/presentation/widgets/priority_slider_w_label.dart';
-import 'package:athar/app/features/daleel_details/presentation/daleel_details_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/add_edit_ayah.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/add_edit_athar_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/add_edit_hadith_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/add_other_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/daleel_details/presentation/daleel_details_screen.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
+import 'package:athar/app/widgets/action_buttoms.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:dartx/dartx.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
@@ -45,7 +47,7 @@ part 'widgets/filter_bottom_sheet.dart';
 class DaleelScreen extends StatefulWidget {
   const DaleelScreen({super.key});
 
-  static const String name = 'daleel-screen';
+  static const name = 'daleel-screen';
 
   @override
   State<DaleelScreen> createState() => _DaleelScreenState();
@@ -74,7 +76,7 @@ class _DaleelScreenState extends State<DaleelScreen> {
     );
     _scrollCntrlr.addListener(
       () {
-        if (_bloc.state.status.isSuccess && _bloc.state.daleels.elements.length > 5) {
+        if (_bloc.state.status.isSuccess && _bloc.state.daleels.elements.length > 2) {
           return;
         }
         _scrollCntrlr.jumpTo(0);

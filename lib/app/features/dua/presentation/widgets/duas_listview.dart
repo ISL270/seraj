@@ -14,33 +14,30 @@ class _DuasListView extends StatelessWidget {
             }
             return true;
           },
-          child: switch (state.status) {
-            Loading() => const Center(child: CircularProgressIndicator()),
-            _ => state.paginatedResult.elements.isEmpty
-                ? Padding(
-                    padding: EdgeInsets.only(top: 20.h),
-                    child: Center(
-                        child: Text(context.l10n.noDua, style: context.textThemeX.medium.bold)),
-                  )
-                : ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: state.paginatedResult.elements.length,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
-                        child: Divider(
-                          height: 1,
-                          thickness: 0.5,
-                          color: context.colorsX.onBackgroundTint35.withValues(alpha: 0.1),
-                        ),
-                      );
-                    },
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, i) => _DuaWithNumWidget(
-                      dua: state.paginatedResult.elements[i],
-                    ),
+          child: state.result.elements.isEmpty
+              ? Padding(
+                  padding: EdgeInsets.only(top: 20.h),
+                  child: Center(
+                      child: Text(context.l10n.noDua, style: context.textThemeX.medium.bold)),
+                )
+              : ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: state.result.elements.length,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
+                      child: Divider(
+                        height: 1,
+                        thickness: 0.5,
+                        color: context.colorsX.onBackgroundTint35.withValues(alpha: 0.1),
+                      ),
+                    );
+                  },
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, i) => _DuaWidget(
+                    dua: state.result.elements[i],
                   ),
-          },
+                ),
         );
       },
     );
