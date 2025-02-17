@@ -94,20 +94,21 @@ class DaleelDetailsScreen extends StatelessWidget {
                         Aya() => context.l10n.aya,
                       },
                     ),
-                    Gap(15.h),
+                    if (state.daleel.sayer != null && state.daleel.sayer!.isNotEmpty) Gap(15.h),
                     if (state.daleel.sayer != null && state.daleel.sayer!.isNotEmpty)
                       _DaleelDetailsWidget(
                         label: context.l10n.daleelSayer,
                         labelValue: daleel.sayer.toString(),
                       ),
                     if (state.daleel.sayer != null && state.daleel.sayer!.isNotEmpty) Gap(15.h),
-                    Text(
-                      context.l10n.daleelTags,
-                      style: context.textThemeX.large.bold.copyWith(
-                        color: context.colorsX.onBackgroundTint35,
+                    if (daleel.tags.isNotEmpty)
+                      Text(
+                        context.l10n.daleelTags,
+                        style: context.textThemeX.large.bold.copyWith(
+                          color: context.colorsX.onBackgroundTint35,
+                        ),
                       ),
-                    ),
-                    Gap(15.h),
+                    if (daleel.tags.isNotEmpty) Gap(15.h),
                     Wrap(
                       spacing: 3.w,
                       runSpacing: 10.h,
