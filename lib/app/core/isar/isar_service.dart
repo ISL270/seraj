@@ -1,6 +1,7 @@
 // ignore_for_file: strict_raw_type
 
 import 'package:athar/app/features/azkar/data/azkar_isar.dart';
+import 'package:athar/app/features/azkar/sub_features/azkar_tag/data/azkar_tag_isar.dart';
 import 'package:athar/app/features/daleel/data/sources/local/daleel_isar.dart';
 import 'package:athar/app/features/daleel/sub_features/tags/data/daleel_tag_isar.dart';
 import 'package:athar/app/features/dua/data/dua_isar.dart';
@@ -26,6 +27,7 @@ final class IsarService {
         DuaTagIsarSchema,
         AzkarIsarSchema,
         DaleelTagIsarSchema,
+        AzkarTagIsarSchema,
       ],
       directory: dir.path,
     );

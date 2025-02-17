@@ -1,3 +1,5 @@
+// ignore_for_file: omit_local_variable_types, prefer_final_locals
+
 import 'dart:developer';
 
 import 'package:athar/app/core/models/tag.dart';
@@ -14,6 +16,7 @@ class TagsCubit extends Cubit<TagsState> {
   final TagsRepository _repository;
   late final TextEditingController searchController;
   bool isDaleel = true;
+  int atharType = 0;
 
   TagsCubit(this._repository) : super(const TagsState()) {
     searchController = TextEditingController();
@@ -21,30 +24,50 @@ class TagsCubit extends Cubit<TagsState> {
   }
 
   void loadTags() {
-    try {
-      final tags = isDaleel ? _repository.getDaleelTags() : _repository.getDuaTags();
-      emit(state.copyWith(
-        daleelTags: isDaleel ? tags : state.daleelTags,
-        duaTags: isDaleel ? state.duaTags : tags,
-        filteredTags: tags,
-        searchQuery: '',
-      ));
-    } catch (e) {
-      log('Error fetching tags: $e');
+    List<Tag> tags;
+
+    switch (atharType) {
+      case 0:
+        tags = _repository.getDaleelTags();
+      case 1:
+        tags = _repository.getDuaTags();
+      case 2:
+        tags = _repository.getAzkarTags();
+      default:
+        tags = [];
     }
+
+    emit(state.copyWith(
+      daleelTags: atharType == 0 ? tags : state.daleelTags,
+      duaTags: atharType == 1 ? tags : state.duaTags,
+      azkarTags: atharType == 2 ? tags : state.azkarTags,
+      filteredTags: tags, // Ensure filteredTags only contains tags for the active tab
+    ));
   }
 
-  void switchTab(bool isDaleelTab) {
-    isDaleel = isDaleelTab;
+  void switchTab(int atharType) {
+    this.atharType = atharType;
     loadTags(); // Reload tags based on the selected tab
   }
 
   void searchTags(String query) {
-    final normalizedQuery = query.trim().toLowerCase();
-    final sourceTags = isDaleel ? state.daleelTags : state.duaTags;
-    final filteredTags =
-        sourceTags.where((tag) => tag.name.toLowerCase().contains(normalizedQuery)).toList();
-    emit(state.copyWith(filteredTags: filteredTags, searchQuery: query));
+    List<Tag> relevantTags;
+
+    switch (atharType) {
+      case 0:
+        relevantTags = state.daleelTags;
+      case 1:
+        relevantTags = state.duaTags;
+      case 2:
+        relevantTags = state.azkarTags;
+      default:
+        relevantTags = [];
+    }
+
+    final filtered =
+        relevantTags.where((tag) => tag.name.toLowerCase().contains(query.toLowerCase())).toList();
+
+    emit(state.copyWith(filteredTags: filtered, searchQuery: query));
   }
 
   void clearSearch() {
@@ -54,10 +77,12 @@ class TagsCubit extends Cubit<TagsState> {
 
   void updateTags({required int id, required String newTag}) {
     try {
-      if (isDaleel) {
+      if (atharType == 0) {
         _repository.updateDaleelTags(id: id, newTag: newTag);
-      } else {
+      } else if (atharType == 1) {
         _repository.updateDuaTags(id: id, newTag: newTag);
+      } else {
+        _repository.updateAzkarTags(id: id, newTag: newTag);
       }
       loadTags(); // Reload the tags after update
     } catch (e) {
@@ -67,10 +92,12 @@ class TagsCubit extends Cubit<TagsState> {
 
   void deleteTag({required int id}) {
     try {
-      if (isDaleel) {
+      if (atharType == 0) {
         _repository.deleteDaleelTag(id: id);
-      } else {
+      } else if (atharType == 1) {
         _repository.deleteDuaTag(id: id);
+      } else {
+        _repository.deleteAzkarTag(id: id);
       }
       loadTags();
     } catch (e) {

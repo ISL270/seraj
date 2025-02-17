@@ -1,5 +1,6 @@
 import 'package:athar/app/core/isar/cache_model.dart';
 import 'package:athar/app/features/azkar/domain/azkar.dart';
+import 'package:athar/app/features/azkar/sub_features/azkar_tag/data/azkar_tag_isar.dart';
 import 'package:isar/isar.dart';
 
 part 'azkar_isar.g.dart';
@@ -10,15 +11,13 @@ final class AzkarIsar extends CacheModel<Azkar> {
   @Index(type: IndexType.value, caseSensitive: false)
   String text;
 
-  // final List<String> tags;
-
   String? description;
 
   int noOfRepetitions;
 
   bool isFavourite;
 
-  // final tags = IsarLinks<AzkarTagIsar>();
+  final tags = IsarLinks<AzkarTagIsar>();
 
   AzkarIsar({
     required this.text,
@@ -41,7 +40,7 @@ final class AzkarIsar extends CacheModel<Azkar> {
   Azkar toDomain() => Azkar(
         id: id,
         text: text,
-        // tags: tags,
+        tags: tags.map((e) => e.toDomain()).toSet(),
         description: description,
         noOfRepetitions: noOfRepetitions,
         isFavourite: isFavourite,

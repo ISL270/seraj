@@ -27,7 +27,9 @@ class AddDuaScreen extends StatelessWidget {
           child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
         ),
         title: Text(
-          context.l10n.addDua,
+          context.read<AddDuaCubit>().state.duaId != null
+              ? '${context.l10n.edit} ${context.l10n.dua}'
+              : context.l10n.addDua,
           style: context.textThemeX.heading.bold,
           textAlign: TextAlign.center,
         ),
@@ -37,7 +39,7 @@ class AddDuaScreen extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               child: Column(
-                spacing: 12.h,
+                spacing: 14.h,
                 children: [
                   _LabelTextFieldAlignWidget(label: context.l10n.dua),
                   const _TextOfDuaTextField(),

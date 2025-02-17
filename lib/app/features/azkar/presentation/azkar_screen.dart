@@ -12,12 +12,15 @@ import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/azkar/domain/azkar.dart';
 import 'package:athar/app/features/azkar/presentation/bloc/azkar_bloc.dart';
 import 'package:athar/app/features/azkar/presentation/models/azkar_filters.dart';
-import 'package:athar/app/features/azkar/sub_features/add_azkar/presentation/add_azkar_screen.dart';
+import 'package:athar/app/features/azkar/sub_features/add_or_edit_azkar/presentation/add_or_edit_azkar_screen.dart';
 import 'package:athar/app/features/azkar/sub_features/azkar_details/presentation/azkar_details_screen.dart';
+import 'package:athar/app/widgets/action_buttoms.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -82,7 +85,7 @@ class _AzkarScreenState extends State<AzkarScreen> {
           textStyle: context.textThemeX.large.bold.copyWith(fontSize: 32.w),
           actions: [
             GestureDetector(
-              onTap: () => context.pushNamed(AddAzkarScreen.name),
+              onTap: () => context.pushNamed(AddOrEditAzkarScreen.name),
               child: Assets.icons.plusSquaredOutlined.svg(
                 width: 34.w,
                 height: 34.w,

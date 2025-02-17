@@ -22,14 +22,20 @@ final class AzkarSubscriptionRequested extends AzkarEvent {}
 
 final class AzkarNextPageFetched extends AzkarEvent {}
 
-// final class _AzkarFavourited extends AzkarEvent {
-//   Azkar azkar;
+final class AzkarFavourited extends AzkarEvent {
+  Azkar azkar;
 
-//   _AzkarFavourited(this.azkar);
-// }
+  AzkarFavourited(this.azkar);
+}
 
 final class AzkarFiltered extends AzkarEvent {
   final AzkarFilters filters;
 
   const AzkarFiltered(this.filters);
+}
+
+final class AzkarDeleted extends AzkarEvent {
+  final int id;
+
+  const AzkarDeleted(this.id);
 }

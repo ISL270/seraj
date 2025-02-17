@@ -22,6 +22,8 @@ class AzkarBloc extends Bloc<AzkarEvent, AzkarState> {
   AzkarBloc(this._repository) : super(AzkarState._initial()) {
     on<AzkarSubscriptionRequested>(_onSubscriptionRequested);
     on<AzkarSearched>(_onSearched);
+    on<AzkarFavourited>(toggleFavouriteAzkar);
+    on<AzkarDeleted>(deleteAzkar);
     on<AzkarFiltered>(_onFilterUpdate);
     on<AzkarNextPageFetched>(
       _onNextPageFetched,
@@ -79,5 +81,20 @@ class AzkarBloc extends Bloc<AzkarEvent, AzkarState> {
     if (state.azkarFilters == event.filters) return;
     emit(state._copyWith(filters: event.filters));
     add(AzkarSearched(state.searchTerm));
+  }
+
+  void toggleFavouriteAzkar(
+    AzkarFavourited event,
+    Emitter<AzkarState> emit,
+  ) {
+    _repository.toggleFavorite(event.azkar);
+  }
+
+  void deleteAzkar(
+    AzkarDeleted event,
+    Emitter<AzkarState> emit,
+  ) {
+    _repository.delete(event.id);
+    add(const AzkarSearched(''));
   }
 }

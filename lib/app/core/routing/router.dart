@@ -1,12 +1,13 @@
 // ignore_for_file: cast_nullable_to_non_nullable
 
 import 'package:athar/app/core/injection/injection.dart';
+import 'package:athar/app/core/routing/go_router_refresh_stream.dart';
 import 'package:athar/app/features/azkar/domain/azkar.dart';
 import 'package:athar/app/features/azkar/domain/azkar_repository.dart';
 import 'package:athar/app/features/azkar/presentation/azkar_screen.dart';
 import 'package:athar/app/features/azkar/presentation/bloc/azkar_bloc.dart';
-import 'package:athar/app/features/azkar/sub_features/add_azkar/presentation/add_azkar_screen.dart';
-import 'package:athar/app/features/azkar/sub_features/add_azkar/presentation/cubit/add_azkar_cubit.dart';
+import 'package:athar/app/features/azkar/sub_features/add_or_edit_azkar/presentation/add_or_edit_azkar_screen.dart';
+import 'package:athar/app/features/azkar/sub_features/add_or_edit_azkar/presentation/cubit/add_or_edit_azkar_cubit.dart';
 import 'package:athar/app/features/azkar/sub_features/azkar_details/bloc/azkar_details_bloc.dart';
 import 'package:athar/app/features/azkar/sub_features/azkar_details/presentation/azkar_details_screen.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
@@ -36,6 +37,10 @@ import 'package:athar/app/features/settings/settings_screen.dart';
 import 'package:athar/app/features/settings/sub_features/tags_details/domain/tags_repository.dart';
 import 'package:athar/app/features/settings/sub_features/tags_details/presentation/cubit/tags_cubit.dart';
 import 'package:athar/app/features/settings/sub_features/tags_details/presentation/tags_screen.dart';
+import 'package:athar/app/features/splash/bloc/splash_bloc.dart';
+import 'package:athar/app/features/splash/domain/models/auth_state.dart';
+import 'package:athar/app/features/splash/domain/repository/auth_repository.dart';
+import 'package:athar/app/features/splash/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -44,6 +49,14 @@ final appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/${DaleelScreen.name}',
   routes: [
+    GoRoute(
+      path: '/',
+      name: SplashScreen.name,
+      builder: (context, state) => BlocProvider(
+        create: (context) => SplashBloc(getIt.get<AuthRepository>()),
+        child: const SplashScreen(),
+      ),
+    ),
     StatefulShellRoute.indexedStack(
       builder: (_, __, navigationShell) => HomeScreen(navigationShell: navigationShell),
       branches: [
@@ -198,14 +211,15 @@ final appRouter = GoRouter(
               )),
               routes: [
                 GoRoute(
-                  name: AddAzkarScreen.name,
-                  path: AddAzkarScreen.name,
+                  name: AddOrEditAzkarScreen.name,
+                  path: AddOrEditAzkarScreen.name,
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (context) => AddAzkarCubit(getIt.get<AzkarRepository>()),
-                      child: const AddAzkarScreen(),
+                      create: (context) => AddOrEditAzkarCubit(getIt.get<AzkarRepository>())
+                        ..initializeAzkar(state.extra as int?),
+                      child: const AddOrEditAzkarScreen(),
                     ),
                   ),
                 ),
@@ -237,6 +251,18 @@ final appRouter = GoRouter(
       ],
     ),
   ],
+  refreshListenable: GoRouterRefreshStream(
+    getIt.get<AuthRepository>().stream().where((state) => state is Authenticated),
+  ),
+  redirect: (context, state) {
+    final authState = getIt.get<AuthRepository>().authState;
+
+    if (authState is Unauthenticated) {
+      return state.matchedLocation == '/' ? null : '/';
+    }
+
+    return null;
+  },
 );
 
 // private navigators
