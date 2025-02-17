@@ -9,16 +9,16 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
-part 'add_azkar_state.dart';
+part 'add_or_edit_azkar_state.dart';
 
-class AddAzkarCubit extends Cubit<AddAzkarState> {
+class AddOrEditAzkarCubit extends Cubit<AddOrEditAzkarState> {
   final AzkarRepository _repository;
 
   late TextEditingController textOfAzkar;
   late TextEditingController explanation;
   late TextEditingController noOfRepetitionsController;
 
-  AddAzkarCubit(this._repository) : super(const AddAzkarState()) {
+  AddOrEditAzkarCubit(this._repository) : super(const AddOrEditAzkarState()) {
     textOfAzkar = TextEditingController();
     explanation = TextEditingController();
     noOfRepetitionsController = TextEditingController();

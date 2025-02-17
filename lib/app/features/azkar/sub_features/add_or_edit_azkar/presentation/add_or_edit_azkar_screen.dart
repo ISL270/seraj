@@ -5,7 +5,7 @@ import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/azkar/sub_features/add_azkar/presentation/cubit/add_azkar_cubit.dart';
+import 'package:athar/app/features/azkar/sub_features/add_or_edit_azkar/presentation/cubit/add_or_edit_azkar_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/number_picker_bs.dart';
 import 'package:athar/app/widgets/screen.dart';
@@ -18,10 +18,10 @@ import 'package:form_inputs/form_inputs.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class AddAzkarScreen extends StatelessWidget {
-  const AddAzkarScreen({super.key});
+class AddOrEditAzkarScreen extends StatelessWidget {
+  const AddOrEditAzkarScreen({super.key});
 
-  static const String name = 'add-azkar-screen';
+  static const String name = 'add-or-edit-azkar-screen';
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class AddAzkarScreen extends StatelessWidget {
           child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
         ),
         title: Text(
-          context.read<AddAzkarCubit>().state.azkarId == null
+          context.read<AddOrEditAzkarCubit>().state.azkarId == null
               ? context.l10n.addAzkar
               : context.l10n.editAzkar,
           style: context.textThemeX.heading.bold,
@@ -61,9 +61,9 @@ class AddAzkarScreen extends StatelessWidget {
                     ],
                   ),
                   _LabelTextFieldAlignWidget(label: context.l10n.tagsOfAzkar),
-                  BlocBuilder<AddAzkarCubit, AddAzkarState>(
+                  BlocBuilder<AddOrEditAzkarCubit, AddOrEditAzkarState>(
                     builder: (context, state) {
-                      final cubit = context.read<AddAzkarCubit>();
+                      final cubit = context.read<AddOrEditAzkarCubit>();
                       return TagSelectionWidget(
                         tags: state.tags,
                         onAddTag: (tag) {
@@ -95,15 +95,15 @@ class _TextOfAzkarTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AddAzkarCubit, AddAzkarState, Name>(
+    return BlocSelector<AddOrEditAzkarCubit, AddOrEditAzkarState, Name>(
       selector: (state) => state.text,
       builder: (context, text) {
         return TextField(
           key: const Key('AzkarForm_TextOfAzkar_textField'),
           maxLines: 3,
           minLines: 1,
-          controller: context.read<AddAzkarCubit>().textOfAzkar,
-          onChanged: (text) => context.read<AddAzkarCubit>().textOfAzkarChanged(text),
+          controller: context.read<AddOrEditAzkarCubit>().textOfAzkar,
+          onChanged: (text) => context.read<AddOrEditAzkarCubit>().textOfAzkarChanged(text),
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             hintText: 'سبحان الله وبحمده، سبحان الله العظيم',
@@ -125,14 +125,14 @@ class _ExplanationOfAzkarTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddAzkarCubit, AddAzkarState>(
+    return BlocBuilder<AddOrEditAzkarCubit, AddOrEditAzkarState>(
       builder: (context, state) {
         return TextField(
           key: const Key('AzkarForm_ExplanationOfAzkar_textField'),
           maxLines: 3,
           minLines: 2,
-          onChanged: (text) => context.read<AddAzkarCubit>().explanationChanged(text),
-          controller: context.read<AddAzkarCubit>().explanation,
+          onChanged: (text) => context.read<AddOrEditAzkarCubit>().explanationChanged(text),
+          controller: context.read<AddOrEditAzkarCubit>().explanation,
           decoration: InputDecoration(
             labelStyle: context.textThemeX.medium,
             hintText:
@@ -154,9 +154,9 @@ class _RepeatNumberOfAzkarTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AddAzkarCubit>();
+    final cubit = context.read<AddOrEditAzkarCubit>();
     Future<void> onNoOfRepeatTapped() async {
-      final currentState = context.read<AddAzkarCubit>().state;
+      final currentState = context.read<AddOrEditAzkarCubit>().state;
       final initialValue = double.tryParse(cubit.noOfRepetitionsController.text) ?? 1;
 
       final newValue = await NumberPickerBS.show(context, initial: initialValue);
@@ -169,7 +169,7 @@ class _RepeatNumberOfAzkarTextField extends StatelessWidget {
           cubit.noOfRepetitionsController.text;
     }
 
-    return BlocBuilder<AddAzkarCubit, AddAzkarState>(
+    return BlocBuilder<AddOrEditAzkarCubit, AddOrEditAzkarState>(
       builder: (context, state) {
         return TextField(
           key: const Key('AzkarForm_RepeatNumberOfAzkar_textField'),
@@ -212,7 +212,7 @@ class _AddAzkarButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AddAzkarCubit, AddAzkarState>(
+    return BlocConsumer<AddOrEditAzkarCubit, AddOrEditAzkarState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (innerContext, state) {
         if (state.status.isSuccess) {
@@ -245,7 +245,7 @@ class _AddAzkarButton extends StatelessWidget {
             label: state.azkarId == null ? context.l10n.add : context.l10n.update,
             onPressed: state.isValid
                 ? () {
-                    context.read<AddAzkarCubit>().addOrUpdateAzkarForm();
+                    context.read<AddOrEditAzkarCubit>().addOrUpdateAzkarForm();
                     if (context.mounted) context.pop();
                   }
                 : null,

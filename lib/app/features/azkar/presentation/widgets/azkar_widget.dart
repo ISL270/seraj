@@ -17,7 +17,7 @@ class _AzkarWidget extends StatelessWidget {
           ActionButton(
             icon: FontAwesomeIcons.penToSquare,
             color: context.colorsX.primary,
-            onTap: () => context.pushNamed(AddAzkarScreen.name, extra: azkar.id),
+            onTap: () => context.pushNamed(AddOrEditAzkarScreen.name, extra: azkar.id),
           ),
           Gap(8.w),
           ActionButton(

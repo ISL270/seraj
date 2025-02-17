@@ -1,9 +1,9 @@
 // ignore_for_file: strict_raw_type, override_on_non_overriding_member
 
-part of 'add_azkar_cubit.dart';
+part of 'add_or_edit_azkar_cubit.dart';
 
-final class AddAzkarState extends Equatable with FormzMixin {
-  const AddAzkarState({
+final class AddOrEditAzkarState extends Equatable with FormzMixin {
+  const AddOrEditAzkarState({
     this.azkarId,
     this.tags = const {},
     this.text = const Name.pure(),
@@ -24,7 +24,7 @@ final class AddAzkarState extends Equatable with FormzMixin {
   @override
   List<Object> get props => [text, explanation, noOfRepeats, tags, status];
 
-  AddAzkarState copyWith({
+  AddOrEditAzkarState copyWith({
     int? azkarId,
     Name? text,
     String? explanation,
@@ -32,7 +32,7 @@ final class AddAzkarState extends Equatable with FormzMixin {
     Set<Tag>? tags,
     VoidStatus? status,
   }) {
-    return AddAzkarState(
+    return AddOrEditAzkarState(
       azkarId: azkarId ?? this.azkarId,
       text: text ?? this.text,
       explanation: explanation ?? this.explanation,
