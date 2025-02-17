@@ -14,6 +14,7 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
   DuaBloc(this._repository) : super(DuaScreenState._initial()) {
     on<DuaSearched>(_onSearched);
     on<_DuaSubscriptionRequested>(_onSubscriptionRequested);
+    on<DuaFavouriteToggled>(toggleFavouriteDua);
     on<DuaNextPageFetched>(
       _onNextPageFetched,
       transformer: EventTransformers.throttleDroppable(),
@@ -60,5 +61,19 @@ class DuaBloc extends Bloc<DuaEvent, DuaScreenState> {
     );
 
     emit(state._copyWith(result: state.result.appendResult(searchResult)));
+  }
+
+  void toggleFavouriteDua(
+    DuaFavouriteToggled event,
+    Emitter<DuaScreenState> emit,
+  ) {
+    _repository.toggleFavourite(event.dua);
+  }
+
+  void deleteDua(int? id) {
+    if (id != null) {
+      _repository.delete(id);
+      add(const DuaSearched(''));
+    }
   }
 }

@@ -1,9 +1,9 @@
-import 'package:athar/app/core/enums/status.dart';
-import 'package:athar/app/core/models/generic_exception.dart';
+import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
 import 'package:injectable/injectable.dart';
@@ -12,7 +12,15 @@ part 'add_dua_state.dart';
 
 @singleton
 class AddDuaCubit extends Cubit<AddDuaState> {
-  AddDuaCubit(this._duaRepository) : super(const AddDuaState());
+  late TextEditingController textOfDua;
+  late TextEditingController duaReward;
+  late TextEditingController explanationOfDua;
+
+  AddDuaCubit(this._duaRepository) : super(const AddDuaState()) {
+    textOfDua = TextEditingController();
+    duaReward = TextEditingController();
+    explanationOfDua = TextEditingController();
+  }
 
   final DuaRepository _duaRepository;
 
@@ -28,18 +36,35 @@ class AddDuaCubit extends Cubit<AddDuaState> {
 
   void duaExplanationChanged(String value) => emit(state.copyWith(description: value));
 
-  void saveDuaForm() {
-    emit(state.copyWith(status: const Loading()));
-    try {
-      _duaRepository.addDua(
+  void tagsChanged(Set<Tag> newTags) {
+    emit(state.copyWith(tags: newTags));
+  }
+
+  void initializeDua(int? duaId) {
+    if (duaId == null) {
+    } else {
+      final dua = _duaRepository.get(duaId);
+      textOfDua.text = dua!.text;
+      duaReward.text = dua.reward ?? '';
+      explanationOfDua.text = dua.description ?? '';
+      emit(state.copyWith(
+        duaId: duaId,
+        dua: Name.dirty(dua.text),
+        description: dua.description,
+        tags: dua.tags,
+      ));
+    }
+  }
+
+  void saveDuaForm() => _duaRepository.addDuaOrUpdate(
         tags: state.tags,
         text: state.dua.value,
-        description: state.description,
         reward: state.reward.value,
+        description: state.description,
+        id: state.duaId,
       );
-      emit(state.copyWith(status: const Success(null)));
-    } catch (e) {
-      emit(state.copyWith(status: Failure(e as GenericException)));
-    }
+
+  List<Tag> getTags() {
+    return _duaRepository.getTags();
   }
 }

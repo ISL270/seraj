@@ -70,13 +70,8 @@ const DaleelIsarSchema = CollectionSchema(
       name: r'surah',
       type: IsarType.string,
     ),
-    r'tags': PropertySchema(
-      id: 10,
-      name: r'tags',
-      type: IsarType.stringList,
-    ),
     r'text': PropertySchema(
-      id: 11,
+      id: 10,
       name: r'text',
       type: IsarType.string,
     )
@@ -114,7 +109,14 @@ const DaleelIsarSchema = CollectionSchema(
       ],
     )
   },
-  links: {},
+  links: {
+    r'tags': LinkSchema(
+      id: -1761779107899401057,
+      name: r'tags',
+      target: r'DaleelTagIsar',
+      single: false,
+    )
+  },
   embeddedSchemas: {},
   getId: _daleelIsarGetId,
   getLinks: _daleelIsarGetLinks,
@@ -160,13 +162,6 @@ int _daleelIsarEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.tags.length * 3;
-  {
-    for (var i = 0; i < object.tags.length; i++) {
-      final value = object.tags[i];
-      bytesCount += value.length * 3;
-    }
-  }
   bytesCount += 3 + object.text.length * 3;
   return bytesCount;
 }
@@ -187,8 +182,7 @@ void _daleelIsarSerialize(
   writer.writeString(offsets[7], object.priority.name);
   writer.writeString(offsets[8], object.sayer);
   writer.writeString(offsets[9], object.surah);
-  writer.writeStringList(offsets[10], object.tags);
-  writer.writeString(offsets[11], object.text);
+  writer.writeString(offsets[10], object.text);
 }
 
 DaleelIsar _daleelIsarDeserialize(
@@ -214,8 +208,7 @@ DaleelIsar _daleelIsarDeserialize(
             Priority.normal,
     sayer: reader.readStringOrNull(offsets[8]),
     surah: reader.readStringOrNull(offsets[9]),
-    tags: reader.readStringList(offsets[10]) ?? [],
-    text: reader.readString(offsets[11]),
+    text: reader.readString(offsets[10]),
   );
   return object;
 }
@@ -253,8 +246,6 @@ P _daleelIsarDeserializeProp<P>(
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
-      return (reader.readStringList(offset) ?? []) as P;
-    case 11:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -299,11 +290,12 @@ Id _daleelIsarGetId(DaleelIsar object) {
 }
 
 List<IsarLinkBase<dynamic>> _daleelIsarGetLinks(DaleelIsar object) {
-  return [];
+  return [object.tags];
 }
 
 void _daleelIsarAttach(IsarCollection<dynamic> col, Id id, DaleelIsar object) {
   object.id = id;
+  object.tags.attach(col, col.isar.collection<DaleelTagIsar>(), r'tags', id);
 }
 
 extension DaleelIsarQueryWhereSort
@@ -1985,228 +1977,6 @@ extension DaleelIsarQueryFilter
     });
   }
 
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      tagsElementEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'tags',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      tagsElementGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'tags',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      tagsElementLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'tags',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      tagsElementBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'tags',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      tagsElementStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'tags',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      tagsElementEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'tags',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      tagsElementContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'tags',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      tagsElementMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'tags',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      tagsElementIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'tags',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      tagsElementIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'tags',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> tagsLengthEqualTo(
-      int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'tags',
-        length,
-        true,
-        length,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> tagsIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'tags',
-        0,
-        true,
-        0,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> tagsIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'tags',
-        0,
-        false,
-        999999,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      tagsLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'tags',
-        0,
-        true,
-        length,
-        include,
-      );
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
-      tagsLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'tags',
-        length,
-        include,
-        999999,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> tagsLengthBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'tags',
-        lower,
-        includeLower,
-        upper,
-        includeUpper,
-      );
-    });
-  }
-
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> textEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -2342,7 +2112,65 @@ extension DaleelIsarQueryObject
     on QueryBuilder<DaleelIsar, DaleelIsar, QFilterCondition> {}
 
 extension DaleelIsarQueryLinks
-    on QueryBuilder<DaleelIsar, DaleelIsar, QFilterCondition> {}
+    on QueryBuilder<DaleelIsar, DaleelIsar, QFilterCondition> {
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> tags(
+      FilterQuery<DaleelTagIsar> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'tags');
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> tagsLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> tagsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> tagsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      tagsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      tagsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tags', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> tagsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'tags', lower, includeLower, upper, includeUpper);
+    });
+  }
+}
 
 extension DaleelIsarQuerySortBy
     on QueryBuilder<DaleelIsar, DaleelIsar, QSortBy> {
@@ -2703,12 +2531,6 @@ extension DaleelIsarQueryWhereDistinct
     });
   }
 
-  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByTags() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'tags');
-    });
-  }
-
   QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByText(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2784,12 +2606,6 @@ extension DaleelIsarQueryProperty
   QueryBuilder<DaleelIsar, String?, QQueryOperations> surahProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'surah');
-    });
-  }
-
-  QueryBuilder<DaleelIsar, List<String>, QQueryOperations> tagsProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'tags');
     });
   }
 

@@ -1,13 +1,11 @@
-import 'package:athar/app/core/extension_methods/context_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
-import 'package:athar/app/core/injection/injection.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
-import 'package:athar/app/features/dua/domain/dua_repository.dart';
 import 'package:athar/app/features/dua/sub_features/add_dua/cubit/add_dua_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
+import 'package:athar/app/widgets/tag_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,42 +19,56 @@ class AddDuaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AddDuaCubit(getIt.get<DuaRepository>()),
-      child: Screen(
-        appBar: AppBar(
-          centerTitle: true,
-          leading: GestureDetector(
-            onTap: () => context.pop(),
-            child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
-          ),
-          title: Text(
-            context.l10n.addDua,
-            style: context.textThemeX.heading.bold,
-            textAlign: TextAlign.center,
-          ),
+    return Screen(
+      appBar: AppBar(
+        centerTitle: true,
+        leading: GestureDetector(
+          onTap: () => context.pop(),
+          child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  spacing: 12.h,
-                  children: [
-                    _LabelTextFieldAlignWidget(label: context.l10n.dua),
-                    const _TextOfDuaTextField(),
-                    _LabelTextFieldAlignWidget(label: context.l10n.reward),
-                    const _DuaRewardTextField(),
-                    _LabelTextFieldAlignWidget(label: context.l10n.explanation),
-                    const _ExplanationOfDuaTextField(),
-                  ],
-                ),
+        title: Text(
+          context.l10n.addDua,
+          style: context.textThemeX.heading.bold,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                spacing: 12.h,
+                children: [
+                  _LabelTextFieldAlignWidget(label: context.l10n.dua),
+                  const _TextOfDuaTextField(),
+                  _LabelTextFieldAlignWidget(label: context.l10n.reward),
+                  const _DuaRewardTextField(),
+                  _LabelTextFieldAlignWidget(label: context.l10n.explanation),
+                  const _ExplanationOfDuaTextField(),
+                  BlocBuilder<AddDuaCubit, AddDuaState>(
+                    builder: (context, state) {
+                      final cubit = context.read<AddDuaCubit>();
+                      return TagSelectionWidget(
+                        tags: state.tags,
+                        onAddTag: (tag) {
+                          final updatedTags = {...state.tags}; // Create a new modifiable set
+                          if (updatedTags.add(tag)) {
+                            cubit.tagsChanged(updatedTags);
+                          }
+                        },
+                        onRemoveTag: (tag) => cubit.tagsChanged({...state.tags}..remove(tag)),
+                        onClearTags: () => cubit.tagsChanged({}),
+                        availableTags: cubit.getTags(),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
-            const _DuaAddButton(),
-            Gap(5.h),
-          ],
-        ),
+          ),
+          const _DuaAddButton(),
+          Gap(5.h),
+        ],
       ),
     );
   }
@@ -72,6 +84,7 @@ class _TextOfDuaTextField extends StatelessWidget {
       onChanged: (duaText) => context.read<AddDuaCubit>().duaChanged(duaText),
       maxLines: 4,
       minLines: 2,
+      controller: context.read<AddDuaCubit>().textOfDua,
       decoration: InputDecoration(
         labelStyle: context.textThemeX.medium,
         hintMaxLines: 4,
@@ -96,6 +109,7 @@ class _ExplanationOfDuaTextField extends StatelessWidget {
       onChanged: (explain) => context.read<AddDuaCubit>().duaExplanationChanged(explain),
       maxLines: 4,
       minLines: 4,
+      controller: context.read<AddDuaCubit>().explanationOfDua,
       decoration: InputDecoration(
         labelStyle: context.textThemeX.medium,
         hintMaxLines: 4,
@@ -120,6 +134,7 @@ class _DuaRewardTextField extends StatelessWidget {
       onChanged: (reward) => context.read<AddDuaCubit>().rewardOfDuaChanged(reward),
       maxLines: 4,
       minLines: 1,
+      controller: context.read<AddDuaCubit>().duaReward,
       decoration: InputDecoration(
         labelStyle: context.textThemeX.medium,
         hintMaxLines: 1,
@@ -153,38 +168,23 @@ class _DuaAddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AddDuaCubit, AddDuaState>(
-      listenWhen: (previous, current) => previous.status != current.status,
-      listener: (innerContext, state) {
-        if (state.status.isSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              duration: const Duration(seconds: 2),
-              content: Text(
-                context.l10n.duaAdded,
-                style: context.textThemeX.medium.bold,
-              ),
-            ),
-          );
-          context.pop();
-        }
-
-        if (state.status.isFailure) {
-          context.scaffoldMessenger
-            ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(content: Text(context.l10n.wentWrong)));
-        }
-      },
+    return BlocBuilder<AddDuaCubit, AddDuaState>(
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 12.w),
           child: Button.filled(
             key: const Key('duaForm_saveDuaForm_button'),
             maxWidth: true,
-            isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
-            label: context.l10n.add,
-            onPressed: state.isValid ? () => context.read<AddDuaCubit>().saveDuaForm() : null,
+            label: state.duaId == null ? context.l10n.add : context.l10n.update,
+            onPressed: state.isValid
+                ? () {
+                    context.read<AddDuaCubit>().saveDuaForm();
+                    if (context.mounted) {
+                      context.pop();
+                    }
+                  }
+                : null,
           ),
         );
       },
