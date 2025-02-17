@@ -24,24 +24,25 @@ class TagsCubit extends Cubit<TagsState> {
   }
 
   void loadTags() {
-    try {
-      // final tags = isDaleel ? _repository.getDaleelTags() : _repository.getDuaTags();
-      List<Tag> tags = switch (atharType) {
-        0 => _repository.getDaleelTags(),
-        1 => _repository.getDuaTags(),
-        2 => _repository.getAzkarTags(),
-        _ => [],
-      };
-      emit(state.copyWith(
-        daleelTags: atharType == 0 ? tags : state.daleelTags,
-        duaTags: atharType == 1 ? state.duaTags : tags,
-        azkarTags: atharType == 2 ? state.azkarTags : tags,
-        filteredTags: tags,
-        searchQuery: '',
-      ));
-    } catch (e) {
-      log('Error fetching tags: $e');
+    List<Tag> tags;
+
+    switch (atharType) {
+      case 0:
+        tags = _repository.getDaleelTags();
+      case 1:
+        tags = _repository.getDuaTags();
+      case 2:
+        tags = _repository.getAzkarTags();
+      default:
+        tags = [];
     }
+
+    emit(state.copyWith(
+      daleelTags: atharType == 0 ? tags : state.daleelTags,
+      duaTags: atharType == 1 ? tags : state.duaTags,
+      azkarTags: atharType == 2 ? tags : state.azkarTags,
+      filteredTags: tags, // Ensure filteredTags only contains tags for the active tab
+    ));
   }
 
   void switchTab(int atharType) {
@@ -50,15 +51,23 @@ class TagsCubit extends Cubit<TagsState> {
   }
 
   void searchTags(String query) {
-    final normalizedQuery = query.trim().toLowerCase();
-    final sourceTags = atharType == 0
-        ? state.daleelTags
-        : atharType == 1
-            ? state.duaTags
-            : state.azkarTags;
-    final filteredTags =
-        sourceTags.where((tag) => tag.name.toLowerCase().contains(normalizedQuery)).toList();
-    emit(state.copyWith(filteredTags: filteredTags, searchQuery: query));
+    List<Tag> relevantTags;
+
+    switch (atharType) {
+      case 0:
+        relevantTags = state.daleelTags;
+      case 1:
+        relevantTags = state.duaTags;
+      case 2:
+        relevantTags = state.azkarTags;
+      default:
+        relevantTags = [];
+    }
+
+    final filtered =
+        relevantTags.where((tag) => tag.name.toLowerCase().contains(query.toLowerCase())).toList();
+
+    emit(state.copyWith(filteredTags: filtered, searchQuery: query));
   }
 
   void clearSearch() {
