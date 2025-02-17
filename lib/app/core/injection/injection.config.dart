@@ -87,6 +87,11 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i183.DuaTagIsarSource(gh<_i651.IsarService>()));
     gh.singleton<_i387.SettingsIsarSource>(
         () => _i387.SettingsIsarSource(gh<_i651.IsarService>()));
+    gh.singleton<_i317.TagsRepository>(() => _i317.TagsRepository(
+          gh<_i183.DuaTagIsarSource>(),
+          gh<_i663.DaleelTagIsarSource>(),
+          gh<_i89.AzkarTagIsarSource>(),
+        ));
     gh.singleton<_i143.DaleelRepository>(() => _i143.DaleelRepository(
           gh<_i53.DaleelIsarSource>(),
           gh<_i663.DaleelTagIsarSource>(),
@@ -97,13 +102,11 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i887.AddOrEditAtharCubit(gh<_i143.DaleelRepository>()));
     gh.factory<_i966.AddOrEditOtherCubit>(
         () => _i966.AddOrEditOtherCubit(gh<_i143.DaleelRepository>()));
+    gh.singleton<_i1070.TagsCubit>(
+        () => _i1070.TagsCubit(gh<_i317.TagsRepository>()));
     gh.singleton<_i196.AzkarRepository>(() => _i196.AzkarRepository(
           gh<_i31.AzkarIsarSource>(),
           gh<_i89.AzkarTagIsarSource>(),
-        ));
-    gh.singleton<_i317.TagsRepository>(() => _i317.TagsRepository(
-          gh<_i183.DuaTagIsarSource>(),
-          gh<_i663.DaleelTagIsarSource>(),
         ));
     gh.singleton<_i1008.DuaRepository>(() => _i1008.DuaRepository(
           gh<_i500.DuaIsarSource>(),
@@ -119,8 +122,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i737.AddDuaCubit(gh<_i1008.DuaRepository>()));
     gh.factory<_i240.SettingsBloc>(
         () => _i240.SettingsBloc(gh<_i257.SettingsRepository>()));
-    gh.singleton<_i1070.TagsCubit>(
-        () => _i1070.TagsCubit(gh<_i317.TagsRepository>()));
     return this;
   }
 }

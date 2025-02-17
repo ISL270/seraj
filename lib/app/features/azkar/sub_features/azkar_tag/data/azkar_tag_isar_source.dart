@@ -13,7 +13,7 @@ final class AzkarTagIsarSource extends IsarSource<Tag, AzkarTagIsar> {
     return azkarTags.toList();
   }
 
-  void updateDuaTag({required int id, required String newTag}) {
+  void updateAzkarTag({required int id, required String newTag}) {
     final isar = isarService.db;
     isar.writeTxnSync(() {
       final tagToUpdate = isar.azkarTagIsars.getSync(id);

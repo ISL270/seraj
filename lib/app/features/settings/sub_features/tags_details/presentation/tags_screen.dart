@@ -21,7 +21,7 @@ class TagsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Screen(
         padding: EdgeInsets.zero,
         appBar: AppBar(
@@ -37,11 +37,18 @@ class TagsScreen extends StatelessWidget {
             labelColor: context.colorsX.primary,
             unselectedLabelColor: Colors.grey,
             onTap: (index) {
-              context.read<TagsCubit>().switchTab(index == 0);
+              context.read<TagsCubit>().switchTab(
+                    index == 0
+                        ? 0
+                        : index == 1
+                            ? 1
+                            : 2,
+                  );
             },
             tabs: [
               Tab(text: context.l10n.daleelTags),
               Tab(text: context.l10n.duaTags),
+              Tab(text: context.l10n.azkarTags),
             ],
           ),
         ),
@@ -50,6 +57,7 @@ class TagsScreen extends StatelessWidget {
           children: [
             _DaleelTagsWidget(),
             _DuaTagsWidget(),
+            _AzkarTagsWidget(),
           ],
         ),
       ),
@@ -75,8 +83,8 @@ class _DaleelTagsWidgetState extends State<_DaleelTagsWidget> {
   Widget build(BuildContext context) {
     return const Column(
       children: [
-        _SearchBarWidget(isDaleel: true),
-        Expanded(child: _TagListWidget(isDaleel: true)),
+        _SearchBarWidget(),
+        Expanded(child: _TagListWidget()),
       ],
     );
   }
@@ -100,17 +108,40 @@ class _DuaTagsWidgetState extends State<_DuaTagsWidget> {
   Widget build(BuildContext context) {
     return const Column(
       children: [
-        _SearchBarWidget(isDaleel: false),
-        Expanded(child: _TagListWidget(isDaleel: false)),
+        _SearchBarWidget(),
+        Expanded(child: _TagListWidget()),
+      ],
+    );
+  }
+}
+
+class _AzkarTagsWidget extends StatefulWidget {
+  const _AzkarTagsWidget();
+
+  @override
+  State<_AzkarTagsWidget> createState() => __AzkarTagsWidgetState();
+}
+
+class __AzkarTagsWidgetState extends State<_AzkarTagsWidget> {
+  @override
+  void initState() {
+    context.read<TagsCubit>().loadTags();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        _SearchBarWidget(),
+        Expanded(child: _TagListWidget()),
       ],
     );
   }
 }
 
 class _SearchBarWidget extends StatelessWidget {
-  final bool isDaleel;
-
-  const _SearchBarWidget({required this.isDaleel});
+  const _SearchBarWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -140,9 +171,7 @@ class _SearchBarWidget extends StatelessWidget {
 }
 
 class _TagListWidget extends StatelessWidget {
-  final bool isDaleel;
-
-  const _TagListWidget({required this.isDaleel});
+  const _TagListWidget();
 
   @override
   Widget build(BuildContext context) {
