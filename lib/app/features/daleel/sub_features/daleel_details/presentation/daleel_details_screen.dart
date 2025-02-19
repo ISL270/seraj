@@ -46,94 +46,98 @@ class DaleelDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DaleelDetailsBloc, DaleelDetailsState>(
-      listenWhen: (previous, current) => previous.action != current.action,
-      listener: (context, state) {
-        if (state.action.isDeleted) context.pop();
-      },
-      builder: (context, state) => Screen(
-        appBar: AppBar(
-          leading: BackButton(
-            style: ButtonStyle(iconSize: WidgetStatePropertyAll(24.r)),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () => _navigateToEditScreen(context),
-              icon: Icon(FontAwesomeIcons.edit, size: 22.r),
-            ),
-          ],
-          centerTitle: true,
-          title: Text(
-            context.l10n.daleelDetails,
-            style: context.textThemeX.heading.bold,
-          ),
+    return Screen(
+      appBar: AppBar(
+        leading: BackButton(
+          style: ButtonStyle(iconSize: WidgetStatePropertyAll(24.r)),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Gap(10.h),
-                    DetailsTextWidget(
-                      text: state.daleel.text,
-                      actions: [
-                        IconButton(
-                          icon: Icon(FontAwesomeIcons.trash, size: 18.r),
-                          onPressed: () => context.read<DaleelDetailsBloc>().add(DaleelDeleted()),
+        actions: [
+          IconButton(
+            onPressed: () => _navigateToEditScreen(context),
+            icon: Icon(FontAwesomeIcons.edit, size: 22.r),
+          ),
+        ],
+        centerTitle: true,
+        title: Text(
+          context.l10n.daleelDetails,
+          style: context.textThemeX.heading.bold,
+        ),
+      ),
+      body: BlocConsumer<DaleelDetailsBloc, DaleelDetailsState>(
+        listenWhen: (previous, current) => previous.action != current.action,
+        listener: (context, state) {
+          if (state.action.isDeleted) context.pop();
+        },
+        builder: (context, state) {
+          return Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Gap(10.h),
+                      DetailsTextWidget(
+                        text: state.daleel.text,
+                        actions: [
+                          IconButton(
+                            icon: Icon(FontAwesomeIcons.trash, size: 18.r),
+                            onPressed: () => context.read<DaleelDetailsBloc>().add(DaleelDeleted()),
+                          ),
+                          Gap(10.w),
+                        ],
+                      ),
+                      _DaleelDetailsWidget(
+                        label: context.l10n.daleelType,
+                        labelValue: switch (daleel) {
+                          Hadith() => context.l10n.propheticHadith,
+                          Athar() => context.l10n.athar,
+                          Other() => context.l10n.other,
+                          Aya() => context.l10n.aya,
+                        },
+                      ),
+                      _DaleelDetailsWidget(
+                        label: context.l10n.daleelSayer,
+                        labelValue: state.daleel.sayer.toString(),
+                      ),
+                      _DaleelDetailsTagsWidget(state.daleel.tags),
+                      _DaleelDetailsWidget(
+                        label: context.l10n.daleelPriority,
+                        labelValue:
+                            '${state.daleel.priority.toTranslate(context)} ${context.l10n.saveIt}',
+                      ),
+                      _DaleelDetailsWidget(
+                        label: context.l10n.daleelExplain,
+                        labelValue: state.daleel.description.toString(),
+                      ),
+                      if (state.daleel is Hadith)
+                        _DaleelDetailsWidget(
+                          label: context.l10n.daleelHadithAuth,
+                          labelValue: (state.daleel as Hadith)
+                                  .authenticity
+                                  ?.name
+                                  .gethadithTypeString(context) ??
+                              '',
                         ),
-                        Gap(10.w),
-                      ],
-                    ),
-                    _DaleelDetailsWidget(
-                      label: context.l10n.daleelType,
-                      labelValue: switch (daleel) {
-                        Hadith() => context.l10n.propheticHadith,
-                        Athar() => context.l10n.athar,
-                        Other() => context.l10n.other,
-                        Aya() => context.l10n.aya,
-                      },
-                    ),
-                    _DaleelDetailsWidget(
-                      label: context.l10n.daleelSayer,
-                      labelValue: state.daleel.sayer.toString(),
-                    ),
-                    _DaleelDetailsTagsWidget(state.daleel.tags),
-                    _DaleelDetailsWidget(
-                      label: context.l10n.daleelPriority,
-                      labelValue:
-                          '${state.daleel.priority.toTranslate(context)} ${context.l10n.saveIt}',
-                    ),
-                    _DaleelDetailsWidget(
-                      label: context.l10n.daleelExplain,
-                      labelValue: state.daleel.description.toString(),
-                    ),
-                    _DaleelDetailsWidget(
-                      label: context.l10n.daleelHadithAuth,
-                      labelValue: (state.daleel as Hadith)
-                              .authenticity
-                              ?.name
-                              .gethadithTypeString(context) ??
-                          '',
-                    ),
-                    _DaleelDetailsWidget(
-                      label: context.l10n.extractionOfHadith,
-                      labelValue: (state.daleel as Hadith).extraction.toString(),
-                    ),
-                    _DaleelDetailsWidget(
-                      label: context.l10n.daleelDate,
-                      labelValue: state.daleel.lastRevisedAt.formatted,
-                    ),
-                    Gap(20.h),
-                  ],
+                      if (state.daleel is Hadith)
+                        _DaleelDetailsWidget(
+                          label: context.l10n.extractionOfHadith,
+                          labelValue: (state.daleel as Hadith).extraction.toString(),
+                        ),
+                      _DaleelDetailsWidget(
+                        label: context.l10n.daleelDate,
+                        labelValue: state.daleel.lastRevisedAt.formatted,
+                      ),
+                      Gap(20.h),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            ShareAndCopyWidget(text: state.daleel.text),
-            Gap(15.h)
-          ],
-        ),
+              ShareAndCopyWidget(text: state.daleel.text),
+              Gap(15.h)
+            ],
+          );
+        },
       ),
     );
   }
