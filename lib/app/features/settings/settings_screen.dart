@@ -7,7 +7,6 @@ import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/features/settings/sub_features/tags_details/presentation/tags_screen.dart';
-import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,23 +28,6 @@ class SettingsScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 20.h),
             child: Column(
               children: [
-                Card(
-                  surfaceTintColor: context.colorsX.background,
-                  color: context.colorsX.background,
-                  elevation: 3, // Adjust elevation for shadow intensity
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r), // Optional: Rounded corners
-                  ),
-                  child: ListTile(
-                    onTap: () => context.pushNamed(TagsScreen.name),
-                    title: Text(
-                      '# ${context.l10n.tags}',
-                      style: context.textThemeX.medium,
-                    ),
-                    subtitle: Text(context.l10n.editTags),
-                  ),
-                ),
-                Gap(20.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -56,8 +38,9 @@ class SettingsScreen extends StatelessWidget {
                     SegmentedButton(
                       showSelectedIcon: false,
                       selected: {settings.settings.themeMode},
-                      onSelectionChanged: (selection) =>
-                          context.read<SettingsBloc>().add(SettingsThemeChanged(selection.first)),
+                      onSelectionChanged: (selection) => context
+                          .read<SettingsBloc>()
+                          .add(SettingsThemeChanged(selection.first)),
                       segments: [
                         ButtonSegment(
                           value: ThemeMode.light,
@@ -87,7 +70,8 @@ class SettingsScreen extends StatelessWidget {
                       showSelectedIcon: false,
                       selected: {settings.settings.language},
                       onSelectionChanged: (selection) {
-                        context.settingsBloc.add(SettingsLanguageChanged(selection.first));
+                        context.settingsBloc
+                            .add(SettingsLanguageChanged(selection.first));
                       },
                       segments: [
                         ButtonSegment(
@@ -102,13 +86,28 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Spacer(),
-                Button.outlined(
-                  maxWidth: true,
-                  density: ButtonDensity.comfortable,
-                  onPressed: () {},
-                  label: context.l10n.logout.capitalized,
+                Card(
+                  surfaceTintColor: context.colorsX.background,
+                  color: context.colorsX.background,
+                  elevation: 3,
+                  // Adjust elevation for shadow intensity
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        12.r), // Optional: Rounded corners
+                  ),
+                  child: ListTile(
+                    onTap: () => context.pushNamed(TagsScreen.name),
+                    title: Text(
+                      context.l10n.tags,
+                      style: context.textThemeX.large.bold,
+                    ),
+                    subtitle: Text(
+                      context.l10n.editTags,
+                      style: context.textThemeX.small,
+                    ),
+                  ),
                 ),
+                const Spacer(),
               ],
             ),
           );
