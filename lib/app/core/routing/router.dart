@@ -32,7 +32,7 @@ import 'package:athar/app/features/dua/sub_features/add_dua/add_dua_screen.dart'
 import 'package:athar/app/features/dua/sub_features/add_dua/cubit/add_dua_cubit.dart';
 import 'package:athar/app/features/dua/sub_features/dua_details/bloc/dua_details_bloc.dart';
 import 'package:athar/app/features/dua/sub_features/dua_details/dua_details_screen.dart';
-import 'package:athar/app/features/home/presentaion/home.dart';
+import 'package:athar/app/features/home/presentation/home.dart';
 import 'package:athar/app/features/settings/settings_screen.dart';
 import 'package:athar/app/features/settings/sub_features/tags_details/domain/tags_repository.dart';
 import 'package:athar/app/features/settings/sub_features/tags_details/presentation/cubit/tags_cubit.dart';
