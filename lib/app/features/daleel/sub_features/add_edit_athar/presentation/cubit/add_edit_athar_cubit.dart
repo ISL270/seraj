@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:athar/app/core/enums/status.dart';
+import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/models/generic_exception.dart';
 import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
@@ -27,13 +28,16 @@ class AddOrEditAtharCubit extends Cubit<AddOrEditAtharState> {
     descOfAtharCtrlr = TextEditingController();
   }
 
-  void atharChanged(String athar) => emit(state.copyWith(athar: Name.dirty(athar)));
+  void atharChanged(String athar) =>
+      emit(state.copyWith(athar: Name.dirty(athar)));
 
   void sayerChanged(String sayer) => emit(state.copyWith(sayer: sayer));
 
-  void explainationChanged(String explaination) => emit(state.copyWith(description: explaination));
+  void explainationChanged(String explaination) =>
+      emit(state.copyWith(description: explaination));
 
-  void sliderPriorityChanged(double value) => emit(state.copyWith(sliderValue: value));
+  void sliderPriorityChanged(double value) =>
+      emit(state.copyWith(sliderValue: value));
 
   void tagsChanged(Set<Tag> newTags) {
     emit(state.copyWith(tags: newTags));
@@ -51,7 +55,6 @@ class AddOrEditAtharCubit extends Cubit<AddOrEditAtharState> {
       textOfAtharCtrlr.text = daleel?.text ?? '';
       sayerOfAtharCtrlr.text = daleel?.sayer ?? '';
       descOfAtharCtrlr.text = daleel?.description ?? '';
-
       emit(state.copyWith(
         atharId: daleelId,
         athar: Name.dirty(textOfAtharCtrlr.text),
@@ -61,7 +64,8 @@ class AddOrEditAtharCubit extends Cubit<AddOrEditAtharState> {
         tags: daleel?.tags ?? {},
       ));
 
-      emit(state.copyWith(status: const Success('Initialized Athar Successfully')));
+      emit(state.copyWith(
+          status: const Success('Initialized Athar Successfully')));
     }
   }
 
@@ -72,6 +76,7 @@ class AddOrEditAtharCubit extends Cubit<AddOrEditAtharState> {
         id: state.atharId,
         sayer: state.sayer,
         text: state.athar.value,
+        textWithoutDiacritics: state.athar.value.removeDiacritics(),
         description: state.description,
         priority: Priority.fromDouble(state.sliderValue),
         tags: state.tags,

@@ -40,9 +40,9 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
   }
 
   Future<void> _onSubscriptionRequested(
-    DaleelSubscriptionRequested event,
-    Emitter<DaleelState> emit,
-  ) async {
+      DaleelSubscriptionRequested event,
+      Emitter<DaleelState> emit,
+      ) async {
     await emit.onEach(
       _repository.watchCollection(),
       onData: (status) => add(DaleelSearched(state.searchTerm)),
@@ -50,9 +50,9 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
   }
 
   Future<void> _onSearched(
-    DaleelSearched event,
-    Emitter<DaleelState> emit,
-  ) async {
+      DaleelSearched event,
+      Emitter<DaleelState> emit,
+      ) async {
     emit(state.copyWith(
       searchTerm: event.searchTerm,
       status: state.status.toLoading(),
@@ -72,9 +72,9 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
   }
 
   Future<void> _onNextPageFetched(
-    DaleelNextPageFetched event,
-    Emitter<DaleelState> emit,
-  ) async {
+      DaleelNextPageFetched event,
+      Emitter<DaleelState> emit,
+      ) async {
     if (state.daleels.hasReachedMax) return;
 
     final searchResult = await _repository.searchDaleel(
@@ -98,9 +98,9 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
   }
 
   void _onFilterUpdate(
-    DaleelFiltered event,
-    Emitter<DaleelState> emit,
-  ) {
+      DaleelFiltered event,
+      Emitter<DaleelState> emit,
+      ) {
     log('filter updated');
 
     if (state.daleelFilters == event.filters) return;

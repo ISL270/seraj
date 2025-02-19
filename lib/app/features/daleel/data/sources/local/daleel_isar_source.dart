@@ -24,7 +24,7 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
     DaleelFilters? filters,
   }) {
     final query = searchTerm.isNotBlank
-        ? isarService.db.daleelIsars.where().textStartsWith(searchTerm).filter()
+        ? isarService.db.daleelIsars.where().textWithoutDiacriticsStartsWith(searchTerm).filter()
         : isarService.db.daleelIsars.where().anyText().filter();
 
     return _applyFilters(query, filters).offset(page * pageSize).limit(pageSize).findAllSync();

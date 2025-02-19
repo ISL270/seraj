@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:athar/app/core/enums/status.dart';
+import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/models/generic_exception.dart';
 import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
@@ -69,6 +70,7 @@ class AddOrEditOtherCubit extends Cubit<AddOtherState> {
       await _repository.saveOrUpdateOthers(
         id: state.otherId,
         text: state.other.value,
+        textWithoutDiacritics: state.other.value.removeDiacritics(),
         sayer: state.sayer,
         description: state.description,
         priority: Priority.fromDouble(state.sliderValue),

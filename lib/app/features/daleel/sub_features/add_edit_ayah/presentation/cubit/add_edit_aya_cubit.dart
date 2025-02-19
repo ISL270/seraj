@@ -79,8 +79,7 @@ class AddEditAyahCubit extends Cubit<AddEditAyahState> {
       explanationController.text = state.ayaExplain.value;
       quranicVerseController.text = state.selectedAyahs
           .map((singleAyah) => singleAyah.ayah)
-          .join(' ')
-          .decorateArabicNumbers();
+          .join(' ').replaceAll('\n', ' ');
     }
   }
 
@@ -154,6 +153,7 @@ class AddEditAyahCubit extends Cubit<AddEditAyahState> {
       await _daleelRepository.saveOrUpdateAya(
         id: state.ayaId,
         text: state.textOfAya.value,
+        textWithoutDiacritics: state.textOfAya.value.removeDiacritics(),
         ayaExplain: state.ayaExplain.value,
         surahOfAya: state.surahOfAya.value,
         firstAya: state.firstAya,

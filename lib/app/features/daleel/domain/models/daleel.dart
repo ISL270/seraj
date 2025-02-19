@@ -5,6 +5,7 @@ import 'package:athar/app/features/daleel/domain/models/priority.dart';
 
 sealed class Daleel extends IslamicText {
   final String? sayer;
+  final String? textWithoutDiacritics;
   final DaleelType daleelType;
   final Priority priority;
   final DateTime lastRevisedAt;
@@ -15,6 +16,7 @@ sealed class Daleel extends IslamicText {
     required this.lastRevisedAt,
     required this.daleelType,
     this.sayer,
+    this.textWithoutDiacritics,
     super.tags,
     super.description,
     this.priority = Priority.normal,
@@ -24,6 +26,7 @@ sealed class Daleel extends IslamicText {
   List<Object?> get props => [
         super.props,
         sayer,
+        textWithoutDiacritics,
         priority,
         lastRevisedAt,
       ];
@@ -39,6 +42,7 @@ final class Aya extends Daleel {
     required super.text,
     required super.lastRevisedAt,
     required super.daleelType,
+    required super.textWithoutDiacritics,
     required this.surah,
     required this.firstAya,
     this.lastAya,
@@ -66,6 +70,7 @@ final class Hadith extends Daleel {
     required super.text,
     required super.lastRevisedAt,
     required super.daleelType,
+    required super.textWithoutDiacritics,
     super.tags,
     super.sayer,
     super.priority,
@@ -87,6 +92,7 @@ final class Athar extends Daleel {
     required super.id,
     required super.text,
     required super.lastRevisedAt,
+    required super.textWithoutDiacritics,
     required super.daleelType,
     super.tags,
     super.sayer,
@@ -100,6 +106,7 @@ final class Other extends Daleel {
     required super.id,
     required super.text,
     required super.lastRevisedAt,
+    required super.textWithoutDiacritics,
     required super.daleelType,
     super.tags,
     super.sayer,

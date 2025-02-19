@@ -21,7 +21,8 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
   final DaleelIsarSource _localSource;
   final DaleelTagIsarSource _tagIsarSource;
 
-  DaleelRepository(this._localSource, this._tagIsarSource) : super(_localSource);
+  DaleelRepository(this._localSource, this._tagIsarSource)
+      : super(_localSource);
 
   /// Saves or updates a Daleel entry in the database
   Future<Either<Exception, void>> _saveOrUpdateDaleel({
@@ -49,12 +50,15 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     required Set<Tag> tags,
     required String description,
     required HadithAuthenticity? authenticity,
+    String? textWithoutDiacritics,
+
     int? id,
   }) async {
     return _saveOrUpdateDaleel(
       daleelIsar: DaleelIsar(
         id: id,
         text: text,
+        textWithoutDiacritics: textWithoutDiacritics,
         sayer: sayer.isEmpty ? null : sayer,
         priority: priority,
         daleelType: DaleelType.hadith,
@@ -73,12 +77,14 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     required Priority priority,
     required Set<Tag> tags,
     required String description,
+    String? textWithoutDiacritics,
     int? id,
   }) async {
     return _saveOrUpdateDaleel(
       daleelIsar: DaleelIsar(
         id: id,
         text: text,
+        textWithoutDiacritics: textWithoutDiacritics,
         sayer: sayer.isEmpty ? null : sayer,
         priority: priority,
         daleelType: DaleelType.athar,
@@ -99,12 +105,14 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     required DateTime lastRevisedAt,
     required Set<Tag> tags,
     String? sayer,
+    String? textWithoutDiacritics,
     int? id,
   }) async {
     return _saveOrUpdateDaleel(
       daleelIsar: DaleelIsar(
         id: id,
         text: text,
+        textWithoutDiacritics: textWithoutDiacritics,
         sayer: sayer,
         priority: priority,
         daleelType: DaleelType.aya,
@@ -125,12 +133,14 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     required Priority priority,
     required DateTime lastRevisedAt,
     required Set<Tag> tags,
+    String? textWithoutDiacritics,
     int? id,
   }) async {
     return _saveOrUpdateDaleel(
       daleelIsar: DaleelIsar(
         id: id,
         text: text,
+        textWithoutDiacritics: textWithoutDiacritics,
         sayer: sayer.isEmpty ? null : sayer,
         priority: priority,
         daleelType: DaleelType.other,
@@ -142,14 +152,15 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
   }
 
   /// Checks if a specific Ayah exists in the local database
-  Future<int?> isAyahExist({required String surahName, required int ayahNumber}) async {
-    final aya = await _localSource.getAyaByText(surahName: surahName, ayahNumber: ayahNumber);
+  Future<int?> isAyahExist(
+      {required String surahName, required int ayahNumber}) async {
+    final aya = await _localSource.getAyaByText(
+        surahName: surahName, ayahNumber: ayahNumber);
     return aya?.id;
   }
 
   /// Searches for Daleel entries based on filters and pagination
-  Future<List<Daleel>> searchDaleel(
-    String searchTerm, {
+  Future<List<Daleel>> searchDaleel(String searchTerm, {
     required int page,
     required int pageSize,
     DaleelFilters? filters,

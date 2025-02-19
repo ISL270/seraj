@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:athar/app/core/enums/status.dart';
+import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/models/generic_exception.dart';
 import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
@@ -83,6 +84,7 @@ class AddOrEditHadithCubit extends Cubit<AddOrEditHadithState> {
       await _daleelRepository.saveOrUpdateHadith(
         id: state.hadithId,
         text: state.hadith.value,
+        textWithoutDiacritics: state.hadith.value.removeDiacritics(),
         sayer: state.sayer,
         description: state.description,
         extraction: state.extraction,

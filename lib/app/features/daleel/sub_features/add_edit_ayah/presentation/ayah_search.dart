@@ -64,7 +64,7 @@ class _AyaSearch extends StatelessWidget {
                           children: [
                             ListTile(
                               title: Text(
-                                ayah.ayah.replaceAll('\n', ' ').decorateArabicNumbers(),
+                                ayah.ayah.replaceAll('\n', ' '),
                                 style: context.textThemeX.large.copyWith(
                                   fontSize: 18.sp,
                                   fontFamily: GoogleFonts.amiriQuran().fontFamily,
@@ -75,7 +75,7 @@ class _AyaSearch extends StatelessWidget {
                                 child: Padding(
                                   padding: EdgeInsets.only(top: 16.h),
                                   child: Text(
-                                    '${ayah.surahNameAr} ${ayah.ayahNumber.toString().decorateArabicNumbers()}',
+                                    '${ayah.surahNameAr} ${ayah.ayahNumber}',
                                     style: context.textThemeX.small.copyWith(
                                       color: context.colorsX.primary,
                                       fontWeight: FontWeight.bold,

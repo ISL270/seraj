@@ -74,6 +74,11 @@ const DaleelIsarSchema = CollectionSchema(
       id: 10,
       name: r'text',
       type: IsarType.string,
+    ),
+    r'textWithoutDiacritics': PropertySchema(
+      id: 11,
+      name: r'textWithoutDiacritics',
+      type: IsarType.string,
     )
   },
   estimateSize: _daleelIsarEstimateSize,
@@ -90,6 +95,19 @@ const DaleelIsarSchema = CollectionSchema(
       properties: [
         IndexPropertySchema(
           name: r'text',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
+    ),
+    r'textWithoutDiacritics': IndexSchema(
+      id: 5159495283343060294,
+      name: r'textWithoutDiacritics',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'textWithoutDiacritics',
           type: IndexType.value,
           caseSensitive: false,
         )
@@ -163,6 +181,12 @@ int _daleelIsarEstimateSize(
     }
   }
   bytesCount += 3 + object.text.length * 3;
+  {
+    final value = object.textWithoutDiacritics;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -183,6 +207,7 @@ void _daleelIsarSerialize(
   writer.writeString(offsets[8], object.sayer);
   writer.writeString(offsets[9], object.surah);
   writer.writeString(offsets[10], object.text);
+  writer.writeString(offsets[11], object.textWithoutDiacritics);
 }
 
 DaleelIsar _daleelIsarDeserialize(
@@ -210,6 +235,7 @@ DaleelIsar _daleelIsarDeserialize(
     surah: reader.readStringOrNull(offsets[9]),
     text: reader.readString(offsets[10]),
   );
+  object.textWithoutDiacritics = reader.readStringOrNull(offsets[11]);
   return object;
 }
 
@@ -247,6 +273,8 @@ P _daleelIsarDeserializeProp<P>(
       return (reader.readStringOrNull(offset)) as P;
     case 10:
       return (reader.readString(offset)) as P;
+    case 11:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -310,6 +338,14 @@ extension DaleelIsarQueryWhereSort
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         const IndexWhereClause.any(indexName: r'text'),
+      );
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhere> anyTextWithoutDiacritics() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'textWithoutDiacritics'),
       );
     });
   }
@@ -520,6 +556,169 @@ extension DaleelIsarQueryWhere
             ))
             .addWhereClause(IndexWhereClause.lessThan(
               indexName: r'text',
+              upper: [''],
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause>
+      textWithoutDiacriticsIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'textWithoutDiacritics',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause>
+      textWithoutDiacriticsIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'textWithoutDiacritics',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause>
+      textWithoutDiacriticsEqualTo(String? textWithoutDiacritics) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'textWithoutDiacritics',
+        value: [textWithoutDiacritics],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause>
+      textWithoutDiacriticsNotEqualTo(String? textWithoutDiacritics) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'textWithoutDiacritics',
+              lower: [],
+              upper: [textWithoutDiacritics],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'textWithoutDiacritics',
+              lower: [textWithoutDiacritics],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'textWithoutDiacritics',
+              lower: [textWithoutDiacritics],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'textWithoutDiacritics',
+              lower: [],
+              upper: [textWithoutDiacritics],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause>
+      textWithoutDiacriticsGreaterThan(
+    String? textWithoutDiacritics, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'textWithoutDiacritics',
+        lower: [textWithoutDiacritics],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause>
+      textWithoutDiacriticsLessThan(
+    String? textWithoutDiacritics, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'textWithoutDiacritics',
+        lower: [],
+        upper: [textWithoutDiacritics],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause>
+      textWithoutDiacriticsBetween(
+    String? lowerTextWithoutDiacritics,
+    String? upperTextWithoutDiacritics, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'textWithoutDiacritics',
+        lower: [lowerTextWithoutDiacritics],
+        includeLower: includeLower,
+        upper: [upperTextWithoutDiacritics],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause>
+      textWithoutDiacriticsStartsWith(String TextWithoutDiacriticsPrefix) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'textWithoutDiacritics',
+        lower: [TextWithoutDiacriticsPrefix],
+        upper: ['$TextWithoutDiacriticsPrefix\u{FFFFF}'],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause>
+      textWithoutDiacriticsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'textWithoutDiacritics',
+        value: [''],
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterWhereClause>
+      textWithoutDiacriticsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'textWithoutDiacritics',
+              upper: [''],
+            ))
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'textWithoutDiacritics',
+              lower: [''],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'textWithoutDiacritics',
+              lower: [''],
+            ))
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'textWithoutDiacritics',
               upper: [''],
             ));
       }
@@ -2106,6 +2305,161 @@ extension DaleelIsarQueryFilter
       ));
     });
   }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      textWithoutDiacriticsIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'textWithoutDiacritics',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      textWithoutDiacriticsIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'textWithoutDiacritics',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      textWithoutDiacriticsEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'textWithoutDiacritics',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      textWithoutDiacriticsGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'textWithoutDiacritics',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      textWithoutDiacriticsLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'textWithoutDiacritics',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      textWithoutDiacriticsBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'textWithoutDiacritics',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      textWithoutDiacriticsStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'textWithoutDiacritics',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      textWithoutDiacriticsEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'textWithoutDiacritics',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      textWithoutDiacriticsContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'textWithoutDiacritics',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      textWithoutDiacriticsMatches(String pattern,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'textWithoutDiacritics',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      textWithoutDiacriticsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'textWithoutDiacritics',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      textWithoutDiacriticsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'textWithoutDiacritics',
+        value: '',
+      ));
+    });
+  }
 }
 
 extension DaleelIsarQueryObject
@@ -2308,6 +2662,20 @@ extension DaleelIsarQuerySortBy
       return query.addSortBy(r'text', Sort.desc);
     });
   }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy>
+      sortByTextWithoutDiacritics() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'textWithoutDiacritics', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy>
+      sortByTextWithoutDiacriticsDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'textWithoutDiacritics', Sort.desc);
+    });
+  }
 }
 
 extension DaleelIsarQuerySortThenBy
@@ -2458,6 +2826,20 @@ extension DaleelIsarQuerySortThenBy
       return query.addSortBy(r'text', Sort.desc);
     });
   }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy>
+      thenByTextWithoutDiacritics() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'textWithoutDiacritics', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy>
+      thenByTextWithoutDiacriticsDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'textWithoutDiacritics', Sort.desc);
+    });
+  }
 }
 
 extension DaleelIsarQueryWhereDistinct
@@ -2537,6 +2919,14 @@ extension DaleelIsarQueryWhereDistinct
       return query.addDistinctBy(r'text', caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct>
+      distinctByTextWithoutDiacritics({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'textWithoutDiacritics',
+          caseSensitive: caseSensitive);
+    });
+  }
 }
 
 extension DaleelIsarQueryProperty
@@ -2612,6 +3002,13 @@ extension DaleelIsarQueryProperty
   QueryBuilder<DaleelIsar, String, QQueryOperations> textProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'text');
+    });
+  }
+
+  QueryBuilder<DaleelIsar, String?, QQueryOperations>
+      textWithoutDiacriticsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'textWithoutDiacritics');
     });
   }
 }

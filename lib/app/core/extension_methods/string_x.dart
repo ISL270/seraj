@@ -10,33 +10,14 @@ extension StringX on String {
   /// ```
   String get capitalizedDefinite => capitalized.definite;
 
-  String decorateArabicNumbers() {
-    final regex = RegExp(r'[\u0660-\u0669]+|[0-9]+');
+  String removeDiacritics() {
+    // Replace ٱ (U+0671) with ا (U+0627)
+    final normalized = replaceAll('\u0671', '\u0627');
 
-    const arabicIndicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    // Regular expression to match all Arabic diacritics
+    final diacritics = RegExp(
+        r'[\u064B-\u065F\u0610-\u061A\u06D6-\u06DC\u06DF-\u06E8\u06EA-\u06ED]');
 
-    String convertWesternToArabicIndic(String westernNumber) {
-      return westernNumber.split('').map((char) {
-        if (char.codeUnitAt(0) >= 48 && char.codeUnitAt(0) <= 57) {
-          return arabicIndicDigits[int.parse(char)];
-        }
-        return char;
-      }).join();
-    }
-
-    String formatWithOrnateParentheses(String number) {
-      const ornateLeftParenthesis = '\uFD3E'; // Unicode for ﴾
-      const ornateRightParenthesis = '\uFD3F'; // Unicode for ﴿
-      return '$ornateRightParenthesis$number$ornateLeftParenthesis';
-    }
-
-    // Remove all newlines before processing
-    final sanitizedString = replaceAll('\n', '');
-
-    return sanitizedString.replaceAllMapped(regex, (match) {
-      final numberString = match.group(0)!;
-      final arabicNumber = convertWesternToArabicIndic(numberString);
-      return formatWithOrnateParentheses(arabicNumber);
-    });
+    return normalized.replaceAll(diacritics, '');
   }
 }
