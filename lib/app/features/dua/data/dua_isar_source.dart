@@ -1,3 +1,5 @@
+// ignore_for_file: inference_failure_on_function_invocation
+
 import 'package:athar/app/core/isar/isar_source.dart';
 import 'package:athar/app/core/models/favourite_filters.dart';
 import 'package:athar/app/core/models/tag.dart';
