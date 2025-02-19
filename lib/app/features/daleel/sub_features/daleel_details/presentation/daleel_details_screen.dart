@@ -1,9 +1,10 @@
-// ignore_for_file: deprecated_member_use, unused_local_variable, cast_nullable_to_non_nullable
+// ignore_for_file: deprecated_member_use, unused_local_variable, cast_nullable_to_non_nullable, unnecessary_null_comparison, must_be_immutable
 
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/datetime_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
+import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
@@ -18,6 +19,7 @@ import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/details_text_widget.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:athar/app/widgets/share_and_copy_widget.dart';
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -84,7 +86,6 @@ class DaleelDetailsScreen extends StatelessWidget {
                         Gap(10.w),
                       ],
                     ),
-                    Gap(15.h),
                     _DaleelDetailsWidget(
                       label: context.l10n.daleelType,
                       labelValue: switch (daleel) {
@@ -94,80 +95,35 @@ class DaleelDetailsScreen extends StatelessWidget {
                         Aya() => context.l10n.aya,
                       },
                     ),
-                    if (state.daleel.sayer != null && state.daleel.sayer!.isNotEmpty) Gap(15.h),
-                    if (state.daleel.sayer != null && state.daleel.sayer!.isNotEmpty)
-                      _DaleelDetailsWidget(
-                        label: context.l10n.daleelSayer,
-                        labelValue: daleel.sayer.toString(),
-                      ),
-                    if (state.daleel.sayer != null && state.daleel.sayer!.isNotEmpty) Gap(15.h),
-                    if (daleel.tags.isNotEmpty)
-                      Text(
-                        context.l10n.daleelTags,
-                        style: context.textThemeX.large.bold.copyWith(
-                          color: context.colorsX.onBackgroundTint35,
-                        ),
-                      ),
-                    if (daleel.tags.isNotEmpty) Gap(15.h),
-                    Wrap(
-                      spacing: 3.w,
-                      runSpacing: 10.h,
-                      children: List.generate(
-                        daleel.tags.length,
-                        (index) => Padding(
-                          padding: EdgeInsets.only(right: 6.w),
-                          child: Container(
-                            height: 30.h,
-                            width: 75.w,
-                            decoration: BoxDecoration(
-                              color: context.colorsX.primary,
-                              borderRadius: BorderRadius.circular(12.w),
-                            ),
-                            child: Center(
-                              child: Text(
-                                daleel.tags.elementAt(index).name,
-                                style: context.textThemeX.medium.bold.copyWith(
-                                  color: context.colorsX.onBackground,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                    _DaleelDetailsWidget(
+                      label: context.l10n.daleelSayer,
+                      labelValue: state.daleel.sayer.toString(),
                     ),
-                    Gap(15.h),
+                    _DaleelDetailsTagsWidget(state.daleel.tags),
                     _DaleelDetailsWidget(
                       label: context.l10n.daleelPriority,
-                      labelValue: '${daleel.priority.toTranslate(context)} ${context.l10n.saveIt}',
+                      labelValue:
+                          '${state.daleel.priority.toTranslate(context)} ${context.l10n.saveIt}',
                     ),
-                    Gap(15.h),
-                    if (state.daleel.description != null && state.daleel.description!.isNotEmpty)
-                      _DaleelDetailsWidget(
-                          label: context.l10n.daleelExplain,
-                          labelValue: daleel.description.toString()),
-                    if (state.daleel.description != null && state.daleel.description!.isNotEmpty)
-                      Gap(15.h),
-                    if (state.daleel is Hadith && (daleel as Hadith).authenticity != null)
-                      _DaleelDetailsWidget(
-                        label: context.l10n.daleelHadithAuth,
-                        labelValue: HadithAuthenticity.hasan.name.gethadithTypeString(context),
-                      ),
-                    if (state.daleel is Hadith && (state.daleel as Hadith).authenticity != null)
-                      Gap(15.h),
-                    if (state.daleel is Hadith &&
-                        (state.daleel as Hadith).extraction != null &&
-                        (state.daleel as Hadith).extraction!.isNotEmpty)
-                      _DaleelDetailsWidget(
-                        label: context.l10n.extractionOfHadith,
-                        labelValue: (state.daleel as Hadith).extraction.toString(),
-                      ),
-                    if (state.daleel is Hadith &&
-                        (state.daleel as Hadith).extraction != null &&
-                        (state.daleel as Hadith).extraction!.isNotEmpty)
-                      Gap(15.h),
+                    _DaleelDetailsWidget(
+                      label: context.l10n.daleelExplain,
+                      labelValue: state.daleel.description.toString(),
+                    ),
+                    _DaleelDetailsWidget(
+                      label: context.l10n.daleelHadithAuth,
+                      labelValue: (state.daleel as Hadith)
+                              .authenticity
+                              ?.name
+                              .gethadithTypeString(context) ??
+                          '',
+                    ),
+                    _DaleelDetailsWidget(
+                      label: context.l10n.extractionOfHadith,
+                      labelValue: (state.daleel as Hadith).extraction.toString(),
+                    ),
                     _DaleelDetailsWidget(
                       label: context.l10n.daleelDate,
-                      labelValue: daleel.lastRevisedAt.formatted,
+                      labelValue: state.daleel.lastRevisedAt.formatted,
                     ),
                     Gap(20.h),
                   ],
@@ -178,6 +134,57 @@ class DaleelDetailsScreen extends StatelessWidget {
             Gap(15.h)
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _DaleelDetailsTagsWidget extends StatelessWidget {
+  _DaleelDetailsTagsWidget(this.tags);
+
+  Set<Tag> tags;
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: tags.isNotEmpty,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            context.l10n.daleelTags,
+            style: context.textThemeX.large.bold.copyWith(
+              color: context.colorsX.onBackgroundTint35,
+            ),
+          ),
+          Gap(15.h),
+          Wrap(
+            spacing: 3.w,
+            runSpacing: 10.h,
+            children: List.generate(
+              tags.length,
+              (index) => Padding(
+                padding: EdgeInsets.only(right: 6.w),
+                child: Container(
+                  height: 30.h,
+                  width: 75.w + tags.elementAt(index).name.length * 8.w,
+                  decoration: BoxDecoration(
+                    color: context.colorsX.primary,
+                    borderRadius: BorderRadius.circular(12.w),
+                  ),
+                  child: Center(
+                    child: Text(
+                      tags.elementAt(index).name,
+                      style: context.textThemeX.medium.bold.copyWith(
+                        color: context.colorsX.onBackground,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -194,27 +201,31 @@ class _DaleelDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: context.textThemeX.large.bold.copyWith(
-            color: context.colorsX.onBackgroundTint35,
+    return Visibility(
+      visible: labelValue.isNotNullOrEmpty && labelValue != 'null',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Gap(15.h),
+          Text(
+            label,
+            style: context.textThemeX.large.bold.copyWith(
+              color: context.colorsX.onBackgroundTint35,
+            ),
           ),
-        ),
-        Gap(10.h),
-        Padding(
-          padding: EdgeInsets.only(
-            right: context.settingsBloc.state.settings.isArabic ? 6.w : 0,
-            left: context.settingsBloc.state.settings.isEnglish ? 6.w : 0,
+          Gap(10.h),
+          Padding(
+            padding: EdgeInsets.only(
+              right: context.settingsBloc.state.settings.isArabic ? 6.w : 0,
+              left: context.settingsBloc.state.settings.isEnglish ? 6.w : 0,
+            ),
+            child: Text(
+              labelValue,
+              style: context.textThemeX.medium.bold.copyWith(color: context.colorsX.primary),
+            ),
           ),
-          child: Text(
-            labelValue,
-            style: context.textThemeX.medium.bold.copyWith(color: context.colorsX.primary),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
