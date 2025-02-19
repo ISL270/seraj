@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/bloc_event_transformers.dart';
 import 'package:athar/app/core/models/paginated_result.dart';
+import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
@@ -40,9 +41,9 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
   }
 
   Future<void> _onSubscriptionRequested(
-      DaleelSubscriptionRequested event,
-      Emitter<DaleelState> emit,
-      ) async {
+    DaleelSubscriptionRequested event,
+    Emitter<DaleelState> emit,
+  ) async {
     await emit.onEach(
       _repository.watchCollection(),
       onData: (status) => add(DaleelSearched(state.searchTerm)),
@@ -50,9 +51,9 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
   }
 
   Future<void> _onSearched(
-      DaleelSearched event,
-      Emitter<DaleelState> emit,
-      ) async {
+    DaleelSearched event,
+    Emitter<DaleelState> emit,
+  ) async {
     emit(state.copyWith(
       searchTerm: event.searchTerm,
       status: state.status.toLoading(),
@@ -72,9 +73,9 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
   }
 
   Future<void> _onNextPageFetched(
-      DaleelNextPageFetched event,
-      Emitter<DaleelState> emit,
-      ) async {
+    DaleelNextPageFetched event,
+    Emitter<DaleelState> emit,
+  ) async {
     if (state.daleels.hasReachedMax) return;
 
     final searchResult = await _repository.searchDaleel(
@@ -97,10 +98,12 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
     }
   }
 
+  List<Tag> getTags() => _repository.getTags();
+
   void _onFilterUpdate(
-      DaleelFiltered event,
-      Emitter<DaleelState> emit,
-      ) {
+    DaleelFiltered event,
+    Emitter<DaleelState> emit,
+  ) {
     log('filter updated');
 
     if (state.daleelFilters == event.filters) return;

@@ -4,13 +4,12 @@ import 'dart:developer';
 
 import 'package:athar/app/core/assets_gen/assets.gen.dart';
 import 'package:athar/app/core/enums/status.dart';
-import 'package:athar/app/core/extension_methods/bloc_x.dart';
 import 'package:athar/app/core/extension_methods/datetime_x.dart';
 import 'package:athar/app/core/extension_methods/english_x.dart';
 import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
-import 'package:athar/app/core/l10n/language.dart';
+// import 'package:athar/app/core/l10n/language.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
@@ -19,17 +18,18 @@ import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
 import 'package:athar/app/features/daleel/presentation/widgets/priority_slider_w_label.dart';
-import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/add_edit_ayah.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/add_edit_athar_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/add_edit_ayah.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/add_edit_hadith_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/add_other_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/daleel_details/presentation/daleel_details_screen.dart';
-import 'package:athar/app/features/settings/domain/settings.dart';
-import 'package:athar/app/features/settings/settings/settings_bloc.dart';
+// import 'package:athar/app/features/settings/domain/settings.dart';
+// import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:athar/app/widgets/action_buttoms.dart';
 import 'package:athar/app/widgets/button.dart';
+import 'package:athar/app/widgets/tag_selection.dart';
 import 'package:dartx/dartx.dart';
-import 'package:easy_date_timeline/easy_date_timeline.dart';
+// import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -182,7 +182,7 @@ class _DaleelScreenState extends State<DaleelScreen> {
                     _DaleelFilterTypeWidget(
                       label: context.l10n.date,
                       onTap: () async {
-                        await _openFilterDateSelectorBottomSheet(filters, context);
+                        await _openFilterTagSelectionBottomSheet(filters, context);
                       },
                     ),
                     Gap(12.w),

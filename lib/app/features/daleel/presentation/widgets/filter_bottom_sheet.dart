@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, deprecated_member_use, must_be_immutable
+// ignore_for_file: must_be_immutable, unused_local_variable
 
 part of '../daleel_screen.dart';
 
@@ -261,11 +261,99 @@ class _PrioritySelectorState extends State<_PrioritySelector> {
   }
 }
 
+// //------------------------------------------------------------------------------
+// //----------------- Filter Date Bottom Sheet -----------------------------------
+// //------------------------------------------------------------------------------
+
+// Future<void> _openFilterDateSelectorBottomSheet(DaleelFilters filters, BuildContext context) async {
+//   // ignore: inference_failure_on_function_invocation
+//   await showModalBottomSheet(
+//     elevation: 0,
+//     context: context,
+//     isScrollControlled: true,
+//     useRootNavigator: true,
+//     builder: (context) => Container(
+//       height: 365.h,
+//       decoration: BoxDecoration(
+//         color: context.colorsX.background,
+//         borderRadius: BorderRadius.only(
+//           topLeft: Radius.circular(24.r),
+//           topRight: Radius.circular(24.r),
+//         ),
+//         boxShadow: [
+//           BoxShadow(
+//             color: context.colorsX.onBackgroundTint35,
+//             blurRadius: 2,
+//             blurStyle: BlurStyle.outer,
+//           ),
+//         ],
+//       ),
+//       child: const _FilterDateSelectorBottomSheetBody(),
+//     ),
+//   );
+// }
+
+// class _FilterDateSelectorBottomSheetBody extends StatelessWidget {
+//   const _FilterDateSelectorBottomSheetBody();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       spacing: 16.h,
+//       children: [
+//         Gap(2.h),
+//         const _DragIndicator(),
+//         const _EasyDateTimeLinePickerWidget(),
+//         ApplyFilterButton(onPressed: () {})
+//       ],
+//     );
+//   }
+// }
+
+// class _EasyDateTimeLinePickerWidget extends StatefulWidget {
+//   const _EasyDateTimeLinePickerWidget();
+
+//   @override
+//   State<_EasyDateTimeLinePickerWidget> createState() => _EasyDateTimeLinePickerWidgetState();
+// }
+
+// class _EasyDateTimeLinePickerWidgetState extends State<_EasyDateTimeLinePickerWidget> {
+//   DateTime selectedDate = DateTime.now();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+//       child: Container(
+//         width: double.infinity,
+//         height: 200.h,
+//         decoration: context.settingsBloc.state.settings.isThemeLight
+//             ? null
+//             : BoxDecoration(
+//                 borderRadius: BorderRadius.circular(12.r),
+//                 color: context.colorsX.onBackgroundTint35,
+//               ),
+//         child: EasyDateTimeLinePicker(
+//           locale: Language.arabic.locale,
+//           disableStrategy: const DisableStrategy.afterToday(),
+//           monthYearPickerOptions:
+//               MonthYearPickerOptions(cancelText: context.l10n.cancel, confirmText: context.l10n.ok),
+//           firstDate: DateTime.now().subtract(const Duration(days: 30)),
+//           daySeparatorPadding: 12.w,
+//           lastDate: DateTime.now(),
+//           focusedDate: selectedDate,
+//           onDateChange: (date) => setState(() => selectedDate = date),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 //------------------------------------------------------------------------------
-//----------------- Filter Date Bottom Sheet -----------------------------------
+//----------------- Tag Filter Bottom Sheet -----------------------------------
 //------------------------------------------------------------------------------
 
-Future<void> _openFilterDateSelectorBottomSheet(DaleelFilters filters, BuildContext context) async {
+Future<void> _openFilterTagSelectionBottomSheet(DaleelFilters filters, BuildContext context) async {
   // ignore: inference_failure_on_function_invocation
   await showModalBottomSheet(
     elevation: 0,
@@ -288,13 +376,13 @@ Future<void> _openFilterDateSelectorBottomSheet(DaleelFilters filters, BuildCont
           ),
         ],
       ),
-      child: const _FilterDateSelectorBottomSheetBody(),
+      child: const _FilterTagSelectionBottomSheetBody(),
     ),
   );
 }
 
-class _FilterDateSelectorBottomSheetBody extends StatelessWidget {
-  const _FilterDateSelectorBottomSheetBody();
+class _FilterTagSelectionBottomSheetBody extends StatelessWidget {
+  const _FilterTagSelectionBottomSheetBody();
 
   @override
   Widget build(BuildContext context) {
@@ -303,48 +391,19 @@ class _FilterDateSelectorBottomSheetBody extends StatelessWidget {
       children: [
         Gap(2.h),
         const _DragIndicator(),
-        const _EasyDateTimeLinePickerWidget(),
-        ApplyFilterButton(onPressed: () {})
-      ],
-    );
-  }
-}
-
-class _EasyDateTimeLinePickerWidget extends StatefulWidget {
-  const _EasyDateTimeLinePickerWidget();
-
-  @override
-  State<_EasyDateTimeLinePickerWidget> createState() => _EasyDateTimeLinePickerWidgetState();
-}
-
-class _EasyDateTimeLinePickerWidgetState extends State<_EasyDateTimeLinePickerWidget> {
-  DateTime selectedDate = DateTime.now();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-      child: Container(
-        width: double.infinity,
-        height: 200.h,
-        decoration: context.settingsBloc.state.settings.isThemeLight
-            ? null
-            : BoxDecoration(
-                borderRadius: BorderRadius.circular(12.r),
-                color: context.colorsX.onBackgroundTint35,
-              ),
-        child: EasyDateTimeLinePicker(
-          locale: Language.arabic.locale,
-          disableStrategy: const DisableStrategy.afterToday(),
-          monthYearPickerOptions:
-              MonthYearPickerOptions(cancelText: context.l10n.cancel, confirmText: context.l10n.ok),
-          firstDate: DateTime.now().subtract(const Duration(days: 30)),
-          daySeparatorPadding: 12.w,
-          lastDate: DateTime.now(),
-          focusedDate: selectedDate,
-          onDateChange: (date) => setState(() => selectedDate = date),
+        Gap(4.h),
+        const _SearchBarWidget(),
+        Gap(4.h),
+        BlocBuilder<DaleelBloc, DaleelState>(
+          builder: (context, state) {
+            final cubit = context.read<DaleelBloc>();
+            return Wrap(spacing: 3.w);
+          },
         ),
-      ),
+        const Spacer(),
+        ApplyFilterButton(onPressed: () {}),
+        Gap(6.h),
+      ],
     );
   }
 }
@@ -368,6 +427,36 @@ class ApplyFilterButton extends StatelessWidget {
         shape: ButtonShape.roundedCorners,
         onPressed: onPressed,
         label: context.l10n.apply,
+      ),
+    );
+  }
+}
+
+//------------------------------------------------------------------------------
+//----------------- Shared Search Field in Bottom Sheet ------------------------
+//------------------------------------------------------------------------------
+
+class _SearchBarWidget extends StatelessWidget {
+  const _SearchBarWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      child: TextField(
+        // controller: context.read<TagsCubit>().searchController,
+        decoration: InputDecoration(
+          isDense: true,
+          hintText: context.l10n.search,
+          prefixIcon: Icon(Icons.search, color: context.colorsX.onBackground),
+          suffixIcon: true
+              ? IconButton(
+                  icon: Icon(Icons.cancel, color: context.colorsX.error),
+                  onPressed: () {},
+                )
+              : null,
+        ),
+        // onChanged: (value) => context.read<TagsCubit>().searchTags(value),
       ),
     );
   }
