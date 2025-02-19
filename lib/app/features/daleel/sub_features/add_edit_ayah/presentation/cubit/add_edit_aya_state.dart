@@ -6,7 +6,7 @@ final class AddEditAyahState extends Equatable with FormzMixin {
   const AddEditAyahState({
     this.textOfAya = const Name.pure(),
     this.surahOfAya = const Name.pure(),
-    this.ayaExplain = const Name.pure(),
+    this.ayaExplain = '',
     this.firstAya = 0,
     this.lastAya = 0,
     this.status = const Initial(),
@@ -24,7 +24,7 @@ final class AddEditAyahState extends Equatable with FormzMixin {
   final int? ayaId;
   final Name textOfAya;
   final Name surahOfAya;
-  final Name ayaExplain;
+  final String? ayaExplain;
   final int firstAya;
   final int lastAya;
   final Set<Tag> tags;
@@ -47,7 +47,7 @@ final class AddEditAyahState extends Equatable with FormzMixin {
   AddEditAyahState copyWith({
     int? ayaId,
     Name? textOfAya,
-    Name? ayaExplain,
+    String? ayaExplain,
     Name? surahOfAya,
     int? firstAya,
     int? lastAya,
@@ -74,5 +74,5 @@ final class AddEditAyahState extends Equatable with FormzMixin {
 
   @override
   // ignore: override_on_non_overriding_member
-  List<FormzInput> get inputs => [ayaExplain];
+  List<FormzInput> get inputs => [textOfAya,surahOfAya];
 }

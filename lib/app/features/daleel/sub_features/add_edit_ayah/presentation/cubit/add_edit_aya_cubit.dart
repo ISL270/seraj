@@ -62,7 +62,7 @@ class AddEditAyahCubit extends Cubit<AddEditAyahState> {
 
   void nomOfAyaChanged(int value) => emit(state.copyWith(firstAya: value));
 
-  void ayaExplainChanged(String value) => emit(state.copyWith(ayaExplain: Name.dirty(value)));
+  void ayaExplainChanged(String value) => emit(state.copyWith(ayaExplain: value));
 
   void queryChanged(String value) {
     final ayahsList = FlutterQuran().search(value);
@@ -76,7 +76,7 @@ class AddEditAyahCubit extends Cubit<AddEditAyahState> {
       surahController.text = state.surahOfAya.value;
       firstAyahController.text = state.firstAya.toString();
       lastAyahController.text = state.lastAya.toString();
-      explanationController.text = state.ayaExplain.value;
+      explanationController.text = state.ayaExplain ?? '';
       quranicVerseController.text = state.selectedAyahs
           .map((singleAyah) => singleAyah.ayah)
           .join(' ').replaceAll('\n', ' ');
@@ -105,7 +105,7 @@ class AddEditAyahCubit extends Cubit<AddEditAyahState> {
           surahOfAya: Name.dirty(ayahs[0].surahNameAr),
           firstAya: ayahs.first.ayahNumber,
           lastAya: ayahs.last.ayahNumber,
-          ayaExplain: const Name.dirty(''),
+          ayaExplain: '',
         ));
       }
     } else {
@@ -132,7 +132,7 @@ class AddEditAyahCubit extends Cubit<AddEditAyahState> {
       emit(state.copyWith(
         ayaId: ayaId,
         textOfAya: Name.dirty(daleel.text),
-        ayaExplain: Name.dirty(daleel.description ?? ''),
+        ayaExplain: daleel.description ?? '',
         surahOfAya: Name.dirty(daleel.surah),
         lastAya: daleel.lastAya,
         firstAya: daleel.firstAya,
@@ -154,7 +154,7 @@ class AddEditAyahCubit extends Cubit<AddEditAyahState> {
         id: state.ayaId,
         text: state.textOfAya.value,
         textWithoutDiacritics: state.textOfAya.value.removeDiacritics(),
-        ayaExplain: state.ayaExplain.value,
+        ayaExplain: state.ayaExplain ?? '',
         surahOfAya: state.surahOfAya.value,
         firstAya: state.firstAya,
         lastAya: state.lastAya,
