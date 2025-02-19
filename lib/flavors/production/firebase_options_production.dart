@@ -72,4 +72,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'athar-prod.firebasestorage.app',
     iosBundleId: 'com.example.verygoodcore.athar',
   );
+
 }
