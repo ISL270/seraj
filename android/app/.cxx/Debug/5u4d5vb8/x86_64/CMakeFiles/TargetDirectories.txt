@@ -1,0 +1,2 @@
+/Users/eslam/Development/Flutter projects/athar/android/app/.cxx/Debug/5u4d5vb8/x86_64/CMakeFiles/edit_cache.dir
+/Users/eslam/Development/Flutter projects/athar/android/app/.cxx/Debug/5u4d5vb8/x86_64/CMakeFiles/rebuild_cache.dir

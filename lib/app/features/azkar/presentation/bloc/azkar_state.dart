@@ -21,7 +21,6 @@ final class AzkarState extends Equatable {
         );
 
   AzkarState _copyWith({
-    VoidStatus? status,
     String? searchTerm,
     PaginatedResult<Azkar>? azkars,
     AzkarFilters? filters,

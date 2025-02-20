@@ -2,7 +2,6 @@
 
 import 'dart:developer';
 
-import 'package:athar/app/core/enums/status.dart';
 import 'package:athar/app/core/models/bloc_event_transformers.dart';
 import 'package:athar/app/core/models/paginated_result.dart';
 import 'package:athar/app/features/azkar/domain/azkar.dart';

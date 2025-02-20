@@ -24,7 +24,8 @@ ThemeData _themeData(ColorsX colorScheme) {
     primaryColor: colorScheme.primary,
     scaffoldBackgroundColor: colorScheme.background,
     iconTheme: IconThemeData(color: colorScheme.onBackground),
-    progressIndicatorTheme: ProgressIndicatorThemeData(color: colorScheme.primary),
+    progressIndicatorTheme: ProgressIndicatorThemeData(color: colorScheme.primary, year2023: false),
+    sliderTheme: const SliderThemeData(year2023: false),
     dividerTheme: const DividerThemeData(space: 35),
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: colorScheme.primary,
