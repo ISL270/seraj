@@ -1,4 +1,5 @@
 import 'package:athar/app/core/injection/injection.dart';
+import 'package:athar/app/core/l10n/arb/app_localizations.dart';
 import 'package:athar/app/core/l10n/language.dart';
 import 'package:athar/app/core/routing/router.dart';
 import 'package:athar/app/core/theming/app_theme.dart';
@@ -10,7 +11,6 @@ import 'package:athar/flavors/flavors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class App extends StatelessWidget {

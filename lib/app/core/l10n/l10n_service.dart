@@ -1,9 +1,9 @@
 import 'package:athar/app/core/extension_methods/bloc_x.dart';
+import 'package:athar/app/core/l10n/arb/app_localizations.dart';
 import 'package:athar/app/core/l10n/language.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
