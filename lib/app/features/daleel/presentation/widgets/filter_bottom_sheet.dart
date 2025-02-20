@@ -446,16 +446,13 @@ class _SearchBarWidget extends StatelessWidget {
       child: TextField(
         // controller: context.read<TagsCubit>().searchController,
         decoration: InputDecoration(
-          isDense: true,
-          hintText: context.l10n.search,
-          prefixIcon: Icon(Icons.search, color: context.colorsX.onBackground),
-          suffixIcon: true
-              ? IconButton(
-                  icon: Icon(Icons.cancel, color: context.colorsX.error),
-                  onPressed: () {},
-                )
-              : null,
-        ),
+            isDense: true,
+            hintText: context.l10n.search,
+            prefixIcon: Icon(Icons.search, color: context.colorsX.onBackground),
+            suffixIcon: IconButton(
+              icon: Icon(Icons.cancel, color: context.colorsX.error),
+              onPressed: () {},
+            )),
         // onChanged: (value) => context.read<TagsCubit>().searchTags(value),
       ),
     );
