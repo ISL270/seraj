@@ -1,83 +1,100 @@
 name: "Build & Release"
 
-concurrency:
-  group: build-and-release
-  cancel-in-progress: true
-
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
-      - main
+      - dev
+      - test
+  push:
+    branches:
+      - dev
+      - test
 
 jobs:
   build:
     name: Build & Release
     runs-on: macos-latest
+    # Make the secret available as an environment variable so we can check it in conditionals
+    env:
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      RELEASE_TOKEN: ${{ secrets.TOKEN }}
 
     steps:
+      # 1. Check out the repository code
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      # 2. Set up Java
       - name: Set Up Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'oracle'
-          java-version: '17'
+          distribution: "oracle"
+          java-version: "17"
 
-      - name: Setup Flutter
+      # 3. Set up Flutter
+      - name: Set Up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.2'
-          channel: 'stable'
+          flutter-version: "3.22.2"
+          channel: "stable"
 
+      # 4. Install Flutter dependencies
       - name: Install Dependencies
         run: flutter pub get
 
+      # 5. Decode keystore if KEYSTORE_BASE64 is non-empty
       - name: Decode Keystore
-        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
+        if: ${{ env.KEYSTORE_BASE64 != '' }}
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
+          echo "${{ env.KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
 
       - name: Create key.properties
-        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
+        if: ${{ env.KEYSTORE_BASE64 != '' }}
         run: |
-          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+          echo "storePassword=${{ env.KEYSTORE_PASSWORD }}" > android/key.properties
+          echo "keyPassword=${{ env.KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ env.KEY_ALIAS }}" >> android/key.properties
           echo "storeFile=keystore.jks" >> android/key.properties
 
+      # 6. Build APK
       - name: Build APK
         run: flutter build apk --release
 
+      # 7. Build Android App Bundle
       - name: Build App Bundle
         run: flutter build appbundle
 
+      # 8. Build iOS IPA (without code signing)
       - name: Build IPA
         run: flutter build ipa --no-codesign
 
+      # 9. Archive iOS build
       - name: Compress Archives
         run: |
           cd build
           tar -czf ios_build.tar.gz ios
 
+      # 10. Upload build artifacts
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: Releases
+          name: "Releases"
           path: |
             build/app/outputs/flutter-apk/app-release.apk
             build/app/outputs/bundle/release/app-release.aab
             build/ios_build.tar.gz
 
+      # 11. Extract version from pubspec.yaml
       - name: Extract version from pubspec
         id: extract_version
         run: |
           version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
           echo "VERSION=$version" >> $GITHUB_ENV
 
+      # 12. Check if the tag already exists
       - name: Check if Tag Exists
         id: check_tag
         run: |
@@ -87,6 +104,7 @@ jobs:
             echo "TAG_EXISTS=false" >> $GITHUB_ENV
           fi
 
+      # 13. Modify tag if it already exists
       - name: Modify Tag
         if: env.TAG_EXISTS == 'true'
         id: modify_tag
@@ -94,9 +112,13 @@ jobs:
           new_version="${{ env.VERSION }}-build-${{ github.run_number }}"
           echo "VERSION=$new_version" >> $GITHUB_ENV
 
+      # 14. Create a GitHub release
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,build/ios_build.tar.gz"
+          artifacts: |
+            build/app/outputs/flutter-apk/app-release.apk,
+            build/app/outputs/bundle/release/app-release.aab,
+            build/ios_build.tar.gz
           tag: "v${{ env.VERSION }}"
-          token: ${{ secrets.TOKEN }}
+          token: ${{ env.RELEASE_TOKEN }}
