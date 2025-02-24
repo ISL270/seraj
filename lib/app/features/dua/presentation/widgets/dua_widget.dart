@@ -27,72 +27,52 @@ class _DuaWidget extends StatelessWidget {
           ),
         ],
       ),
-      child: InkWell(
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        onTap: () => context.pushNamed(DuaDetailsScreen.name, extra: dua),
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          margin: EdgeInsets.all(16.sp),
-          decoration: BoxDecoration(
-            color: context.colorsX.primary.withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(12.w),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 0.5.sp,
-                spreadRadius: 0.2.sp,
-                blurStyle: BlurStyle.outer,
-                color: context.colorsX.onBackgroundTint35,
-              ),
-              BoxShadow(
-                blurRadius: 0.7.sp,
-                spreadRadius: 0.5.sp,
-                blurStyle: BlurStyle.outer,
-                color: context.colorsX.onBackgroundTint35,
-              ),
-              BoxShadow(
-                blurRadius: 2.sp,
-                spreadRadius: 0.9.sp,
-                blurStyle: BlurStyle.outer,
-                color: context.colorsX.onBackgroundTint35,
-              ),
-            ],
-          ),
-          child: SizedBox(
-            height: 80.h + (dua.text.length * 0.45).h,
-            width: double.infinity,
+      child: Padding(
+        padding: EdgeInsets.all(16.sp),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12.w),
+          onTap: () => context.pushNamed(DuaDetailsScreen.name, extra: dua),
+          child: Container(
+            padding: EdgeInsets.all(4.sp),
             child: Padding(
-              padding: EdgeInsets.all(4.w),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                textDirection: TextDirection.rtl,
+              padding: EdgeInsets.all(6.sp),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Gap(5.w),
-                  Expanded(
-                    child: Text(
-                      dua.text,
-                      style: context.textThemeX.medium.bold,
-                      maxLines: 10,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Gap(5.w),
-                  IconButton(
-                    onPressed: () => context.read<DuaBloc>().add(DuaFavouriteToggled(dua)),
-                    icon: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 400),
-                      transitionBuilder: (child, animation) {
-                        return ScaleTransition(scale: animation, child: child);
-                      },
-                      child: Icon(
-                        dua.isFavourite ? Icons.favorite : Icons.favorite_border,
-                        key: ValueKey<bool>(dua.isFavourite),
-                        color:
-                            dua.isFavourite ? context.colorsX.error : context.colorsX.onBackground,
+                  Row(
+                    children: [
+                      Gap(5.w),
+                      Expanded(
+                        child: Text(
+                          dua.text,
+                          style: context.textThemeX.large.copyWith(
+                              fontFamily: GoogleFonts.amiriQuran().fontFamily),
+                        ),
                       ),
-                    ),
+                      IconButton(
+                        onPressed: () => context
+                            .read<DuaBloc>()
+                            .add(DuaFavouriteToggled(dua)),
+                        icon: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 400),
+                          transitionBuilder: (child, animation) {
+                            return ScaleTransition(
+                                scale: animation, child: child);
+                          },
+                          child: Icon(
+                            dua.isFavourite
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            key: ValueKey<bool>(dua.isFavourite),
+                            color: dua.isFavourite
+                                ? context.colorsX.error
+                                : context.colorsX.onBackground,
+                          ),
+                        ),
+                      ),
+                      Gap(5.w),
+                    ],
                   ),
-                  Gap(15.w),
                 ],
               ),
             ),
@@ -103,7 +83,7 @@ class _DuaWidget extends StatelessWidget {
   }
 
   void _navigateToEditScreen(BuildContext context) {
-    context.pushNamed(AddDuaScreen.name, extra: dua.id);
+    context.pushNamed(AddOrEditDuaScreen.name, extra: dua.id);
   }
 
   void _showDeleteDialog(BuildContext context, DuaBloc duaBloc) {
@@ -124,7 +104,8 @@ class _DuaWidget extends StatelessWidget {
             onPressed: () => context.pop(),
             child: Text(
               context.l10n.cancel.capitalized,
-              style: context.textThemeX.medium.copyWith(color: context.colorsX.error),
+              style: context.textThemeX.medium
+                  .copyWith(color: context.colorsX.error),
             ),
           ),
           TextButton(
@@ -134,7 +115,8 @@ class _DuaWidget extends StatelessWidget {
             },
             child: Text(
               context.l10n.confirm.capitalized,
-              style: context.textThemeX.medium.copyWith(color: context.colorsX.primary),
+              style: context.textThemeX.medium
+                  .copyWith(color: context.colorsX.primary),
             ),
           ),
         ],

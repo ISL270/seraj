@@ -19,7 +19,7 @@ class AzkarDetailsBloc extends Bloc<_AzkarDetailsEvent, AzkarDetailsState> {
     on<AzkarDeleted>(onAzkarDeleted);
     //used for counter
     on<IncrementCounter>(_onIncrement);
-    on<DecrementCounter>(_onDecrement);
+    on<ResetCounter>(_onReset);
 
     add(const _SubscriptionRequested());
   }
@@ -58,9 +58,9 @@ class AzkarDetailsBloc extends Bloc<_AzkarDetailsEvent, AzkarDetailsState> {
     }
   }
 
-  void _onDecrement(DecrementCounter event, Emitter<AzkarDetailsState> emit) {
+  void _onReset(ResetCounter event, Emitter<AzkarDetailsState> emit) {
     if (state.counterValue > 1) {
-      emit(state.copyWith(counterValue: state.counterValue - 1));
+      emit(state.copyWith(counterValue: 1));
     }
   }
 }

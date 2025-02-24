@@ -1,35 +1,42 @@
+// ignore_for_file: must_be_immutable
+
 part of 'dua_bloc.dart';
 
-final class DuaScreenState extends Equatable {
+final class DuaState extends Equatable {
   final String searchTerm;
   final PaginatedResult<Dua> result;
-  final FavouriteFilters duaFilters;
+  final DuaFilters duaFilters;
+  List<Tag> searchedTags;
 
-  const DuaScreenState._({
+  DuaState._({
     required this.result,
     required this.searchTerm,
     required this.duaFilters,
+    required this.searchedTags,
   });
 
-  DuaScreenState._initial()
+  DuaState._initial()
       : this._(
           searchTerm: '',
           result: PaginatedResult.empty(),
-          duaFilters: FavouriteFilters(),
+          duaFilters: DuaFilters(),
+          searchedTags: [],
         );
 
-  DuaScreenState _copyWith({
+  DuaState _copyWith({
     String? searchTerm,
     PaginatedResult<Dua>? duas,
-    FavouriteFilters? duaFilters,
+    DuaFilters? duaFilters,
+    List<Tag>? searchedTags,
   }) {
-    return DuaScreenState._(
+    return DuaState._(
       result: duas ?? result,
       searchTerm: searchTerm ?? this.searchTerm,
       duaFilters: duaFilters ?? this.duaFilters,
+      searchedTags: searchedTags ?? this.searchedTags,
     );
   }
 
   @override
-  List<Object> get props => [searchTerm, result, duaFilters];
+  List<Object> get props => [searchTerm, result, duaFilters, searchedTags];
 }

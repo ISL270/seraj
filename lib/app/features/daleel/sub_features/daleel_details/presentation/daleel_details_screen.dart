@@ -12,7 +12,7 @@ import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart
 import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/add_edit_athar_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/add_edit_ayah.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/add_edit_hadith_screen.dart';
-import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/add_other_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/add_or_edit_other_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/daleel_details/bloc/daleel_details_bloc.dart';
 import 'package:athar/app/features/settings/domain/settings.dart';
 import 'package:athar/app/features/settings/settings/settings_bloc.dart';
@@ -171,7 +171,7 @@ class _DaleelDetailsTagsWidget extends StatelessWidget {
                 padding: EdgeInsets.only(right: 6.w),
                 child: Container(
                   height: 30.h,
-                  width: 75.w + tags.elementAt(index).name.length * 8.w,
+                  width: 75.w + tags.elementAt(index).name.length * 4.w,
                   decoration: BoxDecoration(
                     color: context.colorsX.primary,
                     borderRadius: BorderRadius.circular(12.w),

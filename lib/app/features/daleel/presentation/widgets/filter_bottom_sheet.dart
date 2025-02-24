@@ -261,6 +261,205 @@ class _PrioritySelectorState extends State<_PrioritySelector> {
   }
 }
 
+//------------------------------------------------------------------------------
+//----------------- Tag Filter Bottom Sheet -----------------------------------
+//------------------------------------------------------------------------------
+
+Future<void> _openFilterTagSelectionBottomSheet(DaleelFilters filters, BuildContext context) async {
+  // ignore: inference_failure_on_function_invocation
+  await showModalBottomSheet(
+    elevation: 0,
+    context: context,
+    isScrollControlled: true,
+    useRootNavigator: true,
+    builder: (context) => Container(
+      decoration: BoxDecoration(
+        color: context.colorsX.background,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(24.r),
+          topRight: Radius.circular(24.r),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: context.colorsX.onBackgroundTint35,
+            blurRadius: 2,
+            blurStyle: BlurStyle.outer,
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom, // Moves up with keyboard
+        ),
+        child: IntrinsicHeight(child: _FilterTagSelectionBottomSheetBody(filters)),
+      ),
+    ),
+  );
+}
+
+class _FilterTagSelectionBottomSheetBody extends StatefulWidget {
+  _FilterTagSelectionBottomSheetBody(this.filters);
+
+  DaleelFilters filters;
+
+  @override
+  State<_FilterTagSelectionBottomSheetBody> createState() =>
+      _FilterTagSelectionBottomSheetBodyState();
+}
+
+class _FilterTagSelectionBottomSheetBodyState extends State<_FilterTagSelectionBottomSheetBody> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      spacing: 16.h,
+      children: [
+        Gap(2.h),
+        const _DragIndicator(),
+        const _SearchBarWidget(),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.sp),
+          child: BlocBuilder<DaleelBloc, DaleelState>(
+            builder: (context, state) {
+              final tags = state.searchedTags.isNotEmpty
+                  ? state.searchedTags
+                  : context.read<DaleelBloc>().getTags();
+              if (state.searchedTags.isEmpty &&
+                  context.read<DaleelBloc>().tagSearchControllers.text.isNotBlank) {
+                return Center(
+                  child: Text(
+                    context.l10n.noAvailableTags,
+                    style: context.textThemeX.medium.bold,
+                  ),
+                );
+              }
+              return Wrap(
+                spacing: 6.w,
+                runSpacing: 6.h,
+                children: List.generate(
+                  tags.length,
+                  (index) {
+                    final tag = tags[index];
+                    final isSelected = widget.filters.tag.any((t) => t.id == tag.id); // Check by ID
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (isSelected) {
+                            widget.filters.tag.removeWhere((t) => t.id == tag.id); // Remove by ID
+                          } else {
+                            widget.filters.tag.add(tag);
+                          }
+                        });
+                      },
+                      child: AnimatedContainer(
+                        height: 36.h,
+                        duration: const Duration(milliseconds: 400),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.r),
+                          color: isSelected
+                              ? context.colorsX.primary
+                              : context.colorsX.onBackgroundTint35,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
+                          child: Text(
+                            tag.name,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: context.textThemeX.small.bold.copyWith(
+                              color: isSelected
+                                  ? context.colorsX.background
+                                  : context.colorsX.onBackground,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+        ApplyFilterButton(
+          onPressed: widget.filters.tag.isEmpty
+              ? null
+              : () {
+                  context.read<DaleelBloc>().add(DaleelFiltered(widget.filters));
+                  context.pop();
+                },
+        ),
+        // Gap(6.h),
+      ],
+    );
+  }
+}
+
+//------------------------------------------------------------------------------
+//----------------- Shared Apply Button Bottom Sheet ---------------------------
+//------------------------------------------------------------------------------
+
+class ApplyFilterButton extends StatelessWidget {
+  const ApplyFilterButton({super.key, this.onPressed});
+
+  final void Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+      child: Button.filled(
+        maxWidth: true,
+        density: ButtonDensity.comfortable,
+        shape: ButtonShape.roundedCorners,
+        onPressed: onPressed,
+        label: context.l10n.apply,
+      ),
+    );
+  }
+}
+
+//------------------------------------------------------------------------------
+//----------------- Search Field in Tag Filter Bottom Sheet --------------------
+//------------------------------------------------------------------------------
+
+class _SearchBarWidget extends StatelessWidget {
+  const _SearchBarWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      child: BlocBuilder<DaleelBloc, DaleelState>(
+        builder: (context, state) {
+          final cubit = context.read<DaleelBloc>();
+          return TextField(
+            controller: cubit.tagSearchControllers,
+            textInputAction: TextInputAction.search,
+            decoration: InputDecoration(
+              isDense: true,
+              hintText: context.l10n.search,
+              prefixIcon: Icon(Icons.search, color: context.colorsX.onBackground),
+              suffixIcon: state.searchedTags.isNotEmpty
+                  ? IconButton(
+                      icon: Icon(Icons.cancel, color: context.colorsX.error),
+                      onPressed: () {
+                        cubit.add(const DaleelTagSearched(''));
+                        cubit.tagSearchControllers.clear();
+                      },
+                    )
+                  : null,
+            ),
+            onChanged: (value) => cubit.add(DaleelTagSearched(value)),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// not used for now
+
 // //------------------------------------------------------------------------------
 // //----------------- Filter Date Bottom Sheet -----------------------------------
 // //------------------------------------------------------------------------------
@@ -348,113 +547,3 @@ class _PrioritySelectorState extends State<_PrioritySelector> {
 //     );
 //   }
 // }
-
-//------------------------------------------------------------------------------
-//----------------- Tag Filter Bottom Sheet -----------------------------------
-//------------------------------------------------------------------------------
-
-Future<void> _openFilterTagSelectionBottomSheet(DaleelFilters filters, BuildContext context) async {
-  // ignore: inference_failure_on_function_invocation
-  await showModalBottomSheet(
-    elevation: 0,
-    context: context,
-    isScrollControlled: true,
-    useRootNavigator: true,
-    builder: (context) => Container(
-      height: 365.h,
-      decoration: BoxDecoration(
-        color: context.colorsX.background,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24.r),
-          topRight: Radius.circular(24.r),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: context.colorsX.onBackgroundTint35,
-            blurRadius: 2,
-            blurStyle: BlurStyle.outer,
-          ),
-        ],
-      ),
-      child: const _FilterTagSelectionBottomSheetBody(),
-    ),
-  );
-}
-
-class _FilterTagSelectionBottomSheetBody extends StatelessWidget {
-  const _FilterTagSelectionBottomSheetBody();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      spacing: 16.h,
-      children: [
-        Gap(2.h),
-        const _DragIndicator(),
-        Gap(4.h),
-        const _SearchBarWidget(),
-        Gap(4.h),
-        BlocBuilder<DaleelBloc, DaleelState>(
-          builder: (context, state) {
-            final cubit = context.read<DaleelBloc>();
-            return Wrap(spacing: 3.w);
-          },
-        ),
-        const Spacer(),
-        ApplyFilterButton(onPressed: () {}),
-        Gap(6.h),
-      ],
-    );
-  }
-}
-
-//------------------------------------------------------------------------------
-//----------------- Shared Apply Button Bottom Sheet ---------------------------
-//------------------------------------------------------------------------------
-
-class ApplyFilterButton extends StatelessWidget {
-  const ApplyFilterButton({super.key, this.onPressed});
-
-  final void Function()? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-      child: Button.filled(
-        maxWidth: true,
-        density: ButtonDensity.comfortable,
-        shape: ButtonShape.roundedCorners,
-        onPressed: onPressed,
-        label: context.l10n.apply,
-      ),
-    );
-  }
-}
-
-//------------------------------------------------------------------------------
-//----------------- Shared Search Field in Bottom Sheet ------------------------
-//------------------------------------------------------------------------------
-
-class _SearchBarWidget extends StatelessWidget {
-  const _SearchBarWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      child: TextField(
-        // controller: context.read<TagsCubit>().searchController,
-        decoration: InputDecoration(
-            isDense: true,
-            hintText: context.l10n.search,
-            prefixIcon: Icon(Icons.search, color: context.colorsX.onBackground),
-            suffixIcon: IconButton(
-              icon: Icon(Icons.cancel, color: context.colorsX.error),
-              onPressed: () {},
-            )),
-        // onChanged: (value) => context.read<TagsCubit>().searchTags(value),
-      ),
-    );
-  }
-}

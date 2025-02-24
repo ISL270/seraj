@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:athar/app/core/constants/app_colors.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/extension_methods/widget_state_x.dart';

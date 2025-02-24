@@ -49,8 +49,13 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
           (q) => q.anyOf(filters.priority, (q, priority) => q.priorityEqualTo(priority)),
         )
         .optional(
-          filters.date.isNotEmpty,
-          (q) => q.anyOf(filters.date, (q, date) => q.lastRevisedAtEqualTo(date)),
+          filters.tag.isNotEmpty,
+          (q) => q.anyOf(filters.tag, (q, tag) => q.tags((t) => t.nameEqualTo(tag.name))),
+          // date removed for now
+          // .optional(
+          //   filters.date.isNotEmpty,
+          //   (q) => q.anyOf(filters.date, (q, date) => q.lastRevisedAtEqualTo(date)),
+          // )
         );
   }
 

@@ -20,16 +20,16 @@ import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentatio
 import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/cubit/add_edit_aya_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/add_edit_hadith_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/cubit/add_edit_hadith_cubit.dart';
-import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/add_other_screen.dart';
-import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/cubit/add_other_cubit.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/add_or_edit_other_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/cubit/add_or_edit_other_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/daleel_details/bloc/daleel_details_bloc.dart';
 import 'package:athar/app/features/daleel/sub_features/daleel_details/presentation/daleel_details_screen.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
 import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
 import 'package:athar/app/features/dua/presentation/dua_screen.dart';
-import 'package:athar/app/features/dua/sub_features/add_dua/add_dua_screen.dart';
-import 'package:athar/app/features/dua/sub_features/add_dua/cubit/add_dua_cubit.dart';
+import 'package:athar/app/features/dua/sub_features/add_or_edit_dua/add_dua_screen.dart';
+import 'package:athar/app/features/dua/sub_features/add_or_edit_dua/cubit/add_or_edit_dua_cubit.dart';
 import 'package:athar/app/features/dua/sub_features/dua_details/bloc/dua_details_bloc.dart';
 import 'package:athar/app/features/dua/sub_features/dua_details/dua_details_screen.dart';
 import 'package:athar/app/features/home/presentation/home.dart';
@@ -170,15 +170,15 @@ final appRouter = GoRouter(
               ),
               routes: [
                 GoRoute(
-                  name: AddDuaScreen.name,
-                  path: AddDuaScreen.name,
+                  name: AddOrEditDuaScreen.name,
+                  path: AddOrEditDuaScreen.name,
                   parentNavigatorKey: _rootNavigatorKey,
                   pageBuilder: (context, state) => CupertinoPage(
                     fullscreenDialog: true,
                     child: BlocProvider(
-                      create: (_) => AddDuaCubit(getIt.get<DuaRepository>())
+                      create: (_) => AddOrEditDuaCubit(getIt.get<DuaRepository>())
                         ..initializeDua(state.extra as int?),
-                      child: const AddDuaScreen(),
+                      child: const AddOrEditDuaScreen(),
                     ),
                   ),
                 ),

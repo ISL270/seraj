@@ -1,11 +1,11 @@
 // ignore_for_file: unused_field
 
-import 'package:athar/app/core/models/favourite_filters.dart';
 import 'package:athar/app/core/models/repository.dart';
 import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/dua/data/dua_isar.dart';
 import 'package:athar/app/features/dua/data/dua_isar_source.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
+import 'package:athar/app/features/dua/presentation/models/dua_filters.dart';
 import 'package:athar/app/features/dua/sub_features/dua_tag/data/dua_tag_isar_source.dart';
 import 'package:injectable/injectable.dart';
 
@@ -43,7 +43,7 @@ final class DuaRepository extends Repository<Dua, DuaIsar> {
     String searchTerm, {
     required int page,
     required int pageSize,
-    required FavouriteFilters filters,
+    required DuaFilters filters,
   }) async {
     final cms = _localSource.getDuas(
       searchTerm,

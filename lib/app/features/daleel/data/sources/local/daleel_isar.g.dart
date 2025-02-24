@@ -234,8 +234,8 @@ DaleelIsar _daleelIsarDeserialize(
     sayer: reader.readStringOrNull(offsets[8]),
     surah: reader.readStringOrNull(offsets[9]),
     text: reader.readString(offsets[10]),
+    textWithoutDiacritics: reader.readStringOrNull(offsets[11]),
   );
-  object.textWithoutDiacritics = reader.readStringOrNull(offsets[11]);
   return object;
 }
 

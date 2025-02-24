@@ -33,7 +33,8 @@ class AddOrEditHadith extends StatelessWidget {
           // check if the hadithId is fetched from the previous daleel screen
           context.read<AddOrEditHadithCubit>().state.hadithId != null
               ? '${context.l10n.edit} ${context.l10n.propheticHadithC}' // in edit hadith case
-              : '${context.l10n.add} ${context.l10n.propheticHadith}', // in add hadith case
+              : '${context.l10n.add} ${context.l10n.propheticHadith}',
+          // in add hadith case
           style: context.textThemeX.heading.bold,
           textAlign: TextAlign.center,
         ),
@@ -46,15 +47,10 @@ class AddOrEditHadith extends StatelessWidget {
                 spacing: 15.h,
                 children: [
                   Gap(10.h),
-                  _LabelTextFieldAlignWidget(label: context.l10n.textOfHadith),
                   const _TextOfHadithTextField(),
-                  _LabelTextFieldAlignWidget(label: context.l10n.rawiOfHadith),
                   const _RawiOfHadithTextField(),
-                  _LabelTextFieldAlignWidget(label: context.l10n.extractionOfHadith),
                   const _ExtractionOfHadithTextField(),
-                  _LabelTextFieldAlignWidget(label: context.l10n.hadithRule),
                   const _HadithTypeSegmentedButton(),
-                  _LabelTextFieldAlignWidget(label: context.l10n.hadithExplain),
                   const _HadithExplanationTextField(),
                   const _PrioritySliderWithLabelWidget(),
                   BlocBuilder<AddOrEditHadithCubit, AddOrEditHadithState>(
@@ -63,12 +59,15 @@ class AddOrEditHadith extends StatelessWidget {
                       return TagSelectionWidget(
                         tags: state.tags,
                         onAddTag: (tag) {
-                          final updatedTags = {...state.tags}; // Create a new modifiable set
+                          final updatedTags = {
+                            ...state.tags
+                          }; // Create a new modifiable set
                           if (updatedTags.add(tag)) {
                             cubit.tagsChanged(updatedTags);
                           }
                         },
-                        onRemoveTag: (tag) => cubit.tagsChanged({...state.tags}..remove(tag)),
+                        onRemoveTag: (tag) =>
+                            cubit.tagsChanged({...state.tags}..remove(tag)),
                         onClearTags: () => cubit.tagsChanged(const {}),
                         availableTags: cubit.getTags(),
                       );
@@ -87,20 +86,6 @@ class AddOrEditHadith extends StatelessWidget {
   }
 }
 
-class _LabelTextFieldAlignWidget extends StatelessWidget {
-  const _LabelTextFieldAlignWidget({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Text(label, style: context.textThemeX.medium.bold),
-    );
-  }
-}
-
 class _TextOfHadithTextField extends StatelessWidget {
   const _TextOfHadithTextField();
 
@@ -110,21 +95,17 @@ class _TextOfHadithTextField extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('hadithForm_TextOfHadith_textField'),
-          onChanged: (value) => context.read<AddOrEditHadithCubit>().textOfHadithChanged(value),
+          onChanged: (value) =>
+              context.read<AddOrEditHadithCubit>().textOfHadithChanged(value),
           controller: context.read<AddOrEditHadithCubit>().textOfHadith,
           maxLines: 4,
           minLines: 1,
           decoration: InputDecoration(
+            labelText: context.l10n.textOfHadith,
             labelStyle: context.textThemeX.medium,
-            errorText: state.hadith.displayError == null ? null : context.l10n.enterTextOfHadith,
-            hintMaxLines: 1,
-            hintText:
-                'أنا عِنْدَ ظَنِّ عَبْدِي بي، وأنا معهُ إذا ذَكَرَنِي، فإنْ ذَكَرَنِي في نَفْسِهِ ذَكَرْتُهُ في نَفْسِي، وإنْ ذَكَرَنِي في مَلَإٍ ذَكَرْتُهُ في مَلَإٍ خَيْرٍ منهمْ، وإنْ تَقَرَّبَ إلَيَّ بشِبْرٍ تَقَرَّبْتُ إلَيْهِ ذِراعًا، وإنْ تَقَرَّبَ إلَيَّ ذِراعًا تَقَرَّبْتُ إلَيْهِ باعًا، وإنْ أتانِي يَمْشِي أتَيْتُهُ هَرْوَلَةً',
-            hintStyle: context.textThemeX.medium.bold.copyWith(
-              height: 1.5.h,
-              overflow: TextOverflow.ellipsis,
-              color: context.colorsX.onBackgroundTint35,
-            ),
+            errorText: state.hadith.displayError == null
+                ? null
+                : context.l10n.enterTextOfHadith,
           ),
         );
       },
@@ -142,17 +123,14 @@ class _RawiOfHadithTextField extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('hadithForm_rawiOfHadith_textField'),
-          onChanged: (value) => context.read<AddOrEditHadithCubit>().rawiOfHadithChanged(value),
+          onChanged: (value) =>
+              context.read<AddOrEditHadithCubit>().rawiOfHadithChanged(value),
           controller: context.read<AddOrEditHadithCubit>().rawiOfHadith,
           minLines: 1,
           decoration: InputDecoration(
+            labelText: context.l10n.rawiOfHadith,
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,
-            hintText: 'عن أبي هريرة - رضي الله عنه - عن النبي ﷺ',
-            hintStyle: context.textThemeX.medium.bold.copyWith(
-              height: 1.5.h,
-              color: context.colorsX.onBackgroundTint35,
-            ),
           ),
         );
       },
@@ -169,19 +147,16 @@ class _ExtractionOfHadithTextField extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('hadithForm_extractionOfHadith_textField'),
-          onChanged: (value) =>
-              context.read<AddOrEditHadithCubit>().extractionOfHadithChanged(value),
+          onChanged: (value) => context
+              .read<AddOrEditHadithCubit>()
+              .extractionOfHadithChanged(value),
           controller: context.read<AddOrEditHadithCubit>().extractionOfHadith,
           minLines: 1,
           textInputAction: TextInputAction.next,
           decoration: InputDecoration(
+            labelText: context.l10n.extractionOfHadith,
             labelStyle: context.textThemeX.medium,
             alignLabelWithHint: true,
-            hintText: 'اخرجه البخاري ومسلم',
-            hintStyle: context.textThemeX.medium.bold.copyWith(
-              height: 1.5.h,
-              color: context.colorsX.onBackgroundTint35,
-            ),
           ),
         );
       },
@@ -199,9 +174,11 @@ class _HadithTypeSegmentedButton extends StatelessWidget {
         return SizedBox(
           height: 50.h,
           child: SegmentedButton(
-            style: SegmentedButton.styleFrom(textStyle: context.textThemeX.medium.bold),
-            onSelectionChanged: (selection) =>
-                context.read<AddOrEditHadithCubit>().hadithAuthenticityChanged(selection.first!),
+            style: SegmentedButton.styleFrom(
+                textStyle: context.textThemeX.medium.bold),
+            onSelectionChanged: (selection) => context
+                .read<AddOrEditHadithCubit>()
+                .hadithAuthenticityChanged(selection.first!),
             expandedInsets: EdgeInsets.all(1.h),
             showSelectedIcon: false,
             emptySelectionAllowed: true,
@@ -236,22 +213,15 @@ class _HadithExplanationTextField extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('hadithForm_hadithExplanation_textField'),
-          onChanged: (value) => context.read<AddOrEditHadithCubit>().descOfHadithChanged(value),
+          onChanged: (value) =>
+              context.read<AddOrEditHadithCubit>().descOfHadithChanged(value),
           controller: context.read<AddOrEditHadithCubit>().descOfHadith,
           maxLines: 4,
-          minLines: 1,
+          minLines: 3,
           textInputAction: TextInputAction.done,
           decoration: InputDecoration(
+            labelText: context.l10n.explaination,
             labelStyle: context.textThemeX.medium,
-            alignLabelWithHint: true,
-            hintMaxLines: 3,
-            hintText:
-                'إن ظَنَّ باللهِ خَيرًا فَلَه، وإن ظَنَّ بِه سِوَى ذلك فَلَه، وحُسنُ الظَّنِّ باللهِ عزَّ وجلَّ يَكونُ بفِعلِ ما يُوجِبُ فَضلَ اللهِ وَرَجاءَه، فيَعمَلُ الصَّالِحاتِ، ويُحسِنُ الظَّنَّ بأنَّ اللهَ تَعالَى يَقبَلُه، فاللهُ سُبحانَه عِندَ مُنتهَى أمَلِ العَبدِ به',
-            hintStyle: context.textThemeX.medium.bold.copyWith(
-              height: 1.5.h,
-              overflow: TextOverflow.ellipsis,
-              color: context.colorsX.onBackgroundTint35,
-            ),
           ),
         );
       },
@@ -273,7 +243,11 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.baseline,
               textBaseline: TextBaseline.alphabetic,
               children: [
-                _LabelTextFieldAlignWidget(label: context.l10n.priority),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(context.l10n.priority,
+                      style: context.textThemeX.medium.bold),
+                ),
                 Gap(8.w),
                 Text(
                   '${Priority.translate(context, state.sliderValue)} ${context.l10n.saveIt}',
@@ -285,8 +259,9 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
               ],
             ),
             Slider.adaptive(
-              onChanged: (value) =>
-                  context.read<AddOrEditHadithCubit>().sliderPriorityChanged(value),
+              onChanged: (value) => context
+                  .read<AddOrEditHadithCubit>()
+                  .sliderPriorityChanged(value),
               value: state.sliderValue,
               activeColor: context.colorsX.primary,
               inactiveColor: context.colorsX.onBackgroundTint35,
@@ -339,9 +314,12 @@ class _HadithAddButton extends StatelessWidget {
             maxWidth: true,
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
-            label: state.hadithId == null ? context.l10n.add : context.l10n.update,
+            label:
+                state.hadithId == null ? context.l10n.add : context.l10n.update,
             onPressed: state.isValid
-                ? () => context.read<AddOrEditHadithCubit>().saveOrUpdateHadithForm()
+                ? () => context
+                    .read<AddOrEditHadithCubit>()
+                    .saveOrUpdateHadithForm()
                 : null,
           ),
         );

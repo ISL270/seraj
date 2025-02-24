@@ -553,4 +553,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get azkarTags => 'Azkar Tags';
+
+  @override
+  String get noAvailableTags => 'No results found for this tag';
 }

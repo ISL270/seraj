@@ -1186,6 +1186,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تبويبات الأذكار'**
   String get azkarTags;
+
+  /// No description provided for @noAvailableTags.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يتم العثور على نتائج'**
+  String get noAvailableTags;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

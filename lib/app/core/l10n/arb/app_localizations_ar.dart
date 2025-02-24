@@ -553,4 +553,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get azkarTags => 'تبويبات الأذكار';
+
+  @override
+  String get noAvailableTags => 'لم يتم العثور على نتائج';
 }

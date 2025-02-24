@@ -3,7 +3,6 @@
 import 'package:athar/app/core/extension_methods/context_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
-import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/azkar/sub_features/add_or_edit_azkar/presentation/cubit/add_or_edit_azkar_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
@@ -47,20 +46,18 @@ class AddOrEditAzkarScreen extends StatelessWidget {
               child: Column(
                 spacing: 12.h,
                 children: [
-                  _LabelTextFieldAlignWidget(label: context.l10n.azkarText),
                   const _TextOfAzkarTextField(),
-                  _LabelTextFieldAlignWidget(label: context.l10n.azkarExplain),
                   const _ExplanationOfAzkarTextField(),
                   Row(
                     children: [
                       Expanded(
                         flex: 4,
-                        child: _LabelTextFieldAlignWidget(label: context.l10n.azkarRepeat),
+                        child: _LabelTextFieldAlignWidget(
+                            label: context.l10n.azkarRepeat),
                       ),
                       const Expanded(child: _RepeatNumberOfAzkarTextField()),
                     ],
                   ),
-                  _LabelTextFieldAlignWidget(label: context.l10n.tagsOfAzkar),
                   BlocBuilder<AddOrEditAzkarCubit, AddOrEditAzkarState>(
                     builder: (context, state) {
                       final cubit = context.read<AddOrEditAzkarCubit>();
@@ -72,7 +69,8 @@ class AddOrEditAzkarScreen extends StatelessWidget {
                             cubit.tagsChanged(updatedTags);
                           }
                         },
-                        onRemoveTag: (tag) => cubit.tagsChanged(state.tags..remove(tag)),
+                        onRemoveTag: (tag) =>
+                            cubit.tagsChanged(state.tags..remove(tag)),
                         onClearTags: () => cubit.tagsChanged({}),
                         availableTags: cubit.getTags(),
                       );
@@ -103,16 +101,14 @@ class _TextOfAzkarTextField extends StatelessWidget {
           maxLines: 3,
           minLines: 1,
           controller: context.read<AddOrEditAzkarCubit>().textOfAzkar,
-          onChanged: (text) => context.read<AddOrEditAzkarCubit>().textOfAzkarChanged(text),
+          onChanged: (text) =>
+              context.read<AddOrEditAzkarCubit>().textOfAzkarChanged(text),
           decoration: InputDecoration(
+            labelText: context.l10n.azkarText,
             labelStyle: context.textThemeX.medium,
-            hintText: 'سبحان الله وبحمده، سبحان الله العظيم',
-            errorText: text.displayError == null ? null : context.l10n.enterTextOfAzkar,
-            hintStyle: context.textThemeX.medium.bold.copyWith(
-              height: 1.5.h,
-              overflow: TextOverflow.ellipsis,
-              color: context.colorsX.onBackgroundTint35,
-            ),
+            errorText: text.displayError == null
+                ? null
+                : context.l10n.enterTextOfAzkar,
           ),
         );
       },
@@ -131,17 +127,12 @@ class _ExplanationOfAzkarTextField extends StatelessWidget {
           key: const Key('AzkarForm_ExplanationOfAzkar_textField'),
           maxLines: 3,
           minLines: 2,
-          onChanged: (text) => context.read<AddOrEditAzkarCubit>().explanationChanged(text),
+          onChanged: (text) =>
+              context.read<AddOrEditAzkarCubit>().explanationChanged(text),
           controller: context.read<AddOrEditAzkarCubit>().explanation,
           decoration: InputDecoration(
+            labelText: context.l10n.azkarExplain,
             labelStyle: context.textThemeX.medium,
-            hintText:
-                'ذكر "سبحان الله وبحمده، سبحان الله العظيم" هو من أذكار التسبيح التي تعبر عن تنزيه لله تعالى عن كل نقص وعيب، مع الثناء على جلاله وعظمته. يعتبر هذا الذكر من الأذكار المباركة التي لها فضل عظيم في الإسلام، فقد ورد في الأحاديث النبوية أن من يقول هذا الذكر مائة مرة يغفر الله له ذنوبه وإن كانت مثل زبد البحر. كما أن هذا الذكر يغرس للمسلم شجرة في الجنة،',
-            hintStyle: context.textThemeX.medium.bold.copyWith(
-              height: 1.5.h,
-              overflow: TextOverflow.ellipsis,
-              color: context.colorsX.onBackgroundTint35,
-            ),
           ),
         );
       },
@@ -157,9 +148,11 @@ class _RepeatNumberOfAzkarTextField extends StatelessWidget {
     final cubit = context.read<AddOrEditAzkarCubit>();
     Future<void> onNoOfRepeatTapped() async {
       final currentState = context.read<AddOrEditAzkarCubit>().state;
-      final initialValue = double.tryParse(cubit.noOfRepetitionsController.text) ?? 1;
+      final initialValue =
+          double.tryParse(cubit.noOfRepetitionsController.text) ?? 1;
 
-      final newValue = await NumberPickerBS.show(context, initial: initialValue);
+      final newValue =
+          await NumberPickerBS.show(context, initial: initialValue);
       if (newValue != null) {
         cubit.noOfRepetitionsChanged(newValue.toInt());
       }
@@ -178,15 +171,6 @@ class _RepeatNumberOfAzkarTextField extends StatelessWidget {
           textAlign: TextAlign.center,
           onTap: onNoOfRepeatTapped,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          decoration: InputDecoration(
-            labelStyle: context.textThemeX.medium,
-            hintText: state.noOfRepeats.toString(),
-            hintStyle: context.textThemeX.medium.bold.copyWith(
-              height: 1.5.h,
-              overflow: TextOverflow.ellipsis,
-              color: context.colorsX.onBackgroundTint35,
-            ),
-          ),
         );
       },
     );
@@ -242,7 +226,8 @@ class _AddAzkarButton extends StatelessWidget {
             maxWidth: true,
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
-            label: state.azkarId == null ? context.l10n.add : context.l10n.update,
+            label:
+                state.azkarId == null ? context.l10n.add : context.l10n.update,
             onPressed: state.isValid
                 ? () {
                     context.read<AddOrEditAzkarCubit>().addOrUpdateAzkarForm();

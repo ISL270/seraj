@@ -12,6 +12,7 @@ import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.
 import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 part 'daleel_event.dart';
@@ -19,12 +20,15 @@ part 'daleel_state.dart';
 
 @injectable
 class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
+  late TextEditingController tagSearchControllers;
   final DaleelRepository _repository;
 
   DaleelBloc(this._repository) : super(DaleelState._initial()) {
+    tagSearchControllers = TextEditingController();
     on<DaleelFiltered>(_onFilterUpdate);
     on<DaleelSearched>(_onSearched);
     on<DaleelSubscriptionRequested>(_onSubscriptionRequested);
+    on<DaleelTagSearched>(_onSearchedTags);
     on<DaleelNextPageFetched>(
       _onNextPageFetched,
       transformer: EventTransformers.throttleDroppable(),
@@ -109,5 +113,27 @@ class DaleelBloc extends Bloc<DaleelEvent, DaleelState> {
     if (state.daleelFilters == event.filters) return;
     emit(state.copyWith(daleelFilters: event.filters));
     add(DaleelSearched(state.searchTerm));
+  }
+
+  void _onSearchedTags(
+    DaleelTagSearched event,
+    Emitter<DaleelState> emit,
+  ) {
+    emit(state.copyWith(searchedTags: getTags()));
+    final selectedTags = state.searchedTags; // Ensure all Tags is initialized
+
+    final filteredTags = selectedTags
+        .where((tag) => tag.name.toLowerCase().contains(event.query.toLowerCase()))
+        .toList();
+
+    log('Filtered Tags: ${filteredTags.map((t) => t.name).toList()}'); // Debugging log
+
+    emit(state.copyWith(searchedTags: filteredTags));
+  }
+
+  @override
+  Future<void> close() {
+    tagSearchControllers.dispose();
+    return super.close();
   }
 }

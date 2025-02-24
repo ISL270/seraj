@@ -183,5 +183,6 @@
           "duaTags": "تبويبات الدعاء",
           "editAzkar": "تعديل الذكر",
           "tagsOfAzkar": "تبويبات الذكر",
-          "azkarTags": "تبويبات الأذكار"
+          "azkarTags": "تبويبات الأذكار",
+          "noAvailableTags":"لم يتم العثور على نتائج"
       }

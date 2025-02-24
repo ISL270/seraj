@@ -16,6 +16,8 @@ import 'package:athar/app/features/azkar/sub_features/add_or_edit_azkar/presenta
 import 'package:athar/app/features/azkar/sub_features/azkar_details/presentation/azkar_details_screen.dart';
 import 'package:athar/app/widgets/action_buttoms.dart';
 import 'package:athar/app/widgets/button.dart';
+import 'package:athar/app/widgets/selectable_filter_chip.dart';
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,6 +29,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:super_cupertino_navigation_bar/super_cupertino_navigation_bar.dart';
 
 part 'widgets/azkar_list_view_builder.dart';
+part 'widgets/tag_filter_bottom_sheet.dart';
 part 'widgets/filter_bottom_sheet.dart';
 part 'widgets/azkar_widget.dart';
 
@@ -45,10 +48,11 @@ class _AzkarScreenState extends State<AzkarScreen> {
   final isCollapsed = ValueNotifier<bool>(false);
 
   late final AzkarBloc _bloc;
+  late final AzkarFilters filters;
   @override
   void initState() {
     super.initState();
-
+    filters = context.read<AzkarBloc>().state.azkarFilters;
     _scrollCntrlr = ScrollController();
     _bloc = context.read<AzkarBloc>();
     _searchCntrlr = TextEditingController();
@@ -134,7 +138,40 @@ class _AzkarScreenState extends State<AzkarScreen> {
         physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.zero,
         controller: _scrollCntrlr,
-        child: const _AzkarListViewBuilder(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 60.h,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: BlocBuilder<AzkarBloc, AzkarState>(
+                  builder: (context, state) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                      child: SelectableFilterChip(
+                        label: state.azkarFilters.tags.isEmpty
+                            ? context.l10n.tags
+                            : '${context.l10n.tags} : ${state.azkarFilters.tags.map((e) => e.name).join(', ')}',
+                        isActive: state.azkarFilters.tags.isNotEmpty,
+                        cancelFilterActive: state.azkarFilters.tags.isNotEmpty,
+                        cancelFilteronTap: () {
+                          state.azkarFilters.tags.clear();
+                          _bloc.add(AzkarSearched(state.searchTerm));
+                        },
+                        onTap: () async {
+                          await _openFilterTagSelectionBottomSheet(filters, context);
+                          _bloc.add(AzkarSearched(state.searchTerm));
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            const _AzkarListViewBuilder(),
+          ],
+        ),
       ),
     );
   }
