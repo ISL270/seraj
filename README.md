@@ -1,4 +1,4 @@
-# Athar
+# Seraj
 
 ![coverage][coverage_badge]
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
@@ -31,7 +31,7 @@ $ flutter run --flavor staging --target lib/flavors/staging/main_staging.dart
 $ flutter run --flavor production --target lib/flavors/production/main_production.dart
 ```
 
-_\*Athar works on iOS, Android, Web, and Windows._
+_\*Seraj works on iOS, Android, Web, and Windows._
 
 ---
 
