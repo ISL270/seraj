@@ -12,6 +12,7 @@ final class DaleelState extends Equatable {
   final DaleelFilters daleelFilters;
   final String searchTerm;
   VoidStatus status;
+  List<Tag> searchedTags;
 
   DaleelState._({
     required this.filterDaleelTypeActive,
@@ -23,6 +24,7 @@ final class DaleelState extends Equatable {
     required this.searchTerm,
     required this.daleels,
     required this.status,
+    required this.searchedTags,
   });
 
   DaleelState._initial()
@@ -34,6 +36,7 @@ final class DaleelState extends Equatable {
           selectedPriority: 0,
           searchTerm: '',
           daleels: PaginatedResult.empty(),
+          searchedTags: [],
           status: const Initial(),
           daleelFilters: DaleelFilters(),
         );
@@ -47,6 +50,7 @@ final class DaleelState extends Equatable {
     DateTime? selectedDate,
     String? searchTerm,
     PaginatedResult<Daleel>? daleels,
+    List<Tag>? searchedTags,
     VoidStatus? status,
     DaleelFilters? daleelFilters,
   }) =>
@@ -58,6 +62,7 @@ final class DaleelState extends Equatable {
         selectedPriority: selectedPriority ?? this.selectedPriority,
         searchTerm: searchTerm ?? this.searchTerm,
         daleels: daleels ?? this.daleels,
+        searchedTags: searchedTags ?? this.searchedTags,
         status: status ?? this.status,
         daleelFilters: daleelFilters ?? this.daleelFilters,
       );
@@ -70,6 +75,7 @@ final class DaleelState extends Equatable {
         selectedDaleelType,
         selectedPriority,
         searchTerm,
+        searchedTags,
         daleels,
         status,
         daleelFilters,

@@ -39,3 +39,12 @@ final class AzkarDeleted extends AzkarEvent {
 
   const AzkarDeleted(this.id);
 }
+
+final class AzkarTagSearched extends AzkarEvent {
+  final String query;
+
+  const AzkarTagSearched(this.query);
+
+  @override
+  List<Object> get props => [query];
+}

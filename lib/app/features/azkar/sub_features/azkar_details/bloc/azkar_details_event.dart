@@ -23,4 +23,4 @@ final class AzkarDeleted extends _AzkarDetailsEvent {
 
 class IncrementCounter extends _AzkarDetailsEvent {}
 
-class DecrementCounter extends _AzkarDetailsEvent {}
+class ResetCounter extends _AzkarDetailsEvent {}

@@ -1,10 +1,10 @@
 // ignore_for_file: inference_failure_on_function_invocation
 
 import 'package:athar/app/core/isar/isar_source.dart';
-import 'package:athar/app/core/models/favourite_filters.dart';
 import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/dua/data/dua_isar.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
+import 'package:athar/app/features/dua/presentation/models/dua_filters.dart';
 import 'package:athar/app/features/dua/sub_features/dua_tag/data/dua_tag_isar.dart';
 import 'package:dartx/dartx_io.dart';
 import 'package:injectable/injectable.dart';
@@ -18,16 +18,28 @@ final class DuaIsarSource extends IsarSource<Dua, DuaIsar> {
     String searchTerm, {
     required int page,
     required int pageSize,
-    FavouriteFilters? filters,
+    DuaFilters? filters,
   }) {
+    if (filters == null) {
+      return isarService.db.duaIsars
+          .where()
+          .anyText()
+          .offset(page * pageSize)
+          .limit(pageSize)
+          .findAllSync();
+    }
     final query = switch (searchTerm.isNotBlank) {
       true => isarService.db.duaIsars.where().textStartsWith(searchTerm).filter(),
       false => isarService.db.duaIsars.where().anyText().filter(),
     };
     return query
         .optional(
-          filters?.favourites.isNotEmpty ?? false,
-          (q) => q.anyOf(filters!.favourites, (q, f) => q.isFavouriteEqualTo(f)),
+          filters.favourites.isNotEmpty,
+          (q) => q.anyOf(filters.favourites, (q, f) => q.isFavouriteEqualTo(f)),
+        )
+        .optional(
+          filters.tags.isNotEmpty,
+          (q) => q.anyOf(filters.tags, (q, tag) => q.tags((t) => t.nameEqualTo(tag.name))),
         )
         .offset(page * pageSize)
         .limit(pageSize)

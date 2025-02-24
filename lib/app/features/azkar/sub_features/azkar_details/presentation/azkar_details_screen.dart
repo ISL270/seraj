@@ -105,6 +105,7 @@ class AzkarDetailsScreen extends StatelessWidget {
                             CircleAvatar(
                               backgroundColor: context.colorsX.primary.withValues(alpha: 0.5),
                               child: IconButton(
+                                disabledColor: context.colorsX.background,
                                 onPressed: () =>
                                     context.read<AzkarDetailsBloc>().add(IncrementCounter()),
                                 icon: Icon(
@@ -136,9 +137,9 @@ class AzkarDetailsScreen extends StatelessWidget {
                               backgroundColor: context.colorsX.primary.withValues(alpha: 0.5),
                               child: IconButton(
                                 onPressed: () =>
-                                    context.read<AzkarDetailsBloc>().add(DecrementCounter()),
+                                    context.read<AzkarDetailsBloc>().add(ResetCounter()),
                                 icon: Icon(
-                                  FontAwesomeIcons.subtract,
+                                  FontAwesomeIcons.arrowRotateForward,
                                   size: 20.r,
                                   color: context.colorsX.onBackground,
                                 ),

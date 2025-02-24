@@ -20,10 +20,11 @@ import 'package:athar/app/features/daleel/presentation/widgets/priority_slider_w
 import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/add_edit_athar_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/add_edit_ayah.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/add_edit_hadith_screen.dart';
-import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/add_other_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/add_or_edit_other_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/daleel_details/presentation/daleel_details_screen.dart';
 import 'package:athar/app/widgets/action_buttoms.dart';
 import 'package:athar/app/widgets/button.dart';
+import 'package:athar/app/widgets/selectable_filter_chip.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -132,13 +133,13 @@ class _DaleelScreenState extends State<DaleelScreen> {
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  spacing: 8.w,
-                  children: [
-                    Gap(12.w),
-                    BlocBuilder<DaleelBloc, DaleelState>(
-                      builder: (context, state) {
-                        return _DaleelFilterTypeWidget(
+                child: BlocBuilder<DaleelBloc, DaleelState>(
+                  builder: (context, state) {
+                    return Row(
+                      spacing: 8.w,
+                      children: [
+                        Gap(12.w),
+                        SelectableFilterChip(
                           label: state.daleelFilters.daleelType.isEmpty
                               ? context.l10n.daleelType
                               : '${context.l10n.daleelType} : ${state.daleelFilters.daleelType.map((e) => e.toTranslate(context)).join(', ')}',
@@ -152,12 +153,8 @@ class _DaleelScreenState extends State<DaleelScreen> {
                             state.daleelFilters.daleelType.clear();
                             _bloc.add(const DaleelSearched(''));
                           },
-                        );
-                      },
-                    ),
-                    BlocBuilder<DaleelBloc, DaleelState>(
-                      builder: (context, state) {
-                        return _DaleelFilterTypeWidget(
+                        ),
+                        SelectableFilterChip(
                           label: state.daleelFilters.priority.isEmpty
                               ? context.l10n.priority
                               : '${context.l10n.priority} : ${state.daleelFilters.priority.map((e) => e.toTranslate(context)).join(', ')}',
@@ -171,76 +168,31 @@ class _DaleelScreenState extends State<DaleelScreen> {
                             state.daleelFilters.priority.clear();
                             _bloc.add(const DaleelSearched(''));
                           },
-                        );
-                      },
-                    ),
-                    _DaleelFilterTypeWidget(
-                      label: context.l10n.date,
-                      onTap: () async {
-                        await _openFilterTagSelectionBottomSheet(filters, context);
-                      },
-                    ),
-                    Gap(12.w),
-                  ],
+                        ),
+                        SelectableFilterChip(
+                          label: state.daleelFilters.tag.isEmpty
+                              ? context.l10n.tags
+                              : '${context.l10n.tags} : ${state.daleelFilters.tag.map((e) => e.name).join(', ')}',
+                          isActive: state.daleelFilters.tag.isNotEmpty,
+                          cancelFilterActive: state.daleelFilters.tag.isNotEmpty,
+                          cancelFilteronTap: () {
+                            state.daleelFilters.tag.clear();
+                            _bloc.add(const DaleelSearched(''));
+                          },
+                          onTap: () async {
+                            await _openFilterTagSelectionBottomSheet(filters, context);
+                            _bloc.add(const DaleelSearched(''));
+                          },
+                        ),
+                        Gap(12.w),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
             const _DaleelListViewBuilder(),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _DaleelFilterTypeWidget extends StatelessWidget {
-  const _DaleelFilterTypeWidget({
-    this.label = 'تصنيف',
-    this.isActive = false,
-    this.onTap,
-    this.cancelFilteronTap,
-    this.cancelFilterActive = false,
-  });
-
-  final String label;
-  final bool isActive;
-  final void Function()? onTap;
-  final void Function()? cancelFilteronTap;
-  final bool cancelFilterActive;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(16.w),
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 400),
-        height: 40.h,
-        decoration: BoxDecoration(
-          color: isActive
-              ? context.colorsX.primary.withOpacity(0.15)
-              : context.colorsX.onBackgroundTint35.withOpacity(0.10),
-          borderRadius: BorderRadius.circular(16.w),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(4.sp),
-          child: Center(
-            child: Row(
-              spacing: 3.w,
-              children: [
-                Gap(4.w),
-                Text(
-                  label,
-                  style: context.textThemeX.medium.bold.copyWith(
-                    color: isActive ? context.colorsX.primary : context.colorsX.onBackgroundTint,
-                  ),
-                ),
-                Gap(3.w),
-                if (cancelFilterActive) CancelFilterButton(onTap: cancelFilteronTap),
-                Gap(1.w),
-              ],
-            ),
-          ),
         ),
       ),
     );

@@ -28,16 +28,13 @@ class AddOrEditAtharCubit extends Cubit<AddOrEditAtharState> {
     descOfAtharCtrlr = TextEditingController();
   }
 
-  void atharChanged(String athar) =>
-      emit(state.copyWith(athar: Name.dirty(athar)));
+  void atharChanged(String athar) => emit(state.copyWith(athar: Name.dirty(athar)));
 
   void sayerChanged(String sayer) => emit(state.copyWith(sayer: sayer));
 
-  void explainationChanged(String explaination) =>
-      emit(state.copyWith(description: explaination));
+  void explainationChanged(String explaination) => emit(state.copyWith(description: explaination));
 
-  void sliderPriorityChanged(double value) =>
-      emit(state.copyWith(sliderValue: value));
+  void sliderPriorityChanged(double value) => emit(state.copyWith(sliderValue: value));
 
   void tagsChanged(Set<Tag> newTags) {
     emit(state.copyWith(tags: newTags));
@@ -64,8 +61,7 @@ class AddOrEditAtharCubit extends Cubit<AddOrEditAtharState> {
         tags: daleel?.tags ?? {},
       ));
 
-      emit(state.copyWith(
-          status: const Success('Initialized Athar Successfully')));
+      emit(state.copyWith(status: const Success('Initialized Athar Successfully')));
     }
   }
 
@@ -86,6 +82,10 @@ class AddOrEditAtharCubit extends Cubit<AddOrEditAtharState> {
       log(e.toString());
       emit(state.copyWith(status: Failure(e as GenericException)));
     }
+  }
+
+  List<Tag> getTags() {
+    return _repository.getTags();
   }
 
   @override

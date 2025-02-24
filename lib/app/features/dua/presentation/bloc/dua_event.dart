@@ -21,7 +21,7 @@ final class _DuaSubscriptionRequested extends DuaEvent {}
 final class DuaNextPageFetched extends DuaEvent {}
 
 final class DuaFiltered extends DuaEvent {
-  final FavouriteFilters filters;
+  final DuaFilters filters;
 
   const DuaFiltered(this.filters);
 }
@@ -33,4 +33,13 @@ final class DuaFavouriteToggled extends DuaEvent {
 
   @override
   List<Object> get props => [dua];
+}
+
+final class DuaTagSearched extends DuaEvent {
+  final String query;
+
+  const DuaTagSearched(this.query);
+
+  @override
+  List<Object> get props => [query];
 }

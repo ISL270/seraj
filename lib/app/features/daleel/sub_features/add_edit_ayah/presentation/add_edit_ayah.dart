@@ -55,11 +55,16 @@ class _AddEditAyahState extends State<AddEditAyah> {
                         children: [
                           GestureDetector(
                             onTap: () => context.pop(),
-                            child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
+                            child: Icon(Icons.keyboard_arrow_right_outlined,
+                                size: 32.w),
                           ),
                           const Spacer(flex: 2),
                           Text(
-                            context.read<AddEditAyahCubit>().state.selectedAyahs.isEmpty
+                            context
+                                    .read<AddEditAyahCubit>()
+                                    .state
+                                    .selectedAyahs
+                                    .isEmpty
                                 ? '${context.l10n.edit} ${context.l10n.ayah.capitalizedDefinite}'
                                 : context.l10n.addAyahs,
                             style: context.textThemeX.heading.bold,
@@ -72,10 +77,12 @@ class _AddEditAyahState extends State<AddEditAyah> {
                         children: [
                           Padding(
                             padding: EdgeInsets.only(top: 80.h),
-                            child: BlocBuilder<AddEditAyahCubit, AddEditAyahState>(
+                            child:
+                                BlocBuilder<AddEditAyahCubit, AddEditAyahState>(
                               builder: (context, state) {
                                 final cubit = context.read<AddEditAyahCubit>();
-                                return state.selectedAyahs.isNotEmpty || state.ayaId != null
+                                return state.selectedAyahs.isNotEmpty ||
+                                        state.ayaId != null
                                     ? Column(
                                         spacing: 10.h,
                                         children: [
@@ -83,27 +90,34 @@ class _AddEditAyahState extends State<AddEditAyah> {
                                             alignment: Alignment.centerRight,
                                             child: Text(
                                               context.l10n.surahandnoayah,
-                                              style: context.textThemeX.medium.bold,
+                                              style: context
+                                                  .textThemeX.medium.bold,
                                             ),
                                           ),
                                           _SurahAndVerseNumTextField(
-                                            surahController: cubit.surahController,
-                                            firstAyahController: cubit.firstAyahController,
-                                            lastAyahController: cubit.lastAyahController,
+                                            surahController:
+                                                cubit.surahController,
+                                            firstAyahController:
+                                                cubit.firstAyahController,
+                                            lastAyahController:
+                                                cubit.lastAyahController,
                                           ),
                                           Align(
                                             alignment: Alignment.centerRight,
                                             child: Text(
                                               context.l10n.ayahs,
-                                              style: context.textThemeX.medium.bold,
+                                              style: context
+                                                  .textThemeX.medium.bold,
                                             ),
                                           ),
                                           _QuranicVerseTextField(
-                                            controller: cubit.quranicVerseController,
+                                            controller:
+                                                cubit.quranicVerseController,
                                           ),
                                           Gap(5.h),
                                           _QuranicVerseExplanationTextField(
-                                            controller: cubit.explanationController,
+                                            controller:
+                                                cubit.explanationController,
                                           ),
                                           Gap(5.h),
                                           TagSelectionWidget(
@@ -119,8 +133,11 @@ class _AddEditAyahState extends State<AddEditAyah> {
                                               }
                                             },
                                             onRemoveTag: (tag) =>
-                                                cubit.tagsChanged({...state.tags}..remove(tag)),
-                                            onClearTags: () => cubit.tagsChanged({}),
+                                                cubit.tagsChanged({
+                                              ...state.tags
+                                            }..remove(tag)),
+                                            onClearTags: () =>
+                                                cubit.tagsChanged({}),
                                           )
                                         ],
                                       )
@@ -165,11 +182,6 @@ class _SurahAndVerseNumTextField extends StatelessWidget {
           child: TextField(
             readOnly: true,
             controller: surahController,
-            decoration: InputDecoration(
-              alignLabelWithHint: true,
-              hintText: context.l10n.quranicayahsurah,
-              hintStyle: context.textThemeX.medium.bold,
-            ),
           ),
         ),
         Padding(
@@ -185,11 +197,6 @@ class _SurahAndVerseNumTextField extends StatelessWidget {
             controller: firstAyahController,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             textAlign: TextAlign.center,
-            decoration: InputDecoration(
-              alignLabelWithHint: true,
-              hintText: context.l10n.numofayah,
-              hintStyle: context.textThemeX.medium.bold,
-            ),
           ),
         ),
         Padding(
@@ -222,8 +229,8 @@ class _QuranicVerseTextField extends StatelessWidget {
       minLines: 1,
       decoration: InputDecoration(
         alignLabelWithHint: true,
-        hintText: context.l10n.quranicversec,
-        hintStyle: context.textThemeX.medium.bold,
+        labelText: context.l10n.quranicversec,
+        labelStyle: context.textThemeX.medium.bold,
       ),
     );
   }
@@ -240,11 +247,12 @@ class _QuranicVerseExplanationTextField extends StatelessWidget {
       controller: controller,
       maxLines: 5,
       minLines: 4,
-      onChanged: (value) => context.read<AddEditAyahCubit>().ayaExplainChanged(value),
+      onChanged: (value) =>
+          context.read<AddEditAyahCubit>().ayaExplainChanged(value),
       decoration: InputDecoration(
         alignLabelWithHint: true,
-        hintText: context.l10n.quranicayahexp,
-        hintStyle: context.textThemeX.medium,
+        labelText: context.l10n.quranicayahexp,
+        labelStyle: context.textThemeX.medium,
       ),
     );
   }
@@ -281,7 +289,9 @@ class _AyahAddButton extends StatelessWidget {
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
             label: state.ayaId == null ? context.l10n.add : context.l10n.update,
-            onPressed: state.isValid ? () => context.read<AddEditAyahCubit>().saveAyaForm() : null,
+            onPressed: state.isValid
+                ? () => context.read<AddEditAyahCubit>().saveAyaForm()
+                : null,
           ),
         );
       },

@@ -38,3 +38,8 @@ final class DaleelFiltered extends DaleelEvent {
   final DaleelFilters filters;
   const DaleelFiltered(this.filters);
 }
+
+final class DaleelTagSearched extends DaleelEvent {
+  final String query;
+  const DaleelTagSearched(this.query);
+}

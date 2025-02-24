@@ -9,6 +9,7 @@ import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentati
 import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/cubit/add_edit_athar_state.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
+import 'package:athar/app/widgets/tag_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -48,13 +49,34 @@ class AddOrEditAtharScreen extends StatelessWidget {
                 spacing: 15.h,
                 children: [
                   Gap(10.h),
-                  _LabelTextFieldAlignWidget(label: context.l10n.atharText),
                   const _TextOfAtharTextField(),
-                  _LabelTextFieldAlignWidget(label: context.l10n.atharSayer),
                   const _SayerOfAtharTextField(),
-                  _LabelTextFieldAlignWidget(label: context.l10n.explaination),
                   const _ExplainationOfAtharTextField(),
                   const _PrioritySliderWithLabelWidget(),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child:
+                        BlocBuilder<AddOrEditAtharCubit, AddOrEditAtharState>(
+                      builder: (context, state) {
+                        final cubit = context.read<AddOrEditAtharCubit>();
+                        return TagSelectionWidget(
+                          tags: state.tags,
+                          onAddTag: (tag) {
+                            final updatedTags = {
+                              ...state.tags
+                            }; // Create a new modifiable set
+                            if (updatedTags.add(tag)) {
+                              cubit.tagsChanged(updatedTags);
+                            }
+                          },
+                          onRemoveTag: (tag) =>
+                              cubit.tagsChanged({...state.tags}..remove(tag)),
+                          onClearTags: () => cubit.tagsChanged(const {}),
+                          availableTags: cubit.getTags(),
+                        );
+                      },
+                    ),
+                  ),
                   Gap(30.h),
                 ],
               ),
@@ -81,19 +103,17 @@ class _TextOfAtharTextField extends StatelessWidget {
           child: TextField(
             maxLines: 3,
             minLines: 2,
-            onChanged: (value) => context.read<AddOrEditAtharCubit>().atharChanged(value),
+            onChanged: (value) =>
+                context.read<AddOrEditAtharCubit>().atharChanged(value),
             controller: context.read<AddOrEditAtharCubit>().textOfAtharCtrlr,
             decoration: InputDecoration(
+              labelText: context.l10n.atharText,
               labelStyle: context.textThemeX.medium,
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
-              hintText: 'حدثنا مروان بن معاوية أن عمر فرض للهر مزان',
-              hintMaxLines: 2,
-              hintStyle: context.textThemeX.medium.bold.copyWith(
-                height: 1.5.h,
-                color: context.colorsX.onBackgroundTint35,
-              ),
-              errorText: athar.displayError == null ? null : context.l10n.enterTextOfAthar,
-              alignLabelWithHint: false,
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
+              errorText: athar.displayError == null
+                  ? null
+                  : context.l10n.enterTextOfAthar,
             ),
           ),
         );
@@ -112,17 +132,14 @@ class _SayerOfAtharTextField extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: TextField(
-            onChanged: (value) => context.read<AddOrEditAtharCubit>().sayerChanged(value),
+            onChanged: (value) =>
+                context.read<AddOrEditAtharCubit>().sayerChanged(value),
             controller: context.read<AddOrEditAtharCubit>().sayerOfAtharCtrlr,
             decoration: InputDecoration(
+              labelText: context.l10n.atharSayer,
               labelStyle: context.textThemeX.medium,
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
-              hintText: 'أبو عبيد',
-              hintStyle: context.textThemeX.medium.bold.copyWith(
-                height: 1.5.h,
-                color: context.colorsX.onBackgroundTint35,
-              ),
-              alignLabelWithHint: false,
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
             ),
           ),
         );
@@ -143,17 +160,14 @@ class _ExplainationOfAtharTextField extends StatelessWidget {
           child: TextField(
             maxLines: 3,
             minLines: 3,
-            onChanged: (value) => context.read<AddOrEditAtharCubit>().explainationChanged(value),
+            onChanged: (value) =>
+                context.read<AddOrEditAtharCubit>().explainationChanged(value),
             controller: context.read<AddOrEditAtharCubit>().descOfAtharCtrlr,
             decoration: InputDecoration(
+              labelText: context.l10n.explaination,
               labelStyle: context.textThemeX.medium,
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
-              hintText: context.l10n.explainationOfAthar,
-              hintStyle: context.textThemeX.medium.bold.copyWith(
-                height: 1.5.h,
-                color: context.colorsX.onBackgroundTint35,
-              ),
-              alignLabelWithHint: false,
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
             ),
           ),
         );
@@ -167,59 +181,47 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: BlocBuilder<AddOrEditAtharCubit, AddOrEditAtharState>(
-        builder: (context, state) {
-          return Column(
-            spacing: 15.h,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: [
-                  _LabelTextFieldAlignWidget(label: context.l10n.priority),
-                  Gap(8.w),
-                  Text(
-                    '${Priority.translate(context, state.sliderValue)} ${context.l10n.saveIt}',
-                    style: context.textThemeX.medium.bold.copyWith(
-                      color: context.colorsX.primary,
-                      textBaseline: TextBaseline.alphabetic,
-                    ),
+    return BlocBuilder<AddOrEditAtharCubit, AddOrEditAtharState>(
+      builder: (context, state) {
+        return Column(
+          spacing: 15.h,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(context.l10n.priority,
+                        style: context.textThemeX.medium.bold),
                   ),
-                ],
-              ),
-              Slider.adaptive(
-                onChanged: (value) =>
-                    context.read<AddOrEditAtharCubit>().sliderPriorityChanged(value),
-                value: state.sliderValue,
-                activeColor: context.colorsX.primary,
-                inactiveColor: context.colorsX.onBackgroundTint35,
-                max: Priority.values.length - 1,
-                divisions: Priority.values.length - 1,
-                label: Priority.translate(context, state.sliderValue),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _LabelTextFieldAlignWidget extends StatelessWidget {
-  const _LabelTextFieldAlignWidget({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: Text(label, style: context.textThemeX.medium.bold),
-      ),
+                ),
+                Gap(8.w),
+                Text(
+                  '${Priority.translate(context, state.sliderValue)} ${context.l10n.saveIt}',
+                  style: context.textThemeX.medium.bold.copyWith(
+                    color: context.colorsX.primary,
+                    textBaseline: TextBaseline.alphabetic,
+                  ),
+                ),
+              ],
+            ),
+            Slider.adaptive(
+              onChanged: (value) => context
+                  .read<AddOrEditAtharCubit>()
+                  .sliderPriorityChanged(value),
+              value: state.sliderValue,
+              activeColor: context.colorsX.primary,
+              inactiveColor: context.colorsX.onBackgroundTint35,
+              max: Priority.values.length - 1,
+              divisions: Priority.values.length - 1,
+              label: Priority.translate(context, state.sliderValue),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -261,9 +263,11 @@ class _AtharAddButton extends StatelessWidget {
             maxWidth: true,
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
-            label: state.atharId == null ? context.l10n.add : context.l10n.update,
+            label:
+                state.atharId == null ? context.l10n.add : context.l10n.update,
             onPressed: state.isValid
-                ? () => context.read<AddOrEditAtharCubit>().saveOrUpdateAtharForm()
+                ? () =>
+                    context.read<AddOrEditAtharCubit>().saveOrUpdateAtharForm()
                 : null,
           ),
         );

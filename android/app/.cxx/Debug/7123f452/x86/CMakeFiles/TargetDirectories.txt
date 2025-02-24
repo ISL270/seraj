@@ -1,0 +1,2 @@
+E:/seraj/seraj/android/app/.cxx/Debug/7123f452/x86/CMakeFiles/edit_cache.dir
+E:/seraj/seraj/android/app/.cxx/Debug/7123f452/x86/CMakeFiles/rebuild_cache.dir

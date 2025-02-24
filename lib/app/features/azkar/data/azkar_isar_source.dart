@@ -40,14 +40,26 @@ final class AzkarIsarSource extends IsarSource<Azkar, AzkarIsar> {
     required int pageSize,
     AzkarFilters? filters,
   }) {
+    if (filters == null) {
+      return isarService.db.azkarIsars
+          .where()
+          .anyText()
+          .offset(page * pageSize)
+          .limit(pageSize)
+          .findAllSync();
+    }
     final query = switch (searchTerm.isNotBlank) {
       true => isarService.db.azkarIsars.where().textStartsWith(searchTerm).filter(),
       false => isarService.db.azkarIsars.where().anyText().filter(),
     };
     return query
         .optional(
-          filters?.favourites.isNotEmpty ?? false,
-          (q) => q.anyOf(filters!.favourites, (q, f) => q.isFavouriteEqualTo(f)),
+          filters.favourites.isNotEmpty,
+          (q) => q.anyOf(filters.favourites, (q, f) => q.isFavouriteEqualTo(f)),
+        )
+        .optional(
+          filters.tags.isNotEmpty,
+          (q) => q.anyOf(filters.tags, (q, tag) => q.tags((t) => t.nameEqualTo(tag.name))),
         )
         .offset(page * pageSize)
         .limit(pageSize)

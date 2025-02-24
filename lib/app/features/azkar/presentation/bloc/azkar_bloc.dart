@@ -4,11 +4,13 @@ import 'dart:developer';
 
 import 'package:athar/app/core/models/bloc_event_transformers.dart';
 import 'package:athar/app/core/models/paginated_result.dart';
+import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/features/azkar/domain/azkar.dart';
 import 'package:athar/app/features/azkar/domain/azkar_repository.dart';
 import 'package:athar/app/features/azkar/presentation/models/azkar_filters.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 part 'azkar_event.dart';
@@ -17,10 +19,12 @@ part 'azkar_state.dart';
 @injectable
 class AzkarBloc extends Bloc<AzkarEvent, AzkarState> {
   final AzkarRepository _repository;
+  final TextEditingController tagSearchController = TextEditingController();
 
   AzkarBloc(this._repository) : super(AzkarState._initial()) {
     on<AzkarSubscriptionRequested>(_onSubscriptionRequested);
     on<AzkarSearched>(_onSearched);
+    on<AzkarTagSearched>(_onSearchedTags);
     on<AzkarFavourited>(toggleFavouriteAzkar);
     on<AzkarDeleted>(deleteAzkar);
     on<AzkarFiltered>(_onFilterUpdate);
@@ -82,6 +86,24 @@ class AzkarBloc extends Bloc<AzkarEvent, AzkarState> {
     add(AzkarSearched(state.searchTerm));
   }
 
+  List<Tag> getTags() => _repository.getTags();
+
+  void _onSearchedTags(
+    AzkarTagSearched event,
+    Emitter<AzkarState> emit,
+  ) {
+    emit(state._copyWith(searchedTags: getTags()));
+    final selectedTags = state.searchedTags; // Ensure all Tags is initialized
+
+    final filteredTags = selectedTags
+        .where((tag) => tag.name.toLowerCase().contains(event.query.toLowerCase()))
+        .toList();
+
+    log('Filtered Tags: ${filteredTags.map((t) => t.name).toList()}'); // Debugging log
+
+    emit(state._copyWith(searchedTags: filteredTags));
+  }
+
   void toggleFavouriteAzkar(
     AzkarFavourited event,
     Emitter<AzkarState> emit,
@@ -95,5 +117,11 @@ class AzkarBloc extends Bloc<AzkarEvent, AzkarState> {
   ) {
     _repository.delete(event.id);
     add(const AzkarSearched(''));
+  }
+
+  @override
+  Future<void> close() {
+    tagSearchController.dispose();
+    return super.close();
   }
 }
