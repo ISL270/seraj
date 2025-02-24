@@ -40,15 +40,15 @@ jobs:
 
       # 6. Build APK
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --flavor prod --target lib/flavors/development/main_development.dart
 
       # 7. Build Android App Bundle
       - name: Build App Bundle
-        run: flutter build appbundle
+        run: flutter build appbundle --flavor prod --target lib/flavors/development/main_development.dart
 
       # 8. Build iOS IPA (without code signing)
       - name: Build IPA
-        run: flutter build ipa --no-codesign
+        run: flutter build ipa --no-codesign --flavor prod --target lib/flavors/development/main_development.dart
 
       # 9. Archive iOS build
       - name: Compress Archives
