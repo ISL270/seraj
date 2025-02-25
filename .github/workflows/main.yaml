@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     name: Build & Release
-    runs-on: macos-latest
+    runs-on: ubuntu-latest  # Switched to fastest runner
 
     steps:
       - name: Checkout Repository
@@ -57,14 +57,6 @@ jobs:
       - name: Build App Bundle
         run: flutter build appbundle --flavor prod --target lib/flavors/development/main_development.dart
 
-      - name: Build IPA
-        run: flutter build ipa --no-codesign --flavor prod --target lib/flavors/development/main_development.dart
-
-      - name: Compress Archives
-        run: |
-          cd build
-          tar -czf ios_build.tar.gz ios
-
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -72,7 +64,6 @@ jobs:
           path: |
             build/app/outputs/flutter-apk/app-release.apk
             build/app/outputs/bundle/release/app-release.aab
-            build/ios_build.tar.gz
 
       - name: Extract version from pubspec
         id: extract_version
@@ -103,7 +94,6 @@ jobs:
         with:
           artifacts: |
             build/app/outputs/flutter-apk/app-release.apk,
-            build/app/outputs/bundle/release/app-release.aab,
-            build/ios_build.tar.gz
+            build/app/outputs/bundle/release/app-release.aab
           tag: "v${{ env.VERSION }}"
           token: ${{ env.RELEASE_TOKEN }}
