@@ -22,6 +22,7 @@ import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentatio
 import 'package:athar/app/features/daleel/sub_features/add_edit_hadith/presentation/add_edit_hadith_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/add_or_edit_other_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/daleel_details/presentation/daleel_details_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/daleel_revision/daleel_revision.dart';
 import 'package:athar/app/widgets/action_buttoms.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/selectable_filter_chip.dart';
@@ -95,6 +96,15 @@ class _DaleelScreenState extends State<DaleelScreen> {
           largeTitle: context.l10n.athars.capitalizedDefinite,
           textStyle: context.textThemeX.large.bold.copyWith(fontSize: 32.w),
           actions: [
+            GestureDetector(
+              onTap: () => context.pushNamed(DaleelRevisionScreen.name),
+              child: Assets.icons.revision.svg(
+                width: 30.w,
+                height: 30.w,
+                color: context.colorsX.primary,
+              ),
+            ),
+            Gap(10.w),
             GestureDetector(
               onTap: () => _openBottomSheet(context),
               child: Assets.icons.plusSquaredOutlined.svg(

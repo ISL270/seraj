@@ -24,6 +24,7 @@ import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentati
 import 'package:athar/app/features/daleel/sub_features/add_edit_other/presentation/cubit/add_or_edit_other_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/daleel_details/bloc/daleel_details_bloc.dart';
 import 'package:athar/app/features/daleel/sub_features/daleel_details/presentation/daleel_details_screen.dart';
+import 'package:athar/app/features/daleel/sub_features/daleel_revision/daleel_revision.dart';
 import 'package:athar/app/features/dua/domain/dua.dart';
 import 'package:athar/app/features/dua/domain/dua_repository.dart';
 import 'package:athar/app/features/dua/presentation/bloc/dua_bloc.dart';
@@ -137,6 +138,15 @@ final appRouter = GoRouter(
                       create: (context) => TagsCubit(getIt.get<TagsRepository>()),
                       child: const TagsScreen(),
                     ),
+                  ),
+                ),
+                GoRoute(
+                  name: DaleelRevisionScreen.name,
+                  path: DaleelRevisionScreen.name,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  pageBuilder: (context, state) => const CupertinoPage(
+                    fullscreenDialog: true,
+                    child: DaleelRevisionScreen(),
                   ),
                 ),
                 GoRoute(

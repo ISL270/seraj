@@ -52,6 +52,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/quran.svg
   SvgGenImage get quran => const SvgGenImage('assets/icons/quran.svg');
 
+  /// File path: assets/icons/revision.svg
+  SvgGenImage get revision => const SvgGenImage('assets/icons/revision.svg');
+
   /// File path: assets/icons/search.svg
   SvgGenImage get search => const SvgGenImage('assets/icons/search.svg');
 
@@ -72,6 +75,7 @@ class $AssetsIconsGen {
         plusSquaredSolid,
         praying,
         quran,
+        revision,
         search,
         share
       ];
