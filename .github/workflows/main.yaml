@@ -48,8 +48,10 @@ jobs:
           echo "storePassword=${KEYSTORE_PASSWORD}" > android/key.properties
           echo "keyPassword=${KEY_PASSWORD}" >> android/key.properties
           echo "keyAlias=${KEY_ALIAS}" >> android/key.properties
-          echo "storeFile=keystore.jks" >> android/key.properties
+          echo "storeFile=android/app/keystore.jks" >> android/key.properties
 
+      - name: Debug Keystore File
+        run: ls -la android/app/
       - name: Build APK
         run: flutter build apk --release --flavor prod --target lib/flavors/development/main_development.dart
 
