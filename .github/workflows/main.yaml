@@ -11,8 +11,7 @@ on:
 jobs:
   build:
     name: Build & Release
-    runs-on: ubuntu-latest  # Switched to fastest runner
-
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
