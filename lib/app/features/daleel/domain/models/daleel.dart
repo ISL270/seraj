@@ -10,10 +10,14 @@ sealed class Daleel extends IslamicText {
   final Priority priority;
   final DateTime lastRevisedAt;
 
+  // revision screen variables
+  final int revisionCount;
+
   const Daleel({
     required super.id,
     required super.text,
     required this.lastRevisedAt,
+    required this.revisionCount,
     required this.daleelType,
     this.sayer,
     this.textWithoutDiacritics,
@@ -29,6 +33,7 @@ sealed class Daleel extends IslamicText {
         textWithoutDiacritics,
         priority,
         lastRevisedAt,
+        revisionCount,
       ];
 }
 
@@ -41,6 +46,7 @@ final class Aya extends Daleel {
     required super.id,
     required super.text,
     required super.lastRevisedAt,
+    required super.revisionCount,
     required super.daleelType,
     required super.textWithoutDiacritics,
     required this.surah,
@@ -69,6 +75,7 @@ final class Hadith extends Daleel {
     required super.id,
     required super.text,
     required super.lastRevisedAt,
+    required super.revisionCount,
     required super.daleelType,
     required super.textWithoutDiacritics,
     super.tags,
@@ -92,6 +99,7 @@ final class Athar extends Daleel {
     required super.id,
     required super.text,
     required super.lastRevisedAt,
+    required super.revisionCount,
     required super.textWithoutDiacritics,
     required super.daleelType,
     super.tags,
@@ -106,6 +114,7 @@ final class Other extends Daleel {
     required super.id,
     required super.text,
     required super.lastRevisedAt,
+    required super.revisionCount,
     required super.textWithoutDiacritics,
     required super.daleelType,
     super.tags,

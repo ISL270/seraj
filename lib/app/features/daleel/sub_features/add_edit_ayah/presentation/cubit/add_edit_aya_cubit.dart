@@ -77,9 +77,8 @@ class AddEditAyahCubit extends Cubit<AddEditAyahState> {
       firstAyahController.text = state.firstAya.toString();
       lastAyahController.text = state.lastAya.toString();
       explanationController.text = state.ayaExplain ?? '';
-      quranicVerseController.text = state.selectedAyahs
-          .map((singleAyah) => singleAyah.ayah)
-          .join(' ').replaceAll('\n', ' ');
+      quranicVerseController.text =
+          state.selectedAyahs.map((singleAyah) => singleAyah.ayah).join(' ').replaceAll('\n', ' ');
     }
   }
 
@@ -158,7 +157,6 @@ class AddEditAyahCubit extends Cubit<AddEditAyahState> {
         surahOfAya: state.surahOfAya.value,
         firstAya: state.firstAya,
         lastAya: state.lastAya,
-        lastRevisedAt: DateTime.now(),
         priority: 1.0.getPriority(),
         tags: state.tags,
       );

@@ -60,23 +60,28 @@ const DaleelIsarSchema = CollectionSchema(
       type: IsarType.string,
       enumMap: _DaleelIsarpriorityEnumValueMap,
     ),
-    r'sayer': PropertySchema(
+    r'revisionCount': PropertySchema(
       id: 8,
+      name: r'revisionCount',
+      type: IsarType.long,
+    ),
+    r'sayer': PropertySchema(
+      id: 9,
       name: r'sayer',
       type: IsarType.string,
     ),
     r'surah': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'surah',
       type: IsarType.string,
     ),
     r'text': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'text',
       type: IsarType.string,
     ),
     r'textWithoutDiacritics': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'textWithoutDiacritics',
       type: IsarType.string,
     )
@@ -204,10 +209,11 @@ void _daleelIsarSerialize(
   writer.writeLong(offsets[5], object.lastAya);
   writer.writeDateTime(offsets[6], object.lastRevisedAt);
   writer.writeString(offsets[7], object.priority.name);
-  writer.writeString(offsets[8], object.sayer);
-  writer.writeString(offsets[9], object.surah);
-  writer.writeString(offsets[10], object.text);
-  writer.writeString(offsets[11], object.textWithoutDiacritics);
+  writer.writeLong(offsets[8], object.revisionCount);
+  writer.writeString(offsets[9], object.sayer);
+  writer.writeString(offsets[10], object.surah);
+  writer.writeString(offsets[11], object.text);
+  writer.writeString(offsets[12], object.textWithoutDiacritics);
 }
 
 DaleelIsar _daleelIsarDeserialize(
@@ -231,11 +237,12 @@ DaleelIsar _daleelIsarDeserialize(
     priority:
         _DaleelIsarpriorityValueEnumMap[reader.readStringOrNull(offsets[7])] ??
             Priority.normal,
-    sayer: reader.readStringOrNull(offsets[8]),
-    surah: reader.readStringOrNull(offsets[9]),
-    text: reader.readString(offsets[10]),
-    textWithoutDiacritics: reader.readStringOrNull(offsets[11]),
+    sayer: reader.readStringOrNull(offsets[9]),
+    surah: reader.readStringOrNull(offsets[10]),
+    text: reader.readString(offsets[11]),
+    textWithoutDiacritics: reader.readStringOrNull(offsets[12]),
   );
+  object.revisionCount = reader.readLong(offsets[8]);
   return object;
 }
 
@@ -268,12 +275,14 @@ P _daleelIsarDeserializeProp<P>(
               reader.readStringOrNull(offset)] ??
           Priority.normal) as P;
     case 8:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 11:
+      return (reader.readString(offset)) as P;
+    case 12:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1882,6 +1891,62 @@ extension DaleelIsarQueryFilter
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      revisionCountEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'revisionCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      revisionCountGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'revisionCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      revisionCountLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'revisionCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition>
+      revisionCountBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'revisionCount',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> sayerIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2627,6 +2692,18 @@ extension DaleelIsarQuerySortBy
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByRevisionCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'revisionCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortByRevisionCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'revisionCount', Sort.desc);
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> sortBySayer() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'sayer', Sort.asc);
@@ -2791,6 +2868,18 @@ extension DaleelIsarQuerySortThenBy
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByRevisionCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'revisionCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenByRevisionCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'revisionCount', Sort.desc);
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterSortBy> thenBySayer() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'sayer', Sort.asc);
@@ -2899,6 +2988,12 @@ extension DaleelIsarQueryWhereDistinct
     });
   }
 
+  QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctByRevisionCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'revisionCount');
+    });
+  }
+
   QueryBuilder<DaleelIsar, DaleelIsar, QDistinct> distinctBySayer(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2984,6 +3079,12 @@ extension DaleelIsarQueryProperty
   QueryBuilder<DaleelIsar, Priority, QQueryOperations> priorityProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'priority');
+    });
+  }
+
+  QueryBuilder<DaleelIsar, int, QQueryOperations> revisionCountProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'revisionCount');
     });
   }
 

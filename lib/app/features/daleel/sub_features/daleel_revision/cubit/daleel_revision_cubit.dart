@@ -1,8 +1,8 @@
+import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
+import 'package:athar/app/features/daleel/sub_features/daleel_revision/cubit/daleel_revision_state.dart';
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-
-part 'daleel_revision_state.dart';
 
 class DaleelRevisionCubit extends Cubit<DaleelRevisionState> {
-  DaleelRevisionCubit() : super(DaleelRevisionInitial());
+  final DaleelRepository _repository;
+  DaleelRevisionCubit(this._repository) : super(const DaleelRevisionState());
 }

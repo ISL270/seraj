@@ -52,6 +52,7 @@ class AddOrEditAtharCubit extends Cubit<AddOrEditAtharState> {
       textOfAtharCtrlr.text = daleel?.text ?? '';
       sayerOfAtharCtrlr.text = daleel?.sayer ?? '';
       descOfAtharCtrlr.text = daleel?.description ?? '';
+
       emit(state.copyWith(
         atharId: daleelId,
         athar: Name.dirty(textOfAtharCtrlr.text),

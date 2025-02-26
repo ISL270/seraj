@@ -57,6 +57,7 @@ dependencies:
   textfield_tags: ^3.0.1
   theme_tailor_annotation: ^3.0.1
   uuid: ^4.5.1
+  flutter_card_swiper: ^7.0.2
 
 dev_dependencies:
   bloc_test: ^9.1.7

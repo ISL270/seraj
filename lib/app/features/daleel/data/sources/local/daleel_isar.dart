@@ -21,7 +21,11 @@ final class DaleelIsar extends CacheModel<Daleel> {
   @Enumerated(EnumType.name)
   DaleelType daleelType;
   final tags = IsarLinks<DaleelTagIsar>();
+
   DateTime lastRevisedAt;
+
+  // revision screen variables
+  int revisionCount = 0;
 
   // Hadith-specific fields
   String? hadithExtraction;
@@ -110,6 +114,7 @@ final class DaleelIsar extends CacheModel<Daleel> {
           description: description,
           extraction: hadithExtraction,
           lastRevisedAt: lastRevisedAt,
+          revisionCount: revisionCount,
           authenticity: hadithAuthenticity,
           daleelType: DaleelType.hadith,
           tags: domainTags,
@@ -125,6 +130,7 @@ final class DaleelIsar extends CacheModel<Daleel> {
           description: description,
           textWithoutDiacritics: textWithoutDiacritics,
           lastRevisedAt: lastRevisedAt,
+          revisionCount: revisionCount,
           daleelType: DaleelType.aya,
           tags: domainTags,
         ),
@@ -136,6 +142,7 @@ final class DaleelIsar extends CacheModel<Daleel> {
           priority: priority,
           description: description,
           lastRevisedAt: lastRevisedAt,
+          revisionCount: revisionCount,
           daleelType: DaleelType.athar,
           tags: domainTags,
         ),
@@ -147,6 +154,7 @@ final class DaleelIsar extends CacheModel<Daleel> {
           priority: priority,
           description: description,
           lastRevisedAt: lastRevisedAt,
+          revisionCount: revisionCount,
           daleelType: DaleelType.other,
           tags: domainTags,
         ),
