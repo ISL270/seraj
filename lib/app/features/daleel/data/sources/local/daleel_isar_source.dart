@@ -30,6 +30,22 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
     return _applyFilters(query, filters).offset(page * pageSize).limit(pageSize).findAllSync();
   }
 
+  // Sorts first by the revision count then last revisited date
+  List<DaleelIsar> getSortedDaleels({
+    required Set<DaleelType> daleelTypes,
+  }) {
+    final query = isarService.db.daleelIsars.where().filter();
+
+    return query
+        .optional(
+          daleelTypes.isNotEmpty,
+          (q) => q.anyOf(daleelTypes, (q, type) => q.daleelTypeEqualTo(type)),
+        )
+        .sortByLastRevisedAt()
+        .thenByLastRevisedAt()
+        .findAllSync();
+  }
+
   /// Filters the query based on the provided filters.
   QueryBuilder<DaleelIsar, DaleelIsar, QAfterFilterCondition> _applyFilters(
     QueryBuilder<DaleelIsar, DaleelIsar, QFilterCondition> query,
@@ -159,5 +175,15 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
     daleelIsar.tags.addAll(tagsToAdd);
 
     _storeTags(tagsToAdd);
+  }
+
+  /// Increments the revision count for a Daleel.
+  void incrementRevisionCount(int id) {
+    isarService.db.writeTxnSync(() {
+      final daleel = isarService.db.daleelIsars.getSync(id);
+      if (daleel == null) return;
+      daleel.revisionCount++;
+      isarService.db.daleelIsars.putSync(daleel);
+    });
   }
 }

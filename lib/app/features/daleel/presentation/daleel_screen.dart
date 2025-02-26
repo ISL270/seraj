@@ -97,7 +97,7 @@ class _DaleelScreenState extends State<DaleelScreen> {
           textStyle: context.textThemeX.large.bold.copyWith(fontSize: 32.w),
           actions: [
             GestureDetector(
-              onTap: () => context.pushNamed(DaleelRevisionScreen.name),
+              onTap: () => context.pushNamed(DaleelRevisionScreen.name, extra: filters),
               child: Assets.icons.revision.svg(
                 width: 30.w,
                 height: 30.w,

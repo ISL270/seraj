@@ -14,6 +14,7 @@ import 'package:athar/app/features/daleel/domain/models/daleel.dart';
 import 'package:athar/app/features/daleel/domain/repositories/daleel_repository.dart';
 import 'package:athar/app/features/daleel/presentation/bloc/daleel_bloc.dart';
 import 'package:athar/app/features/daleel/presentation/daleel_screen.dart';
+import 'package:athar/app/features/daleel/presentation/models/daleel_filters.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/add_edit_athar_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/cubit/add_edit_athar_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/add_edit_ayah.dart';
@@ -145,13 +146,14 @@ final appRouter = GoRouter(
                   name: DaleelRevisionScreen.name,
                   path: DaleelRevisionScreen.name,
                   parentNavigatorKey: _rootNavigatorKey,
-                  pageBuilder: (context, state) => CupertinoPage(
-                    fullscreenDialog: true,
-                    child: BlocProvider(
-                      create: (context) => DaleelRevisionCubit(getIt.get<DaleelRepository>()),
+                  builder: (context, state) {
+                    final filters = state.extra as DaleelFilters;
+                    return BlocProvider(
+                      create: (context) =>
+                          DaleelRevisionCubit(getIt.get<DaleelRepository>(), filters),
                       child: const DaleelRevisionScreen(),
-                    ),
-                  ),
+                    );
+                  },
                 ),
                 GoRoute(
                   name: DaleelDetailsScreen.name,

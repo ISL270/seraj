@@ -174,6 +174,18 @@ final class DaleelRepository extends Repository<Daleel, DaleelIsar> {
     return _tagIsarSource.getAllTags();
   }
 
+  List<Daleel> getSortedDaleels({
+    required Set<DaleelType> daleelTypes,
+  }) {
+    final result = _localSource.getSortedDaleels(daleelTypes: daleelTypes);
+    return result.map((e) => e.toDomain()).toList();
+  }
+
+  /// Increments the revision count for a Daleel.
+  void incrementRevisionCount(int id) {
+    _localSource.incrementRevisionCount(id);
+  }
+
   Future<void> deleteDoc(int id) async => _localSource.deleteDoc(id);
 
   @override
