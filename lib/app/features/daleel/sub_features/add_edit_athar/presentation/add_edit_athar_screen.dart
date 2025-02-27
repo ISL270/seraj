@@ -10,7 +10,6 @@ import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentati
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/screen.dart';
 import 'package:athar/app/widgets/tag_selection.dart';
-import 'package:athar/app/widgets/tag_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -104,7 +103,6 @@ class _TextOfAtharTextField extends StatelessWidget {
             controller: context.read<AddOrEditAtharCubit>().textOfAtharCtrlr,
             decoration: InputDecoration(
               labelText: context.l10n.atharText,
-              labelText: context.l10n.atharText,
               labelStyle: context.textThemeX.medium,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
               errorText: athar.displayError == null ? null : context.l10n.enterTextOfAthar,
@@ -129,7 +127,6 @@ class _SayerOfAtharTextField extends StatelessWidget {
             onChanged: (value) => context.read<AddOrEditAtharCubit>().sayerChanged(value),
             controller: context.read<AddOrEditAtharCubit>().sayerOfAtharCtrlr,
             decoration: InputDecoration(
-              labelText: context.l10n.atharSayer,
               labelText: context.l10n.atharSayer,
               labelStyle: context.textThemeX.medium,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.w)),
