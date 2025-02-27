@@ -556,4 +556,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noAvailableTags => 'No results found for this tag';
+
+  @override
+  String get revision => 'Revision';
 }

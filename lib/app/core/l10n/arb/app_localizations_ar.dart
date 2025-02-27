@@ -556,4 +556,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noAvailableTags => 'لم يتم العثور على نتائج';
+
+  @override
+  String get revision => 'مراجعة';
 }

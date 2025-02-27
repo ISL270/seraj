@@ -41,7 +41,7 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
           daleelTypes.isNotEmpty,
           (q) => q.anyOf(daleelTypes, (q, type) => q.daleelTypeEqualTo(type)),
         )
-        .sortByLastRevisedAt()
+        .sortByRevisionCount()
         .thenByLastRevisedAt()
         .findAllSync();
   }

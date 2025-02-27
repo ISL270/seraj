@@ -16,7 +16,7 @@ class DetailsTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: context.colorsX.primary.withValues(alpha: 0.2),
+        color: context.colorsX.primary.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(

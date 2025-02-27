@@ -184,5 +184,6 @@
           "editAzkar": "تعديل الذكر",
           "tagsOfAzkar": "تبويبات الذكر",
           "azkarTags": "تبويبات الأذكار",
-          "noAvailableTags":"لم يتم العثور على نتائج"
+          "noAvailableTags":"لم يتم العثور على نتائج",
+          "revision":"مراجعة"
       }

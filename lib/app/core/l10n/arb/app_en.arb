@@ -184,5 +184,6 @@
       "editAzkar":"Edit Azkar",
       "tagsOfAzkar":"Azkar Tags",
       "azkarTags":"Azkar Tags",
-      "noAvailableTags":"No results found for this tag"
+      "noAvailableTags":"No results found for this tag",
+      "revision":"Revision"
 }

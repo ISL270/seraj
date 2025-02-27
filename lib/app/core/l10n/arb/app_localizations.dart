@@ -1192,6 +1192,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لم يتم العثور على نتائج'**
   String get noAvailableTags;
+
+  /// No description provided for @revision.
+  ///
+  /// In ar, this message translates to:
+  /// **'مراجعة'**
+  String get revision;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

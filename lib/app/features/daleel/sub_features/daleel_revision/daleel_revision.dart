@@ -1,6 +1,8 @@
 // ignore_for_file: deprecated_member_use, avoid_field_initializers_in_const_classes
 
+import 'package:athar/app/core/extension_methods/string_x.dart';
 import 'package:athar/app/core/extension_methods/text_style_x.dart';
+import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/daleel/sub_features/daleel_revision/cubit/daleel_revision_cubit.dart';
@@ -34,7 +36,10 @@ class _DaleelRevisionScreenState extends State<DaleelRevisionScreen> {
           appBar: AppBar(
             leading: const BackButton(),
             centerTitle: true,
-            title: Text('المراجعة', style: context.textThemeX.heading.bold),
+            title: Text(
+              context.l10n.revision.capitalizedDefinite,
+              style: context.textThemeX.heading.bold,
+            ),
           ),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -43,11 +48,17 @@ class _DaleelRevisionScreenState extends State<DaleelRevisionScreen> {
                 child: CardSwiper(
                   controller: context.read<DaleelRevisionCubit>().cardSwiperController,
                   cardsCount: daleels.length,
-                  onSwipe: _onSwipe,
-                  onUndo: _onUndo,
                   numberOfCardsDisplayed: daleels.length <= 2 ? 1 : 3,
                   backCardOffset: const Offset(35, 40),
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(24.sp),
+                  onSwipe: (previousIndex, currentIndex, direction) {
+                    if (currentIndex != null && currentIndex < daleels.length) {
+                      setState(() {
+                        _currentIndex = currentIndex;
+                      });
+                    }
+                    return true;
+                  },
                   cardBuilder: (context, index, _, __) {
                     return Container(
                       height: 700.h,
@@ -105,7 +116,7 @@ class _DaleelRevisionScreenState extends State<DaleelRevisionScreen> {
                       child: Icon(FontAwesomeIcons.check, color: context.colorsX.onBackground),
                     ),
                     FloatingActionButton(
-                      heroTag: 'right',
+                      heroTag: 'down',
                       backgroundColor: context.colorsX.error,
                       onPressed: () {
                         context
@@ -123,30 +134,5 @@ class _DaleelRevisionScreenState extends State<DaleelRevisionScreen> {
         );
       },
     );
-  }
-
-  bool _onSwipe(int previousIndex, int? currentIndex, CardSwiperDirection direction) {
-    final daleels = context.read<DaleelRevisionCubit>().state.daleels;
-
-    if (currentIndex != null && currentIndex < daleels.length) {
-      setState(() {
-        _currentIndex = currentIndex;
-      });
-
-      final daleelId = daleels[_currentIndex].id;
-      if (daleelId != null) {
-        context.read<DaleelRevisionCubit>().incrementRevisionCount(daleelId);
-      }
-    }
-
-    debugPrint(
-        'The card $previousIndex was swiped ${direction.name}. Now showing index $_currentIndex with ID ${daleels[_currentIndex].id}');
-
-    return true;
-  }
-
-  bool _onUndo(int? previousIndex, int currentIndex, CardSwiperDirection direction) {
-    debugPrint('The card $currentIndex was undone from ${direction.name}');
-    return true;
   }
 }
