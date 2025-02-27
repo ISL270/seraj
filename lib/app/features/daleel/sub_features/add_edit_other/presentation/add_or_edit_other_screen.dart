@@ -44,9 +44,9 @@ class AddOrEditOther extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               child: Column(
-                spacing: 15.h,
+                spacing: 22.h,
                 children: [
-                  Gap(10.h),
+                  Gap(2.h),
                   const _OtherTextField(),
                   const _OtherSayerTextField(),
                   const _OtherExplainTextField(),
@@ -57,15 +57,12 @@ class AddOrEditOther extends StatelessWidget {
                       return TagSelectionWidget(
                         tags: state.tags,
                         onAddTag: (tag) {
-                          final updatedTags = {
-                            ...state.tags
-                          }; // Create a new modifiable set
+                          final updatedTags = {...state.tags}; // Create a new modifiable set
                           if (updatedTags.add(tag)) {
                             cubit.tagsChanged(updatedTags);
                           }
                         },
-                        onRemoveTag: (tag) =>
-                            cubit.tagsChanged({...state.tags}..remove(tag)),
+                        onRemoveTag: (tag) => cubit.tagsChanged({...state.tags}..remove(tag)),
                         onClearTags: () => cubit.tagsChanged({}),
                         availableTags: cubit.getTags(),
                       );
@@ -96,15 +93,13 @@ class _OtherTextField extends StatelessWidget {
           key: const Key('otherForm_otherText_textField'),
           maxLines: 3,
           minLines: 1,
-          onChanged: (other) =>
-              context.read<AddOrEditOtherCubit>().otherTextChanged(other),
+          onChanged: (other) => context.read<AddOrEditOtherCubit>().otherTextChanged(other),
           controller: context.read<AddOrEditOtherCubit>().otherTextCtrlr,
           textInputAction: TextInputAction.next,
           decoration: InputDecoration(
             labelText: context.l10n.text,
             labelStyle: context.textThemeX.medium,
-            errorText:
-                other.displayError == null ? null : context.l10n.enterText,
+            errorText: other.displayError == null ? null : context.l10n.enterText,
           ),
         );
       },
@@ -123,8 +118,7 @@ class _OtherSayerTextField extends StatelessWidget {
           key: const Key('otherForm_otherSayer_textField'),
           minLines: 1,
           textInputAction: TextInputAction.next,
-          onChanged: (sayer) =>
-              context.read<AddOrEditOtherCubit>().sayerChanged(sayer),
+          onChanged: (sayer) => context.read<AddOrEditOtherCubit>().sayerChanged(sayer),
           controller: context.read<AddOrEditOtherCubit>().otherSayerCtrlr,
           decoration: InputDecoration(
             labelText: context.l10n.sayer,
@@ -148,10 +142,10 @@ class _OtherExplainTextField extends StatelessWidget {
           minLines: 2,
           maxLines: 4,
           textInputAction: TextInputAction.done,
-          onChanged: (explain) =>
-              context.read<AddOrEditOtherCubit>().explanationChanged(explain),
+          onChanged: (explain) => context.read<AddOrEditOtherCubit>().explanationChanged(explain),
           controller: context.read<AddOrEditOtherCubit>().otherExplainCtrlr,
           decoration: InputDecoration(
+            alignLabelWithHint: true,
             labelText: context.l10n.explanation,
             labelStyle: context.textThemeX.medium,
           ),
@@ -170,8 +164,7 @@ class _PrioritySliderWithLabelBlocBuilder extends StatelessWidget {
       builder: (context, state) {
         return PrioritySliderWithLabel(
           labelText: context.l10n.priority,
-          priorityTitle:
-              '${Priority.translate(context, state.sliderValue)} ${context.l10n.saveIt}',
+          priorityTitle: '${Priority.translate(context, state.sliderValue)} ${context.l10n.saveIt}',
           onPriorityChanged: (value) =>
               context.read<AddOrEditOtherCubit>().sliderPriorityChanged(value),
           priorityValue: state.sliderValue,
@@ -227,8 +220,7 @@ class _AddOtherButton extends StatelessWidget {
                 : context.l10n.update,
             // in the update case
             onPressed: state.isValid
-                ? () =>
-                    context.read<AddOrEditOtherCubit>().saveOrUpdateOtherForm()
+                ? () => context.read<AddOrEditOtherCubit>().saveOrUpdateOtherForm()
                 : null,
           ),
         );

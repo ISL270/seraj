@@ -44,9 +44,9 @@ class AddOrEditHadith extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               child: Column(
-                spacing: 15.h,
+                spacing: 22.h,
                 children: [
-                  Gap(10.h),
+                  Gap(2.h),
                   const _TextOfHadithTextField(),
                   const _RawiOfHadithTextField(),
                   const _ExtractionOfHadithTextField(),
@@ -59,15 +59,12 @@ class AddOrEditHadith extends StatelessWidget {
                       return TagSelectionWidget(
                         tags: state.tags,
                         onAddTag: (tag) {
-                          final updatedTags = {
-                            ...state.tags
-                          }; // Create a new modifiable set
+                          final updatedTags = {...state.tags}; // Create a new modifiable set
                           if (updatedTags.add(tag)) {
                             cubit.tagsChanged(updatedTags);
                           }
                         },
-                        onRemoveTag: (tag) =>
-                            cubit.tagsChanged({...state.tags}..remove(tag)),
+                        onRemoveTag: (tag) => cubit.tagsChanged({...state.tags}..remove(tag)),
                         onClearTags: () => cubit.tagsChanged(const {}),
                         availableTags: cubit.getTags(),
                       );
@@ -95,17 +92,14 @@ class _TextOfHadithTextField extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('hadithForm_TextOfHadith_textField'),
-          onChanged: (value) =>
-              context.read<AddOrEditHadithCubit>().textOfHadithChanged(value),
+          onChanged: (value) => context.read<AddOrEditHadithCubit>().textOfHadithChanged(value),
           controller: context.read<AddOrEditHadithCubit>().textOfHadith,
           maxLines: 4,
           minLines: 1,
           decoration: InputDecoration(
             labelText: context.l10n.textOfHadith,
             labelStyle: context.textThemeX.medium,
-            errorText: state.hadith.displayError == null
-                ? null
-                : context.l10n.enterTextOfHadith,
+            errorText: state.hadith.displayError == null ? null : context.l10n.enterTextOfHadith,
           ),
         );
       },
@@ -123,8 +117,7 @@ class _RawiOfHadithTextField extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('hadithForm_rawiOfHadith_textField'),
-          onChanged: (value) =>
-              context.read<AddOrEditHadithCubit>().rawiOfHadithChanged(value),
+          onChanged: (value) => context.read<AddOrEditHadithCubit>().rawiOfHadithChanged(value),
           controller: context.read<AddOrEditHadithCubit>().rawiOfHadith,
           minLines: 1,
           decoration: InputDecoration(
@@ -147,9 +140,8 @@ class _ExtractionOfHadithTextField extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('hadithForm_extractionOfHadith_textField'),
-          onChanged: (value) => context
-              .read<AddOrEditHadithCubit>()
-              .extractionOfHadithChanged(value),
+          onChanged: (value) =>
+              context.read<AddOrEditHadithCubit>().extractionOfHadithChanged(value),
           controller: context.read<AddOrEditHadithCubit>().extractionOfHadith,
           minLines: 1,
           textInputAction: TextInputAction.next,
@@ -174,11 +166,9 @@ class _HadithTypeSegmentedButton extends StatelessWidget {
         return SizedBox(
           height: 50.h,
           child: SegmentedButton(
-            style: SegmentedButton.styleFrom(
-                textStyle: context.textThemeX.medium.bold),
-            onSelectionChanged: (selection) => context
-                .read<AddOrEditHadithCubit>()
-                .hadithAuthenticityChanged(selection.first!),
+            style: SegmentedButton.styleFrom(textStyle: context.textThemeX.medium.bold),
+            onSelectionChanged: (selection) =>
+                context.read<AddOrEditHadithCubit>().hadithAuthenticityChanged(selection.first!),
             expandedInsets: EdgeInsets.all(1.h),
             showSelectedIcon: false,
             emptySelectionAllowed: true,
@@ -213,13 +203,13 @@ class _HadithExplanationTextField extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('hadithForm_hadithExplanation_textField'),
-          onChanged: (value) =>
-              context.read<AddOrEditHadithCubit>().descOfHadithChanged(value),
+          onChanged: (value) => context.read<AddOrEditHadithCubit>().descOfHadithChanged(value),
           controller: context.read<AddOrEditHadithCubit>().descOfHadith,
           maxLines: 4,
           minLines: 3,
           textInputAction: TextInputAction.done,
           decoration: InputDecoration(
+            alignLabelWithHint: true,
             labelText: context.l10n.explaination,
             labelStyle: context.textThemeX.medium,
           ),
@@ -245,8 +235,7 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
               children: [
                 Align(
                   alignment: Alignment.centerRight,
-                  child: Text(context.l10n.priority,
-                      style: context.textThemeX.medium.bold),
+                  child: Text(context.l10n.priority, style: context.textThemeX.medium.bold),
                 ),
                 Gap(8.w),
                 Text(
@@ -259,9 +248,8 @@ class _PrioritySliderWithLabelWidget extends StatelessWidget {
               ],
             ),
             Slider.adaptive(
-              onChanged: (value) => context
-                  .read<AddOrEditHadithCubit>()
-                  .sliderPriorityChanged(value),
+              onChanged: (value) =>
+                  context.read<AddOrEditHadithCubit>().sliderPriorityChanged(value),
               value: state.sliderValue,
               activeColor: context.colorsX.primary,
               inactiveColor: context.colorsX.onBackgroundTint35,
@@ -314,12 +302,9 @@ class _HadithAddButton extends StatelessWidget {
             maxWidth: true,
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
-            label:
-                state.hadithId == null ? context.l10n.add : context.l10n.update,
+            label: state.hadithId == null ? context.l10n.add : context.l10n.update,
             onPressed: state.isValid
-                ? () => context
-                    .read<AddOrEditHadithCubit>()
-                    .saveOrUpdateHadithForm()
+                ? () => context.read<AddOrEditHadithCubit>().saveOrUpdateHadithForm()
                 : null,
           ),
         );

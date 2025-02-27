@@ -38,8 +38,9 @@ class AddOrEditDuaScreen extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               child: Column(
-                spacing: 14.h,
+                spacing: 22.h,
                 children: [
+                  Gap(2.h),
                   const _TextOfDuaTextField(),
                   const _DuaRewardTextField(),
                   const _ExplanationOfDuaTextField(),
@@ -49,15 +50,12 @@ class AddOrEditDuaScreen extends StatelessWidget {
                       return TagSelectionWidget(
                         tags: state.tags,
                         onAddTag: (tag) {
-                          final updatedTags = {
-                            ...state.tags
-                          }; // Create a new modifiable set
+                          final updatedTags = {...state.tags}; // Create a new modifiable set
                           if (updatedTags.add(tag)) {
                             cubit.tagsChanged(updatedTags);
                           }
                         },
-                        onRemoveTag: (tag) =>
-                            cubit.tagsChanged({...state.tags}..remove(tag)),
+                        onRemoveTag: (tag) => cubit.tagsChanged({...state.tags}..remove(tag)),
                         onClearTags: () => cubit.tagsChanged({}),
                         availableTags: cubit.getTags(),
                       );
@@ -82,12 +80,12 @@ class _TextOfDuaTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       key: const Key('DuaaForm_TextOfDua_textField'),
-      onChanged: (duaText) =>
-          context.read<AddOrEditDuaCubit>().duaChanged(duaText),
+      onChanged: (duaText) => context.read<AddOrEditDuaCubit>().duaChanged(duaText),
       maxLines: 4,
       minLines: 2,
       controller: context.read<AddOrEditDuaCubit>().textOfDua,
       decoration: InputDecoration(
+        alignLabelWithHint: true,
         labelText: context.l10n.dua,
         labelStyle: context.textThemeX.medium,
       ),
@@ -101,8 +99,7 @@ class _DuaRewardTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onChanged: (reward) =>
-          context.read<AddOrEditDuaCubit>().rewardOfDuaChanged(reward),
+      onChanged: (reward) => context.read<AddOrEditDuaCubit>().rewardOfDuaChanged(reward),
       maxLines: 4,
       minLines: 1,
       controller: context.read<AddOrEditDuaCubit>().duaReward,
@@ -121,12 +118,12 @@ class _ExplanationOfDuaTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onChanged: (explain) =>
-          context.read<AddOrEditDuaCubit>().duaExplanationChanged(explain),
+      onChanged: (explain) => context.read<AddOrEditDuaCubit>().duaExplanationChanged(explain),
       maxLines: 4,
       minLines: 4,
       controller: context.read<AddOrEditDuaCubit>().explanationOfDua,
       decoration: InputDecoration(
+        alignLabelWithHint: true,
         labelText: context.l10n.explanation,
         labelStyle: context.textThemeX.medium,
       ),

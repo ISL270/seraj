@@ -143,7 +143,6 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
   /// Updates the fields of an existing Daleel with new data.
   void _updateDaleelFields(DaleelIsar existing, DaleelIsar updated) {
     existing
-      ..lastRevisedAt = updated.lastRevisedAt
       ..text = updated.text
       ..description = updated.description
       ..sayer = updated.sayer
@@ -183,6 +182,7 @@ final class DaleelIsarSource extends IsarSource<Daleel, DaleelIsar> {
       final daleel = isarService.db.daleelIsars.getSync(id);
       if (daleel == null) return;
       daleel.revisionCount++;
+      daleel.lastRevisedAt = DateTime.now();
       isarService.db.daleelIsars.putSync(daleel);
     });
   }

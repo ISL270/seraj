@@ -44,16 +44,16 @@ class AddOrEditAzkarScreen extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               child: Column(
-                spacing: 12.h,
+                spacing: 22.h,
                 children: [
+                  Gap(2.h),
                   const _TextOfAzkarTextField(),
                   const _ExplanationOfAzkarTextField(),
                   Row(
                     children: [
                       Expanded(
                         flex: 4,
-                        child: _LabelTextFieldAlignWidget(
-                            label: context.l10n.azkarRepeat),
+                        child: _LabelTextFieldAlignWidget(label: context.l10n.azkarRepeat),
                       ),
                       const Expanded(child: _RepeatNumberOfAzkarTextField()),
                     ],
@@ -69,8 +69,7 @@ class AddOrEditAzkarScreen extends StatelessWidget {
                             cubit.tagsChanged(updatedTags);
                           }
                         },
-                        onRemoveTag: (tag) =>
-                            cubit.tagsChanged(state.tags..remove(tag)),
+                        onRemoveTag: (tag) => cubit.tagsChanged(state.tags..remove(tag)),
                         onClearTags: () => cubit.tagsChanged({}),
                         availableTags: cubit.getTags(),
                       );
@@ -101,14 +100,11 @@ class _TextOfAzkarTextField extends StatelessWidget {
           maxLines: 3,
           minLines: 1,
           controller: context.read<AddOrEditAzkarCubit>().textOfAzkar,
-          onChanged: (text) =>
-              context.read<AddOrEditAzkarCubit>().textOfAzkarChanged(text),
+          onChanged: (text) => context.read<AddOrEditAzkarCubit>().textOfAzkarChanged(text),
           decoration: InputDecoration(
             labelText: context.l10n.azkarText,
             labelStyle: context.textThemeX.medium,
-            errorText: text.displayError == null
-                ? null
-                : context.l10n.enterTextOfAzkar,
+            errorText: text.displayError == null ? null : context.l10n.enterTextOfAzkar,
           ),
         );
       },
@@ -127,10 +123,10 @@ class _ExplanationOfAzkarTextField extends StatelessWidget {
           key: const Key('AzkarForm_ExplanationOfAzkar_textField'),
           maxLines: 3,
           minLines: 2,
-          onChanged: (text) =>
-              context.read<AddOrEditAzkarCubit>().explanationChanged(text),
+          onChanged: (text) => context.read<AddOrEditAzkarCubit>().explanationChanged(text),
           controller: context.read<AddOrEditAzkarCubit>().explanation,
           decoration: InputDecoration(
+            alignLabelWithHint: true,
             labelText: context.l10n.azkarExplain,
             labelStyle: context.textThemeX.medium,
           ),
@@ -148,11 +144,9 @@ class _RepeatNumberOfAzkarTextField extends StatelessWidget {
     final cubit = context.read<AddOrEditAzkarCubit>();
     Future<void> onNoOfRepeatTapped() async {
       final currentState = context.read<AddOrEditAzkarCubit>().state;
-      final initialValue =
-          double.tryParse(cubit.noOfRepetitionsController.text) ?? 1;
+      final initialValue = double.tryParse(cubit.noOfRepetitionsController.text) ?? 1;
 
-      final newValue =
-          await NumberPickerBS.show(context, initial: initialValue);
+      final newValue = await NumberPickerBS.show(context, initial: initialValue);
       if (newValue != null) {
         cubit.noOfRepetitionsChanged(newValue.toInt());
       }
@@ -226,8 +220,7 @@ class _AddAzkarButton extends StatelessWidget {
             maxWidth: true,
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
-            label:
-                state.azkarId == null ? context.l10n.add : context.l10n.update,
+            label: state.azkarId == null ? context.l10n.add : context.l10n.update,
             onPressed: state.isValid
                 ? () {
                     context.read<AddOrEditAzkarCubit>().addOrUpdateAzkarForm();

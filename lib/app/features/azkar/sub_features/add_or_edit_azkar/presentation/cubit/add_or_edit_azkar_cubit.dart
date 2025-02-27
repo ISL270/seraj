@@ -21,7 +21,7 @@ class AddOrEditAzkarCubit extends Cubit<AddOrEditAzkarState> {
   AddOrEditAzkarCubit(this._repository) : super(const AddOrEditAzkarState()) {
     textOfAzkar = TextEditingController();
     explanation = TextEditingController();
-    noOfRepetitionsController = TextEditingController();
+    noOfRepetitionsController = TextEditingController(text: '1');
   }
 
   void textOfAzkarChanged(String value) => emit(state.copyWith(text: Name.dirty(value)));
