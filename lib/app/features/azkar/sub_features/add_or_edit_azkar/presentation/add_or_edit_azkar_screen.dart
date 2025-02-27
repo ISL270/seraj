@@ -103,6 +103,7 @@ class _TextOfAzkarTextField extends StatelessWidget {
           onChanged: (text) => context.read<AddOrEditAzkarCubit>().textOfAzkarChanged(text),
           decoration: InputDecoration(
             labelText: context.l10n.azkarText,
+            labelText: context.l10n.azkarText,
             labelStyle: context.textThemeX.medium,
             errorText: text.displayError == null ? null : context.l10n.enterTextOfAzkar,
           ),
