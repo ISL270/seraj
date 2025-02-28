@@ -26,6 +26,12 @@ jobs:
           chmod 600 android/app/keystore.jks
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      - name: Create key.properties
+        run: |
+          echo "storeFile=android/app/keystore.jks" >> android/key.properties
+          echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.ANDROID_KEYSTORE_ALIAS }}" >> android/key.properties
+          echo "keyPassword=${{ secrets.ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD }}" >> android/key.properties
 
       - name: Verify Keystore Integrity
         run: |
