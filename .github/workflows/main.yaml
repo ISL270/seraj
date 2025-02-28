@@ -31,17 +31,13 @@ jobs:
         run: |
           keytool -list -keystore android/app/keystore.jks -storepass "${{ secrets.KEYSTORE_PASSWORD }}" -v || echo "Keystore validation failed!"
 
-      - name: Generate key.properties
+      - name: Generate key.properties in android directory
         run: |
+          mkdir -p android
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
           echo "storeFile=android/app/keystore.jks" >> android/key.properties
-
-      - name: Move key.properties to android directory
-        run: |
-          mkdir -p android
-          mv key.properties android/key.properties
 
       - name: Set up Java
         uses: actions/setup-java@v3
