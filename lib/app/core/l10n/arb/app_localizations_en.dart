@@ -561,8 +561,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get revision => 'Revision';
 
   @override
-  String get noAvailableDaleelsToRev => 'لا يوجد دلالات للمراجعة';
+  String get reviewAgain => 'Review Again';
 
   @override
-  String get revisionFinished => 'Revision Finished';
+  String get noData => 'No daleels to be revised';
 }

@@ -561,8 +561,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get revision => 'مراجعة';
 
   @override
-  String get noAvailableDaleelsToRev => 'لا يوجد دلالات للمراجعة';
+  String get reviewAgain => 'راجع مرة آخري';
 
   @override
-  String get revisionFinished => 'تمت المراجعة';
+  String get noData => 'لا توجد أدلة للمراجعة';
 }

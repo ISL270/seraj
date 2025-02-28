@@ -186,5 +186,7 @@
       "azkarTags":"Azkar Tags",
       "noAvailableTags":"No results found for this tag",
       "revision":"Revision",
-      "revisionFinished":"Revision Finished"
+      "reviewAgain":"Review Again",
+      "noData":"No daleels to be revised"
+
 }

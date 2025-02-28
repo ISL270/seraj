@@ -15,22 +15,42 @@ class DaleelRevisionCubit extends Cubit<DaleelRevisionState> {
 
   final DaleelRepository _repository;
   final DaleelFilters daleelFilters;
-  DaleelRevisionCubit(this._repository, this.daleelFilters) : super(const DaleelRevisionState()) {
+  DaleelRevisionCubit(this._repository, this.daleelFilters)
+      : super(const DaleelRevisionState()) {
     initalizeDaleelRevision();
     cardSwiperController = CardSwiperController();
   }
 
-  List<Daleel> getDaleels() => _repository.getSortedDaleels(daleelTypes: daleelFilters.daleelType);
+  List<Daleel> getDaleels() =>
+      _repository.getSortedDaleels(daleelTypes: daleelFilters.daleelType);
 
-  void initalizeDaleelRevision() {
+  void initalizeDaleelRevision() async {
     log('initialize daleels');
-    final daleels = getDaleels();
-    emit(state.copyWith(daleel: daleels));
+    emit(state.copyWith(status: DaleelRevisionStatus.loading));
+    try {
+      final daleels = getDaleels();
+      emit(state.copyWith(
+          daleel: daleels,
+          status: DaleelRevisionStatus.success,
+          currentIndex: 0,
+          showReviewButton: false));
+    } catch (e) {
+      log('Error initializing Daleels: $e');
+      emit(state.copyWith(status: DaleelRevisionStatus.failure));
+    }
   }
 
   void incrementRevisionCount(int id) {
     log('id of the daleel by incremented by 1 is $id');
     _repository.incrementRevisionCount(id);
+  }
+
+  void updateCurrentIndex(int index) {
+    emit(state.copyWith(currentIndex: index));
+  }
+
+  void setShowReviewButton(bool value) {
+    emit(state.copyWith(showReviewButton: value));
   }
 
   @override

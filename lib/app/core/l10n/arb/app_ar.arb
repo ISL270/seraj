@@ -186,6 +186,6 @@
           "azkarTags": "تبويبات الأذكار",
           "noAvailableTags":"لم يتم العثور على نتائج",
           "revision":"مراجعة",
-          "noAvailableDaleelsToRev":"لا يوجد دلالات للمراجعة",
-          "revisionFinished":"تمت المراجعة"
+          "reviewAgain":"راجع مرة آخري",
+          "noData":"لا توجد أدلة للمراجعة"
       }

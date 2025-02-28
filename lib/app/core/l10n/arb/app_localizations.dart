@@ -1199,17 +1199,17 @@ abstract class AppLocalizations {
   /// **'مراجعة'**
   String get revision;
 
-  /// No description provided for @noAvailableDaleelsToRev.
+  /// No description provided for @reviewAgain.
   ///
   /// In ar, this message translates to:
-  /// **'لا يوجد دلالات للمراجعة'**
-  String get noAvailableDaleelsToRev;
+  /// **'راجع مرة آخري'**
+  String get reviewAgain;
 
-  /// No description provided for @revisionFinished.
+  /// No description provided for @noData.
   ///
   /// In ar, this message translates to:
-  /// **'تمت المراجعة'**
-  String get revisionFinished;
+  /// **'لا توجد أدلة للمراجعة'**
+  String get noData;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
