@@ -1,128 +1,59 @@
-name: "Build & Release"
+name: Build and Sign Android App
 
 on:
   push:
     branches:
-      - main
+      - main  # Change this to your default branch
   pull_request:
     branches:
       - main
 
 jobs:
   build:
-    name: Build & Release
+    name: Build APK
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # Set environment variable for checking keystore secret
-      - name: Check Keystore Secret
-        run: |
-          if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
-            echo "HAS_KEYSTORE=true" >> $GITHUB_ENV
-          else
-            echo "HAS_KEYSTORE=false" >> $GITHUB_ENV
-          fi
-
-      # Move Keystore Setup Before Installing Dependencies
-      - name: Decode Keystore
-        env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      - name: Decode and Save Keystore
         run: |
           echo "$KEYSTORE_BASE64" | base64 --decode > android/app/keystore.jks
-          echo "Keystore file created! Checking details..."
           ls -la android/app/
           file android/app/keystore.jks
-
-      - name: Debug Keystore File
-        run: |
-          ls -la android/app/
-          file android/app/keystore.jks
-          du -h android/app/keystore.jks
-
-      - name: Create key.properties
-        if: env.HAS_KEYSTORE == 'true'
+          chmod 600 android/app/keystore.jks
         env:
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+
+      - name: Verify Keystore Integrity
         run: |
-          echo "storePassword=${KEYSTORE_PASSWORD}" > android/key.properties
-          echo "keyPassword=${KEY_PASSWORD}" >> android/key.properties
-          echo "keyAlias=${KEY_ALIAS}" >> android/key.properties
+          keytool -list -keystore android/app/keystore.jks -storepass "${{ secrets.KEYSTORE_PASSWORD }}" -v || echo "Keystore validation failed!"
+
+      - name: Generate key.properties
+        run: |
+          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
           echo "storeFile=android/app/keystore.jks" >> android/key.properties
-
-      - name: Verify Keystore File
-        if: env.HAS_KEYSTORE == 'true'
-        run: |
-          if [ ! -f "android/app/keystore.jks" ]; then
-            echo "Keystore file not found! Exiting..."
-            exit 1
-          fi
-
-      - name: Set Up Java
+      - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          distribution: "oracle"
-          java-version: "17"
-
-      # Now Install Flutter Only If Keystore Exists
-      - name: Set Up Flutter
+          distribution: 'oracle'
+          java-version: '17'
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.29.0"
-          channel: "stable"
+          flutter-version: 3.16.3 # Change to your Flutter version
 
-      - name: Install Dependencies
+      - name: Get dependencies
         run: flutter pub get
 
-      - name: Debug Keystore File
-        run: ls -la android/app/
-
       - name: Build APK
-        run: flutter build apk --release --flavor prod --target lib/flavors/development/main_development.dart
+        run: flutter build apk --release
 
-      - name: Build App Bundle
-        run: flutter build appbundle --flavor prod --target lib/flavors/development/main_development.dart
-
-      - name: Upload Artifacts
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: "Releases"
-          path: |
-            build/app/outputs/flutter-apk/app-release.apk
-            build/app/outputs/bundle/release/app-release.aab
-
-      - name: Extract version from pubspec
-        id: extract_version
-        run: |
-          version=$(grep '^version: ' pubspec.yaml | cut -d ' ' -f 2 | tr -d '\r')
-          echo "VERSION=$version" >> $GITHUB_ENV
-
-      - name: Check if Tag Exists
-        id: check_tag
-        run: |
-          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
-            echo "TAG_EXISTS=true" >> $GITHUB_ENV
-          else
-            echo "TAG_EXISTS=false" >> $GITHUB_ENV
-          fi
-
-      - name: Modify Tag If Exists
-        if: env.TAG_EXISTS == 'true'
-        id: modify_tag
-        run: |
-          new_version="${{ env.VERSION }}-build-${{ github.run_number }}"
-          echo "VERSION=$new_version" >> $GITHUB_ENV
-
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        env:
-          RELEASE_TOKEN: ${{ secrets.TOKEN }}
-        with:
-          artifacts: |
-            build/app/outputs/flutter-apk/app-release.apk,
-            build/app/outputs/bundle/release/app-release.aab
-          tag: "v${{ env.VERSION }}"
-          token: ${{ env.RELEASE_TOKEN }}"
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
