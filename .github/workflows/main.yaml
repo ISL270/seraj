@@ -35,6 +35,11 @@ jobs:
           ls -la android/app/
           file android/app/keystore.jks
 
+      - name: Debug Keystore File
+        run: |
+          ls -la android/app/
+          file android/app/keystore.jks
+          du -h android/app/keystore.jks
 
       - name: Create key.properties
         if: env.HAS_KEYSTORE == 'true'
