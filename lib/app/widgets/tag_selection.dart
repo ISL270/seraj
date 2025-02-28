@@ -13,6 +13,7 @@ class TagSelectionWidget extends StatefulWidget {
   final void Function(Tag tag) onRemoveTag;
   final VoidCallback onClearTags;
   final String Function(Tag tag)? errorMessageBuilder;
+  final Color? color;
   final List<Tag> availableTags;
 
   const TagSelectionWidget({
@@ -21,6 +22,7 @@ class TagSelectionWidget extends StatefulWidget {
     required this.onRemoveTag,
     required this.onClearTags,
     required this.availableTags,
+    this.color,
     this.errorMessageBuilder,
     super.key,
   });
@@ -54,20 +56,17 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
             if (textEditingValue.text.isEmpty) {
               return const Iterable<Tag>.empty();
             }
-            return widget.availableTags.where((tag) => tag.name
-                .toLowerCase()
-                .contains(textEditingValue.text.toLowerCase()));
+            return widget.availableTags.where(
+                (tag) => tag.name.toLowerCase().contains(textEditingValue.text.toLowerCase()));
           },
-          fieldViewBuilder:
-              (context, textEditingController, focusNode, onFieldSubmitted) {
+          fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
             return TextFieldTags<Tag>(
               textfieldTagsController: _tagController,
               textEditingController: textEditingController,
               focusNode: focusNode,
               textSeparators: const [' ', ','],
               validator: (Tag tag) {
-                if (widget.tags.any(
-                    (t) => t.name.toLowerCase() == tag.name.toLowerCase())) {
+                if (widget.tags.any((t) => t.name.toLowerCase() == tag.name.toLowerCase())) {
                   return widget.errorMessageBuilder?.call(tag) ??
                       '${tag.name} ${context.l10n.alreadyExists}';
                 }
@@ -95,13 +94,12 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
                   onSubmitted: (value) {
                     final trimmedValue = value.trim();
                     if (trimmedValue.isEmpty) return;
-                    if ((_tagController.getTags ?? []).any((t) =>
-                        t.name.toLowerCase() == trimmedValue.toLowerCase())) {
+                    if ((_tagController.getTags ?? [])
+                        .any((t) => t.name.toLowerCase() == trimmedValue.toLowerCase())) {
                       return;
                     }
                     final existingTag = widget.availableTags.firstWhere(
-                      (tag) =>
-                          tag.name.toLowerCase() == trimmedValue.toLowerCase(),
+                      (tag) => tag.name.toLowerCase() == trimmedValue.toLowerCase(),
                       orElse: () => Tag(null, trimmedValue),
                     );
                     _tagController.onTagSubmitted(existingTag);
@@ -129,8 +127,7 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
                     final tag = options.elementAt(index);
                     return ListTile(
                       leading: Icon(Icons.tag, color: context.colorsX.primary),
-                      title: Text(tag.name,
-                          style: TextStyle(color: context.colorsX.primary)),
+                      title: Text(tag.name, style: TextStyle(color: context.colorsX.primary)),
                       onTap: () => onSelected(tag),
                     );
                   },
@@ -157,7 +154,7 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
             children: widget.tags.map((Tag tag) {
               return Chip(
                 label: Text('#${tag.name}'),
-                backgroundColor: context.colorsX.primary,
+                backgroundColor: widget.color ?? context.colorsX.primary,
                 labelStyle: TextStyle(color: context.colorsX.background),
                 onDeleted: () {
                   _tagController.onTagRemoved(tag);

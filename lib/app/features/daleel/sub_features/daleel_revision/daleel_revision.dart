@@ -25,7 +25,13 @@ class DaleelRevisionScreen extends StatefulWidget {
 }
 
 class _DaleelRevisionScreenState extends State<DaleelRevisionScreen> {
-  int _currentIndex = 0;
+  late final DaleelRevisionCubit _cubit;
+
+  @override
+  void initState() {
+    _cubit = context.read<DaleelRevisionCubit>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,96 +47,109 @@ class _DaleelRevisionScreenState extends State<DaleelRevisionScreen> {
               style: context.textThemeX.heading.bold,
             ),
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Flexible(
-                child: CardSwiper(
-                  controller: context.read<DaleelRevisionCubit>().cardSwiperController,
-                  cardsCount: daleels.length,
-                  numberOfCardsDisplayed: daleels.length <= 2 ? 1 : 3,
-                  backCardOffset: const Offset(35, 40),
-                  padding: EdgeInsets.all(24.sp),
-                  onSwipe: (previousIndex, currentIndex, direction) {
-                    if (currentIndex != null && currentIndex < daleels.length) {
-                      setState(() {
-                        _currentIndex = currentIndex;
-                      });
-                    }
-                    return true;
-                  },
-                  cardBuilder: (context, index, _, __) {
-                    return Container(
-                      height: 700.h,
-                      width: 500.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: context.colorsX.primary,
-                        boxShadow: [
-                          BoxShadow(
-                            color: context.colorsX.background,
-                            blurRadius: 2,
-                            blurStyle: BlurStyle.outer,
-                          )
-                        ],
-                      ),
-                      child: Center(
-                        child: SingleChildScrollView(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 32.sp, vertical: 16.sp),
-                            child: Text(
-                              daleels[index].text,
-                              style: context.textThemeX.heading.copyWith(
-                                fontSize: 24.sp,
-                                fontFamily: GoogleFonts.amiri().fontFamily,
-                                color: context.colorsX.background,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
+          body: state.daleels.isEmpty
+              ? Center(
+                  child: Text(
+                    context.l10n.noAvailableDaleelsToRev,
+                    style: context.textThemeX.medium.bold,
+                  ),
+                )
+              : BlocBuilder<DaleelRevisionCubit, DaleelRevisionState>(
+                  builder: (context, state) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: CardSwiper(
+                            controller: _cubit.cardSwiperController,
+                            cardsCount: state.daleels.length,
+                            numberOfCardsDisplayed: state.daleels.length <= 2 ? 1 : 3,
+                            backCardOffset: const Offset(35, 40),
+                            padding: EdgeInsets.all(24.sp),
+                            onSwipe: (previousIndex, currentIndex, direction) {
+                              if (currentIndex != null && currentIndex < daleels.length) {
+                                _cubit.currentIndex = currentIndex;
+                              }
+
+                              return true;
+                            },
+                            cardBuilder: (innerContext, index, _, __) {
+                              return Container(
+                                height: 700.h,
+                                width: 500.w,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12.r),
+                                  color: context.colorsX.primary,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: context.colorsX.background,
+                                      blurRadius: 2,
+                                      blurStyle: BlurStyle.outer,
+                                    )
+                                  ],
+                                ),
+                                child: Center(
+                                  child: SingleChildScrollView(
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 32.sp, vertical: 16.sp),
+                                      child: Text(
+                                        daleels[index].text,
+                                        style: context.textThemeX.heading.copyWith(
+                                          fontSize: 24.sp,
+                                          fontFamily: GoogleFonts.amiri().fontFamily,
+                                          color: context.colorsX.background,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
-                      ),
+                        Padding(
+                          padding: EdgeInsets.all(16.r),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              FloatingActionButton(
+                                heroTag: 'left',
+                                backgroundColor: context.colorsX.primary,
+                                onPressed: () {
+                                  if (_cubit.currentIndex < daleels.length) {
+                                    context
+                                        .read<DaleelRevisionCubit>()
+                                        .incrementRevisionCount(daleels[_cubit.currentIndex].id!);
+                                    context
+                                        .read<DaleelRevisionCubit>()
+                                        .cardSwiperController
+                                        .swipe(CardSwiperDirection.left);
+                                  }
+                                },
+                                child:
+                                    Icon(FontAwesomeIcons.check, color: context.colorsX.background),
+                              ),
+                              FloatingActionButton(
+                                heroTag: 'down',
+                                backgroundColor: context.colorsX.error,
+                                onPressed: () {
+                                  context
+                                      .read<DaleelRevisionCubit>()
+                                      .cardSwiperController
+                                      .swipe(CardSwiperDirection.bottom);
+                                },
+                                child:
+                                    Icon(FontAwesomeIcons.close, color: context.colorsX.background),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     );
                   },
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    FloatingActionButton(
-                      heroTag: 'left',
-                      backgroundColor: context.colorsX.primary,
-                      onPressed: () {
-                        if (_currentIndex < daleels.length) {
-                          context
-                              .read<DaleelRevisionCubit>()
-                              .incrementRevisionCount(daleels[_currentIndex].id!);
-                          context
-                              .read<DaleelRevisionCubit>()
-                              .cardSwiperController
-                              .swipe(CardSwiperDirection.left);
-                        }
-                      },
-                      child: Icon(FontAwesomeIcons.check, color: context.colorsX.onBackground),
-                    ),
-                    FloatingActionButton(
-                      heroTag: 'down',
-                      backgroundColor: context.colorsX.error,
-                      onPressed: () {
-                        context
-                            .read<DaleelRevisionCubit>()
-                            .cardSwiperController
-                            .swipe(CardSwiperDirection.bottom);
-                      },
-                      child: Icon(FontAwesomeIcons.close, color: context.colorsX.onBackground),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
         );
       },
     );

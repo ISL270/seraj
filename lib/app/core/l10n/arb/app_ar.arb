@@ -185,5 +185,7 @@
           "tagsOfAzkar": "تبويبات الذكر",
           "azkarTags": "تبويبات الأذكار",
           "noAvailableTags":"لم يتم العثور على نتائج",
-          "revision":"مراجعة"
+          "revision":"مراجعة",
+          "noAvailableDaleelsToRev":"لا يوجد دلالات للمراجعة",
+          "revisionFinished":"تمت المراجعة"
       }

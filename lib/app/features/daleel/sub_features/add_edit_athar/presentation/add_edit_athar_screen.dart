@@ -4,6 +4,7 @@ import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
+import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/priority.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/cubit/add_edit_athar_cubit.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/cubit/add_edit_athar_state.dart';
@@ -60,6 +61,7 @@ class AddOrEditAtharScreen extends StatelessWidget {
                         final cubit = context.read<AddOrEditAtharCubit>();
                         return TagSelectionWidget(
                           tags: state.tags,
+                          color: DaleelType.values[2].color,
                           onAddTag: (tag) {
                             final updatedTags = {...state.tags}; // Create a new modifiable set
                             if (updatedTags.add(tag)) {

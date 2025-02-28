@@ -10,6 +10,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
 class DaleelRevisionCubit extends Cubit<DaleelRevisionState> {
+  int currentIndex = 0;
   late CardSwiperController cardSwiperController;
 
   final DaleelRepository _repository;

@@ -4,6 +4,7 @@ import 'package:athar/app/core/extension_methods/text_style_x.dart';
 import 'package:athar/app/core/l10n/l10n.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
+import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/cubit/add_edit_aya_cubit.dart';
 import 'package:athar/app/widgets/button.dart';
 import 'package:athar/app/widgets/number_picker_bs.dart';
@@ -55,16 +56,11 @@ class _AddEditAyahState extends State<AddEditAyah> {
                         children: [
                           GestureDetector(
                             onTap: () => context.pop(),
-                            child: Icon(Icons.keyboard_arrow_right_outlined,
-                                size: 32.w),
+                            child: Icon(Icons.keyboard_arrow_right_outlined, size: 32.w),
                           ),
                           const Spacer(flex: 2),
                           Text(
-                            context
-                                    .read<AddEditAyahCubit>()
-                                    .state
-                                    .selectedAyahs
-                                    .isEmpty
+                            context.read<AddEditAyahCubit>().state.selectedAyahs.isEmpty
                                 ? '${context.l10n.edit} ${context.l10n.ayah.capitalizedDefinite}'
                                 : context.l10n.addAyahs,
                             style: context.textThemeX.heading.bold,
@@ -77,12 +73,10 @@ class _AddEditAyahState extends State<AddEditAyah> {
                         children: [
                           Padding(
                             padding: EdgeInsets.only(top: 80.h),
-                            child:
-                                BlocBuilder<AddEditAyahCubit, AddEditAyahState>(
+                            child: BlocBuilder<AddEditAyahCubit, AddEditAyahState>(
                               builder: (context, state) {
                                 final cubit = context.read<AddEditAyahCubit>();
-                                return state.selectedAyahs.isNotEmpty ||
-                                        state.ayaId != null
+                                return state.selectedAyahs.isNotEmpty || state.ayaId != null
                                     ? Column(
                                         spacing: 10.h,
                                         children: [
@@ -90,38 +84,32 @@ class _AddEditAyahState extends State<AddEditAyah> {
                                             alignment: Alignment.centerRight,
                                             child: Text(
                                               context.l10n.surahandnoayah,
-                                              style: context
-                                                  .textThemeX.medium.bold,
+                                              style: context.textThemeX.medium.bold,
                                             ),
                                           ),
                                           _SurahAndVerseNumTextField(
-                                            surahController:
-                                                cubit.surahController,
-                                            firstAyahController:
-                                                cubit.firstAyahController,
-                                            lastAyahController:
-                                                cubit.lastAyahController,
+                                            surahController: cubit.surahController,
+                                            firstAyahController: cubit.firstAyahController,
+                                            lastAyahController: cubit.lastAyahController,
                                           ),
                                           Align(
                                             alignment: Alignment.centerRight,
                                             child: Text(
                                               context.l10n.ayahs,
-                                              style: context
-                                                  .textThemeX.medium.bold,
+                                              style: context.textThemeX.medium.bold,
                                             ),
                                           ),
                                           _QuranicVerseTextField(
-                                            controller:
-                                                cubit.quranicVerseController,
+                                            controller: cubit.quranicVerseController,
                                           ),
                                           Gap(5.h),
                                           _QuranicVerseExplanationTextField(
-                                            controller:
-                                                cubit.explanationController,
+                                            controller: cubit.explanationController,
                                           ),
                                           Gap(5.h),
                                           TagSelectionWidget(
                                             tags: state.tags,
+                                            color: DaleelType.values[1].color,
                                             availableTags: cubit.getTags(),
                                             onAddTag: (tag) {
                                               final updatedTags = {
@@ -133,11 +121,8 @@ class _AddEditAyahState extends State<AddEditAyah> {
                                               }
                                             },
                                             onRemoveTag: (tag) =>
-                                                cubit.tagsChanged({
-                                              ...state.tags
-                                            }..remove(tag)),
-                                            onClearTags: () =>
-                                                cubit.tagsChanged({}),
+                                                cubit.tagsChanged({...state.tags}..remove(tag)),
+                                            onClearTags: () => cubit.tagsChanged({}),
                                           )
                                         ],
                                       )
@@ -247,8 +232,7 @@ class _QuranicVerseExplanationTextField extends StatelessWidget {
       controller: controller,
       maxLines: 5,
       minLines: 4,
-      onChanged: (value) =>
-          context.read<AddEditAyahCubit>().ayaExplainChanged(value),
+      onChanged: (value) => context.read<AddEditAyahCubit>().ayaExplainChanged(value),
       decoration: InputDecoration(
         alignLabelWithHint: true,
         labelText: context.l10n.quranicayahexp,
@@ -289,9 +273,7 @@ class _AyahAddButton extends StatelessWidget {
             isLoading: state.status.isLoading,
             density: ButtonDensity.comfortable,
             label: state.ayaId == null ? context.l10n.add : context.l10n.update,
-            onPressed: state.isValid
-                ? () => context.read<AddEditAyahCubit>().saveAyaForm()
-                : null,
+            onPressed: state.isValid ? () => context.read<AddEditAyahCubit>().saveAyaForm() : null,
           ),
         );
       },

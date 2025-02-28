@@ -8,6 +8,7 @@ import 'package:athar/app/core/models/tag.dart';
 import 'package:athar/app/core/theming/app_colors_extension.dart';
 import 'package:athar/app/core/theming/text_theme_extension.dart';
 import 'package:athar/app/features/daleel/domain/models/daleel.dart';
+import 'package:athar/app/features/daleel/domain/models/daleel_type.dart';
 import 'package:athar/app/features/daleel/domain/models/hadith_authenticity.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_athar/presentation/add_edit_athar_screen.dart';
 import 'package:athar/app/features/daleel/sub_features/add_edit_ayah/presentation/add_edit_ayah.dart';
@@ -100,7 +101,15 @@ class DaleelDetailsScreen extends StatelessWidget {
                         label: context.l10n.daleelSayer,
                         labelValue: state.daleel.sayer.toString(),
                       ),
-                      _DaleelDetailsTagsWidget(state.daleel.tags),
+                      _DaleelDetailsTagsWidget(
+                        tags: state.daleel.tags,
+                        color: switch (daleel) {
+                          Hadith() => DaleelType.values[0].color,
+                          Aya() => DaleelType.values[1].color,
+                          Athar() => DaleelType.values[2].color,
+                          Other() => DaleelType.values[3].color,
+                        },
+                      ),
                       _DaleelDetailsWidget(
                         label: context.l10n.daleelPriority,
                         labelValue:
@@ -144,9 +153,10 @@ class DaleelDetailsScreen extends StatelessWidget {
 }
 
 class _DaleelDetailsTagsWidget extends StatelessWidget {
-  _DaleelDetailsTagsWidget(this.tags);
+  _DaleelDetailsTagsWidget({required this.tags, required this.color});
 
   Set<Tag> tags;
+  Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -171,17 +181,22 @@ class _DaleelDetailsTagsWidget extends StatelessWidget {
                 padding: EdgeInsets.only(right: 6.w),
                 child: Container(
                   height: 30.h,
-                  width: 75.w + tags.elementAt(index).name.length * 4.w,
                   decoration: BoxDecoration(
-                    color: context.colorsX.primary,
+                    color: color,
                     borderRadius: BorderRadius.circular(12.w),
                   ),
-                  child: Center(
-                    child: Text(
-                      tags.elementAt(index).name,
-                      style: context.textThemeX.medium.bold.copyWith(
-                        color: context.colorsX.onBackground,
-                      ),
+                  child: IntrinsicWidth(
+                    child: Row(
+                      children: [
+                        Gap(8.w),
+                        Text(
+                          tags.elementAt(index).name,
+                          style: context.textThemeX.medium.bold.copyWith(
+                            color: context.colorsX.onBackground,
+                          ),
+                        ),
+                        Gap(8.w),
+                      ],
                     ),
                   ),
                 ),
