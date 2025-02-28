@@ -16,17 +16,22 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Keystore setup steps moved before Flutter setup to save time in case of failures
+      - name: Set Up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: "oracle"
+          java-version: "17"
+
+      # Move Keystore Setup Before Installing Dependencies
       - name: Decode Keystore
-        if: secrets.KEYSTORE_BASE64 != ''
+        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
           echo "$KEYSTORE_BASE64" | base64 --decode > android/app/keystore.jks
-          echo "Keystore decoded successfully."
 
       - name: Create key.properties
-        if: ${{ secrets.KEYSTORE_BASE64 }}
+        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
@@ -35,23 +40,16 @@ jobs:
           echo "storePassword=${KEYSTORE_PASSWORD}" > android/key.properties
           echo "keyPassword=${KEY_PASSWORD}" >> android/key.properties
           echo "keyAlias=${KEY_ALIAS}" >> android/key.properties
-          echo "storeFile=keystore.jks" >> android/key.properties
-          echo "Key properties file created successfully."
+          echo "storeFile=android/app/keystore.jks" >> android/key.properties
 
-      - name: Debug Keystore Files
-        if: ${{ secrets.KEYSTORE_BASE64 }}
+      - name: Verify Keystore File
         run: |
-          ls -la android/app/
-          ls -la android/
-          echo "Keystore setup complete!"
+          if [ ! -f "android/app/keystore.jks" ]; then
+            echo "Keystore file not found! Exiting..."
+            exit 1
+          fi
 
-      # Now set up the development environment
-      - name: Set Up Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: "oracle"
-          java-version: "17"
-
+      # Now Install Flutter Only If Keystore Exists
       - name: Set Up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -60,6 +58,9 @@ jobs:
 
       - name: Install Dependencies
         run: flutter pub get
+
+      - name: Debug Keystore File
+        run: ls -la android/app/
 
       - name: Build APK
         run: flutter build apk --release --flavor prod --target lib/flavors/development/main_development.dart
@@ -72,8 +73,8 @@ jobs:
         with:
           name: "Releases"
           path: |
-            build/app/outputs/flutter-apk/prod-release.apk
-            build/app/outputs/bundle/prodRelease/app-prod-release.aab
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
 
       - name: Extract version from pubspec
         id: extract_version
@@ -90,7 +91,7 @@ jobs:
             echo "TAG_EXISTS=false" >> $GITHUB_ENV
           fi
 
-      - name: Modify Tag
+      - name: Modify Tag If Exists
         if: env.TAG_EXISTS == 'true'
         id: modify_tag
         run: |
@@ -103,7 +104,7 @@ jobs:
           RELEASE_TOKEN: ${{ secrets.TOKEN }}
         with:
           artifacts: |
-            build/app/outputs/flutter-apk/prod-release.apk
-            build/app/outputs/bundle/prodRelease/app-prod-release.aab
+            build/app/outputs/flutter-apk/app-release.apk,
+            build/app/outputs/bundle/release/app-release.aab
           tag: "v${{ env.VERSION }}"
-          token: ${{ env.RELEASE_TOKEN }}
+          token: ${{ env.RELEASE_TOKEN }}"
