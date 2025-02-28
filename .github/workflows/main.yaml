@@ -18,7 +18,7 @@ jobs:
 
       # Keystore setup steps moved before Flutter setup to save time in case of failures
       - name: Decode Keystore
-        if: ${{ secrets.KEYSTORE_BASE64 }}
+        if: secrets.KEYSTORE_BASE64 != ''
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
