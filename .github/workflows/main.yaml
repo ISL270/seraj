@@ -27,17 +27,6 @@ jobs:
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
 
-      - name: Generate key.properties
-        run: |
-          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
-          echo "storeFile=android/app/keystore.jks" >> android/key.properties
-
-      - name: Move key.properties
-        run: |
-          mkdir -p android
-          mv android/key.properties android/key.properties
       - name: Verify Keystore Integrity
         run: |
           keytool -list -keystore android/app/keystore.jks -storepass "${{ secrets.KEYSTORE_PASSWORD }}" -v || echo "Keystore validation failed!"
@@ -48,11 +37,18 @@ jobs:
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
           echo "storeFile=android/app/keystore.jks" >> android/key.properties
+
+      - name: Move key.properties to android directory
+        run: |
+          mkdir -p android
+          mv key.properties android/key.properties
+
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
           distribution: 'oracle'
           java-version: '17'
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
